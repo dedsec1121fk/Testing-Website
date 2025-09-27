@@ -169,9 +169,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
                 
                 if (highlightText) {
+                    // FIX: Increased timeout to 350ms to ensure modal animation completes before scrolling.
                     setTimeout(() => {
                         highlightModalContent(modal, highlightText);
-                    }, 100); 
+                    }, 350); 
                 }
             }
         };
@@ -191,7 +192,6 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             if (targetElement) {
-                // FIX: Use scrollIntoView for more reliable scrolling to the target.
                 targetElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 targetElement.classList.add('content-highlight');
                 setTimeout(() => {
@@ -224,7 +224,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
-                // Get the top-most visible modal
                 const visibleModals = document.querySelectorAll('.modal-overlay.visible');
                 if (visibleModals.length > 0) {
                     const topModal = visibleModals[visibleModals.length - 1];
@@ -503,7 +502,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // FIX: This function now populates and shows the new dedicated article pop-up modal.
     async function loadInformationContent(url, textToHighlight = null, title = 'Information') {
         const articleModal = document.getElementById('article-viewer-modal');
         const titleElement = articleModal.querySelector('.article-title');
@@ -514,7 +512,6 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // Prepare and show the modal
         titleElement.textContent = title;
         contentContainer.innerHTML = `<p>${currentLanguage === 'gr' ? 'Φόρτωση...' : 'Loading...'}</p>`;
         showModal(articleModal);
@@ -525,24 +522,22 @@ document.addEventListener('DOMContentLoaded', () => {
             const htmlContent = await response.text();
             contentContainer.innerHTML = htmlContent;
             
-            // Apply language filtering to the newly loaded content inside the new modal
             changeLanguage(currentLanguage, contentContainer);
 
-            // Logic to find, scroll, and highlight the result
             if (textToHighlight) {
-                setTimeout(() => { // Use timeout to ensure content is rendered
+                // FIX: Increased timeout to 350ms to ensure modal animation completes before scrolling.
+                setTimeout(() => {
                     const allElements = contentContainer.querySelectorAll('p, li, h3, b, code, .tip, .note'); 
                     const targetElement = Array.from(allElements).find(el => el.textContent.trim().includes(textToHighlight.trim()));
     
                     if (targetElement) {
-                        // FIX: Use scrollIntoView for reliable scrolling.
                         targetElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
                         targetElement.classList.add('content-highlight');
                         setTimeout(() => {
                             targetElement.classList.remove('content-highlight');
                         }, 2500);
                     }
-                }, 100);
+                }, 350);
             }
         } catch (error) {
             console.error('Failed to load content:', error);
