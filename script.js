@@ -23,20 +23,6 @@ document.addEventListener('DOMContentLoaded', () => {
         function hideModal(modal) {
             if (!modal) return;
             modal.classList.remove('visible');
-            
-            // Reset specific modals on close
-            if (modal.id === 'useful-information-modal') {
-                document.getElementById('useful-info-prompt').style.display = 'block';
-                document.getElementById('useful-info-search-input').value = '';
-                document.getElementById('useful-info-results-container').classList.add('hidden');
-                document.getElementById('useful-information-nav').querySelectorAll('.app-icon').forEach(article => {
-                    article.style.display = 'flex';
-                });
-            }
-            
-            modal.querySelectorAll('.content-highlight').forEach(el => {
-                el.classList.remove('content-highlight');
-            });
         }
 
         // --- LANGUAGE AND MODAL LOGIC ---
@@ -45,25 +31,22 @@ document.addEventListener('DOMContentLoaded', () => {
         const disclaimerModal = document.getElementById('disclaimer-modal');
         const installationModal = document.getElementById('installation-modal');
 
-        const updateNodeText = (node, text) => {
-            for (const child of node.childNodes) {
-                if (child.nodeType === Node.TEXT_NODE && child.textContent.trim().length > 0) {
-                    child.textContent = text;
-                    break;
-                }
-            }
-        };
-
-        const changeLanguage = (lang, container = document) => {
+        window.changeLanguage = (lang, container = document) => {
             currentLanguage = lang;
             document.documentElement.lang = lang;
             
             container.querySelectorAll('[data-en]').forEach(el => {
                 const text = el.getAttribute(`data-${lang}`) || el.getAttribute('data-en');
-                if (el.children.length > 0) {
-                     updateNodeText(el, text);
-                } else {
+                const hasElementChild = el.children.length > 0;
+                if (!hasElementChild) {
                      el.textContent = text;
+                } else {
+                    for (const child of el.childNodes) {
+                        if (child.nodeType === Node.TEXT_NODE && child.textContent.trim().length > 0) {
+                            child.textContent = text;
+                            break;
+                        }
+                    }
                 }
             });
 
@@ -169,10 +152,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
                 
                 if (highlightText) {
-                    // FIX: Increased timeout to 350ms to ensure modal animation completes before scrolling.
+                    // FIX: Increased timeout to 400ms to provide a safe buffer after the 300ms animation.
                     setTimeout(() => {
                         highlightModalContent(modal, highlightText);
-                    }, 350); 
+                    }, 400); 
                 }
             }
         };
@@ -192,11 +175,14 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             if (targetElement) {
+                // FIX: Use the more reliable scrollIntoView method.
                 targetElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 targetElement.classList.add('content-highlight');
                 setTimeout(() => {
                     targetElement.classList.remove('content-highlight');
                 }, 2500);
+            } else {
+                console.warn("Could not find element to highlight for text:", text);
             }
         };
         
@@ -209,50 +195,60 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // --- MODAL CLOSING AND RESET LOGIC ---
         document.querySelectorAll('.modal-overlay').forEach(modal => {
+            const closeModal = () => {
+                hideModal(modal);
+
+                if (modal.id === 'useful-information-modal') {
+                    // This modal no longer needs content reset, just the search bar
+                    document.getElementById('useful-info-search-input').value = '';
+                    document.getElementById('useful-info-results-container').classList.add('hidden');
+                    document.getElementById('useful-information-nav').querySelectorAll('.app-icon').forEach(article => {
+                        article.style.display = 'flex';
+                    });
+                }
+                
+                modal.querySelectorAll('.content-highlight').forEach(el => {
+                    el.classList.remove('content-highlight');
+                });
+            };
+            
             modal.addEventListener('click', e => {
                 if (e.target === modal && modal.id !== 'language-selection-modal') {
-                    hideModal(modal);
+                    closeModal();
                 }
             });
+
             const closeModalButton = modal.querySelector('.close-modal');
             if (closeModalButton) {
-                if (modal.id !== 'language-selection-modal') { 
-                    closeModalButton.addEventListener('click', () => hideModal(modal));
-                }
+                closeModalButton.addEventListener('click', closeModal);
             }
-        });
-
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                const visibleModals = document.querySelectorAll('.modal-overlay.visible');
-                if (visibleModals.length > 0) {
-                    const topModal = visibleModals[visibleModals.length - 1];
-                    if (topModal.id !== 'language-selection-modal') {
-                        hideModal(topModal);
+            
+            // Add Escape key listener for modals
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && modal.classList.contains('visible')) {
+                    const visibleModals = document.querySelectorAll('.modal-overlay.visible');
+                    if (visibleModals.length > 0) {
+                        // Close the top-most modal
+                        hideModal(visibleModals[visibleModals.length - 1]);
                     }
                 }
-            }
+            });
         });
         
-        const initializeCopyButtons = () => {
-            document.querySelectorAll('.copy-btn').forEach(button => {
-                button.addEventListener('click', () => {
-                    const targetId = button.dataset.targetId;
-                    const codeElement = document.getElementById(targetId);
-                    if (!codeElement || !navigator.clipboard) return;
+        window.copyToClipboard = (button, targetId) => {
+            const codeElement = document.getElementById(targetId);
+            if (!codeElement || !navigator.clipboard) return; 
 
-                    navigator.clipboard.writeText(codeElement.innerText).then(() => {
-                        const originalText = button.textContent;
-                        button.textContent = (currentLanguage === 'gr') ? 'Αντιγράφηκε!' : 'Copied!';
-                        setTimeout(() => { button.textContent = originalText; }, 1500);
-                    }).catch(err => {
-                        console.error('Failed to copy text: ', err);
-                    });
-                });
+            const textToCopy = codeElement.innerText;
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                const originalText = button.textContent;
+                button.textContent = (currentLanguage === 'gr') ? 'Αντιγράφηκε!' : 'Copied!';
+                setTimeout(() => { button.textContent = originalText; }, 1500);
+            }).catch(err => {
+                console.error('Failed to copy text: ', err);
             });
         };
-        initializeCopyButtons();
-
+        
         const carousel = document.querySelector('.gym-carousel');
         if (carousel) {
             const images = carousel.querySelectorAll('.gym-clothing-images img');
@@ -293,13 +289,14 @@ document.addEventListener('DOMContentLoaded', () => {
                         if (el.textContent.trim().length < 5) return;
                         const text = el.textContent.trim().replace(/\s\s+/g, ' ');
                         const isTitle = ['H3', 'H4'].includes(el.tagName);
+                        
                         searchIndex.push({ lang, title: modalTitle, text, modalId, weight: isTitle ? 5 : 1 });
                     });
                 });
             });
         }
         
-        // --- MAIN SEARCH FUNCTIONALITY (NOW SITE-WIDE) ---
+        // --- MAIN SEARCH FUNCTIONALITY ---
         function initializeSearch() {
             const searchInput = document.getElementById('main-search-input');
             const resultsContainer = document.getElementById('search-results-container');
@@ -356,7 +353,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
         
-        // --- USEFUL INFO SEARCH FUNCTIONALITY (Internal to Modal) ---
+        // --- USEFUL INFO SEARCH FUNCTIONALITY ---
         function initializeUsefulInfoSearch() {
             const searchInput = document.getElementById('useful-info-search-input');
             const resultsContainer = document.getElementById('useful-info-results-container');
@@ -395,6 +392,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         itemEl.addEventListener('click', async () => {
                             searchInput.value = '';
                             resultsContainer.classList.add('hidden');
+                            // FIX: Pass the title from the search result to the load function
                             await loadInformationContent(result.url, result.text, result.title); 
                         });
                         resultsContainer.appendChild(itemEl);
@@ -417,7 +415,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (languageModalCloseBtn) {
             languageModalCloseBtn.style.display = 'none';
         }
-        
         showModal(languageModal);
         changeLanguage('en'); 
         buildSiteWideSearchIndex();
@@ -425,7 +422,7 @@ document.addEventListener('DOMContentLoaded', () => {
         initializeUsefulInfoSearch();
     }
 
-    // --- USEFUL INFORMATION LOGIC (GITHUB API - FIXED) ---
+    // --- USEFUL INFORMATION LOGIC (GITHUB API) ---
     async function fetchUsefulInformation() {
         if (usefulInformationLoaded || isFetchingUsefulInfo) return;
 
@@ -455,7 +452,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     const htmlContent = await tipContentResponse.text();
                     const tempDiv = document.createElement('div');
                     tempDiv.innerHTML = htmlContent;
-                    
                     const infoName = file.name.replace(/\.html$/, '').replace(/^\d+_/, '').replace(/_/g, ' '); 
 
                     tempDiv.querySelectorAll('[data-lang-section]').forEach(section => {
@@ -470,7 +466,9 @@ document.addEventListener('DOMContentLoaded', () => {
                             }
                         });
                     });
-                } catch (e) { console.error(`Failed to index information: ${file.name}`, e); }
+                } catch (e) {
+                    console.error(`Failed to index information: ${file.name}`, e);
+                }
             });
             
             await Promise.all(indexPromises);
@@ -487,7 +485,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 button.appendChild(icon);
                 button.appendChild(span);
-                
+                // FIX: Add click listener to call the new loadInformationContent with the correct title
                 button.addEventListener('click', async () => await loadInformationContent(file.download_url, null, title));
                 navContainer.appendChild(button);
             });
@@ -502,12 +500,19 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // FIX: This function now populates and shows a new dedicated article pop-up modal.
     async function loadInformationContent(url, textToHighlight = null, title = 'Information') {
+        // This function now assumes an <div id="article-viewer-modal"> exists in your HTML.
         const articleModal = document.getElementById('article-viewer-modal');
+        if (!articleModal) {
+            console.error('Article viewer modal is missing from index.html!');
+            return;
+        }
+        
         const titleElement = articleModal.querySelector('.article-title');
         const contentContainer = articleModal.querySelector('.modal-body');
         
-        if (!articleModal || !titleElement || !contentContainer) {
+        if (!titleElement || !contentContainer) {
             console.error('Article viewer modal is not set up correctly in the HTML.');
             return;
         }
@@ -525,19 +530,22 @@ document.addEventListener('DOMContentLoaded', () => {
             changeLanguage(currentLanguage, contentContainer);
 
             if (textToHighlight) {
-                // FIX: Increased timeout to 350ms to ensure modal animation completes before scrolling.
+                // FIX: Increased timeout to 400ms to provide a safe buffer after the 300ms animation.
                 setTimeout(() => {
                     const allElements = contentContainer.querySelectorAll('p, li, h3, b, code, .tip, .note'); 
                     const targetElement = Array.from(allElements).find(el => el.textContent.trim().includes(textToHighlight.trim()));
     
                     if (targetElement) {
+                        // FIX: Use the more reliable scrollIntoView method.
                         targetElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
                         targetElement.classList.add('content-highlight');
                         setTimeout(() => {
                             targetElement.classList.remove('content-highlight');
                         }, 2500);
+                    } else {
+                        console.warn("Could not find element to highlight for text:", textToHighlight);
                     }
-                }, 350);
+                }, 400);
             }
         } catch (error) {
             console.error('Failed to load content:', error);
