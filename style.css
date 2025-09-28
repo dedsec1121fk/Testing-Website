@@ -146,9 +146,7 @@ button.hero-cta-button {
     top: 0; 
     width: 8px;
     height: 40px;
-    /* MODIFIED: Use theme-aware variable */
-    background: var(--nm-text); 
-    /* REMOVED GLOW */
+    background: var(--nm-accent); /* MODIFIED: Changed color to purple */
     box-shadow: none;
     z-index: 11;
     transition: opacity 0.3s ease, background-color 0.3s ease;
@@ -403,11 +401,11 @@ body.light-theme ::-webkit-scrollbar-thumb {
     font-weight: 700;
     font-size: 0.9rem;
     padding: 12px 25px;
-    border-radius: 50px;
+    border-radius: 50px; /* MODIFIED: Set to 50px for pill shape */
     transition: all 0.2s ease;
     box-shadow: none;
     width: 100%;
-    max-width: 350px;
+    max-width: 350px; /* MODIFIED: Restored max-width */
 }
 
 .hero-cta-button:hover {
@@ -438,7 +436,7 @@ body.light-theme ::-webkit-scrollbar-thumb {
     display: grid;
     grid-template-columns: repeat(4, max-content);
     justify-content: center;
-    gap: 20px;
+    gap: 15px; /* MODIFIED: Reduced gap */
     width: 100%;
     max-width: 500px;
     margin: 0 auto 15px;
@@ -446,7 +444,7 @@ body.light-theme ::-webkit-scrollbar-thumb {
 }
 
 .app-wrapper {
-    width: 80px; /* Constrains the wrapper and forces the label to wrap */
+    width: 70px; /* MODIFIED: Reduced width to prevent overflow */
     display: flex;
     flex-direction: column;
     align-items: center;
