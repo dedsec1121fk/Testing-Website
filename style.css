@@ -99,8 +99,7 @@ body {
 }
 
 /* --- ADDED: Reset for button elements used as app icons --- */
-button.app-wrapper,
-button.hero-cta-button {
+.app-grid button.app-wrapper {
     background: none;
     border: none;
     padding: 0;
@@ -108,6 +107,10 @@ button.hero-cta-button {
     font: inherit; 
     color: inherit; 
     text-align: inherit; 
+    cursor: pointer;
+}
+
+button.hero-cta-button {
     cursor: pointer;
 }
 
