@@ -435,12 +435,13 @@ body.light-theme ::-webkit-scrollbar-thumb {
 
 
 .app-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
     gap: 20px;
     width: 100%;
     max-width: 500px;
-    margin: 0 auto 15px; /* MODIFIED: Removed top margin */
+    margin: 0 auto 15px;
     align-items: start;
 }
 
@@ -1079,9 +1080,10 @@ body.light-theme .modal-content {
     margin-bottom: 1rem;
 }
 #useful-information-nav {
-    grid-template-columns: 1fr;
+    display: flex; /* Changed from grid */
+    flex-wrap: wrap; /* Added */
+    justify-content: center; /* Added */
     max-width: 100%;
-    /* Added to space the buttons out */
     gap: 15px; 
 }
 /* Apply pill shape to the list of articles inside the Useful Information modal */
@@ -1125,10 +1127,6 @@ span.sub-item {
         max-width: 700px;
     }
 
-    .app-grid {
-        grid-template-columns: repeat(6, 1fr);
-    }
-
     .main-header-container h1 {
         font-size: clamp(2.5rem, 4vw, 3.5rem);
     }
@@ -1143,9 +1141,5 @@ span.sub-item {
     .grid-heading,
     .app-grid {
         max-width: 900px;
-    }
-
-    .app-grid {
-        grid-template-columns: repeat(8, 1fr);
     }
 }
