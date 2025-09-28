@@ -407,6 +407,7 @@ body.light-theme ::-webkit-scrollbar-thumb {
     box-sizing: border-box;
     text-align: center;
     white-space: nowrap;
+    min-width: max-content;
 }
 
 .hero-cta-button:hover {
