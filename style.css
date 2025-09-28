@@ -403,7 +403,6 @@ body.light-theme ::-webkit-scrollbar-thumb {
     border-radius: 20px;
     transition: all 0.2s ease;
     box-shadow: none;
-    width: 100%;
     max-width: 700px;
     box-sizing: border-box;
     text-align: center;
