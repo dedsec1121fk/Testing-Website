@@ -410,12 +410,12 @@ body.light-theme ::-webkit-scrollbar-thumb {
     font-family: 'Orbitron', sans-serif;
     text-transform: uppercase;
     font-weight: 700;
-    font-size: 0.75rem; /* Reduced font size to fit */
-    padding: 12px 10px; /* Reduced padding to fit */
-    white-space: nowrap; /* Keep text on single line */
+    font-size: 0.9rem;
+    padding: 10px 15px;
     border-radius: 20px;
     transition: all 0.2s ease;
     box-shadow: none;
+    width: 100%;
     max-width: 700px;
     box-sizing: border-box;
     text-align: center;
