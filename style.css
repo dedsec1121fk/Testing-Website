@@ -409,7 +409,6 @@ body.light-theme ::-webkit-scrollbar-thumb {
     text-align: center;
 }
 
-
 .hero-cta-button:hover {
     background-color: var(--nm-accent-hover);
     border-color: var(--nm-accent-hover);
