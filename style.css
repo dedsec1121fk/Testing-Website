@@ -446,6 +446,7 @@ body.light-theme ::-webkit-scrollbar-thumb {
 }
 
 .app-wrapper {
+    width: 80px; /* Constrains the wrapper and forces the label to wrap */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -1083,6 +1084,7 @@ body.light-theme .modal-content {
     grid-template-columns: 1fr;
     max-width: 100%;
     gap: 15px; 
+    justify-content: initial; /* Override centering for this specific grid */
 }
 /* Apply pill shape to the list of articles inside the Useful Information modal */
 #useful-information-nav .app-icon {
