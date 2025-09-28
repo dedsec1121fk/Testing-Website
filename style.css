@@ -279,7 +279,7 @@ body.light-theme ::-webkit-scrollbar-thumb {
     margin: 0;
     text-align: center;
     white-space: nowrap;
-    font-size: clamp(10vw, 12vw, 4.5rem);
+    font-size: clamp(7vw, 9vw, 4.0rem);
     color: var(--nm-accent);
     text-shadow:
         /* Black stroke for readability */
@@ -415,11 +415,10 @@ body.light-theme ::-webkit-scrollbar-thumb {
     border-radius: 20px;
     transition: all 0.2s ease;
     box-shadow: none;
+    width: 100%;
     max-width: 700px;
     box-sizing: border-box;
     text-align: center;
-    white-space: nowrap;
-    min-width: max-content;
 }
 
 .hero-cta-button:hover {
