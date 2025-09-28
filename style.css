@@ -435,8 +435,8 @@ body.light-theme ::-webkit-scrollbar-thumb {
 
 
 .app-grid {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(4, max-content);
     justify-content: center;
     gap: 20px;
     width: 100%;
@@ -1080,9 +1080,7 @@ body.light-theme .modal-content {
     margin-bottom: 1rem;
 }
 #useful-information-nav {
-    display: flex; /* Changed from grid */
-    flex-wrap: wrap; /* Added */
-    justify-content: center; /* Added */
+    grid-template-columns: 1fr;
     max-width: 100%;
     gap: 15px; 
 }
@@ -1127,6 +1125,10 @@ span.sub-item {
         max-width: 700px;
     }
 
+    .app-grid {
+        grid-template-columns: repeat(6, max-content);
+    }
+
     .main-header-container h1 {
         font-size: clamp(2.5rem, 4vw, 3.5rem);
     }
@@ -1141,5 +1143,9 @@ span.sub-item {
     .grid-heading,
     .app-grid {
         max-width: 900px;
+    }
+
+    .app-grid {
+        grid-template-columns: repeat(8, max-content);
     }
 }
