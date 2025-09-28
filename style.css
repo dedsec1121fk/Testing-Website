@@ -99,7 +99,8 @@ body {
 }
 
 /* --- ADDED: Reset for button elements used as app icons --- */
-button.app-wrapper {
+button.app-wrapper,
+button.hero-cta-button {
     background: none;
     border: none;
     padding: 0;
@@ -228,7 +229,7 @@ body.light-theme .phone-container::after {
 
 .home-screen {
     flex-grow: 1;
-    overflow-y: hidden;
+    overflow-y: auto; /* Changed to auto to allow scrolling */
     min-height: 0;
     padding: 0 15px 15px; 
     box-sizing: border-box;
@@ -370,27 +371,65 @@ body.light-theme ::-webkit-scrollbar-thumb {
     transition: background-color 1s ease;
 }
 
-main.home-screen > h1, .main-header-container > h1 {
+/* --- NEW HERO SECTION STYLES --- */
+.hero-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     text-align: center;
-    margin: 0; 
+    width: 100%;
+    max-width: 500px;
+    margin: 15px 0 35px 0;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.hero-text {
+    color: var(--nm-text-muted);
+    font-size: 0.9rem;
+    line-height: 1.6;
+    margin: 0 0 20px 0;
+}
+
+.hero-cta-button {
+    background-color: var(--nm-accent);
+    color: #000000;
+    border: 2px solid var(--nm-accent);
     font-family: 'Orbitron', sans-serif;
-    font-size: clamp(6.5vw, 8vw, 3.0rem);
-    color: var(--nm-accent); /* Main Title is now base Lavender */
-    text-shadow: none; 
-    transition: text-shadow 0.3s ease, color 0.3s ease;
-    animation: none; 
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: 0.9rem;
+    padding: 12px 25px;
+    border-radius: 50px;
+    transition: all 0.2s ease;
+    box-shadow: none;
+    width: 100%;
+    max-width: 350px;
 }
 
-main.home-screen > h1:hover, .main-header-container > h1:hover {
-    animation: none;
+.hero-cta-button:hover {
+    background-color: var(--nm-accent-hover);
+    border-color: var(--nm-accent-hover);
+    color: #ffffff;
 }
+/* --- END HERO SECTION STYLES --- */
 
-body.light-theme main.home-screen > h1,
-body.light-theme .main-header-container > h1 {
-    text-shadow: none;
+
+/* --- NEW GRID HEADING STYLES --- */
+.grid-heading {
+    width: 100%;
+    max-width: 500px;
+    text-align: center;
+    font-family: 'Orbitron', sans-serif;
     color: var(--nm-text);
-    animation: none;
+    text-transform: uppercase;
+    font-size: 1rem;
+    margin: 25px auto 15px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid var(--nm-border);
 }
+/* --- END GRID HEADING STYLES --- */
+
 
 .app-grid {
     display: grid;
@@ -398,7 +437,7 @@ body.light-theme .main-header-container > h1 {
     gap: 20px;
     width: 100%;
     max-width: 500px;
-    margin: 25px auto 15px;
+    margin: 0 auto 15px; /* MODIFIED: Removed top margin */
     align-items: start;
 }
 
@@ -537,6 +576,7 @@ body.light-theme .app-icon:hover {
     padding: 1rem;
     font-size: 0.7rem;
     color: var(--nm-text-muted);
+    margin-top: 25px; /* Added margin to push it down */
 }
 
 .modal-overlay {
@@ -762,8 +802,6 @@ body.light-theme .modal-content {
 }
 
 .modal-footer button,
-.language-button,
-/* REMOVED: #language-selection, #user-info, #navigation-container, #results-container */
 .language-button {
     background-color: transparent;
     color: var(--nm-text); /* Enforce White */
@@ -783,9 +821,7 @@ body.light-theme .modal-content {
 
 .modal-footer button:hover,
 .language-button:hover,
-.language-button.selected
-/* REMOVED: #language-selection button:hover, #user-info button:hover, #navigation-container button:hover, #results-container button:hover */
- {
+.language-button.selected {
     color: var(--nm-darkest);
     background-color: var(--nm-accent);
     border-color: var(--nm-accent-hover);
@@ -843,20 +879,12 @@ body.light-theme .modal-content {
     border-radius: 20px; 
 }
 
-/* REMOVED: #certification-modal and its nested styles */
-
 .hidden { 
     display: none !important; 
 } 
 .hidden-by-default { 
     display: none; 
 } 
-
-/* REMOVED: #language-selection, #user-info, #results-container h1/p/label/form styles */
-
-/* REMOVED: All quiz-related styles: #user-info input, #quiz-container, #quiz-stats, .quiz-page, @keyframes fadeIn, .quiz-page h2/hr/etc., #navigation-container styles */
-
-/* REMOVED: All certificate styles: .certificate-container, .certificate, .certificate-header, .certificate-body, .certificate-footer, .grade-display, .serif */
 
 .text-green-600 { color: var(--nm-success) !important; }
 
@@ -1066,17 +1094,6 @@ body.light-theme .modal-content {
 #useful-information-nav .app-icon span {
     color: var(--nm-text);
 }
-/* --- ADDED: Style for the active article button --- */
-#useful-information-nav .app-icon.active-article {
-    background-color: var(--nm-accent);
-    border-color: var(--nm-accent-hover);
-    color: var(--nm-darkest);
-}
-#useful-information-nav .app-icon.active-article span,
-#useful-information-nav .app-icon.active-article i {
-    color: var(--nm-darkest);
-}
-
 span.sub-item {
     display: block;
     font-size: 0.85em;
@@ -1094,7 +1111,7 @@ span.sub-item {
     }
 
     .app-grid {
-        grid-template-columns: repeat(6, 1fr);
-        max-width: none; 
+        grid-template-columns: repeat(4, 1fr); /* Keep 4 columns for desktop for a cleaner look */
+        max-width: 500px; 
     }
 }
