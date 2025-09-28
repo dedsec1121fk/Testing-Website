@@ -277,9 +277,14 @@ body.light-theme ::-webkit-scrollbar-thumb {
 .main-header-container h1 {
     margin: 0;
     text-align: center;
-    white-space: nowrap; 
-    font-size: clamp(6.5vw, 8vw, 3.0rem);
-    color: var(--nm-accent); /* Main Title is now base Lavender */
+    white-space: nowrap;
+    font-size: clamp(10vw, 12vw, 4.5rem);
+    color: var(--nm-accent);
+    text-shadow:
+        0 0 5px var(--nm-accent),
+        0 0 10px var(--nm-accent),
+        0 0 20px var(--nm-accent-hover),
+        0 0 30px var(--nm-accent-hover);
 }
 
 .search-container {
