@@ -399,19 +399,12 @@ body.light-theme ::-webkit-scrollbar-thumb {
     text-transform: uppercase;
     font-weight: 700;
     font-size: 0.9rem;
-    width: 140px; /* Set fixed width */
-    height: 140px; /* Set fixed height, equal to width */
-    border-radius: 50%; /* This makes it a circle */
-    padding: 10px; /* Add some uniform padding */
-    box-sizing: border-box; /* Ensure padding is included in the size */
+    padding: 12px 25px;
+    border-radius: 50px;
     transition: all 0.2s ease;
     box-shadow: none;
-    /* Add flexbox to center the text inside */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    line-height: 1.2; /* Adjust line-height for wrapped text */
+    width: 100%;
+    max-width: 350px;
 }
 
 
