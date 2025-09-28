@@ -264,12 +264,13 @@ body.light-theme ::-webkit-scrollbar-thumb {
 
 .main-header-container {
     display: flex;
-    flex-direction: column; 
-    align-items: center; 
+    flex-direction: column;
+    align-items: center;
     width: 100%;
     gap: 15px;
     margin-bottom: 20px;
-    padding-top: 25px; 
+    padding: 25px 15px 0 15px;
+    box-sizing: border-box;
 }
 
 /* --- REMOVED: .header-logo container since we are using .screen::after --- */
@@ -281,6 +282,12 @@ body.light-theme ::-webkit-scrollbar-thumb {
     font-size: clamp(10vw, 12vw, 4.5rem);
     color: var(--nm-accent);
     text-shadow:
+        /* Black stroke for readability */
+        -1px -1px 0 #000,
+         1px -1px 0 #000,
+        -1px  1px 0 #000,
+         1px  1px 0 #000,
+        /* Purple glow */
         0 0 5px var(--nm-accent),
         0 0 10px var(--nm-accent),
         0 0 20px var(--nm-accent-hover),
