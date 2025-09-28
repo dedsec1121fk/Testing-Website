@@ -247,11 +247,10 @@ body.light-theme .phone-container::after {
     background: var(--nm-dark);
 }
 ::-webkit-scrollbar-thumb {
-    /* MODIFIED: Changed scrollbar thumb to use theme-aware variable */
-    background-color: var(--nm-text);
+    background-color: var(--nm-accent); /* MODIFIED: Changed color to purple */
     border-radius: 10px;
     border: 2px solid var(--nm-dark);
-    box-shadow: none; /* Removed glow */
+    box-shadow: none;
 }
 ::-webkit-scrollbar-thumb:hover {
     background-color: var(--nm-accent-hover);
@@ -400,13 +399,21 @@ body.light-theme ::-webkit-scrollbar-thumb {
     text-transform: uppercase;
     font-weight: 700;
     font-size: 0.9rem;
-    padding: 12px 25px;
-    border-radius: 50px; /* MODIFIED: Set to 50px for pill shape */
+    width: 140px; /* Set fixed width */
+    height: 140px; /* Set fixed height, equal to width */
+    border-radius: 50%; /* This makes it a circle */
+    padding: 10px; /* Add some uniform padding */
+    box-sizing: border-box; /* Ensure padding is included in the size */
     transition: all 0.2s ease;
     box-shadow: none;
-    width: 100%;
-    max-width: 350px; /* MODIFIED: Restored max-width */
+    /* Add flexbox to center the text inside */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    line-height: 1.2; /* Adjust line-height for wrapped text */
 }
+
 
 .hero-cta-button:hover {
     background-color: var(--nm-accent-hover);
