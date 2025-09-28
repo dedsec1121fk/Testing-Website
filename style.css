@@ -399,12 +399,14 @@ body.light-theme ::-webkit-scrollbar-thumb {
     text-transform: uppercase;
     font-weight: 700;
     font-size: 0.9rem;
-    padding: 12px 25px;
+    padding: 10px 15px; /* MODIFIED: Matched search bar padding */
     border-radius: 50px;
     transition: all 0.2s ease;
     box-shadow: none;
     width: 100%;
-    max-width: 350px;
+    max-width: 500px; /* MODIFIED: Matched search bar width */
+    box-sizing: border-box;
+    text-align: center;
 }
 
 
