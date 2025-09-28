@@ -146,7 +146,7 @@ button.hero-cta-button {
     top: 0; 
     width: 8px;
     height: 40px;
-    background: var(--nm-accent); /* MODIFIED: Changed color to purple */
+    background: var(--nm-accent); 
     box-shadow: none;
     z-index: 11;
     transition: opacity 0.3s ease, background-color 0.3s ease;
@@ -247,7 +247,7 @@ body.light-theme .phone-container::after {
     background: var(--nm-dark);
 }
 ::-webkit-scrollbar-thumb {
-    background-color: var(--nm-accent); /* MODIFIED: Changed color to purple */
+    background-color: var(--nm-accent);
     border-radius: 10px;
     border: 2px solid var(--nm-dark);
     box-shadow: none;
@@ -399,12 +399,12 @@ body.light-theme ::-webkit-scrollbar-thumb {
     text-transform: uppercase;
     font-weight: 700;
     font-size: 0.9rem;
-    padding: 10px 15px; /* MODIFIED: Matched search bar padding */
+    padding: 10px 15px;
     border-radius: 50px;
     transition: all 0.2s ease;
     box-shadow: none;
     width: 100%;
-    max-width: 500px; /* MODIFIED: Matched search bar width */
+    max-width: 500px;
     box-sizing: border-box;
     text-align: center;
 }
@@ -438,7 +438,7 @@ body.light-theme ::-webkit-scrollbar-thumb {
     display: grid;
     grid-template-columns: repeat(4, max-content);
     justify-content: center;
-    gap: 15px; /* MODIFIED: Reduced gap */
+    gap: 15px;
     width: 100%;
     max-width: 500px;
     margin: 0 auto 15px;
@@ -446,7 +446,7 @@ body.light-theme ::-webkit-scrollbar-thumb {
 }
 
 .app-wrapper {
-    width: 70px; /* MODIFIED: Reduced width to prevent overflow */
+    width: 70px;
     display: flex;
     flex-direction: column;
     align-items: center;
