@@ -301,7 +301,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    async function buildUsefulInfoSearchIndex(progressBar) {
+    async function buildUsefulInfoSearchIndex(progressBar, progressText) {
         if (isUsefulInfoIndexBuilt || usefulInfoFiles.length === 0) return;
 
         let filesLoaded = 0;
@@ -335,6 +335,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 filesLoaded++;
                 const progress = (filesLoaded / totalFiles) * 100;
                 progressBar.style.width = `${progress}%`;
+                progressText.textContent = `${Math.round(progress)}%`;
             }
         });
 
@@ -351,9 +352,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const progressBarContainer = document.createElement('div');
         progressBarContainer.className = 'progress-bar-container';
+        
         const progressBar = document.createElement('div');
         progressBar.className = 'progress-bar';
+
+        const progressText = document.createElement('span');
+        progressText.className = 'progress-bar-text';
+        progressText.textContent = '0%';
+
         progressBarContainer.appendChild(progressBar);
+        progressBarContainer.appendChild(progressText);
         navContainer.parentNode.insertBefore(progressBarContainer, navContainer);
 
 
@@ -372,7 +380,7 @@ document.addEventListener('DOMContentLoaded', () => {
             progressBarContainer.style.display = 'block';
             progressBar.style.width = '0%';
 
-            await buildUsefulInfoSearchIndex(progressBar);
+            await buildUsefulInfoSearchIndex(progressBar, progressText);
 
             setTimeout(() => {
                 progressBarContainer.style.display = 'none';
@@ -387,7 +395,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const query = searchInput.value.toLowerCase().trim();
             resultsContainer.innerHTML = '';
 
-            if (!isUsefulInfoIndexBuilt || query.length < 3) {
+            if (!isUsefulInfoIndexBuilt || query.length < 2) {
                 resultsContainer.classList.add('hidden');
                 showNav(true);
                 return;
@@ -511,3 +519,4 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- INITIALIZE ALL FEATURES ---
     initializePortfolio();
 });
+
