@@ -498,7 +498,19 @@ document.addEventListener('DOMContentLoaded', () => {
         const closeModal = () => {
             modalOverlay.classList.remove('visible');
             modalOverlay.addEventListener('transitionend', () => modalOverlay.remove(), { once: true });
+            
+            // --- FIX: Reset the underlying modal's state when closing an article ---
+            const searchInput = document.getElementById('useful-info-search-input');
+            if (searchInput) searchInput.value = '';
+            
+            const navContainer = document.getElementById('useful-information-nav');
+            if (navContainer) {
+                navContainer.querySelectorAll('.app-icon').forEach(article => {
+                    article.style.display = 'flex';
+                });
+            }
         };
+
         modalOverlay.addEventListener('click', (e) => {
             if (e.target === modalOverlay) closeModal();
         });
@@ -519,4 +531,3 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- INITIALIZE ALL FEATURES ---
     initializePortfolio();
 });
-
