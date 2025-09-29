@@ -80,28 +80,7 @@ body.light-theme {
   }
 }
 
-/* NEW: Pulsing glow animation for the main title */
-@keyframes pulsing-glow {
-  0%, 100% {
-    text-shadow:
-      /* Black stroke */
-      -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000,
-      /* Base Glow */
-      0 0 5px var(--nm-accent),
-      0 0 10px var(--nm-accent),
-      0 0 15px var(--nm-accent-hover);
-  }
-  50% {
-    text-shadow:
-      /* Black stroke */
-      -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000,
-      /* Intense Glow */
-      0 0 10px var(--nm-accent),
-      0 0 20px var(--nm-accent-hover),
-      0 0 30px var(--nm-accent-hover),
-      0 0 40px var(--nm-accent-hover);
-  }
-}
+/* REMOVED: Pulsing glow animation for the main title */
 
 
 html, body {
@@ -306,7 +285,6 @@ body.light-theme ::-webkit-scrollbar-thumb {
     white-space: nowrap;
     font-size: clamp(7vw, 9vw, 4.0rem);
     color: var(--nm-accent);
-    animation: pulsing-glow 2s ease-in-out infinite;
 }
 
 .search-container {
