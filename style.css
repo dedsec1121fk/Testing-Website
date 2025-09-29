@@ -1012,19 +1012,33 @@ body.light-theme .modal-content {
 /* --- Progress Bar for Useful Information Search --- */
 .progress-bar-container {
     width: 100%;
-    height: 4px;
-    background-color: var(--nm-inset-bg); /* Uses your existing theme variable for the background */
-    border-radius: 4px;
+    height: 18px; /* Increased height for text */
+    background-color: var(--nm-darkest);
+    border-radius: 20px;
     overflow: hidden;
     margin-bottom: 10px;
+    position: relative; /* Needed for absolute positioning of text */
     display: none; /* Hidden by default */
+    border: 1px solid var(--nm-border);
 }
 .progress-bar {
     width: 0%;
     height: 100%;
     background-color: #8A2BE2; /* Purple */
     transition: width 0.2s ease-in-out;
+    border-radius: 20px;
 }
+.progress-bar-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 0.7rem;
+    font-weight: bold;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
+}
+
 
 .modal-search-container {
     margin-bottom: 20px;
@@ -1173,3 +1187,4 @@ span.sub-item {
         grid-template-columns: repeat(8, max-content);
     }
 }
+
