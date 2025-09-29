@@ -2,7 +2,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- GLOBAL PORTFOLIO STATE ---
     let currentLanguage = 'en';
     let searchIndex = []; // Stores site-wide content snippets
-    let usefulInfoSearchIndex = []; // Dedicated index for the modal
+    let usefulInfoSearchIndex = []; // Dedicated index for the modal, BUILT ON DEMAND
+    let usefulInfoFiles = []; // Stores the list of files to avoid re-fetching
+    let isUsefulInfoIndexBuilt = false; // Flag to check if the full index is ready
     let usefulInformationLoaded = false;
     let isFetchingUsefulInfo = false;
 
@@ -64,7 +66,11 @@ document.addEventListener('DOMContentLoaded', () => {
             if (searchInput) searchInput.placeholder = lang === 'gr' ? 'Αναζήτηση...' : 'Search...';
             
             const usefulInfoSearchInput = document.getElementById('useful-info-search-input');
-            if (usefulInfoSearchInput) usefulInfoSearchInput.placeholder = lang === 'gr' ? 'Αναζήτηση άρθρων...' : 'Search articles...';
+            if (usefulInfoSearchInput && !isUsefulInfoIndexBuilt) {
+                 usefulInfoSearchInput.placeholder = lang === 'gr' ? 'Πατήστε για φόρτωση αναζήτησης...' : 'Click to load search...';
+            } else if (usefulInfoSearchInput) {
+                usefulInfoSearchInput.placeholder = lang === 'gr' ? 'Αναζήτηση άρθρων...' : 'Search articles...';
+            }
         };
         
         languageModal.querySelectorAll('.language-button').forEach(button => {
@@ -295,11 +301,61 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    async function buildUsefulInfoSearchIndex(progressBar) {
+        if (isUsefulInfoIndexBuilt || usefulInfoFiles.length === 0) return;
+
+        let filesLoaded = 0;
+        const totalFiles = usefulInfoFiles.length;
+
+        const indexPromises = usefulInfoFiles.map(async (file) => {
+            try {
+                const response = await fetch(file.download_url);
+                if (!response.ok) return;
+                const htmlContent = await response.text();
+                const tempDiv = document.createElement('div');
+                tempDiv.innerHTML = htmlContent;
+
+                const articleTitle = file.name.replace(/\.html$/, '').replace(/^\d+_/, '').replace(/_/g, ' ');
+
+                tempDiv.querySelectorAll('[data-lang-section]').forEach(section => {
+                    const lang = section.dataset.langSection;
+                    section.querySelectorAll('h3, h4, p, li, b, code').forEach(el => {
+                        const text = el.textContent.trim();
+                        if (text.length > 5) {
+                            usefulInfoSearchIndex.push({
+                                lang, title: articleTitle, text, url: file.download_url,
+                                weight: (el.tagName === 'H3' ? 5 : 1)
+                            });
+                        }
+                    });
+                });
+            } catch (e) {
+                console.error(`Failed to index file: ${file.name}`, e);
+            } finally {
+                filesLoaded++;
+                const progress = (filesLoaded / totalFiles) * 100;
+                progressBar.style.width = `${progress}%`;
+            }
+        });
+
+        await Promise.all(indexPromises);
+        isUsefulInfoIndexBuilt = true;
+    }
+
+
     function initializeUsefulInfoSearch() {
         const searchInput = document.getElementById('useful-info-search-input');
         const resultsContainer = document.getElementById('useful-info-results-container');
         const navContainer = document.getElementById('useful-information-nav');
         if (!searchInput || !resultsContainer || !navContainer) return;
+
+        const progressBarContainer = document.createElement('div');
+        progressBarContainer.className = 'progress-bar-container';
+        const progressBar = document.createElement('div');
+        progressBar.className = 'progress-bar';
+        progressBarContainer.appendChild(progressBar);
+        navContainer.parentNode.insertBefore(progressBarContainer, navContainer);
+
 
         const showNav = (shouldShow) => {
             navContainer.querySelectorAll('.app-icon').forEach(article => {
@@ -307,11 +363,31 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         };
 
+        searchInput.addEventListener('focus', async () => {
+            if (isUsefulInfoIndexBuilt) return;
+
+            searchInput.placeholder = currentLanguage === 'gr' ? 'Ευρετηρίαση άρθρων...' : 'Indexing articles...';
+            searchInput.disabled = true;
+
+            progressBarContainer.style.display = 'block';
+            progressBar.style.width = '0%';
+
+            await buildUsefulInfoSearchIndex(progressBar);
+
+            setTimeout(() => {
+                progressBarContainer.style.display = 'none';
+            }, 500);
+
+            searchInput.disabled = false;
+            searchInput.placeholder = currentLanguage === 'gr' ? 'Αναζήτηση άρθρων...' : 'Search articles...';
+            searchInput.focus();
+        }, { once: true });
+
         searchInput.addEventListener('input', () => {
             const query = searchInput.value.toLowerCase().trim();
             resultsContainer.innerHTML = '';
 
-            if (query.length < 3) {
+            if (!isUsefulInfoIndexBuilt || query.length < 3) {
                 resultsContainer.classList.add('hidden');
                 showNav(true);
                 return;
@@ -340,7 +416,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 resultsContainer.classList.remove('hidden');
             } else {
                 resultsContainer.classList.add('hidden');
-                showNav(true); // FIX: Show nav again if no results
+                showNav(true);
             }
         });
     }
@@ -356,21 +432,16 @@ document.addEventListener('DOMContentLoaded', () => {
             const response = await fetch(GITHUB_API_URL);
             if (!response.ok) throw new Error(`GitHub API error: ${response.status}`);
             const files = await response.json();
-            const htmlFiles = files.filter(file => file.type === 'file' && file.name.endsWith('.html'));
+            usefulInfoFiles = files.filter(file => file.type === 'file' && file.name.endsWith('.html'));
             
             navContainer.innerHTML = '';
-            if (htmlFiles.length === 0) {
+            if (usefulInfoFiles.length === 0) {
                  navContainer.innerHTML = `<p>${currentLanguage === 'gr' ? 'Δεν βρέθηκαν πληροφορίες.' : 'No information found.'}</p>`;
                  return;
             }
             
-            usefulInfoSearchIndex = [];
-            htmlFiles.forEach(file => {
+            usefulInfoFiles.forEach(file => {
                 const articleTitle = file.name.replace(/\.html$/, '').replace(/^\d+_/, '').replace(/_/g, ' ');
-                ['en', 'gr'].forEach(lang => {
-                    usefulInfoSearchIndex.push({ lang, title: articleTitle, text: articleTitle, url: file.download_url, weight: 5 });
-                });
-                
                 const button = document.createElement('button');
                 button.className = 'app-icon';
                 button.innerHTML = `<i class="fas fa-book-open"></i><span>${articleTitle}</span>`;
@@ -434,12 +505,9 @@ document.addEventListener('DOMContentLoaded', () => {
             createAndShowArticleModal(title, htmlContent, textToHighlight);
         } catch (error) {
             console.error('Failed to load content:', error);
-            // Future improvement: Show a custom, non-blocking error message to the user.
         }
     }
     
     // --- INITIALIZE ALL FEATURES ---
     initializePortfolio();
 });
-
-

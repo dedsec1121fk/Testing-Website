@@ -1009,6 +1009,23 @@ body.light-theme .modal-content {
 #useful-information-content a { color: var(--nm-accent); }
 #useful-information-content a:hover { color: var(--nm-accent-hover); text-decoration: underline; }
 
+/* --- Progress Bar for Useful Information Search --- */
+.progress-bar-container {
+    width: 100%;
+    height: 4px;
+    background-color: var(--nm-inset-bg); /* Uses your existing theme variable for the background */
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 10px;
+    display: none; /* Hidden by default */
+}
+.progress-bar {
+    width: 0%;
+    height: 100%;
+    background-color: #8A2BE2; /* Purple */
+    transition: width 0.2s ease-in-out;
+}
+
 .modal-search-container {
     margin-bottom: 20px;
     position: relative;
