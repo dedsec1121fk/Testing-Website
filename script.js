@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', () => {
+ifdocument.addEventListener('DOMContentLoaded', () => {
     // --- GLOBAL PORTFOLIO STATE ---
     let currentLanguage = 'en';
     let searchIndex = []; // Now stores site-wide content snippets
@@ -436,11 +436,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     article.style.display = 'none';
                 });
 
+                // The search index now only contains titles, so this will search titles.
                 let results = usefulInfoSearchIndex.filter(item => 
                     item.lang === currentLanguage && item.text.toLowerCase().includes(query)
                 );
                 
-                // Sorted results (no deduplication)
                 const sortedResults = results.sort((a, b) => b.weight - a.weight);
 
                 if (sortedResults.length > 0) {
@@ -448,18 +448,15 @@ document.addEventListener('DOMContentLoaded', () => {
                         const itemEl = document.createElement('div');
                         itemEl.classList.add('search-result-item');
                         const snippet = result.text.substring(0, 100) + (result.text.length > 100 ? '...' : '');
-                        // FIX: Use $& to represent the full match, not $1 which implies a capturing group
                         const highlightedSnippet = snippet.replace(new RegExp(query, 'gi'), '<strong>$&</strong>'); 
                         itemEl.innerHTML = `${highlightedSnippet} <small>${result.title}</small>`;
                         
-                        // --- MODIFICATION START: Update click handler ---
                         itemEl.addEventListener('click', async () => {
                             searchInput.value = '';
                             resultsContainer.classList.add('hidden');
-                            // Pass title from the result object to create the pop-up modal
+                            // The URL is stored in the result, so we can fetch on demand.
                             await loadInformationContent(result.url, result.title, result.text); 
                         });
-                        // --- MODIFICATION END ---
                         resultsContainer.appendChild(itemEl);
                     });
                     resultsContainer.classList.remove('hidden');
@@ -477,24 +474,19 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         
         // --- INITIAL PAGE LOAD ---
-        // MODIFICATION: Ensure close button is hidden on initial load for language enforcement
         if (languageModalCloseBtn) {
             languageModalCloseBtn.style.display = 'none';
         }
         
-        // Show language selection first
         showModal(languageModal);
-        // Set default language, which will be overwritten by user click
         changeLanguage('en'); 
         
-        // Removed unnecessary manual text overwrite for language modal header
-        
-        buildSiteWideSearchIndex(); // Index all modals
+        buildSiteWideSearchIndex();
         initializeSearch();
         initializeUsefulInfoSearch();
     }
 
-    // --- USEFUL INFORMATION LOGIC (GITHUB API - FIXED) ---
+    // --- OPTIMIZED: USEFUL INFORMATION LOGIC ---
     async function fetchUsefulInformation() {
         if (usefulInformationLoaded || isFetchingUsefulInfo) return;
 
@@ -516,69 +508,40 @@ document.addEventListener('DOMContentLoaded', () => {
                  return;
             }
             
-            usefulInfoSearchIndex = [];
-            // This promise array will hold all the fetch operations for individual files.
-            const indexPromises = htmlFiles.map(async (file) => {
-                try {
-                    const tipContentResponse = await fetch(file.download_url);
-                    if (!tipContentResponse.ok) return; // Skip failed fetches
-                    const htmlContent = await tipContentResponse.text();
-                    const tempDiv = document.createElement('div');
-                    tempDiv.innerHTML = htmlContent;
-                    
-                    // MODIFICATION: Clean name for indexing: remove .html, then remove leading numbers/underscores, then replace internal underscores with spaces.
-                    const infoName = file.name
-                        .replace(/\.html$/, '') 
-                        .replace(/^\d+_/, '') // Remove leading numbers and underscore (e.g., '1_')
-                        .replace(/_/g, ' '); 
+            navContainer.innerHTML = ''; // Clear loading message
+            usefulInfoSearchIndex = []; // Reset the index
 
-                    // FIX: Ensure we check both lang sections and root elements for content
-                    tempDiv.querySelectorAll('[data-lang-section]').forEach(section => {
-                        const lang = section.dataset.langSection;
-                        section.querySelectorAll('h3, h4, p, li, b, code').forEach(el => {
-                            const text = el.textContent.trim();
-                            if (text.length > 5) {
-                                usefulInfoSearchIndex.push({
-                                    lang: lang,
-                                    title: infoName,
-                                    text: text,
-                                    url: file.download_url,
-                                    weight: (el.tagName === 'H3' ? 5 : 1)
-                                });
-                            }
-                        });
-                    });
-                } catch (e) {
-                    console.error(`Failed to index information: ${file.name}`, e);
-                }
-            });
-            
-            // CRITICAL FIX: Wait for all the file fetches and indexing to complete.
-            await Promise.all(indexPromises);
-
-            // Now that indexing is complete, populate the navigation.
-            navContainer.innerHTML = '';
+            // Loop through the file list without fetching content
             htmlFiles.forEach(file => {
-                const button = document.createElement('button'); // Use button for accessibility
+                const articleTitle = file.name
+                    .replace(/\.html$/, '')
+                    .replace(/^\d+_/, '')
+                    .replace(/_/g, ' ');
+                
+                // Populate the search index with just the title for both languages
+                ['en', 'gr'].forEach(lang => {
+                    usefulInfoSearchIndex.push({
+                        lang: lang,
+                        title: articleTitle,
+                        text: articleTitle, // The searchable text is now just the title
+                        url: file.download_url, // Store the URL to fetch later
+                        weight: 5
+                    });
+                });
+                
+                // Create the navigation button
+                const button = document.createElement('button');
                 button.className = 'app-icon';
                 const icon = document.createElement('i');
                 icon.className = 'fas fa-book-open';
                 const span = document.createElement('span');
-                
-                // MODIFICATION: Clean name for display and store it for the click handler.
-                const articleTitle = file.name
-                    .replace(/\.html$/, '') 
-                    .replace(/^\d+_/, '') 
-                    .replace(/_/g, ' ');
                 span.textContent = articleTitle;
                 
                 button.appendChild(icon);
                 button.appendChild(span);
                 
-                // --- MODIFICATION START: Update click handler ---
-                // Clicking will now fetch the content and display it in a new pop-up modal.
+                // Add click listener that fetches the content on demand
                 button.addEventListener('click', async () => await loadInformationContent(file.download_url, articleTitle));
-                // --- MODIFICATION END ---
                 
                 navContainer.appendChild(button);
             });
@@ -586,14 +549,14 @@ document.addEventListener('DOMContentLoaded', () => {
             usefulInformationLoaded = true;
 
         } catch (error) {
-            console.error('Failed to fetch useful information:', error);
+            console.error('Failed to fetch useful information list:', error);
             navContainer.innerHTML = `<p style="color: var(--nm-danger);">${currentLanguage === 'gr' ? 'Αποτυχία φόρτωσης περιεχομένου.' : 'Failed to load content.'}</p>`;
         } finally {
             isFetchingUsefulInfo = false;
         }
     }
 
-    // --- MODIFICATION START: New function to create and show article pop-up modals ---
+    // --- Function to create and show article pop-up modals ---
     function createAndShowArticleModal(title, htmlContent, textToHighlight = null) {
         // Remove any other article pop-ups to prevent stacking
         document.querySelectorAll('.article-modal-overlay').forEach(modal => modal.remove());
@@ -617,15 +580,12 @@ document.addEventListener('DOMContentLoaded', () => {
         modalOverlay.appendChild(modalContent);
         document.body.appendChild(modalOverlay);
         
-        // Make it visible with a slight delay to allow CSS transitions to work
         setTimeout(() => modalOverlay.classList.add('visible'), 10);
     
-        // Apply language visibility to the new modal's content
         changeLanguage(currentLanguage);
     
-        // Highlight logic if a search result was clicked
         if (textToHighlight) {
-            setTimeout(() => { // Delay to ensure rendering
+            setTimeout(() => {
                 const allElements = modalBody.querySelectorAll('p, li, h3, h4, b, code, .tip, .note');
                 const targetElement = Array.from(allElements).find(el => el.textContent.trim().includes(textToHighlight.trim()));
     
@@ -639,10 +599,8 @@ document.addEventListener('DOMContentLoaded', () => {
             }, 150);
         }
         
-        // Function to close and remove the modal from the DOM
         const closeModal = () => {
             modalOverlay.classList.remove('visible');
-            // Wait for the fade-out transition to finish before removing the element
             modalOverlay.addEventListener('transitionend', () => modalOverlay.remove(), { once: true });
         };
     
@@ -653,23 +611,21 @@ document.addEventListener('DOMContentLoaded', () => {
         modalHeader.querySelector('.close-modal').addEventListener('click', closeModal);
     }
 
-    // --- MODIFICATION START: `loadInformationContent` now triggers the pop-up modal ---
+    // --- This function now fetches the specific article content ON DEMAND ---
     async function loadInformationContent(url, title, textToHighlight = null) {
-        // This function now fetches content and passes it to the pop-up modal creator.
         try {
             const response = await fetch(url);
             if (!response.ok) throw new Error(`Failed to fetch content: ${response.status}`);
             const htmlContent = await response.text();
             
-            // Call the new function to display the pop-up
             createAndShowArticleModal(title, htmlContent, textToHighlight);
 
         } catch (error) {
             console.error('Failed to load content:', error);
+            // Using a custom modal for alerts would be better, but for now, an alert is clear.
             alert(currentLanguage === 'gr' ? 'Αποτυχία φόρτωσης περιεχομένου.' : 'Failed to load content.');
         }
     }
-    // --- MODIFICATION END ---
     
     // --- INITIALIZE ALL FEATURES ---
     initializePortfolio();
