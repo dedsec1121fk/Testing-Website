@@ -374,69 +374,71 @@ document.addEventListener('DOMContentLoaded', () => {
         changeLanguage('en'); 
     }
 
-    // --- REWRITTEN: Modern, more reliable approach for fetching suggestions ---
+    // --- FINAL VERSION: Uses Google's official suggestion API via JSONP. This is the most reliable method. ---
     function initializeWebSearchSuggestions() {
         const searchInput = document.getElementById('main-search-input');
         const suggestionsContainer = document.getElementById('search-suggestions-container');
         const searchForm = document.getElementById('main-search-form');
         if (!searchInput || !suggestionsContainer || !searchForm) return;
-        
-        let debounceTimer;
 
+        // This global function will be called by the script returned from Google.
+        window.handleGoogleSuggestions = (data) => {
+            suggestionsContainer.innerHTML = '';
+            // The actual suggestions are in the second element of the returned array.
+            const suggestions = data[1];
+
+            if (suggestions && Array.isArray(suggestions) && suggestions.length > 0) {
+                suggestions.slice(0, 5).forEach(suggestion => {
+                    const itemEl = document.createElement('div');
+                    itemEl.classList.add('search-result-item');
+                    itemEl.textContent = suggestion;
+                    
+                    itemEl.addEventListener('click', () => {
+                        searchInput.value = suggestion;
+                        suggestionsContainer.classList.add('hidden');
+                        searchForm.submit();
+                    });
+                    suggestionsContainer.appendChild(itemEl);
+                });
+                suggestionsContainer.classList.remove('hidden');
+            } else {
+                suggestionsContainer.classList.add('hidden');
+            }
+        };
+
+        let debounceTimer;
         searchInput.addEventListener('input', () => {
             const query = searchInput.value.trim();
-            
-            // Clear the existing timer
             clearTimeout(debounceTimer);
 
-            if (query.length < 2) {
+            if (query.length < 1) { // Show suggestions even after 1 character
                 suggestionsContainer.classList.add('hidden');
                 return;
             }
-
-            // Set a new timer to fetch suggestions after 250ms of no typing
+            
+            // Debouncing: wait 200ms after user stops typing before making a request.
             debounceTimer = setTimeout(() => {
-                // We use a CORS proxy to bypass browser restrictions on direct API calls.
-                const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
-                const apiUrl = `${proxyUrl}https://duckduckgo.com/ac/?q=${encodeURIComponent(query)}`;
+                // Clean up the old script tag to prevent memory leaks.
+                const oldScript = document.getElementById('jsonp-script');
+                if (oldScript) {
+                    oldScript.remove();
+                }
 
-                fetch(apiUrl)
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error('Network response was not ok');
-                        }
-                        return response.json();
-                    })
-                    .then(data => {
-                        suggestionsContainer.innerHTML = '';
-                        const suggestions = data.map(item => item.phrase);
-
-                        if (suggestions && suggestions.length > 0) {
-                             suggestions.slice(0, 5).forEach(suggestion => {
-                                const itemEl = document.createElement('div');
-                                itemEl.classList.add('search-result-item');
-                                itemEl.textContent = suggestion;
-                                
-                                itemEl.addEventListener('click', () => {
-                                    searchInput.value = suggestion;
-                                    suggestionsContainer.classList.add('hidden');
-                                    searchForm.submit();
-                                });
-                                suggestionsContainer.appendChild(itemEl);
-                            });
-                            suggestionsContainer.classList.remove('hidden');
-                        } else {
-                            suggestionsContainer.classList.add('hidden');
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error fetching suggestions:', error);
-                        suggestionsContainer.classList.add('hidden');
-                    });
-            }, 250);
+                // Create a new script tag for the JSONP request to Google.
+                const script = document.createElement('script');
+                script.id = 'jsonp-script';
+                script.src = `https://suggestqueries.google.com/complete/search?client=chrome&q=${encodeURIComponent(query)}&callback=handleGoogleSuggestions`;
+                
+                script.onerror = () => {
+                    console.error("Error loading Google suggestions. An ad-blocker might be interfering.");
+                    suggestionsContainer.classList.add('hidden');
+                };
+                
+                document.head.appendChild(script);
+            }, 200);
         });
 
-        // Hide suggestions when clicking outside
+        // Hide suggestions when clicking outside the search area.
         document.addEventListener('click', (e) => {
             if (!searchForm.contains(e.target)) {
                 suggestionsContainer.classList.add('hidden');
