@@ -380,6 +380,7 @@ body.light-theme ::-webkit-scrollbar-thumb {
     background-color: var(--nm-dark);
 }
 
+#search-suggestions-container, /* This is the fix: added to style the new suggestions box */
 #search-results-container,
 #useful-info-results-container {
     position: absolute;
@@ -397,6 +398,7 @@ body.light-theme ::-webkit-scrollbar-thumb {
     border-radius: 20px;
 }
 
+#search-suggestions-container .search-result-item, /* And this is the fix for the items inside */
 #search-results-container .search-result-item,
 #useful-info-results-container .search-result-item {
     padding: 12px 15px;
@@ -405,11 +407,13 @@ body.light-theme ::-webkit-scrollbar-thumb {
     transition: all 0.2s ease;
     border-bottom: 1px solid var(--nm-border);
 }
+#search-suggestions-container .search-result-item:last-child,
 #search-results-container .search-result-item:last-child,
 #useful-info-results-container .search-result-item:last-child {
     border-bottom: none;
 }
 
+#search-suggestions-container .search-result-item:hover,
 #search-results-container .search-result-item:hover,
 #useful-info-results-container .search-result-item:hover {
     background-color: var(--nm-accent); 
