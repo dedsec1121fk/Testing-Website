@@ -374,73 +374,66 @@ document.addEventListener('DOMContentLoaded', () => {
         changeLanguage('en'); 
     }
 
-    // UPDATED: This function now includes debugging and error handling.
+    // --- REWRITTEN: Modern, more reliable approach for fetching suggestions ---
     function initializeWebSearchSuggestions() {
-        console.log("DEBUG: Initializing web search suggestions...");
-
         const searchInput = document.getElementById('main-search-input');
         const suggestionsContainer = document.getElementById('search-suggestions-container');
         const searchForm = document.getElementById('main-search-form');
-        if (!searchInput || !suggestionsContainer || !searchForm) {
-            console.error("DEBUG: Search suggestions elements not found in HTML.");
-            return;
-        }
-
-        // Use a global callback function for JSONP
-        window.handleSuggestions = (data) => {
-            console.log("DEBUG: Suggestions received from API:", data);
-            suggestionsContainer.innerHTML = '';
-            // DuckDuckGo's API returns suggestions in the second element of the main array.
-            const suggestions = data[1]; 
-
-            if (suggestions && Array.isArray(suggestions) && suggestions.length > 0) {
-                suggestions.slice(0, 5).forEach(suggestion => {
-                    const itemEl = document.createElement('div');
-                    itemEl.classList.add('search-result-item'); // Reuse existing style
-                    itemEl.textContent = suggestion;
-                    
-                    itemEl.addEventListener('click', () => {
-                        searchInput.value = suggestion;
-                        suggestionsContainer.classList.add('hidden');
-                        searchForm.submit(); // Submit the form with the chosen suggestion
-                    });
-                    suggestionsContainer.appendChild(itemEl);
-                });
-                suggestionsContainer.classList.remove('hidden');
-            } else {
-                console.log("DEBUG: No suggestions in the received data or data is in an unexpected format.");
-                suggestionsContainer.classList.add('hidden');
-            }
-        };
+        if (!searchInput || !suggestionsContainer || !searchForm) return;
+        
+        let debounceTimer;
 
         searchInput.addEventListener('input', () => {
             const query = searchInput.value.trim();
+            
+            // Clear the existing timer
+            clearTimeout(debounceTimer);
 
             if (query.length < 2) {
                 suggestionsContainer.classList.add('hidden');
                 return;
             }
 
-            console.log(`DEBUG: Fetching suggestions for "${query}"`);
+            // Set a new timer to fetch suggestions after 250ms of no typing
+            debounceTimer = setTimeout(() => {
+                // We use a CORS proxy to bypass browser restrictions on direct API calls.
+                const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
+                const apiUrl = `${proxyUrl}https://duckduckgo.com/ac/?q=${encodeURIComponent(query)}`;
 
-            // Remove previous script tag to avoid conflicts
-            const oldScript = document.getElementById('jsonp-script');
-            if (oldScript) {
-                oldScript.remove();
-            }
+                fetch(apiUrl)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        suggestionsContainer.innerHTML = '';
+                        const suggestions = data.map(item => item.phrase);
 
-            // Use JSONP to fetch suggestions from DuckDuckGo's API
-            const script = document.createElement('script');
-            script.id = 'jsonp-script';
-            script.src = `https://duckduckgo.com/ac/?q=${encodeURIComponent(query)}&callback=handleSuggestions`;
-            
-            // ADDED: Error handling for the script tag
-            script.onerror = () => {
-                console.error("DEBUG: Failed to load suggestions script. This is very likely caused by an AD-BLOCKER, privacy extension, or a network issue.");
-                suggestionsContainer.classList.add('hidden');
-            };
-            
-            document.body.appendChild(script);
+                        if (suggestions && suggestions.length > 0) {
+                             suggestions.slice(0, 5).forEach(suggestion => {
+                                const itemEl = document.createElement('div');
+                                itemEl.classList.add('search-result-item');
+                                itemEl.textContent = suggestion;
+                                
+                                itemEl.addEventListener('click', () => {
+                                    searchInput.value = suggestion;
+                                    suggestionsContainer.classList.add('hidden');
+                                    searchForm.submit();
+                                });
+                                suggestionsContainer.appendChild(itemEl);
+                            });
+                            suggestionsContainer.classList.remove('hidden');
+                        } else {
+                            suggestionsContainer.classList.add('hidden');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error fetching suggestions:', error);
+                        suggestionsContainer.classList.add('hidden');
+                    });
+            }, 250);
         });
 
         // Hide suggestions when clicking outside
