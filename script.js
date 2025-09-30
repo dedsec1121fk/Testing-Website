@@ -374,17 +374,14 @@ document.addEventListener('DOMContentLoaded', () => {
         changeLanguage('en'); 
     }
 
-    // --- FINAL VERSION: Uses Google's official suggestion API via JSONP. This is the most reliable method. ---
     function initializeWebSearchSuggestions() {
         const searchInput = document.getElementById('main-search-input');
         const suggestionsContainer = document.getElementById('search-suggestions-container');
         const searchForm = document.getElementById('main-search-form');
         if (!searchInput || !suggestionsContainer || !searchForm) return;
 
-        // This global function will be called by the script returned from Google.
         window.handleGoogleSuggestions = (data) => {
             suggestionsContainer.innerHTML = '';
-            // The actual suggestions are in the second element of the returned array.
             const suggestions = data[1];
 
             if (suggestions && Array.isArray(suggestions) && suggestions.length > 0) {
@@ -397,6 +394,11 @@ document.addEventListener('DOMContentLoaded', () => {
                         searchInput.value = suggestion;
                         suggestionsContainer.classList.add('hidden');
                         searchForm.submit();
+                        
+                        // Use a short delay to clear the input after the form submits
+                        setTimeout(() => {
+                            searchInput.value = ''; // THIS IS THE ADDED LINE
+                        }, 100);
                     });
                     suggestionsContainer.appendChild(itemEl);
                 });
@@ -411,20 +413,17 @@ document.addEventListener('DOMContentLoaded', () => {
             const query = searchInput.value.trim();
             clearTimeout(debounceTimer);
 
-            if (query.length < 1) { // Show suggestions even after 1 character
+            if (query.length < 1) {
                 suggestionsContainer.classList.add('hidden');
                 return;
             }
             
-            // Debouncing: wait 200ms after user stops typing before making a request.
             debounceTimer = setTimeout(() => {
-                // Clean up the old script tag to prevent memory leaks.
                 const oldScript = document.getElementById('jsonp-script');
                 if (oldScript) {
                     oldScript.remove();
                 }
 
-                // Create a new script tag for the JSONP request to Google.
                 const script = document.createElement('script');
                 script.id = 'jsonp-script';
                 script.src = `https://suggestqueries.google.com/complete/search?client=chrome&q=${encodeURIComponent(query)}&callback=handleGoogleSuggestions`;
@@ -438,7 +437,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }, 200);
         });
 
-        // Hide suggestions when clicking outside the search area.
         document.addEventListener('click', (e) => {
             if (!searchForm.contains(e.target)) {
                 suggestionsContainer.classList.add('hidden');
