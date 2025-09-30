@@ -1,8 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     // --- GLOBAL PORTFOLIO STATE ---
     let currentLanguage = 'en';
-    // The main searchIndex is no longer needed as the main search bar now uses Google.
-    // let searchIndex = []; // Stores site-wide content snippets
     let usefulInfoSearchIndex = []; // Dedicated index for the modal, BUILT ON DEMAND
     let usefulInfoFiles = []; // Stores the list of files to avoid re-fetching
     let isUsefulInfoIndexBuilt = false; // Flag to check if the full index is ready
@@ -11,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- EVEN MORE ADVANCED SEARCH UTILITY (Used for 'Useful Information' modal) ---
     const SearchEngine = {
-        idfMaps: {}, // To store IDF scores for different indexes ('main', 'usefulInfo')
+        idfMaps: {},
 
         tokenize(text, lang) {
             if (!text) return [];
@@ -19,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 .toLowerCase()
                 .replace(/[.,/#!$%\^&\*;:{}=\-_`~()]/g, "")
                 .split(/\s+/)
-                .filter(word => word.length > 1); // Removed stopWords filter
+                .filter(word => word.length > 1);
         },
 
         preprocessItem(item) {
@@ -159,15 +157,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // --- LOGO URLS ---
-    const LOGO_URLS = {
-        dark: 'https://raw.githubusercontent.com/dedsec1121fk/dedsec1121fk.github.io/5860edb8a7468d955336c9cf1d8b357597d6d645/Assets/Images/Logos/Custom%20Black%20Purple%20Fox%20Logo.png',
-        light: 'https://raw.githubusercontent.com/dedsec1121fk/dedsec1121fk.github.io/6f776cd9772a079a6d26370dddab911bf7cde8cd/Assets/Images/Logos/Custom%20White%20Purple%20Fox%20Logo.jpg'
-    };
-
     // --- PORTFOLIO INITIALIZATION ---
     function initializePortfolio() {
-        // --- MODAL HELPER FUNCTIONS ---
         function showModal(modal) {
             if (!modal) return;
             modal.classList.add('visible');
@@ -178,7 +169,6 @@ document.addEventListener('DOMContentLoaded', () => {
             modal.classList.remove('visible');
         }
 
-        // --- LANGUAGE AND MODAL LOGIC ---
         const languageModal = document.getElementById('language-selection-modal');
         if (!languageModal) {
             console.error("Fatal: Language modal not found. Site cannot start.");
@@ -215,7 +205,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const searchInput = document.getElementById('main-search-input');
             if (searchInput) {
-                // MODIFIED: Update placeholder for the new global web search bar
                 searchInput.placeholder = lang === 'gr' ? 'Αναζήτηση στο διαδίκτυο...' : 'Search the Web...';
             }
             
@@ -244,7 +233,6 @@ document.addEventListener('DOMContentLoaded', () => {
             showModal(languageModal);
         });
 
-        // --- THEME SWITCHER LOGIC ---
         const themeSwitcherBtn = document.getElementById('theme-switcher-btn');
         if (themeSwitcherBtn) {
             const themeIcon = themeSwitcherBtn.querySelector('i');
@@ -279,7 +267,6 @@ document.addEventListener('DOMContentLoaded', () => {
             updateThemeButton(document.body.classList.contains('light-theme'));
         }
 
-        // --- DISCLAIMER AND MODAL OPENING LOGIC ---
         document.getElementById('accept-disclaimer')?.addEventListener('click', () => {
             localStorage.setItem('disclaimerAccepted', 'true');
             hideModal(disclaimerModal);
@@ -329,7 +316,6 @@ document.addEventListener('DOMContentLoaded', () => {
             wrapper.addEventListener('click', () => openModalAndHighlight(wrapper.dataset.modal));
         });
 
-        // --- MODAL CLOSING AND RESET LOGIC ---
         document.querySelectorAll('.modal-overlay').forEach(modal => {
             const closeModal = () => {
                 hideModal(modal);
@@ -380,95 +366,74 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
         
-        // buildSiteWideSearchIndex(); // REMOVED: No longer needed for global search
-        // initializeSearch(); // REMOVED: No longer needed for global search
+        initializeWebSearchSuggestions(); // ADDED: Initialize the new suggestions feature
         initializeUsefulInfoSearch();
         
-        // --- INITIAL PAGE LOAD ---
         if (languageModalCloseBtn) languageModalCloseBtn.style.display = 'none';
         showModal(languageModal);
         changeLanguage('en'); 
     }
 
-    // REMOVED: This function is no longer needed as the main search functionality has been replaced.
-    /*
-    function buildSiteWideSearchIndex() {
-        if (searchIndex.length > 0) return;
-        document.querySelectorAll('.modal-overlay:not(#language-selection-modal):not(#disclaimer-modal)').forEach(modal => {
-            const modalId = modal.id.replace('-modal', '');
-            const modalTitle = modal.querySelector('.modal-header h2')?.textContent.trim() || modalId;
-            modal.querySelectorAll('h3, h4, p, li, code, .tip, .note, .modal-disclaimer').forEach(el => {
-                const text = el.textContent.trim().replace(/\s\s+/g, ' ');
-                if (text.length < 5) return;
-                ['en', 'gr'].forEach(lang => {
-                    const langSection = el.closest('[data-lang-section]');
-                    if (!langSection || langSection.dataset.langSection === lang) {
-                        const item = {
-                            lang,
-                            title: modalTitle,
-                            text,
-                            modalId,
-                            weight: ['H3', 'H4'].includes(el.tagName) ? 5 : 1
-                        };
-                        searchIndex.push(SearchEngine.preprocessItem(item));
-                    }
-                });
-            });
-        });
-        // Calculate IDF scores once the main index is built
-        SearchEngine.calculateIdf('main', searchIndex);
-    }
-    */
-
-    // REMOVED: This function is no longer needed as the main search functionality has been replaced.
-    /*
-    function initializeSearch() {
+    // NEW: This function handles fetching and displaying search suggestions
+    function initializeWebSearchSuggestions() {
         const searchInput = document.getElementById('main-search-input');
-        const resultsContainer = document.getElementById('search-results-container');
-        const searchContainer = searchInput?.closest('.search-container');
-        if (!searchInput || !resultsContainer || !searchContainer) return;
+        const suggestionsContainer = document.getElementById('search-suggestions-container');
+        const searchForm = document.getElementById('main-search-form');
+        if (!searchInput || !suggestionsContainer || !searchForm) return;
+
+        // Use a global callback function for JSONP
+        window.handleSuggestions = (data) => {
+            suggestionsContainer.innerHTML = '';
+            const suggestions = data[1]; // Suggestions are in the second element of the array
+
+            if (suggestions && suggestions.length > 0) {
+                suggestions.slice(0, 5).forEach(suggestion => {
+                    const itemEl = document.createElement('div');
+                    itemEl.classList.add('search-result-item'); // Reuse existing style
+                    itemEl.textContent = suggestion;
+                    
+                    itemEl.addEventListener('click', () => {
+                        searchInput.value = suggestion;
+                        suggestionsContainer.classList.add('hidden');
+                        searchForm.submit(); // Submit the form with the chosen suggestion
+                    });
+                    suggestionsContainer.appendChild(itemEl);
+                });
+                suggestionsContainer.classList.remove('hidden');
+            } else {
+                suggestionsContainer.classList.add('hidden');
+            }
+        };
 
         searchInput.addEventListener('input', () => {
             const query = searchInput.value.trim();
-            resultsContainer.innerHTML = '';
-            
+
             if (query.length < 2) {
-                resultsContainer.classList.add('hidden');
+                suggestionsContainer.classList.add('hidden');
                 return;
             }
 
-            const results = SearchEngine.search(query, searchIndex, currentLanguage, 'main');
-
-            if (results.length > 0) {
-                results.slice(0, 7).forEach(result => {
-                    const itemEl = document.createElement('div');
-                    itemEl.classList.add('search-result-item');
-                    const snippet = SearchEngine.generateSnippet(result.text, query, currentLanguage);
-                    const highlightedSnippet = SearchEngine.highlight(snippet, query, currentLanguage);
-                    
-                    itemEl.innerHTML = `${highlightedSnippet} <small>${result.title}</small>`;
-                    itemEl.addEventListener('click', (e) => {
-                        e.preventDefault();
-                        searchInput.value = '';
-                        resultsContainer.classList.add('hidden');
-                        openModalAndHighlight(result.modalId, result.text);
-                    });
-                    resultsContainer.appendChild(itemEl);
-                });
-                resultsContainer.classList.remove('hidden');
-            } else {
-                resultsContainer.innerHTML = `<div class="search-result-item">${currentLanguage === 'gr' ? 'Δεν βρέθηκαν αποτελέσματα' : 'No results found'}</div>`;
-                resultsContainer.classList.remove('hidden');
+            // Remove previous script tag to avoid conflicts
+            const oldScript = document.getElementById('jsonp-script');
+            if (oldScript) {
+                oldScript.remove();
             }
+
+            // Use JSONP to fetch suggestions from DuckDuckGo's API
+            const script = document.createElement('script');
+            script.id = 'jsonp-script';
+            script.src = `https://duckduckgo.com/ac/?q=${encodeURIComponent(query)}&callback=handleSuggestions`;
+            document.body.appendChild(script);
         });
 
+        // Hide suggestions when clicking outside
         document.addEventListener('click', (e) => {
-            if (!searchContainer.contains(e.target)) {
-                resultsContainer.classList.add('hidden');
+            if (!searchForm.contains(e.target)) {
+                suggestionsContainer.classList.add('hidden');
             }
         });
     }
-    */
+
 
     async function buildUsefulInfoSearchIndex(progressBar, progressText) {
         if (isUsefulInfoIndexBuilt || usefulInfoFiles.length === 0) return;
@@ -527,7 +492,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         await Promise.all(indexPromises);
-        // Calculate IDF scores for the new useful info index
         SearchEngine.calculateIdf('usefulInfo', usefulInfoSearchIndex);
         isUsefulInfoIndexBuilt = true;
     }
