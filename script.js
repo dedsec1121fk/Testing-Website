@@ -303,10 +303,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function buildUsefulInfoSearchIndex(progressBar, progressText) {
         if (isUsefulInfoIndexBuilt || usefulInfoFiles.length === 0) return;
-
+    
         let filesLoaded = 0;
         const totalFiles = usefulInfoFiles.length;
-
+    
         const indexPromises = usefulInfoFiles.map(async (file) => {
             try {
                 const response = await fetch(file.download_url);
@@ -314,16 +314,25 @@ document.addEventListener('DOMContentLoaded', () => {
                 const htmlContent = await response.text();
                 const tempDiv = document.createElement('div');
                 tempDiv.innerHTML = htmlContent;
-
-                // Extract multilingual titles from the article HTML, with a fallback to the filename
-                const fallbackTitle = file.name.replace(/\.html$/, '').replace(/^\d+_/, '').replace(/_/g, ' ');
+    
+                // New, smarter fallback logic for parsing the filename
+                let fallbackTitleEN = file.name.replace(/\.html$/, '').replace(/^\d+_/, '').replace(/_/g, ' ');
+                let fallbackTitleGR = fallbackTitleEN; // Default if pattern doesn't match
+    
+                const titleRegex = /(.+?)_\((.+?)\)/;
+                const match = file.name.match(titleRegex);
+    
+                if (match && match[1] && match[2]) {
+                    fallbackTitleEN = match[1].replace(/_/g, ' ').trim();
+                    fallbackTitleGR = match[2].replace(/_/g, ' ').trim();
+                }
+    
                 const titlesContainer = tempDiv.querySelector('#article-titles');
-                const titleEN = titlesContainer?.querySelector('[data-lang="en"]')?.textContent.trim() || fallbackTitle;
-                const titleGR = titlesContainer?.querySelector('[data-lang="gr"]')?.textContent.trim() || titleEN;
-
+                const titleEN = titlesContainer?.querySelector('[data-lang="en"]')?.textContent.trim() || fallbackTitleEN;
+                const titleGR = titlesContainer?.querySelector('[data-lang="gr"]')?.textContent.trim() || fallbackTitleGR;
+    
                 tempDiv.querySelectorAll('[data-lang-section]').forEach(section => {
                     const lang = section.dataset.langSection;
-                    // Use the correct title for the language section being indexed
                     const articleTitle = lang === 'gr' ? titleGR : titleEN;
                     section.querySelectorAll('h3, h4, p, li, b, code').forEach(el => {
                         const text = el.textContent.trim();
@@ -344,7 +353,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 progressText.textContent = `${Math.round(progress)}%`;
             }
         });
-
+    
         await Promise.all(indexPromises);
         isUsefulInfoIndexBuilt = true;
     }
@@ -487,16 +496,28 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             
             usefulInfoFiles.forEach(file => {
-                const articleTitle = file.name.replace(/\.html$/, '').replace(/^\d+_/, '').replace(/_/g, ' ');
+                // New logic to parse multilingual titles from the filename
+                let titleEN = file.name.replace(/\.html$/, '').replace(/^\d+_/, '').replace(/_/g, ' ');
+                let titleGR = titleEN; 
+    
+                const titleRegex = /(.+?)_\((.+?)\)/;
+                const match = file.name.match(titleRegex);
+    
+                if (match && match[1] && match[2]) {
+                    titleEN = match[1].replace(/_/g, ' ').trim();
+                    titleGR = match[2].replace(/_/g, ' ').trim();
+                }
+    
                 const button = document.createElement('button');
                 button.className = 'app-icon';
-                button.dataset.url = file.download_url; // For later identification
-                // Add data attributes to the span for translation, pre-filled with filename
-                button.innerHTML = `<i class="fas fa-book-open"></i><span data-en="${articleTitle}" data-gr="${articleTitle}">${articleTitle}</span>`;
+                button.dataset.url = file.download_url;
+                
+                const initialTitle = currentLanguage === 'gr' ? titleGR : titleEN;
+                button.innerHTML = `<i class="fas fa-book-open"></i><span data-en="${titleEN}" data-gr="${titleGR}">${initialTitle}</span>`;
+                
                 button.addEventListener('click', () => {
                     const span = button.querySelector('span');
-                    // Determine the correct title for the modal based on current language attributes
-                    const modalTitle = (currentLanguage === 'gr' ? span.getAttribute('data-gr') : span.getAttribute('data-en')) || articleTitle;
+                    const modalTitle = (currentLanguage === 'gr' ? span.getAttribute('data-gr') : span.getAttribute('data-en')) || titleEN;
                     loadInformationContent(file.download_url, modalTitle);
                 });
                 navContainer.appendChild(button);
