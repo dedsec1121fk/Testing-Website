@@ -380,7 +380,12 @@ body.light-theme ::-webkit-scrollbar-thumb {
     background-color: var(--nm-dark);
 }
 
-#search-suggestions-container, /* This is the fix: added to style the new suggestions box */
+/* *
+* === THIS IS THE FIX ===
+* The two lines below were added to make the suggestions box appear correctly.
+*
+*/
+#search-suggestions-container,
 #search-results-container,
 #useful-info-results-container {
     position: absolute;
@@ -398,7 +403,7 @@ body.light-theme ::-webkit-scrollbar-thumb {
     border-radius: 20px;
 }
 
-#search-suggestions-container .search-result-item, /* And this is the fix for the items inside */
+#search-suggestions-container .search-result-item,
 #search-results-container .search-result-item,
 #useful-info-results-container .search-result-item {
     padding: 12px 15px;
