@@ -1,19 +1,16 @@
 document.addEventListener('DOMContentLoaded', () => {
     // --- GLOBAL PORTFOLIO STATE ---
     let currentLanguage = 'en';
-    let searchIndex = []; // Stores site-wide content snippets
+    // The main searchIndex is no longer needed as the main search bar now uses Google.
+    // let searchIndex = []; // Stores site-wide content snippets
     let usefulInfoSearchIndex = []; // Dedicated index for the modal, BUILT ON DEMAND
     let usefulInfoFiles = []; // Stores the list of files to avoid re-fetching
     let isUsefulInfoIndexBuilt = false; // Flag to check if the full index is ready
     let usefulInformationLoaded = false;
     let isFetchingUsefulInfo = false;
 
-    // --- EVEN MORE ADVANCED SEARCH UTILITY ---
+    // --- EVEN MORE ADVANCED SEARCH UTILITY (Used for 'Useful Information' modal) ---
     const SearchEngine = {
-        stopWords: {
-            en: new Set(['a', 'an', 'and', 'are', 'as', 'at', 'be', 'by', 'for', 'from', 'has', 'he', 'in', 'is', 'it', 'its', 'of', 'on', 'that', 'the', 'to', 'was', 'were', 'will', 'with']),
-            gr: new Set(['αι', 'αλλα', 'αν', 'αντι', 'απο', 'αυτα', 'αυτες', 'αυτο', 'αυτοι', 'αυτος', 'για', 'δε', 'δεν', 'εαν', 'ειμαι', 'ειμαστε', 'ειναι', 'εις', 'εισαι', 'ειστε', 'εκεινες', 'εκεινοι', 'εκεινος', 'εμεις', 'ενα', 'ενος', 'ενω', 'επι', 'εσυ', 'η', 'θα', 'ι', 'και', 'κατα', 'κι', 'μα', 'με', 'μετα', 'μη', 'μην', 'μου', 'ο', 'οι', 'ομως', 'οπου', 'οπως', 'οσο', 'οτι', 'παρα', 'περί', 'ποια', 'ποιο', 'ποιοι', 'ποιος', 'ποιου', 'ποιους', 'προς', 'που', 'πως', 'σε', 'στη', 'στην', 'στο', 'στον', 'τα', 'τη', 'την', 'της', 'το', 'τον', 'τος', 'του', 'τους', 'των', 'χωρις', 'ωσ'])
-        },
         idfMaps: {}, // To store IDF scores for different indexes ('main', 'usefulInfo')
 
         tokenize(text, lang) {
@@ -22,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 .toLowerCase()
                 .replace(/[.,/#!$%\^&\*;:{}=\-_`~()]/g, "")
                 .split(/\s+/)
-                .filter(word => word.length > 1 && !this.stopWords[lang].has(word));
+                .filter(word => word.length > 1); // Removed stopWords filter
         },
 
         preprocessItem(item) {
@@ -217,7 +214,10 @@ document.addEventListener('DOMContentLoaded', () => {
             document.title = "DedSec Project";
 
             const searchInput = document.getElementById('main-search-input');
-            if (searchInput) searchInput.placeholder = lang === 'gr' ? 'Αναζήτηση...' : 'Search...';
+            if (searchInput) {
+                // MODIFIED: Update placeholder for the new global web search bar
+                searchInput.placeholder = lang === 'gr' ? 'Αναζήτηση στο διαδίκτυο...' : 'Search the Web...';
+            }
             
             const usefulInfoSearchInput = document.getElementById('useful-info-search-input');
             if (usefulInfoSearchInput && !isUsefulInfoIndexBuilt) {
@@ -380,8 +380,8 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
         
-        buildSiteWideSearchIndex();
-        initializeSearch();
+        // buildSiteWideSearchIndex(); // REMOVED: No longer needed for global search
+        // initializeSearch(); // REMOVED: No longer needed for global search
         initializeUsefulInfoSearch();
         
         // --- INITIAL PAGE LOAD ---
@@ -390,6 +390,8 @@ document.addEventListener('DOMContentLoaded', () => {
         changeLanguage('en'); 
     }
 
+    // REMOVED: This function is no longer needed as the main search functionality has been replaced.
+    /*
     function buildSiteWideSearchIndex() {
         if (searchIndex.length > 0) return;
         document.querySelectorAll('.modal-overlay:not(#language-selection-modal):not(#disclaimer-modal)').forEach(modal => {
@@ -416,7 +418,10 @@ document.addEventListener('DOMContentLoaded', () => {
         // Calculate IDF scores once the main index is built
         SearchEngine.calculateIdf('main', searchIndex);
     }
+    */
 
+    // REMOVED: This function is no longer needed as the main search functionality has been replaced.
+    /*
     function initializeSearch() {
         const searchInput = document.getElementById('main-search-input');
         const resultsContainer = document.getElementById('search-results-container');
@@ -463,6 +468,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+    */
 
     async function buildUsefulInfoSearchIndex(progressBar, progressText) {
         if (isUsefulInfoIndexBuilt || usefulInfoFiles.length === 0) return;
