@@ -53,13 +53,59 @@ body.light-theme {
     --nm-text-muted: #555555;  /* Light theme muted text is darker gray */
     --nm-warning: #9966FF; 
     --glow-color: rgba(var(--glow-rgb), 0.3);
-
-    /* --- ADDED/MODIFIED FOR LIGHT THEME BACKGROUND LOGO SWAP --- */
-    .screen::after {
-        background-image: url('https://raw.githubusercontent.com/dedsec1121fk/dedsec1121fk.github.io/6f776cd9772a079a6d26370dddab911bf7cde8cd/Assets/Images/Logos/Custom%20White%20Purple%20Fox%20Logo.jpg') !important;
-        opacity: 0.3; /* Keep visibility for light theme */
-    }
 }
+
+/* --- ADDED/MODIFIED FOR LIGHT THEME BACKGROUND LOGO SWAP --- */
+body.light-theme .screen::after {
+    background-image: url('https://raw.githubusercontent.com/dedsec1121fk/dedsec1121fk.github.io/6f776cd9772a079a6d26370dddab911bf7cde8cd/Assets/Images/Logos/Custom%20White%20Purple%20Fox%20Logo.jpg') !important;
+    opacity: 0.3; /* Keep visibility for light theme */
+}
+
+/* =================================================================
+   LIGHT THEME FIXES
+   ================================================================= */
+
+/* Fix low-contrast text on accent-colored backgrounds (hover states, etc.) */
+body.light-theme .app-icon:hover,
+body.light-theme .app-wrapper:hover .app-icon i,
+body.light-theme .search-result-item:hover,
+body.light-theme .copy-btn:hover,
+body.light-theme .modal-footer button:hover,
+body.light-theme .language-button:hover,
+body.light-theme .language-button.selected,
+body.light-theme .store-link a:hover {
+    color: #FFFFFF; /* Use pure white for high contrast on purple backgrounds */
+}
+
+/* Fix muted text in search results on hover */
+body.light-theme #search-results-container .search-result-item:hover small,
+body.light-theme #useful-info-results-container .search-result-item:hover small {
+    color: rgba(255, 255, 255, 0.85);
+}
+
+/* Fix hardcoded dark backgrounds */
+body.light-theme .modal-header {
+    background: rgba(0,0,0,0.03); /* A very light, almost white background */
+}
+body.light-theme .modal-body code {
+    background: rgba(0,0,0,0.08); /* A light gray background for code snippets */
+}
+
+/* Fix accept/decline button text color */
+body.light-theme .decline-btn,
+body.light-theme .accept-btn {
+    color: #FFFFFF !important; /* Use white text for high contrast on bright red/green */
+}
+
+/* Fix inconsistent warning note styling */
+body.light-theme .note.note-warning {
+    color: #000000; /* Use black text for readability on yellow background */
+    border-left-color: #FBC02D; /* A darker yellow to match the theme */
+}
+
+/* =================================================================
+   END OF LIGHT THEME FIXES
+   ================================================================= */
 
 @keyframes scanline-scroll {
     0% { transform: translateY(0); }
@@ -261,8 +307,8 @@ body.light-theme .phone-container::after {
 }
 body.light-theme ::-webkit-scrollbar-thumb {
     /* Ensure scrollbar thumb is visible in light theme */
-    background-color: var(--nm-text); /* Should be black */
-    border-color: var(--nm-border);
+    background-color: #555555; 
+    border-color: var(--nm-dark);
 }
 
 
@@ -564,7 +610,6 @@ body.light-theme .app-icon {
 body.light-theme .app-icon:hover {
     background: var(--nm-accent);
     border-color: var(--nm-accent-hover);
-    color: var(--nm-darkest);
 }
 
 .app-icon span {
@@ -671,7 +716,7 @@ body.light-theme .modal-content {
     font-family: 'Orbitron', sans-serif;
     font-size: 1.1rem;
     margin: 0;
-    color: var(--nm-text); /* Enforce White */
+    color: var(--nm-text);
     text-transform: uppercase;
     text-shadow: none; 
 }
@@ -705,7 +750,7 @@ body.light-theme .modal-content {
 }
 
 .modal-body h3 {
-    color: var(--nm-text); /* Enforce White */
+    color: var(--nm-text);
     border-bottom: 1px solid var(--nm-border);
     padding-bottom: 8px;
     margin-top: 1.5rem;
@@ -826,7 +871,7 @@ body.light-theme .modal-content {
 .modal-footer button,
 .language-button {
     background-color: transparent;
-    color: var(--nm-text); /* Enforce White */
+    color: var(--nm-text);
     border: 1px solid var(--nm-accent);
     font-family: 'Orbitron', sans-serif;
     text-transform: uppercase;
@@ -861,7 +906,6 @@ body.light-theme .modal-content {
 .decline-btn {
     background-color: var(--nm-danger) !important; 
     border-color: var(--nm-danger) !important;
-    color: var(--nm-darkest) !important;
 }
 .accept-btn:hover {
     box-shadow: none !important; 
@@ -1005,7 +1049,7 @@ body.light-theme .modal-content {
 
 #useful-information-content h3 {
     text-align: left;
-    color: var(--nm-text); /* Enforce White */
+    color: var(--nm-text);
     border-bottom: 1px solid var(--nm-border);
     padding-bottom: 8px;
     margin-top: 1rem;
@@ -1102,13 +1146,15 @@ body.light-theme .modal-content {
     background-color: var(--warning-bg);
     color: white;
     font-weight: bold;
-    border-color: var(--nm-warning); 
+    border-left: 4px solid var(--nm-warning);
+    padding: 1rem;
     /* Added uniform border-radius */
     border-radius: 20px;
 }
 .note.note-danger {
-    border-left-color: var(--nm-danger);
+    border-left: 4px solid var(--nm-danger);
     background: var(--danger-bg);
+    padding: 1rem;
     /* Added uniform border-radius */
     border-radius: 20px;
 }
