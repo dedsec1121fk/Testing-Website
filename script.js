@@ -315,10 +315,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 const tempDiv = document.createElement('div');
                 tempDiv.innerHTML = htmlContent;
 
-                const articleTitle = file.name.replace(/\.html$/, '').replace(/^\d+_/, '').replace(/_/g, ' ');
+                // Extract multilingual titles from the article HTML, with a fallback to the filename
+                const fallbackTitle = file.name.replace(/\.html$/, '').replace(/^\d+_/, '').replace(/_/g, ' ');
+                const titlesContainer = tempDiv.querySelector('#article-titles');
+                const titleEN = titlesContainer?.querySelector('[data-lang="en"]')?.textContent.trim() || fallbackTitle;
+                const titleGR = titlesContainer?.querySelector('[data-lang="gr"]')?.textContent.trim() || titleEN;
 
                 tempDiv.querySelectorAll('[data-lang-section]').forEach(section => {
                     const lang = section.dataset.langSection;
+                    // Use the correct title for the language section being indexed
+                    const articleTitle = lang === 'gr' ? titleGR : titleEN;
                     section.querySelectorAll('h3, h4, p, li, b, code').forEach(el => {
                         const text = el.textContent.trim();
                         if (text.length > 5) {
@@ -341,6 +347,36 @@ document.addEventListener('DOMContentLoaded', () => {
 
         await Promise.all(indexPromises);
         isUsefulInfoIndexBuilt = true;
+    }
+
+    function updateUsefulInfoButtonTitles() {
+        const titleMap = new Map();
+
+        // Create a map of URLs to their multilingual titles from the now-built search index
+        usefulInfoSearchIndex.forEach(item => {
+            if (!titleMap.has(item.url)) {
+                titleMap.set(item.url, {});
+            }
+            const langTitles = titleMap.get(item.url);
+            if (!langTitles[item.lang]) { // Store title once per language to avoid overwrite
+                langTitles[item.lang] = item.title;
+            }
+        });
+
+        // Update the data attributes and text content of the navigation buttons
+        document.querySelectorAll('#useful-information-nav .app-icon[data-url]').forEach(button => {
+            const url = button.dataset.url;
+            const titles = titleMap.get(url);
+            if (titles) {
+                const buttonSpan = button.querySelector('span');
+                if(buttonSpan) {
+                   buttonSpan.setAttribute('data-en', titles.en || '');
+                   buttonSpan.setAttribute('data-gr', titles.gr || titles.en || ''); // Fallback GR to EN
+                   // Update the visible text to the current language
+                   buttonSpan.textContent = (currentLanguage === 'gr' ? titles.gr : titles.en) || titles.en || buttonSpan.textContent;
+                }
+            }
+        });
     }
 
 
@@ -381,6 +417,8 @@ document.addEventListener('DOMContentLoaded', () => {
             progressBar.style.width = '0%';
 
             await buildUsefulInfoSearchIndex(progressBar, progressText);
+            
+            updateUsefulInfoButtonTitles(); // Update titles now that index is built
 
             setTimeout(() => {
                 progressBarContainer.style.display = 'none';
@@ -452,8 +490,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 const articleTitle = file.name.replace(/\.html$/, '').replace(/^\d+_/, '').replace(/_/g, ' ');
                 const button = document.createElement('button');
                 button.className = 'app-icon';
-                button.innerHTML = `<i class="fas fa-book-open"></i><span>${articleTitle}</span>`;
-                button.addEventListener('click', () => loadInformationContent(file.download_url, articleTitle));
+                button.dataset.url = file.download_url; // For later identification
+                // Add data attributes to the span for translation, pre-filled with filename
+                button.innerHTML = `<i class="fas fa-book-open"></i><span data-en="${articleTitle}" data-gr="${articleTitle}">${articleTitle}</span>`;
+                button.addEventListener('click', () => {
+                    const span = button.querySelector('span');
+                    // Determine the correct title for the modal based on current language attributes
+                    const modalTitle = (currentLanguage === 'gr' ? span.getAttribute('data-gr') : span.getAttribute('data-en')) || articleTitle;
+                    loadInformationContent(file.download_url, modalTitle);
+                });
                 navContainer.appendChild(button);
             });
             usefulInformationLoaded = true;
