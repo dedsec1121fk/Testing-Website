@@ -8,6 +8,160 @@ document.addEventListener('DOMContentLoaded', () => {
     let usefulInformationLoaded = false;
     let isFetchingUsefulInfo = false;
 
+    // --- EVEN MORE ADVANCED SEARCH UTILITY ---
+    const SearchEngine = {
+        stopWords: {
+            en: new Set(['a', 'an', 'and', 'are', 'as', 'at', 'be', 'by', 'for', 'from', 'has', 'he', 'in', 'is', 'it', 'its', 'of', 'on', 'that', 'the', 'to', 'was', 'were', 'will', 'with']),
+            gr: new Set(['αι', 'αλλα', 'αν', 'αντι', 'απο', 'αυτα', 'αυτες', 'αυτο', 'αυτοι', 'αυτος', 'για', 'δε', 'δεν', 'εαν', 'ειμαι', 'ειμαστε', 'ειναι', 'εις', 'εισαι', 'ειστε', 'εκεινες', 'εκεινοι', 'εκεινος', 'εμεις', 'ενα', 'ενος', 'ενω', 'επι', 'εσυ', 'η', 'θα', 'ι', 'και', 'κατα', 'κι', 'μα', 'με', 'μετα', 'μη', 'μην', 'μου', 'ο', 'οι', 'ομως', 'οπου', 'οπως', 'οσο', 'οτι', 'παρα', 'περί', 'ποια', 'ποιο', 'ποιοι', 'ποιος', 'ποιου', 'ποιους', 'προς', 'που', 'πως', 'σε', 'στη', 'στην', 'στο', 'στον', 'τα', 'τη', 'την', 'της', 'το', 'τον', 'τος', 'του', 'τους', 'των', 'χωρις', 'ωσ'])
+        },
+        idfMaps: {}, // To store IDF scores for different indexes ('main', 'usefulInfo')
+
+        tokenize(text, lang) {
+            if (!text) return [];
+            return text
+                .toLowerCase()
+                .replace(/[.,/#!$%\^&\*;:{}=\-_`~()]/g, "")
+                .split(/\s+/)
+                .filter(word => word.length > 1 && !this.stopWords[lang].has(word));
+        },
+
+        preprocessItem(item) {
+            return {
+                ...item,
+                titleTokens: this.tokenize(item.title, item.lang),
+                textTokens: this.tokenize(item.text, item.lang)
+            };
+        },
+
+        calculateIdf(indexName, index) {
+            const docFreq = new Map();
+            const totalDocs = index.length;
+            if (totalDocs === 0) return;
+
+            index.forEach(item => {
+                const seenTokens = new Set([...item.titleTokens, ...item.textTokens]);
+                seenTokens.forEach(token => {
+                    docFreq.set(token, (docFreq.get(token) || 0) + 1);
+                });
+            });
+
+            const idfMap = new Map();
+            for (const [token, freq] of docFreq.entries()) {
+                idfMap.set(token, Math.log(totalDocs / (1 + freq)));
+            }
+            this.idfMaps[indexName] = idfMap;
+        },
+
+        _getNgrams(word, n = 2) {
+            const ngrams = new Set();
+            if (!word || word.length < n) return ngrams;
+            for (let i = 0; i <= word.length - n; i++) {
+                ngrams.add(word.substring(i, i + n));
+            }
+            return ngrams;
+        },
+
+        _calculateSimilarity(word1, word2) {
+            if (!word1 || !word2) return 0;
+            const ngrams1 = this._getNgrams(word1);
+            const ngrams2 = this._getNgrams(word2);
+            const intersection = new Set([...ngrams1].filter(x => ngrams2.has(x)));
+            const union = ngrams1.size + ngrams2.size - intersection.size;
+            return union === 0 ? 0 : intersection.size / union;
+        },
+
+        search(query, index, lang, indexName) {
+            const queryTokens = this.tokenize(query, lang);
+            if (queryTokens.length === 0) return [];
+            const idfMap = this.idfMaps[indexName] || new Map();
+
+            const scoredResults = index
+                .filter(item => item.lang === lang)
+                .map(item => {
+                    let score = 0;
+                    const foundTokens = new Set();
+
+                    queryTokens.forEach(qToken => {
+                        const idf = idfMap.get(qToken) || 0.5;
+                        let tokenFound = false;
+
+                        let exactTitleMatches = item.titleTokens.filter(t => t === qToken).length;
+                        if (exactTitleMatches > 0) {
+                            score += exactTitleMatches * 10 * idf;
+                            tokenFound = true;
+                        }
+                        let exactTextMatches = item.textTokens.filter(t => t === qToken).length;
+                        if (exactTextMatches > 0) {
+                            score += exactTextMatches * 2 * idf;
+                            tokenFound = true;
+                        }
+                        if(tokenFound) foundTokens.add(qToken);
+
+                        if (!tokenFound) {
+                            let bestSimilarity = 0;
+                            const allItemTokens = [...item.titleTokens, ...item.textTokens];
+                            allItemTokens.forEach(tToken => {
+                                const similarity = this._calculateSimilarity(qToken, tToken);
+                                if (similarity > bestSimilarity) bestSimilarity = similarity;
+                            });
+                            
+                            if (bestSimilarity > 0.7) {
+                               score += bestSimilarity * 5 * idf;
+                               foundTokens.add(qToken);
+                            }
+                        }
+                    });
+
+                    if (foundTokens.size === queryTokens.length && queryTokens.length > 1) score *= 1.5;
+                    if (item.text.toLowerCase().includes(query.toLowerCase().trim())) score *= 1.2;
+                    score *= item.weight || 1;
+
+                    return { ...item, score };
+                });
+
+            return scoredResults
+                .filter(item => item.score > 0)
+                .sort((a, b) => b.score - a.score);
+        },
+        
+        generateSnippet(text, query, lang) {
+            const queryTokens = this.tokenize(query, lang);
+            if (queryTokens.length === 0) return text.substring(0, 120) + (text.length > 120 ? '...' : '');
+    
+            let bestIndex = -1;
+            const lowerCaseText = text.toLowerCase();
+    
+            for (const token of queryTokens) {
+                const index = lowerCaseText.indexOf(token);
+                if (index !== -1) {
+                    bestIndex = index;
+                    break; 
+                }
+            }
+            
+            if (bestIndex === -1) {
+                 return text.substring(0, 120) + (text.length > 120 ? '...' : '');
+            }
+    
+            const snippetLength = 120;
+            const start = Math.max(0, bestIndex - Math.round(snippetLength / 4));
+            const end = Math.min(text.length, start + snippetLength);
+            
+            let snippet = text.substring(start, end);
+            if (start > 0) snippet = '... ' + snippet;
+            if (end < text.length) snippet = snippet + ' ...';
+    
+            return snippet;
+        },
+
+        highlight(snippet, query, lang) {
+            const queryTokens = this.tokenize(query, lang);
+            if (queryTokens.length === 0) return snippet;
+            const regex = new RegExp(`(${queryTokens.join('|')})`, 'gi');
+            return snippet.replace(regex, '<strong>$1</strong>');
+        }
+    };
+
     // --- LOGO URLS ---
     const LOGO_URLS = {
         dark: 'https://raw.githubusercontent.com/dedsec1121fk/dedsec1121fk.github.io/5860edb8a7468d955336c9cf1d8b357597d6d645/Assets/Images/Logos/Custom%20Black%20Purple%20Fox%20Logo.png',
@@ -247,11 +401,20 @@ document.addEventListener('DOMContentLoaded', () => {
                 ['en', 'gr'].forEach(lang => {
                     const langSection = el.closest('[data-lang-section]');
                     if (!langSection || langSection.dataset.langSection === lang) {
-                        searchIndex.push({ lang, title: modalTitle, text, modalId, weight: ['H3', 'H4'].includes(el.tagName) ? 5 : 1 });
+                        const item = {
+                            lang,
+                            title: modalTitle,
+                            text,
+                            modalId,
+                            weight: ['H3', 'H4'].includes(el.tagName) ? 5 : 1
+                        };
+                        searchIndex.push(SearchEngine.preprocessItem(item));
                     }
                 });
             });
         });
+        // Calculate IDF scores once the main index is built
+        SearchEngine.calculateIdf('main', searchIndex);
     }
 
     function initializeSearch() {
@@ -261,26 +424,26 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!searchInput || !resultsContainer || !searchContainer) return;
 
         searchInput.addEventListener('input', () => {
-            const query = searchInput.value.toLowerCase().trim();
+            const query = searchInput.value.trim();
             resultsContainer.innerHTML = '';
+            
             if (query.length < 2) {
                 resultsContainer.classList.add('hidden');
                 return;
             }
-            
-            const results = searchIndex
-                .filter(item => item.lang === currentLanguage && item.text.toLowerCase().includes(query))
-                .sort((a, b) => b.weight - a.weight);
+
+            const results = SearchEngine.search(query, searchIndex, currentLanguage, 'main');
 
             if (results.length > 0) {
                 results.slice(0, 7).forEach(result => {
                     const itemEl = document.createElement('div');
                     itemEl.classList.add('search-result-item');
-                    const snippet = result.text.substring(0, 100) + (result.text.length > 100 ? '...' : '');
-                    const highlightedSnippet = snippet.replace(new RegExp(query, 'gi'), '<strong>$&</strong>');
+                    const snippet = SearchEngine.generateSnippet(result.text, query, currentLanguage);
+                    const highlightedSnippet = SearchEngine.highlight(snippet, query, currentLanguage);
+                    
                     itemEl.innerHTML = `${highlightedSnippet} <small>${result.title}</small>`;
                     itemEl.addEventListener('click', (e) => {
-                        e.preventDefault(); 
+                        e.preventDefault();
                         searchInput.value = '';
                         resultsContainer.classList.add('hidden');
                         openModalAndHighlight(result.modalId, result.text);
@@ -303,10 +466,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function buildUsefulInfoSearchIndex(progressBar, progressText) {
         if (isUsefulInfoIndexBuilt || usefulInfoFiles.length === 0) return;
-    
+
         let filesLoaded = 0;
         const totalFiles = usefulInfoFiles.length;
-    
+
         const indexPromises = usefulInfoFiles.map(async (file) => {
             try {
                 const response = await fetch(file.download_url);
@@ -314,33 +477,36 @@ document.addEventListener('DOMContentLoaded', () => {
                 const htmlContent = await response.text();
                 const tempDiv = document.createElement('div');
                 tempDiv.innerHTML = htmlContent;
-    
+
                 let fallbackTitleEN = file.name.replace(/\.html$/, '').replace(/^\d+_/, '').replace(/_/g, ' ');
                 let fallbackTitleGR = fallbackTitleEN;
-    
+
                 const titleRegex = /(.+?)_\((.+?)\)/;
                 const match = file.name.match(titleRegex);
-    
+
                 if (match && match[1] && match[2]) {
                     fallbackTitleEN = match[1].replace(/_/g, ' ').trim();
                     fallbackTitleGR = match[2].replace(/_/g, ' ').trim();
                 }
-    
+
                 const titlesContainer = tempDiv.querySelector('#article-titles');
                 const titleEN = titlesContainer?.querySelector('[data-lang="en"]')?.textContent.trim() || fallbackTitleEN;
                 const titleGR = titlesContainer?.querySelector('[data-lang="gr"]')?.textContent.trim() || fallbackTitleGR;
-    
+
                 tempDiv.querySelectorAll('[data-lang-section]').forEach(section => {
                     const lang = section.dataset.langSection;
                     const articleTitle = lang === 'gr' ? titleGR : titleEN;
                     section.querySelectorAll('h3, h4, p, li, b, code').forEach(el => {
-                        // --- FIX: Ensure consistent text processing by removing extra spaces ---
                         const text = el.textContent.trim().replace(/\s\s+/g, ' ');
                         if (text.length > 5) {
-                            usefulInfoSearchIndex.push({
-                                lang, title: articleTitle, text, url: file.download_url,
+                            const item = {
+                                lang,
+                                title: articleTitle,
+                                text,
+                                url: file.download_url,
                                 weight: (el.tagName === 'H3' ? 5 : 1)
-                            });
+                            };
+                            usefulInfoSearchIndex.push(SearchEngine.preprocessItem(item));
                         }
                     });
                 });
@@ -353,8 +519,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 progressText.textContent = `${Math.round(progress)}%`;
             }
         });
-    
+
         await Promise.all(indexPromises);
+        // Calculate IDF scores for the new useful info index
+        SearchEngine.calculateIdf('usefulInfo', usefulInfoSearchIndex);
         isUsefulInfoIndexBuilt = true;
     }
 
@@ -384,7 +552,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
-
 
     function initializeUsefulInfoSearch() {
         const searchInput = document.getElementById('useful-info-search-input');
@@ -436,7 +603,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }, { once: true });
 
         searchInput.addEventListener('input', () => {
-            const query = searchInput.value.toLowerCase().trim();
+            const query = searchInput.value.trim();
             resultsContainer.innerHTML = '';
 
             if (!isUsefulInfoIndexBuilt || query.length < 2) {
@@ -447,16 +614,15 @@ document.addEventListener('DOMContentLoaded', () => {
             
             showNav(false);
 
-            const results = usefulInfoSearchIndex
-                .filter(item => item.lang === currentLanguage && item.text.toLowerCase().includes(query))
-                .sort((a, b) => b.weight - a.weight);
+            const results = SearchEngine.search(query, usefulInfoSearchIndex, currentLanguage, 'usefulInfo');
 
             if (results.length > 0) {
                 results.slice(0, 7).forEach(result => {
                     const itemEl = document.createElement('div');
                     itemEl.classList.add('search-result-item');
-                    const snippet = result.text.substring(0, 100) + (result.text.length > 100 ? '...' : '');
-                    const highlightedSnippet = snippet.replace(new RegExp(query, 'gi'), '<strong>$&</strong>');
+                    const snippet = SearchEngine.generateSnippet(result.text, query, currentLanguage);
+                    const highlightedSnippet = SearchEngine.highlight(snippet, query, currentLanguage);
+
                     itemEl.innerHTML = `${highlightedSnippet} <small>${result.title}</small>`;
                     itemEl.addEventListener('click', () => {
                         searchInput.value = '';
