@@ -52,23 +52,20 @@
                 </div>
 
                 <div class="hero-section">
-                    <p class="hero-text" data-en="Press the button below to get started." data-gr="Πατήστε το παρακάτω κουμπί για να ξεκινήσετε.">Press the button below to get started.</p>
-                    <button class="hero-cta-button app-wrapper" data-modal="welcome">
-                        <span data-en="Start With The User Guide" data-gr="Ξεκινήστε με τον Οδηγό Χρήσης">Start With The User Guide</span>
-                    </button>
+                    <p class="hero-text" data-en="A toolkit for digital self-defense, offering tools and educational resources on cybersecurity and ethical hacking." data-gr="Μια εργαλειοθήκη για ψηφιακή αυτοάμυνα, που προσφέρει εργαλεία και εκπαιδευτικούς πόρους για την κυβερνοασφάλεια και το ηθικό hacking.">A toolkit for digital self-defense, offering tools and educational resources on cybersecurity and ethical hacking.</p>
                 </div>
 
 
                 <h4 class="grid-heading" data-en="Explore the Toolkit" data-gr="Εξερευνήστε την Εργαλειοθήκη">Explore the Toolkit</h4>
                 <div class="app-grid">
-                    <button class="app-wrapper" data-modal="installation">
-                        <div class="app-icon"><i class="fas fa-download"></i></div>
-                        <span class="app-label" data-en="Installation & Setup" data-gr="Εγκατάσταση & Ρύθμιση">Installation & Setup</span>
-                    </button>
-                    
                     <button class="app-wrapper" data-modal="scripts">
                         <div class="app-icon"><i class="fas fa-shield-alt"></i></div>
-                        <span class="app-label" data-en="Digital Self-Defense Toolkit" data-gr="Εργαλειοθήκη Ψηφιακής Αυτοάμυνας">Digital Self-Defense Toolkit</span>
+                        <span class="app-label" data-en="Understand what the DedSec Project does." data-gr="Κατανοήστε τι κάνει το DedSec Project.">Understand what the DedSec Project does.</span>
+                    </button>
+                    
+                    <button class="app-wrapper" data-modal="installation">
+                        <div class="app-icon"><i class="fas fa-download"></i></div>
+                        <span class="app-label" data-en="How to install and setup the DedSec Project." data-gr="Πώς να εγκαταστήσετε και να ρυθμίσετε το DedSec Project.">How to install and setup the DedSec Project.</span>
                     </button>
 
                     <button class="app-wrapper" data-modal="useful-information">
@@ -80,11 +77,6 @@
 
                 <h4 class="grid-heading" data-en="About & Community" data-gr="Σχετικά & Κοινότητα">About & Community</h4>
                 <div class="app-grid">
-                    <a href="https://dedsec1121fk.gumroad.com" target="_blank" class="app-wrapper">
-                        <div class="app-icon"><i class="fas fa-store"></i></div>
-                        <span class="app-label" data-en="DedSec Store" data-gr="DedSec Store">DedSec Store</span>
-                    </a>
-
                     <button class="app-wrapper" data-modal="collaborations">
                         <div class="app-icon"><i class="fas fa-handshake"></i></div>
                         <span class="app-label" data-en="Collaborations" data-gr="Συνεργασίες">Collaborations</span>
@@ -118,11 +110,6 @@
                         <div class="app-icon"><i class="fas fa-user-shield"></i></div>
                         <span class="app-label" data-en="Privacy Policy" data-gr="Πολιτική Απορρήτου">Privacy Policy</span>
                     </button>
-                    
-                    <button class="app-wrapper" data-modal="termux-resources">
-                        <div class="app-icon"><i class="fas fa-terminal"></i></div>
-                        <span class="app-label" data-en="Termux Resources" data-gr="Πόροι Termux">Termux Resources</span>
-                    </button>
                 </div>
 
 
@@ -139,37 +126,6 @@
 
     <div id="image-viewer-modal" class="modal-overlay">
         <img id="expanded-img" src="" alt="Expanded Profile Picture">
-    </div>
-
-    <div id="welcome-modal" class="modal-overlay">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 data-en="User Guide" data-gr="Οδηγός Χρήσης">User Guide</h2>
-                <button class="close-modal" aria-label="Close">×</button>
-            </div>
-            <div class="modal-body" data-lang-section="en">
-                <h3>Welcome to the DedSec Project!</h3>
-                <p>This guide will help you get started. Here's a recommended path:</p>
-                <ol style="padding-left: 20px;">
-                    <li style="margin-bottom: 10px;"><strong>Read the Disclaimer:</strong> When you tap the <strong>"Installation & Setup"</strong> button, a critical disclaimer will appear. You <strong>must read and accept</strong> its terms to proceed. It clarifies the educational purpose of all tools and your responsibilities.</li>
-                    <li style="margin-bottom: 10px;"><strong>Install the Tools:</strong> Tap on <strong>"Installation & Setup"</strong> and follow the steps precisely for the DedSec command-line tools.</li>
-                    <li style="margin-bottom: 10px;"><strong>Explore the Toolkit:</strong> After setting up, browse the <strong>"Digital Self-Defense Toolkit"</strong>. Understand what each tool does before using it.</li>
-                    <li style="margin-bottom: 10px;"><strong>Expand Your Knowledge:</strong> The <strong>"Useful Information"</strong> section contains articles and guides on various technology and cybersecurity topics to help you learn more.</li>
-                </ol>
-                <p style="margin-top: 15px;">Remember, knowledge is your best defense. Use the tools provided here responsibly and for <strong>educational purposes only</strong>.</p>
-            </div>
-            <div class="modal-body hidden-by-default" data-lang-section="gr">
-                <h3>Καλώς ήρθατε στο DedSec Project!</h3>
-                <p>Αυτός ο οδηγός θα σας βοηθήσει να ξεκινήσετε. Ακολουθεί μια προτεινόμενη διαδρομή:</p>
-                <ol style="padding-left: 20px;">
-                    <li style="margin-bottom: 10px;"><strong>Διαβάστε την Αποποίηση Ευθύνης:</strong> Όταν πατήσετε το κουμπί <strong>"Εγκατάσταση & Ρύθμιση"</strong>, θα εμφανιστεί μια κρίσιμη αποποίηση ευθύνης. <strong>Πρέπει να διαβάσετε και να αποδεχτείτε</strong> τους όρους της για να προχωρήσετε. Διευκρινίζει τον εκπαιδευτικό σκοπό όλων των εργαλείων και τις δικές σας ευθύνες.</li>
-                    <li style="margin-bottom: 10px;"><strong>Εγκαταστήστε τα Εργαλεία:</strong> Πατήστε στην <strong>"Εγκατάσταση & Ρύθμιση"</strong> και ακολουθήστε τα βήματα με ακρίβεια για τα εργαλεία γραμμής εντολών DedSec.</li>
-                    <li style="margin-bottom: 10px;"><strong>Εξερευνήστε την Εργαλειοθήκη:</strong> Μετά την εγκατάσταση, περιηγηθείτε στην <strong>"Εργαλειοθήκη Ψηφιακής Αυτοάμυνας"</strong>. Κατανοήστε τι κάνει κάθε εργαλείο πριν το χρησιμοποιήσετε.</li>
-                    <li style="margin-bottom: 10px;"><strong>Διευρύνετε τις Γνώσεις σας:</strong> Η ενότητα <strong>"Χρήσιμες Πληροφορίες"</strong> περιέχει άρθρα και οδηγούς για διάφορα θέματα τεχνολογίας και κυβερνοασφάλειας για να σας βοηθήσει να μάθετε περισσότερα.</li>
-                </ol>
-                <p style="margin-top: 15px;">Να θυμάστε, η γνώση είναι η καλύτερη άμυνά σας. Χρησιμοποιήστε τα εργαλεία που παρέχονται εδώ με υπευθυνότητα και <strong>μόνο για εκπαιδευτικούς σκοπούς</strong>.</p>
-            </div>
-        </div>
     </div>
 
     <div id="language-selection-modal" class="modal-overlay">
@@ -297,39 +253,6 @@
         </div>
     </div>
     
-    <div id="termux-resources-modal" class="modal-overlay">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 data-en="Official Termux Resources" data-gr="Επίσημοι Σύνδεσμοι Termux">Official Termux Resources</h2>
-                <button class="close-modal" aria-label="Close">×</button>
-            </div>
-            <div class="modal-body" data-lang-section="en">
-                <div class="contact-grid">
-                    <a href="https://termux.dev" target="_blank" class="app-icon"><i class="fas fa-globe"></i><span>Termux Website</span></a>
-                    <a href="https://github.com/termux/termux-app" target="_blank" class="app-icon"><i class="fab fa-github"></i><span>Termux GitHub</span></a>
-                    <a href="https://github.com/termux/termux-api" target="_blank" class="app-icon"><i class="fas fa-code"></i><span>Termux:API</span></a>
-                    <a href="https://github.com/termux/termux-styling" target="_blank" class="app-icon"><i class="fas fa-palette"></i><span>Termux:Styling</span></a>
-                    <a href="https://f-droid.org/en/packages/com.termux/" target="_blank" class="app-icon"><i class="fab fa-android"></i><span>Get on F-Droid</span></a>
-                </div>
-                <div class="modal-disclaimer" style="margin-top: 15px;">
-                    <p><strong>Disclaimer:</strong> This project is not affiliated with, endorsed by, or in any way officially connected with the Termux project or its developers. The links are provided for user convenience only.</p>
-                </div>
-            </div>
-            <div class="modal-body hidden-by-default" data-lang-section="gr">
-                 <div class="contact-grid">
-                    <a href="https://termux.dev" target="_blank" class="app-icon"><i class="fas fa-globe"></i><span>Ιστοσελίδα Termux</span></a>
-                    <a href="https://github.com/termux/termux-app" target="_blank" class="app-icon"><i class="fab fa-github"></i><span>Termux GitHub</span></a>
-                    <a href="https://github.com/termux/termux-api" target="_blank" class="app-icon"><i class="fas fa-code"></i><span>Termux:API</span></a>
-                    <a href="https://github.com/termux/termux-styling" target="_blank" class="app-icon"><i class="fas fa-palette"></i><span>Termux:Styling</span></a>
-                    <a href="https://f-droid.org/en/packages/com.termux/" target="_blank" class="app-icon"><i class="fab fa-android"></i><span>Λήψη από F-Droid</span></a>
-                </div>
-                <div class="modal-disclaimer" style="margin-top: 15px;">
-                    <p><strong>Αποποίηση Ευθύνης:</strong> Αυτό το έργο δεν συνδέεται, δεν υποστηρίζεται από, ούτε σχετίζεται με οποιονδήποτε επίσημο τρόπο με το έργο Termux ή τους προγραμματιστές του. Οι σύνδεσμοι παρέχονται μόνο για τη διευκόλυνση του χρήστη.</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <div id="portfolio-github-modal" class="modal-overlay">
         <div class="modal-content">
             <div class="modal-header"><h2 data-en="Portfolio & GitHub Info" data-gr="Portfolio & GitHub Info">Portfolio & GitHub Info</h2><button class="close-modal" aria-label="Close">×</button></div>
