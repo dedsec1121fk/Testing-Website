@@ -686,6 +686,30 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="modal-body">${htmlContent}</div>
             </div>`;
         document.body.appendChild(modalOverlay);
+
+        // --- FIX STARTS HERE ---
+        // After inserting the new content, find all copy buttons and attach the event listener.
+        let dynamicCodeIdCounter = 0;
+        const codeContainers = modalOverlay.querySelectorAll('.code-container');
+        codeContainers.forEach(container => {
+            const copyBtn = container.querySelector('.copy-btn');
+            const codeEl = container.querySelector('code');
+
+            if (copyBtn && codeEl) {
+                // Ensure the code element has an ID for the copy function to target
+                if (!codeEl.id) {
+                    const uniqueId = `dynamic-code-${Date.now()}-${dynamicCodeIdCounter++}`;
+                    codeEl.id = uniqueId;
+                }
+                
+                // Add the event listener to the button
+                copyBtn.addEventListener('click', () => {
+                    // Call the globally available copyToClipboard function
+                    window.copyToClipboard(copyBtn, codeEl.id);
+                });
+            }
+        });
+        // --- FIX ENDS HERE ---
         
         setTimeout(() => modalOverlay.classList.add('visible'), 10);
         changeLanguage(currentLanguage);
