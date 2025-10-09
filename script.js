@@ -1,11 +1,15 @@
 document.addEventListener('DOMContentLoaded', () => {
     // --- GLOBAL PORTFOLIO STATE ---
     let currentLanguage = 'en';
-    let usefulInfoSearchIndex = []; // Dedicated index for the modal, BUILT ON DEMAND
+    let usefulInfoSearchIndex = []; // Dedicated index for the modal, BUBSILT ON DEMAND
     let usefulInfoFiles = []; // Stores the list of files to avoid re-fetching
     let isUsefulInfoIndexBuilt = false; // Flag to check if the full index is ready
     let usefulInformationLoaded = false;
     let isFetchingUsefulInfo = false;
+
+    // ADDED: New global state for the main portfolio search
+    let mainPortfolioSearchIndex = [];
+    let isMainPortfolioIndexBuilt = false;
 
     // --- EVEN MORE ADVANCED SEARCH UTILITY (Used for 'Useful Information' modal) ---
     const SearchEngine = {
@@ -156,6 +160,53 @@ document.addEventListener('DOMContentLoaded', () => {
             return snippet.replace(regex, '<strong>$1</strong>');
         }
     };
+
+    // ADDED: New function to build the main portfolio content index
+    function buildMainPortfolioSearchIndex() {
+        if (isMainPortfolioIndexBuilt) return;
+        
+        const indexName = 'mainPortfolio';
+        const contentElements = document.querySelectorAll(
+            '#main-content [data-en], #main-content h1, #main-content h2, #main-content p, #main-content li, #main-content .app-icon span'
+        );
+
+        contentElements.forEach((el, index) => {
+            const lang = el.dataset.langSection || currentLanguage; 
+            const textEN = el.getAttribute('data-en') || el.textContent;
+            const textGR = el.getAttribute('data-gr') || el.textContent;
+            const tagName = el.tagName;
+
+            const baseWeight = (tagName === 'H1' || tagName === 'H2') ? 10 : 1;
+            
+            // Index the content for English
+            if (textEN) {
+                 const itemEN = {
+                    lang: 'en',
+                    title: document.title, // Use page title as article title
+                    text: textEN.trim().replace(/\s\s+/g, ' '),
+                    url: '#', // Not applicable for main content
+                    weight: baseWeight * 2
+                };
+                mainPortfolioSearchIndex.push(SearchEngine.preprocessItem(itemEN));
+            }
+
+            // Index the content for Greek
+            if (textGR && textGR !== textEN) {
+                const itemGR = {
+                    lang: 'gr',
+                    title: document.title, 
+                    text: textGR.trim().replace(/\s\s+/g, ' '),
+                    url: '#',
+                    weight: baseWeight * 2
+                };
+                mainPortfolioSearchIndex.push(SearchEngine.preprocessItem(itemGR));
+            }
+        });
+
+        SearchEngine.calculateIdf(indexName, mainPortfolioSearchIndex);
+        isMainPortfolioIndexBuilt = true;
+        console.log(`Main Portfolio Index Built: ${mainPortfolioSearchIndex.length} items.`);
+    }
 
     // --- PORTFOLIO INITIALIZATION ---
     function initializePortfolio() {
@@ -368,6 +419,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         initializeWebSearchSuggestions(); 
         initializeUsefulInfoSearch();
+        buildMainPortfolioSearchIndex(); // ADDED: Build main index on load
         
         if (languageModalCloseBtn) languageModalCloseBtn.style.display = 'none';
         showModal(languageModal);
@@ -379,6 +431,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const suggestionsContainer = document.getElementById('search-suggestions-container');
         const searchForm = document.getElementById('main-search-form');
         if (!searchInput || !suggestionsContainer || !searchForm) return;
+
+        // ADDED: Separate container for local search results
+        const localResultsContainer = document.createElement('div');
+        localResultsContainer.id = 'local-search-results';
+        localResultsContainer.className = 'local-search-results';
+        suggestionsContainer.parentNode.insertBefore(localResultsContainer, suggestionsContainer);
 
         window.handleGoogleSuggestions = (data) => {
             suggestionsContainer.innerHTML = '';
@@ -392,6 +450,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     
                     itemEl.addEventListener('click', () => {
                         searchInput.value = suggestion;
+                        localResultsContainer.classList.add('hidden'); // HIDE LOCAL RESULTS TOO
                         suggestionsContainer.classList.add('hidden');
                         searchForm.submit();
                         
@@ -402,9 +461,19 @@ document.addEventListener('DOMContentLoaded', () => {
                     });
                     suggestionsContainer.appendChild(itemEl);
                 });
-                suggestionsContainer.classList.remove('hidden');
+                
+                // Show Google results only if local results aren't already forcing visibility
+                if (localResultsContainer.classList.contains('hidden') || localResultsContainer.innerHTML === '') {
+                    suggestionsContainer.classList.remove('hidden');
+                }
             } else {
+                // HIDE GOOGLE RESULTS
                 suggestionsContainer.classList.add('hidden');
+            }
+            
+            // HIDE THE MAIN CONTAINER IF BOTH ARE EMPTY
+            if (localResultsContainer.innerHTML === '' && suggestionsContainer.innerHTML === '') {
+                 suggestionsContainer.classList.add('hidden');
             }
         };
 
@@ -412,12 +481,70 @@ document.addEventListener('DOMContentLoaded', () => {
         searchInput.addEventListener('input', () => {
             const query = searchInput.value.trim();
             clearTimeout(debounceTimer);
+            localResultsContainer.innerHTML = ''; // CLEAR LOCAL RESULTS
 
-            if (query.length < 1) {
+            if (query.length < 2) { // Allow Google suggestions to appear on length 1, but local search needs more.
+                localResultsContainer.classList.add('hidden');
                 suggestionsContainer.classList.add('hidden');
                 return;
             }
             
+            // ADDED: Local Search Logic
+            if (isMainPortfolioIndexBuilt) {
+                 const localResults = SearchEngine.search(query, mainPortfolioSearchIndex, currentLanguage, 'mainPortfolio');
+                 
+                 if (localResults.length > 0) {
+                     localResults.slice(0, 3).forEach(result => { // Show top 3 local results
+                        const itemEl = document.createElement('div');
+                        itemEl.classList.add('search-result-item', 'local-result');
+                        const snippet = SearchEngine.generateSnippet(result.text, query, currentLanguage);
+                        const highlightedSnippet = SearchEngine.highlight(snippet, query, currentLanguage);
+
+                        // Use a custom icon for local results
+                        const icon = currentLanguage === 'gr' ? '<i class="fas fa-microchip"></i> Local Result:' : '<i class="fas fa-microchip"></i> Local Result:';
+                        itemEl.innerHTML = `${icon} ${highlightedSnippet}`;
+                        
+                        itemEl.addEventListener('click', (e) => {
+                            e.preventDefault(); 
+                            e.stopPropagation(); 
+                            
+                            // Scroll to and highlight the closest element containing the text
+                            const allElements = document.querySelectorAll(
+                                '#main-content [data-en], #main-content [data-gr], #main-content h1, #main-content h2, #main-content p, #main-content li'
+                            );
+                            
+                            const targetElement = Array.from(allElements).find(el => {
+                                // Match against the relevant language attribute or inner text
+                                const content = (currentLanguage === 'gr' && el.getAttribute('data-gr')) 
+                                    ? el.getAttribute('data-gr') 
+                                    : (currentLanguage === 'en' && el.getAttribute('data-en')) 
+                                    ? el.getAttribute('data-en') 
+                                    : el.textContent;
+
+                                return content.includes(result.text.substring(0, Math.min(result.text.length, 50)));
+                            });
+
+                            if (targetElement) {
+                                targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                                targetElement.classList.add('content-highlight');
+                                setTimeout(() => targetElement.classList.remove('content-highlight'), 2500);
+                            }
+                            
+                            searchInput.value = '';
+                            localResultsContainer.classList.add('hidden');
+                            suggestionsContainer.classList.add('hidden');
+                        });
+                        localResultsContainer.appendChild(itemEl);
+                     });
+                     localResultsContainer.classList.remove('hidden');
+                     suggestionsContainer.classList.remove('hidden'); // Ensure the main container is visible
+                 } else {
+                     localResultsContainer.classList.add('hidden');
+                 }
+            }
+
+
+            // Existing Google Suggestions logic (now runs after local search)
             debounceTimer = setTimeout(() => {
                 const oldScript = document.getElementById('jsonp-script');
                 if (oldScript) {
@@ -440,6 +567,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.addEventListener('click', (e) => {
             if (!searchForm.contains(e.target)) {
                 suggestionsContainer.classList.add('hidden');
+                localResultsContainer.classList.add('hidden'); // HIDE LOCAL RESULTS TOO
             }
         });
     }
