@@ -7,10 +7,6 @@ document.addEventListener('DOMContentLoaded', () => {
     let usefulInformationLoaded = false;
     let isFetchingUsefulInfo = false;
 
-    // ADDED: New global state for the main portfolio search
-    let mainPortfolioSearchIndex = [];
-    let isMainPortfolioIndexBuilt = false;
-
     // --- EVEN MORE ADVANCED SEARCH UTILITY (Used for 'Useful Information' modal) ---
     const SearchEngine = {
         idfMaps: {},
@@ -160,54 +156,6 @@ document.addEventListener('DOMContentLoaded', () => {
             return snippet.replace(regex, '<strong>$1</strong>');
         }
     };
-
-    // ADDED: New function to build the main portfolio content index
-    function buildMainPortfolioSearchIndex() {
-        if (isMainPortfolioIndexBuilt) return;
-        
-        const indexName = 'mainPortfolio';
-        const contentElements = document.querySelectorAll(
-            '#main-content [data-en], #main-content h1, #main-content h2, #main-content p, #main-content li, #main-content .app-icon span'
-        );
-
-        contentElements.forEach((el, index) => {
-            const lang = el.dataset.langSection || currentLanguage; 
-            const textEN = el.getAttribute('data-en') || el.textContent;
-            const textGR = el.getAttribute('data-gr') || el.textContent;
-            const tagName = el.tagName;
-
-            const baseWeight = (tagName === 'H1' || tagName === 'H2') ? 10 : 1;
-            
-            // Index the content for English
-            if (textEN) {
-                 const itemEN = {
-                    lang: 'en',
-                    title: document.title, // Use page title as article title
-                    text: textEN.trim().replace(/\s\s+/g, ' '),
-                    url: '#', // Not applicable for main content
-                    weight: baseWeight * 2
-                };
-                mainPortfolioSearchIndex.push(SearchEngine.preprocessItem(itemEN));
-            }
-
-            // Index the content for Greek
-            if (textGR && textGR !== textEN) {
-                const itemGR = {
-                    lang: 'gr',
-                    title: document.title, 
-                    text: textGR.trim().replace(/\s\s+/g, ' '),
-                    url: '#',
-                    weight: baseWeight * 2
-                };
-                mainPortfolioSearchIndex.push(SearchEngine.preprocessItem(itemGR));
-            }
-        });
-
-        SearchEngine.calculateIdf(indexName, mainPortfolioSearchIndex);
-        isMainPortfolioIndexBuilt = true;
-        // DEBUGGING LOG 1: Check how many items were indexed
-        console.log(`[DEDSEC DEBUG] Main Portfolio Index Built: ${mainPortfolioSearchIndex.length} items.`);
-    }
 
     // --- PORTFOLIO INITIALIZATION ---
     function initializePortfolio() {
@@ -418,15 +366,12 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
         
-        // Ensure language is set before building the main index
-        changeLanguage('en'); 
-        
         initializeWebSearchSuggestions(); 
         initializeUsefulInfoSearch();
-        buildMainPortfolioSearchIndex(); // ADDED: Build main index on load
         
         if (languageModalCloseBtn) languageModalCloseBtn.style.display = 'none';
         showModal(languageModal);
+        changeLanguage('en'); 
     }
 
     function initializeWebSearchSuggestions() {
@@ -435,19 +380,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const searchForm = document.getElementById('main-search-form');
         if (!searchInput || !suggestionsContainer || !searchForm) return;
 
-        // ADDED: Separate container for local search results
-        const localResultsContainer = document.createElement('div');
-        localResultsContainer.id = 'local-search-results';
-        localResultsContainer.className = 'local-search-results';
-        // Insert the local results container immediately before the Google suggestions container
-        suggestionsContainer.parentNode.insertBefore(localResultsContainer, suggestionsContainer);
-
         window.handleGoogleSuggestions = (data) => {
             suggestionsContainer.innerHTML = '';
             const suggestions = data[1];
-
-            const hasLocalResults = localResultsContainer.innerHTML !== '';
-            let hasGoogleResults = false;
 
             if (suggestions && Array.isArray(suggestions) && suggestions.length > 0) {
                 suggestions.slice(0, 5).forEach(suggestion => {
@@ -457,31 +392,19 @@ document.addEventListener('DOMContentLoaded', () => {
                     
                     itemEl.addEventListener('click', () => {
                         searchInput.value = suggestion;
-                        localResultsContainer.classList.add('hidden'); 
                         suggestionsContainer.classList.add('hidden');
                         searchForm.submit();
                         
+                        // Use a short delay to clear the input after the form submits
                         setTimeout(() => {
-                            searchInput.value = '';
+                            searchInput.value = ''; // THIS IS THE ADDED LINE
                         }, 100);
                     });
                     suggestionsContainer.appendChild(itemEl);
                 });
-                hasGoogleResults = true;
-                // If Google results are populated, ensure its own container is visible
                 suggestionsContainer.classList.remove('hidden');
             } else {
-                // If no Google results, hide its container
                 suggestionsContainer.classList.add('hidden');
-            }
-            
-            // Priority Check: If neither local nor Google has results, hide the entire dropdown area
-            if (!hasLocalResults && !hasGoogleResults) {
-                 // Rely on the fact that suggestionsContainer is the element that controls the visibility of the whole dropdown area
-                 suggestionsContainer.classList.add('hidden');
-                 localResultsContainer.classList.add('hidden');
-            } else if (hasLocalResults) {
-                 // If there are local results, ensure the master dropdown is visible (already done in 'input' listener)
             }
         };
 
@@ -489,73 +412,12 @@ document.addEventListener('DOMContentLoaded', () => {
         searchInput.addEventListener('input', () => {
             const query = searchInput.value.trim();
             clearTimeout(debounceTimer);
-            localResultsContainer.innerHTML = ''; // CLEAR LOCAL RESULTS
-            localResultsContainer.classList.add('hidden'); // Start hidden
 
-            if (query.length < 2) {
+            if (query.length < 1) {
                 suggestionsContainer.classList.add('hidden');
                 return;
             }
             
-            // ADDED: Local Search Logic (Priority search)
-            let hasLocalResults = false;
-            if (isMainPortfolioIndexBuilt) { 
-                 const localResults = SearchEngine.search(query, mainPortfolioSearchIndex, currentLanguage, 'mainPortfolio');
-                 // DEBUGGING LOG 2: Check how many search results are found
-                 console.log(`[DEDSEC DEBUG] Local search for "${query}" found ${localResults.length} results.`);
-                 
-                 if (localResults.length > 0) {
-                     hasLocalResults = true;
-                     localResults.slice(0, 3).forEach(result => { 
-                        const itemEl = document.createElement('div');
-                        itemEl.classList.add('search-result-item', 'local-result');
-                        const snippet = SearchEngine.generateSnippet(result.text, query, currentLanguage);
-                        const highlightedSnippet = SearchEngine.highlight(snippet, query, currentLanguage);
-
-                        // UPDATED: Clear priority label
-                        const icon = currentLanguage === 'gr' ? '<i class="fas fa-microchip"></i> Αναζήτηση HTML (Προτεραιότητα):' : '<i class="fas fa-microchip"></i> HTML Search (Priority):';
-                        itemEl.innerHTML = `${icon} ${highlightedSnippet}`;
-                        
-                        itemEl.addEventListener('click', (e) => {
-                            e.preventDefault(); 
-                            e.stopPropagation(); 
-                            
-                            const allElements = document.querySelectorAll(
-                                '#main-content [data-en], #main-content [data-gr], #main-content h1, #main-content h2, #main-content p, #main-content li'
-                            );
-                            
-                            const targetElement = Array.from(allElements).find(el => {
-                                const content = (currentLanguage === 'gr' && el.getAttribute('data-gr')) 
-                                    ? el.getAttribute('data-gr') 
-                                    : (currentLanguage === 'en' && el.getAttribute('data-en')) 
-                                    ? el.getAttribute('data-en') 
-                                    : el.textContent;
-
-                                return content.includes(result.text.substring(0, Math.min(result.text.length, 50)));
-                            });
-
-                            if (targetElement) {
-                                targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                                targetElement.classList.add('content-highlight');
-                                setTimeout(() => targetElement.classList.remove('content-highlight'), 2500);
-                            }
-                            
-                            searchInput.value = '';
-                            localResultsContainer.classList.add('hidden');
-                            suggestionsContainer.classList.add('hidden');
-                        });
-                        localResultsContainer.appendChild(itemEl);
-                     });
-                     localResultsContainer.classList.remove('hidden');
-                     // Ensure the overall dropdown is visible if local results exist
-                     suggestionsContainer.classList.remove('hidden'); 
-                 } else {
-                     localResultsContainer.classList.add('hidden');
-                 }
-            }
-
-
-            // Existing Google Suggestions logic
             debounceTimer = setTimeout(() => {
                 const oldScript = document.getElementById('jsonp-script');
                 if (oldScript) {
@@ -568,7 +430,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 script.onerror = () => {
                     console.error("Error loading Google suggestions. An ad-blocker might be interfering.");
-                    // suggestionsContainer visibility will be controlled by the final check in handleGoogleSuggestions
+                    suggestionsContainer.classList.add('hidden');
                 };
                 
                 document.head.appendChild(script);
@@ -578,7 +440,6 @@ document.addEventListener('DOMContentLoaded', () => {
         document.addEventListener('click', (e) => {
             if (!searchForm.contains(e.target)) {
                 suggestionsContainer.classList.add('hidden');
-                localResultsContainer.classList.add('hidden');
             }
         });
     }
