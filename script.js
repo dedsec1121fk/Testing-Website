@@ -205,7 +205,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         SearchEngine.calculateIdf(indexName, mainPortfolioSearchIndex);
         isMainPortfolioIndexBuilt = true;
-        console.log(`Main Portfolio Index Built: ${mainPortfolioSearchIndex.length} items.`);
+        // DEBUGGING LOG 1: Check how many items were indexed
+        console.log(`[DEDSEC DEBUG] Main Portfolio Index Built: ${mainPortfolioSearchIndex.length} items.`);
     }
 
     // --- PORTFOLIO INITIALIZATION ---
@@ -417,13 +418,15 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
         
+        // Ensure language is set before building the main index
+        changeLanguage('en'); 
+        
         initializeWebSearchSuggestions(); 
         initializeUsefulInfoSearch();
         buildMainPortfolioSearchIndex(); // ADDED: Build main index on load
         
         if (languageModalCloseBtn) languageModalCloseBtn.style.display = 'none';
         showModal(languageModal);
-        changeLanguage('en'); 
     }
 
     function initializeWebSearchSuggestions() {
@@ -496,8 +499,10 @@ document.addEventListener('DOMContentLoaded', () => {
             
             // ADDED: Local Search Logic (Priority search)
             let hasLocalResults = false;
-            if (isMainPortfolioIndexBuilt) {
+            if (isMainPortfolioIndexBuilt) { 
                  const localResults = SearchEngine.search(query, mainPortfolioSearchIndex, currentLanguage, 'mainPortfolio');
+                 // DEBUGGING LOG 2: Check how many search results are found
+                 console.log(`[DEDSEC DEBUG] Local search for "${query}" found ${localResults.length} results.`);
                  
                  if (localResults.length > 0) {
                      hasLocalResults = true;
