@@ -569,7 +569,12 @@ body.light-theme ::-webkit-scrollbar-thumb {
     font-weight: 400;
     color: var(--nm-text); /* Enforce White text */
     text-align: center;
-    word-break: break-word;
+    /* MODIFIED: Use normal word-break to ensure words wrap to the next line 
+       instead of being broken mid-word */
+    word-break: normal; 
+    /* ADDED: Use overflow-wrap to handle words that are individually too long 
+       for the 70px parent container, preventing overflow. */
+    overflow-wrap: break-word;
     line-height: 1.2;
 }
 
@@ -1290,4 +1295,5 @@ span.sub-item {
     .app-grid {
         grid-template-columns: repeat(8, max-content);
     }
+}
 }
