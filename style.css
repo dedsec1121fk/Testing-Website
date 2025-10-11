@@ -513,7 +513,7 @@ body.light-theme ::-webkit-scrollbar-thumb {
     display: grid;
     grid-template-columns: repeat(4, max-content);
     justify-content: center;
-    gap: 15px;
+    gap: 20px; /* MODIFIED: Set to 20px */
     width: 100%;
     max-width: 500px;
     margin: 0 auto 15px;
@@ -1295,5 +1295,4 @@ span.sub-item {
     .app-grid {
         grid-template-columns: repeat(8, max-content);
     }
-}
 }
