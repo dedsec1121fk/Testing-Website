@@ -332,16 +332,18 @@ body.light-theme ::-webkit-scrollbar-thumb {
     white-space: nowrap;
     font-size: clamp(7vw, 9vw, 4.0rem);
     color: var(--nm-accent);
-    /* --- MODIFIED: Realistic Neon Glow (Bright Core with Diffused Halo) --- */
+    /* --- ADDED: Purple glow with black stroke for readability --- */
     text-shadow: 
-        /* Brightest Core (White light source) */
-        0 0 4px #FFFFFF,
-        /* Inner Glow (Slightly sharper purple) */
-        0 0 15px var(--nm-accent),
-        /* Mid Glow (Medium blur purple) */
-        0 0 35px var(--nm-accent-hover),
-        /* Wide, Soft Halo (Largest blur) */
-        0 0 60px var(--nm-accent-hover);
+        /* Black Stroke */
+        -1px -1px 0 #000,  
+         1px -1px 0 #000,
+        -1px  1px 0 #000,
+         1px  1px 0 #000,
+        /* Purple Glow */
+        0 0 10px var(--nm-accent),
+        0 0 20px var(--nm-accent),
+        0 0 30px var(--nm-accent),
+        0 0 40px var(--nm-accent-hover);
 }
 
 .search-container {
