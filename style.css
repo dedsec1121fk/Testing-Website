@@ -115,6 +115,17 @@ body.light-theme .note.note-warning {
     }
 }
 
+/* === MODIFIED: Added animation for icon backgrounds === */
+@keyframes cycle-bg-colors {
+    0%   { background-color: #9966FF; } /* Purple */
+    20%  { background-color: #66B2FF; } /* Blue */
+    40%  { background-color: #d63384; } /* Pink/Red */
+    60%  { background-color: #00FF00; } /* Green */
+    80%  { background-color: #FFFF00; } /* Yellow */
+    100% { background-color: #9966FF; } /* Purple loop */
+}
+
+
 @keyframes scanline-scroll {
     0% { transform: translateY(0); }
     100% { transform: translateY(-50%); }
@@ -473,6 +484,7 @@ body.light-theme ::-webkit-scrollbar-thumb {
     margin: 0 0 20px 0;
 }
 
+/* === MODIFIED: Adjusted button sizing for responsiveness === */
 .hero-cta-button {
     background-color: var(--nm-accent);
     color: #000000;
@@ -488,8 +500,7 @@ body.light-theme ::-webkit-scrollbar-thumb {
     max-width: 700px;
     box-sizing: border-box;
     text-align: center;
-    white-space: nowrap;
-    min-width: max-content;
+    width: 100%; /* Ensure it fills container width */
 }
 
 .hero-cta-button:hover {
@@ -538,6 +549,7 @@ body.light-theme ::-webkit-scrollbar-thumb {
     color: var(--nm-text);
 }
 
+/* === MODIFIED: Added background animation === */
 .app-icon {
     /* Pitch Black Background */
     background: #000000; 
@@ -560,7 +572,9 @@ body.light-theme ::-webkit-scrollbar-thumb {
     gap: 12px;
     box-shadow: none; /* Removed glow */
     height: 56px;
+    animation: cycle-bg-colors 5s infinite steps(1, end); /* Animate background color */
 }
+
 
 .app-wrapper .app-icon {
     justify-content: center;
@@ -586,15 +600,19 @@ body.light-theme ::-webkit-scrollbar-thumb {
     line-height: 1.2;
 }
 
+/* === MODIFIED: Pause animation on hover === */
 .app-icon:hover {
+    animation: none;
     background: var(--nm-accent);
     border-color: var(--nm-accent-hover);
     color: var(--nm-darkest);
     box-shadow: none; 
 }
 
+/* === MODIFIED: Pause animation on hover === */
 .app-wrapper:hover .app-icon,
 .app-wrapper:focus-visible .app-icon {
+    animation: none;
     background: var(--nm-accent);
     border-color: var(--nm-accent-hover);
     box-shadow: none; 
@@ -606,9 +624,9 @@ body.light-theme ::-webkit-scrollbar-thumb {
     color: var(--nm-accent-hover);
 }
 
+/* === MODIFIED: Removed color animation, set static color === */
 .app-icon i {
-    /* ANNIVERSARY ANIMATION */
-    animation: multiColorChange 10s infinite linear;
+    color: var(--nm-accent); /* Set icon color to static purple */
     transition: color 0.2s ease;
     font-size: 1.4rem;
     margin: 0;
