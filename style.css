@@ -115,14 +115,14 @@ body.light-theme .note.note-warning {
     }
 }
 
-/* === MODIFIED: Added animation for icon backgrounds === */
-@keyframes cycle-bg-colors {
-    0%   { background-color: #9966FF; } /* Purple */
-    20%  { background-color: #66B2FF; } /* Blue */
-    40%  { background-color: #d63384; } /* Pink/Red */
-    60%  { background-color: #00FF00; } /* Green */
-    80%  { background-color: #FFFF00; } /* Yellow */
-    100% { background-color: #9966FF; } /* Purple loop */
+/* === MODIFIED: Animation now targets border-color === */
+@keyframes cycle-border-colors {
+    0%   { border-color: #9966FF; } /* Purple */
+    20%  { border-color: #66B2FF; } /* Blue */
+    40%  { border-color: #d63384; } /* Pink/Red */
+    60%  { border-color: #00FF00; } /* Green */
+    80%  { border-color: #FFFF00; } /* Yellow */
+    100% { border-color: #9966FF; } /* Purple loop */
 }
 
 
@@ -296,12 +296,13 @@ body.light-theme .phone-container::after {
     display: none;
 }
 
+/* === MODIFIED: Increased horizontal padding for more breathing room === */
 .home-screen {
     flex-grow: 1;
     overflow-y: auto;
     overflow-x: hidden;
     min-height: 0;
-    padding: 0 15px 15px;
+    padding: 0 20px 20px; /* Increased from 15px */
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
@@ -473,7 +474,6 @@ body.light-theme ::-webkit-scrollbar-thumb {
     max-width: 500px;
     /* FIX: Reduced top margin from 15px and bottom margin from 35px */
     margin: 5px 0 5px 0;
-    padding: 10px;
     box-sizing: border-box;
 }
 
@@ -484,7 +484,6 @@ body.light-theme ::-webkit-scrollbar-thumb {
     margin: 0 0 20px 0;
 }
 
-/* === MODIFIED: Adjusted button sizing for responsiveness === */
 .hero-cta-button {
     background-color: var(--nm-accent);
     color: #000000;
@@ -497,10 +496,11 @@ body.light-theme ::-webkit-scrollbar-thumb {
     border-radius: 20px;
     transition: all 0.2s ease;
     box-shadow: none;
-    max-width: 700px;
+    max-width: 100%; /* Use max-width to allow shrinking */
     box-sizing: border-box;
     text-align: center;
-    width: 100%; /* Ensure it fills container width */
+    width: auto; /* Allow button to size to its content */
+    min-width: 280px; /* Prevent it from becoming too small */
 }
 
 .hero-cta-button:hover {
@@ -549,12 +549,11 @@ body.light-theme ::-webkit-scrollbar-thumb {
     color: var(--nm-text);
 }
 
-/* === MODIFIED: Added background animation === */
+/* === MODIFIED: Animate border-color, set static black background === */
 .app-icon {
-    /* Pitch Black Background */
-    background: #000000; 
-    border: 1px solid var(--nm-accent);
-    color: var(--nm-text); /* Enforce White text/icon */
+    background: #000000; /* Static Pitch Black Background */
+    border: 2px solid var(--nm-accent); /* Increased border width for visibility */
+    color: var(--nm-text);
     cursor: pointer;
     font-family: 'Roboto Mono', monospace;
     transition: all 0.2s ease;
@@ -566,13 +565,12 @@ body.light-theme ::-webkit-scrollbar-thumb {
     padding: 10px 15px;
     box-sizing: border-box;
     position: relative;
-    /* Circular shape maintained for app icons */
     clip-path: none;
     border-radius: 50%;
     gap: 12px;
-    box-shadow: none; /* Removed glow */
+    box-shadow: none;
     height: 56px;
-    animation: cycle-bg-colors 5s infinite steps(1, end); /* Animate background color */
+    animation: cycle-border-colors 5s infinite steps(1, end); /* Animate border color */
 }
 
 
@@ -582,37 +580,30 @@ body.light-theme ::-webkit-scrollbar-thumb {
     height: 64px;
     padding: 0;
     gap: 0;
-    /* Enforce circle on button wrapper icon */
     border-radius: 50%; 
 }
 
 .app-label {
     font-size: 0.75rem;
     font-weight: 400;
-    color: var(--nm-text); /* Enforce White text */
+    color: var(--nm-text);
     text-align: center;
-    /* MODIFIED: Use normal word-break to ensure words wrap to the next line 
-       instead of being broken mid-word */
     word-break: normal; 
-    /* ADDED: Use overflow-wrap to handle words that are individually too long 
-       for the 70px parent container, preventing overflow. */
     overflow-wrap: break-word;
     line-height: 1.2;
 }
 
-/* === MODIFIED: Pause animation on hover === */
 .app-icon:hover {
-    animation: none;
+    animation: none; /* Pause animation on hover */
     background: var(--nm-accent);
     border-color: var(--nm-accent-hover);
     color: var(--nm-darkest);
     box-shadow: none; 
 }
 
-/* === MODIFIED: Pause animation on hover === */
 .app-wrapper:hover .app-icon,
 .app-wrapper:focus-visible .app-icon {
-    animation: none;
+    animation: none; /* Pause animation on hover */
     background: var(--nm-accent);
     border-color: var(--nm-accent-hover);
     box-shadow: none; 
@@ -624,7 +615,6 @@ body.light-theme ::-webkit-scrollbar-thumb {
     color: var(--nm-accent-hover);
 }
 
-/* === MODIFIED: Removed color animation, set static color === */
 .app-icon i {
     color: var(--nm-accent); /* Set icon color to static purple */
     transition: color 0.2s ease;
@@ -639,13 +629,11 @@ body.light-theme ::-webkit-scrollbar-thumb {
 .app-icon:hover i,
 .app-wrapper:hover .app-icon i,
 .app-wrapper:focus-visible .app-icon i {
-    animation: none; /* Stop animation on hover */
     color: var(--nm-darkest); 
     text-shadow: none;
 }
 
 body.light-theme .app-icon {
-    /* Corrected colors for light theme icons */
     background: var(--nm-container);
     border: 1px solid var(--nm-border);
     box-shadow: 0 1px 3px rgba(0,0,0,0.08);
@@ -678,7 +666,6 @@ body.light-theme .app-icon:hover {
     height: auto;
     border: 1px solid var(--nm-border);
     background-color: var(--nm-container);
-    /* Added uniform border-radius */
     clip-path: none;
     border-radius: 20px; 
 }
@@ -688,7 +675,7 @@ body.light-theme .app-icon:hover {
     padding: 1rem;
     font-size: 0.7rem;
     color: var(--nm-text-muted);
-    margin-top: 25px; /* Added margin to push it down */
+    margin-top: 25px;
 }
 
 .modal-overlay {
@@ -731,7 +718,6 @@ body.light-theme .modal-overlay {
     overflow: hidden;
     transform: translateY(20px);
     transition: all 0.3s ease;
-    /* Added uniform border-radius */
     clip-path: none;
     border-radius: 20px;
 }
@@ -852,7 +838,6 @@ body.light-theme .modal-content {
     background: var(--nm-darkest);
     font-size: 0.85em;
     color: var(--nm-text-muted);
-    /* Added uniform border-radius */
     border-radius: 20px;
 }
 
@@ -863,7 +848,6 @@ body.light-theme .modal-content {
     padding: 15px;
     margin: 1em 0;
     transition: background-color 0.3s ease;
-    /* Added uniform border-radius */
     clip-path: none;
     border-radius: 20px;
     box-shadow: inset 0 0 10px rgba(0,0,0,0.5); 
@@ -893,7 +877,6 @@ body.light-theme .modal-content {
     font-size: 0.7rem;
     text-transform: uppercase;
     transition: all 0.2s ease;
-    /* Added uniform border-radius */
     clip-path: none;
     border-radius: 20px;
 }
@@ -925,7 +908,6 @@ body.light-theme .modal-content {
     cursor: pointer;
     transition: all 0.2s ease;
     position: relative;
-    /* Added uniform border-radius */
     clip-path: none;
     border-radius: 20px;
     box-shadow: none; 
@@ -967,7 +949,7 @@ body.light-theme .modal-content {
     box-shadow: none; 
     margin: 1em 0;
     padding: 0.8em 1em;
-    border-radius: 0 20px 20px 0; /* Rounded right side only, typical for tips */
+    border-radius: 0 20px 20px 0;
     transition: all 0.3s ease;
 }
 
@@ -985,7 +967,6 @@ body.light-theme .modal-content {
     padding: 12px 15px;
     gap: 15px;
     justify-content: center;
-    /* Enforce pill shape on list items */
     clip-path: none;
     border-radius: 20px; 
 }
@@ -1029,7 +1010,6 @@ body.light-theme .modal-content {
     max-width: 100%;
     box-sizing: border-box;
     line-height: 1.4;
-    /* Added uniform border-radius */
     clip-path: none;
     border-radius: 20px;
 }
@@ -1048,7 +1028,6 @@ body.light-theme .modal-content {
     overflow: hidden;
     border: 1px solid var(--nm-border);
     background-color: var(--nm-container);
-    /* Added uniform border-radius */
     clip-path: none;
     border-radius: 20px;
 }
@@ -1113,19 +1092,19 @@ body.light-theme .modal-content {
 /* --- Progress Bar for Useful Information Search --- */
 .progress-bar-container {
     width: 100%;
-    height: 18px; /* Increased height for text */
+    height: 18px;
     background-color: var(--nm-darkest);
     border-radius: 20px;
     overflow: hidden;
     margin-bottom: 10px;
-    position: relative; /* Needed for absolute positioning of text */
-    display: none; /* Hidden by default */
+    position: relative;
+    display: none;
     border: 1px solid var(--nm-border);
 }
 .progress-bar {
     width: 0%;
     height: 100%;
-    background-color: #8A2BE2; /* Purple */
+    background-color: #8A2BE2;
     transition: width 0.2s ease-in-out;
     border-radius: 20px;
 }
@@ -1154,16 +1133,15 @@ body.light-theme .modal-content {
     width: 100%;
     padding: 10px 15px 10px 45px;
     background-color: var(--nm-darkest);
-    border: 2px solid var(--nm-search-green); /* Set to nm-accent */
+    border: 2px solid var(--nm-search-green);
     color: var(--nm-text);
     font-family: 'Roboto Mono', monospace;
     font-size: 0.9rem;
     transition: background-color 0.3s ease;
-    /* Large border-radius for pill shape */
     clip-path: none;
     border-radius: 50px;
     box-sizing: border-box;
-    animation: none; /* Removed pulse animation for no glow */
+    animation: none;
 }
 
 .modal-search-container input:focus {
@@ -1175,15 +1153,14 @@ body.light-theme .modal-content {
 .search-container::before,
 .search-container::after,
 .modal-search-container::before {
-    /* This assumes Font Awesome is linked in the HTML */
-    font-family: 'Font Awesome 6 Free', 'FontAwesome'; /* CORRECTED */
-    font-weight: 900; /* Use solid icons */
+    font-family: 'Font Awesome 6 Free', 'FontAwesome';
+    font-weight: 900;
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
     color: var(--nm-text-muted);
     z-index: 2;
-    pointer-events: none; /* Allows clicking through the icon to the input */
+    pointer-events: none;
 }
 
 /* Magnifying Glass Icon (Left) for Main Search */
@@ -1211,7 +1188,6 @@ body.light-theme .modal-content {
     max-height: 90vh;
     border: 3px solid var(--nm-accent);
     box-shadow: none; 
-    /* Added uniform border-radius */
     border-radius: 20px;
 }
 .modal-divider {
@@ -1227,14 +1203,12 @@ body.light-theme .modal-content {
     font-weight: bold;
     border-left: 4px solid var(--nm-warning);
     padding: 1rem;
-    /* Added uniform border-radius */
     border-radius: 20px;
 }
 .note.note-danger {
     border-left: 4px solid var(--nm-danger);
     background: var(--danger-bg);
     padding: 1rem;
-    /* Added uniform border-radius */
     border-radius: 20px;
 }
 .certificate-footer .signature span {
@@ -1245,7 +1219,7 @@ body.light-theme .modal-content {
     max-width: 400px;
     margin: 1rem auto;
     display: block;
-    border-radius: 20px; /* Uniform border-radius */
+    border-radius: 20px;
     border: 1px solid var(--nm-border);
 }
 #useful-info-prompt {
@@ -1257,18 +1231,15 @@ body.light-theme .modal-content {
     grid-template-columns: 1fr;
     max-width: 100%;
     gap: 15px; 
-    justify-content: initial; /* Override centering for this specific grid */
+    justify-content: initial;
 }
-/* Apply pill shape to the list of articles inside the Useful Information modal */
 #useful-information-nav .app-icon {
-    width: 100%; /* Make them full width of container */
-    height: auto; /* Allow height to adjust */
-    padding: 12px 15px; /* Add padding for content */
-    /* Enforce pill shape on list items */
+    width: 100%;
+    height: auto;
+    padding: 12px 15px;
     clip-path: none;
     border-radius: 20px;
 }
-/* Ensure the text is white */
 #useful-information-nav .app-icon span {
     color: var(--nm-text);
 }
@@ -1288,11 +1259,11 @@ span.sub-item {
     max-width: 500px;
     padding: 20px;
     margin: 15px 0;
-    /* Purple/Red Gradient */
     background: linear-gradient(135deg, #6610f2, #d63384, #3a4a5e);
     border-radius: 20px;
     text-align: center;
     border: 1px solid var(--nm-accent);
+    box-sizing: border-box; /* Ensures padding is included in width */
 }
 .anniversary-banner h2 {
     margin: 0 0 10px 0;
@@ -1342,10 +1313,10 @@ span.sub-item {
 /* Hidden Certificate Template for PDF generation */
 #certificate-template {
     position: absolute;
-    left: -9999px; /* Hide off-screen */
-    width: 1056px; /* A4 Landscape in pixels at 96 DPI */
-    height: 816px; /* A4 Landscape in pixels at 96 DPI */
-    background: #1a1a2e; /* Dark blue background */
+    left: -9999px;
+    width: 1056px;
+    height: 816px;
+    background: #1a1a2e;
     color: #fff;
     padding: 40px;
     box-sizing: border-box;
@@ -1354,8 +1325,7 @@ span.sub-item {
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    border: 10px solid #c0c0c0; /* Silver border */
-    /* Metallic gradient border */
+    border: 10px solid #c0c0c0;
     border-image: linear-gradient(135deg, #e0c56e, #c0c0c0, #e0c56e) 1;
 }
 .certificate-header { text-align: center; }
@@ -1365,7 +1335,7 @@ span.sub-item {
 .certificate-body p { font-size: 24px; margin: 15px 0; line-height: 1.5; }
 #cert-name { 
     font-size: 40px; 
-    color: #e0c56e; /* Gold text */
+    color: #e0c56e;
     font-weight: bold; 
     border-bottom: 2px solid #e0c56e;
     padding-bottom: 10px;
@@ -1408,7 +1378,7 @@ span.sub-item {
     .hero-section,
     .grid-heading,
     .app-grid,
-    .anniversary-banner { /* Added banner to this rule */
+    .anniversary-banner {
         max-width: 700px;
     }
 
@@ -1429,7 +1399,7 @@ span.sub-item {
     .hero-section,
     .grid-heading,
     .app-grid,
-    .anniversary-banner { /* Added banner to this rule */
+    .anniversary-banner {
         max-width: 900px;
     }
 
