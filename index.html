@@ -3,25 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>DedSec Project</title>
+    <title>1st Anniversary Celebration</title>
     
-    <meta name="description" content="The DedSec Project is a toolkit for digital self-defense, offering tools and educational resources on cybersecurity and ethical hacking.">
-    <meta name="keywords" content="DedSec, DedSec Project, Termux, Ethical Hacking, Cybersecurity, Digital Self-Defense, Phone Hacking, Termux Tutorial, Android Hacking, Phishing Attacks, Security Scripts, Python, Command Line, URL Masker, Hacking Education, Penetration Testing, Data Privacy, Fox Chat, End-to-End Encrypted Chat, DedSec Database, File Storage Server, OSINTDS, Open Source Intelligence, Web Reconnaissance, SQLi, XSS, HTML Inspector, Android App Launcher, Termux Resources, Python Gym Clothing, AdGen, Terminal Customization, bash.bashrc, .bash_profile">
-    <meta property="og:title" content="DedSec Project">
-    <meta property="og:description" content="DedSec has given you the truth, do what you will.">
+    <meta name="description" content="Join us for our 1st Anniversary Celebration from October 20th to October 31st!">
+    <meta name="keywords" content="DedSec, DedSec Project, 1st Anniversary, Celebration, Event, Certificate">
+    <meta property="og:title" content="DedSec Project - 1st Anniversary">
+    <meta property="og:description" content="Join us for our 1st Anniversary Celebration from October 20th to October 31st!">
     <meta property="og:image" content="httpss://raw.githubusercontent.com/dedsec1121fk/dedsec1121fk.github.io/5860edb8a7468d955336c9cf1d8b357597d6d645/Assets/Images/Logos/Custom%20Black%2Purple%20Fox%20Logo.png">
     <meta property="og:type" content="website">
     <link rel="preconnect" href="httpss://fonts.googleapis.com">
     <link rel="preconnect" href="httpss://fonts.gstatic.com" crossorigin>
     <link href="httpss://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&family=Roboto+Mono:wght@400;700&family=Inter:wght@400;700&family=Noto+Serif:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="httpss://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <link rel="stylesheet" href="style.css">
 
+    <script src="httpss://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" defer></script>
+    <script src="httpss://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>
+    
     <script type="application/ld+json">
     {
       "@context": "httpss://schema.org",
       "@type": "WebSite",
-      "name": "DedSec Project",
+      "name": "DedSec Project - 1st Anniversary",
       "url": "httpss://ded-sec.space/",
       "potentialAction": {
         "@type": "SearchAction",
@@ -35,17 +39,34 @@
     </script>
 </head>
 <body class="dark-theme">
+    <div id="certificate-template">
+        <div class="certificate-header">
+            <h1>Certificate of Participation</h1>
+            <h2>1st Anniversary Celebration</h2>
+        </div>
+        <div class="certificate-body">
+            <p>This certificate is proudly presented to</p>
+            <p id="cert-name">[Full Name Here]</p>
+            <p>In recognition of your participation and support during our first anniversary event. We are grateful for you being a part of our community.</p>
+            <p>From: <span id="cert-location">[City, Country]</span> | Age: <span id="cert-age">[Age]</span></p>
+        </div>
+        <div class="certificate-footer">
+            <div class="date">
+                <p>October 2025</p>
+            </div>
+            <div class="signature">
+                <span>DedSec Project Team</span>
+            </div>
+        </div>
+    </div>
+
+
     <div class="phone-container">
         <div id="scroll-indicator-thumb"></div>
         <div class="screen">
             <div class="screen-overlay"></div>
             
             <main class="home-screen">
-
-                <div id="anniversary-banner" class="hidden">
-                    <p><strong>1 Year Anniversary Event!</strong> This special theme is active from October 20th to October 31st. Enjoy!</p>
-                </div>
-
                 <div class="main-header-container">
                     <h1 data-en="DedSec Project" data-gr="DedSec Project">DedSec Project</h1>
                     <div class="search-container">
@@ -56,19 +77,17 @@
                     </div>
                 </div>
 
-                <div class="hero-section">
-                    <p class="hero-text" data-en="" data-gr=""></p>
+                <div class="anniversary-banner">
+                    <h2>🎉 1st Anniversary Event! 🎉</h2>
+                    <p>Join our celebration from October 20th to October 31st!</p>
                 </div>
 
-                <div id="anniversary-section" class="hidden">
-                    <h4 class="grid-heading" data-en="1st Anniversary Event" data-gr="Εκδήλωση 1ης Επετείου">1st Anniversary Event</h4>
-                    <div class="app-grid">
-                         <button class="app-wrapper" data-modal="certificate">
-                            <div class="app-icon"><i class="fas fa-award"></i></div>
-                            <span class="app-label" data-en="Get Your Certificate" data-gr="Πάρε το Πιστοποιητικό σου">Get Your Certificate</span>
-                        </button>
-                    </div>
+                <div class="hero-section">
+                     <button class="hero-cta-button" id="get-certificate-btn">
+                        <i class="fas fa-award"></i> Get Your Anniversary Certificate
+                    </button>
                 </div>
+
 
                 <h4 class="grid-heading" data-en="Explore the Toolkit" data-gr="Εξερευνήστε την Εργαλειοθήκη">Explore the Toolkit</h4>
                 <div class="app-grid">
@@ -137,32 +156,34 @@
             </main>
         </div>
     </div>
-
-    <div id="certificate-template">
-        <div class="cert-border">
-            <div class="cert-header">
-                <img src="https://raw.githubusercontent.com/dedsec1121fk/dedsec1121fk.github.io/5860edb8a7468d955336c9cf1d8b357597d6d645/Assets/Images/Logos/Custom%20Black%20Purple%20Fox%20Logo.png" alt="Logo" class="cert-logo">
-                <h1>Certificate of Participation</h1>
+    
+    <div id="certificate-modal" class="modal-overlay">
+        <div class="modal-content modal-content-auto-height">
+            <div class="modal-header">
+                <h2 data-en="Get Your Certificate" data-gr="Πάρε το Πιστοποιητικό σου">Get Your Certificate</h2>
+                <button class="close-modal" aria-label="Close">×</button>
             </div>
-            <div class="cert-body">
-                <p>This certifies that</p>
-                <h2 class="cert-name">[NAME HERE]</h2>
-                <p>from <span class="cert-location">[CITY, COUNTRY]</span> (Age: <span class="cert-age">[AGE]</span>)</p>
-                <p>participated in the</p>
-                <h3>DedSec Project 1st Anniversary Event</h3>
-                <p class="cert-event-dates">October 20-31, 2025</p>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="cert-input-name">First & Last Name</label>
+                    <input type="text" id="cert-input-name" placeholder="e.g. Jane Doe">
+                </div>
+                <div class="form-group">
+                    <label for="cert-input-age">Age</label>
+                    <input type="number" id="cert-input-age" placeholder="e.g. 25">
+                </div>
+                <div class="form-group">
+                    <label for="cert-input-country">Country</label>
+                    <input type="text" id="cert-input-country" placeholder="e.g. United States">
+                </div>
+                <div class="form-group">
+                    <label for="cert-input-city">City</label>
+                    <input type="text" id="cert-input-city" placeholder="e.g. New York">
+                </div>
+                <p id="certificate-error">Please fill out all fields.</p>
             </div>
-            <div class="cert-footer">
-                <div>
-                    <p class="cert-date">[DATE HERE]</p>
-                    <hr>
-                    <span>Date Issued</span>
-                </div>
-                <div>
-                    <p class="signature">DedSec Project</p>
-                    <hr>
-                    <span>Official</span>
-                </div>
+            <div class="modal-footer">
+                <button id="download-certificate-btn" class="accept-btn"><i class="fas fa-download"></i> Download PDF</button>
             </div>
         </div>
     </div>
@@ -183,39 +204,6 @@
               <button class="language-button" data-lang="gr" aria-label="Change language to Greek">Ελληνικά</button>
           </div>
       </div>
-    </div>
-
-    <div id="certificate-modal" class="modal-overlay">
-        <div class="modal-content modal-content-auto-height">
-            <div class="modal-header">
-                <h2 data-en="Generate Anniversary Certificate" data-gr="Δημιουργία Επετειακού Πιστοποιητικού">Generate Anniversary Certificate</h2>
-                <button class="close-modal" aria-label="Close">×</button>
-            </div>
-            <div class="modal-body">
-                <p data-en="Fill in your details below to receive your personalized certificate of participation." data-gr="Συμπληρώστε τα στοιχεία σας παρακάτω για να λάβετε το εξατομικευμένο πιστοποιητικό συμμετοχής σας." style="text-align: center; margin-bottom: 25px;"></p>
-                <form id="certificate-form">
-                    <div class="form-group">
-                        <label for="cert-fullname" data-en="First & Last Name" data-gr="Ονοματεπώνυμο">First & Last Name</label>
-                        <input type="text" id="cert-fullname" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="cert-age" data-en="Age" data-gr="Ηλικία">Age</label>
-                        <input type="number" id="cert-age" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="cert-country" data-en="Country" data-gr="Χώρα">Country</label>
-                        <input type="text" id="cert-country" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="cert-city" data-en="City" data-gr="Πόλη">City</label>
-                        <input type="text" id="cert-city" required>
-                    </div>
-                    <div class="modal-footer" style="padding-top: 20px; border-top: none;">
-                        <button type="submit" id="generate-cert-btn" class="accept-btn" data-en="Download Certificate" data-gr="Λήψη Πιστοποιητικού">Download Certificate</button>
-                    </div>
-                </form>
-            </div>
-        </div>
     </div>
 
     <div id="disclaimer-modal" class="modal-overlay">
@@ -433,12 +421,10 @@
     <div id="useful-information-modal" class="modal-overlay">
         <div class="modal-content">
             <div class="modal-header"><h2 data-en="Useful Information" data-gr="Χρήσιμες Πληροφορίες">Useful Information</h2><button class="close-modal" aria-label="Close">×</button></div>
-            <div class="modal-body"><div class="search-container modal-search-container"><input type="text" id="useful-info-search-input" placeholder="Search articles..." data-en="Search articles..." data-gr="Αναζήτηση άρθρων..."><div id="useful-info-results-container" class="hidden"></div></div><p id="useful-info-prompt" data-en="Please select an entry from the list below to view its content." data-gr="Παρακαλώ επιλέξτε μια καταχώρηση από την παρακάτω λίστα για να δείτε το περιεχομένο της.\">Please select an entry from the list below to view its content.</p><div id="useful-information-nav" class="app-grid"></div><hr class="modal-divider"><div id="useful-information-content"></div></div>
+            <div class="modal-body"><div class="search-container modal-search-container"><input type="text" id="useful-info-search-input" placeholder="Search articles..." data-en="Search articles..." data-gr="Αναζήτηση άρθρων..."><div id="useful-info-results-container" class="hidden"></div></div><p id="useful-info-prompt" data-en="Please select an entry from the list below to view its content." data-gr="Παρακαλώ επιλέξτε μια καταχώρηση από την παρακάτω λίστα για να δείτε το περιεχόμενο της.\">Please select an entry from the list below to view its content.</p><div id="useful-information-nav" class="app-grid"></div><hr class="modal-divider"><div id="useful-information-content"></div></div>
         </div>
     </div>
 
-    <script src="httpss://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" defer></script>
-    <script src="httpss://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>
     <script src="script.js" defer></script>
 </body>
 </html>

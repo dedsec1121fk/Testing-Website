@@ -7,26 +7,10 @@ document.addEventListener('DOMContentLoaded', () => {
     let usefulInformationLoaded = false;
     let isFetchingUsefulInfo = false;
 
-    // --- NEW: Anniversary Theme Activation ---
-    function activateAnniversaryTheme() {
-        const banner = document.getElementById('anniversary-banner');
-        const section = document.getElementById('anniversary-section');
-        if (!banner || !section) return;
-
-        const today = new Date();
-        // The event runs from Oct 20 to Oct 31.
-        // To test the theme outside this window, you can temporarily change the startDate.
-        // For example: const startDate = new Date('2025-10-18');
-        const startDate = new Date('2025-10-20');
-        const endDate = new Date('2025-10-31');
-        endDate.setHours(23, 59, 59, 999); // Ensure the event includes all of Oct 31st.
-
-        if (today >= startDate && today <= endDate) {
-            document.body.classList.add('anniversary-theme');
-            banner.classList.remove('hidden');
-            section.classList.remove('hidden');
-        }
-    }
+    // --- PDF/CANVAS LIBS ---
+    // Make sure these are loaded in the HTML before this script
+    const { jsPDF } = window.jspdf;
+    const html2canvas = window.html2canvas;
 
     // --- EVEN MORE ADVANCED SEARCH UTILITY (Used for 'Useful Information' modal) ---
     const SearchEngine = {
@@ -178,82 +162,16 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // --- NEW: Certificate Generation Logic ---
-    function initializeCertificateGenerator() {
-        const form = document.getElementById('certificate-form');
-        const certificateModal = document.getElementById('certificate-modal');
-        if (!form || !certificateModal) return;
-
-        form.addEventListener('submit', (e) => {
-            e.preventDefault();
-
-            if (typeof html2canvas === 'undefined' || typeof jspdf === 'undefined') {
-                alert('PDF generation library is still loading. Please try again in a moment.');
-                return;
-            }
-
-            const fullName = document.getElementById('cert-fullname').value.trim();
-            const age = document.getElementById('cert-age').value.trim();
-            const country = document.getElementById('cert-country').value.trim();
-            const city = document.getElementById('cert-city').value.trim();
-            const generateBtn = document.getElementById('generate-cert-btn');
-
-            if (!fullName || !age || !country || !city) {
-                alert('Please fill out all fields to generate your certificate.');
-                return;
-            }
-
-            const originalBtnText = generateBtn.textContent;
-            generateBtn.disabled = true;
-            generateBtn.textContent = 'Generating...';
-
-            const template = document.getElementById('certificate-template');
-            template.querySelector('.cert-name').textContent = fullName;
-            template.querySelector('.cert-age').textContent = age;
-            template.querySelector('.cert-location').textContent = `${city}, ${country}`;
-            
-            const today = new Date();
-            const formattedDate = today.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
-            template.querySelector('.cert-date').textContent = formattedDate;
-
-            const { jsPDF } = window.jspdf;
-
-            html2canvas(template, { scale: 2, useCORS: true }).then(canvas => {
-                const imgData = canvas.toDataURL('image/png');
-                const pdf = new jsPDF({
-                    orientation: 'landscape',
-                    unit: 'px',
-                    format: [template.offsetWidth, template.offsetHeight]
-                });
-                pdf.addImage(imgData, 'PNG', 0, 0, template.offsetWidth, template.offsetHeight);
-                pdf.save('DedSec_1st_Anniversary_Certificate.pdf');
-
-                generateBtn.disabled = false;
-                generateBtn.textContent = originalBtnText;
-                
-                // Use the globally available hideModal function
-                hideModal(certificateModal);
-
-            }).catch(err => {
-                console.error("PDF generation failed:", err);
-                alert("Sorry, an error occurred while creating your certificate. Please try again.");
-                generateBtn.disabled = false;
-                generateBtn.textContent = originalBtnText;
-            });
-        });
-    }
-
-    // This function must be defined before it's used by the certificate generator
-    function hideModal(modal) {
-        if (!modal) return;
-        modal.classList.remove('visible');
-    }
-
     // --- PORTFOLIO INITIALIZATION ---
     function initializePortfolio() {
         function showModal(modal) {
             if (!modal) return;
             modal.classList.add('visible');
+        }
+
+        function hideModal(modal) {
+            if (!modal) return;
+            modal.classList.remove('visible');
         }
 
         const languageModal = document.getElementById('language-selection-modal');
@@ -264,6 +182,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const languageModalCloseBtn = languageModal.querySelector('.close-modal');
         const disclaimerModal = document.getElementById('disclaimer-modal');
         const installationModal = document.getElementById('installation-modal');
+        const certificateModal = document.getElementById('certificate-modal');
 
         window.changeLanguage = (lang) => {
             currentLanguage = lang;
@@ -288,7 +207,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 button.classList.toggle('selected', button.dataset.lang === lang);
             });
 
-            document.title = "DedSec Project";
+            document.title = "1st Anniversary Celebration";
 
             const searchInput = document.getElementById('main-search-input');
             if (searchInput) {
@@ -452,12 +371,69 @@ document.addEventListener('DOMContentLoaded', () => {
                 showImage(0);
             }
         }
+
+        // --- ANNIVERSARY CERTIFICATE LOGIC ---
+        document.getElementById('get-certificate-btn')?.addEventListener('click', () => {
+            showModal(certificateModal);
+        });
+
+        document.getElementById('download-certificate-btn')?.addEventListener('click', () => {
+            if (!html2canvas || !jsPDF) {
+                console.error("PDF generation libraries are not loaded.");
+                return;
+            }
+            const name = document.getElementById('cert-input-name').value.trim();
+            const age = document.getElementById('cert-input-age').value.trim();
+            const country = document.getElementById('cert-input-country').value.trim();
+            const city = document.getElementById('cert-input-city').value.trim();
+            const errorEl = document.getElementById('certificate-error');
+
+            if (!name || !age || !country || !city) {
+                errorEl.style.display = 'block';
+                return;
+            }
+            errorEl.style.display = 'none';
+
+            // Populate the hidden template
+            document.getElementById('cert-name').textContent = name;
+            document.getElementById('cert-age').textContent = age;
+            document.getElementById('cert-location').textContent = `${city}, ${country}`;
+
+            const certificateTemplate = document.getElementById('certificate-template');
+            
+            html2canvas(certificateTemplate, { 
+                scale: 3, // Higher scale for better quality
+                useCORS: true // In case images are used in the template later
+            }).then(canvas => {
+                const imgData = canvas.toDataURL('image/png');
+                
+                // A4 landscape is 842 x 595 points. Our template is 1056x816 pixels.
+                // We'll create a PDF matching the pixel dimensions for simplicity.
+                const pdf = new jsPDF({
+                    orientation: 'landscape',
+                    unit: 'px',
+                    format: [certificateTemplate.offsetWidth, certificateTemplate.offsetHeight]
+                });
+
+                pdf.addImage(imgData, 'PNG', 0, 0, certificateTemplate.offsetWidth, certificateTemplate.offsetHeight);
+                pdf.save('DedSec_Anniversary_Certificate.pdf');
+                hideModal(certificateModal);
+
+                // Clear fields
+                document.getElementById('cert-input-name').value = '';
+                document.getElementById('cert-input-age').value = '';
+                document.getElementById('cert-input-country').value = '';
+                document.getElementById('cert-input-city').value = '';
+
+            }).catch(err => {
+                console.error("Error generating PDF: ", err);
+                errorEl.textContent = "Error generating PDF. Please try again.";
+                errorEl.style.display = 'block';
+            });
+        });
         
-        // --- Activate all features ---
-        activateAnniversaryTheme();
         initializeWebSearchSuggestions(); 
         initializeUsefulInfoSearch();
-        initializeCertificateGenerator();
         
         if (languageModalCloseBtn) languageModalCloseBtn.style.display = 'none';
         showModal(languageModal);
