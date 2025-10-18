@@ -102,26 +102,29 @@ body.light-theme .note.note-warning {
    END OF LIGHT THEME FIXES
    ================================================================= */
 
-/* ANNIVERSARY ANIMATION */
-@keyframes multiColorChange {
-    0%, 100% {
-        color: #9966FF; /* Purple */
-    }
-    33% {
-        color: #66B2FF; /* Blue */
-    }
-    66% {
-        color: #FF6666; /* Red */
-    }
-}
-
+/* === MODIFIED: Expanded to 20 colors === */
 @keyframes cycle-border-colors {
-    0%   { border-color: #9966FF; } /* Purple */
-    20%  { border-color: #66B2FF; } /* Blue */
-    40%  { border-color: #d63384; } /* Pink/Red */
-    60%  { border-color: #00FF00; } /* Green */
-    80%  { border-color: #FFFF00; } /* Yellow */
-    100% { border-color: #9966FF; } /* Purple loop */
+    0%   { border-color: #FF6347; } /* Tomato */
+    5%   { border-color: #FFA500; } /* Orange */
+    10%  { border-color: #FFD700; } /* Gold */
+    15%  { border-color: #ADFF2F; } /* GreenYellow */
+    20%  { border-color: #32CD32; } /* LimeGreen */
+    25%  { border-color: #00FA9A; } /* MediumSpringGreen */
+    30%  { border-color: #00CED1; } /* DarkTurquoise */
+    35%  { border-color: #4682B4; } /* SteelBlue */
+    40%  { border-color: #1E90FF; } /* DodgerBlue */
+    45%  { border-color: #4169E1; } /* RoyalBlue */
+    50%  { border-color: #8A2BE2; } /* BlueViolet */
+    55%  { border-color: #9932CC; } /* DarkOrchid */
+    60%  { border-color: #C71585; } /* MediumVioletRed */
+    65%  { border-color: #FF1493; } /* DeepPink */
+    70%  { border-color: #FF69B4; } /* HotPink */
+    75%  { border-color: #F08080; } /* LightCoral */
+    80%  { border-color: #20B2AA; } /* LightSeaGreen */
+    85%  { border-color: #7B68EE; } /* MediumSlateBlue */
+    90%  { border-color: #DA70D6; } /* Orchid */
+    95%  { border-color: #FF4500; } /* OrangeRed */
+    100% { border-color: #FF6347; } /* Tomato */
 }
 
 
@@ -130,22 +133,17 @@ body.light-theme .note.note-warning {
     100% { transform: translateY(-50%); }
 }
 
-/* MODIFIED: Remove text glitch animation entirely */
 @keyframes text-glitch {
     0% { transform: translate(0, 0) skew(0); }
     100% { transform: translate(0, 0) skew(0); }
 }
 
-/* MODIFIED: Remove flickering effect and associated text-shadows (glowing) */
 @keyframes flicker {
   0%, 100% {
     opacity: 1;
     text-shadow: none;
   }
 }
-
-/* REMOVED: Pulsing glow animation for the main title */
-
 
 html, body {
     height: 100%;
@@ -165,7 +163,6 @@ body {
     align-items: center;
 }
 
-/* --- ADDED: Reset for button elements used as app icons --- */
 .app-grid button.app-wrapper {
     background: none;
     border: none;
@@ -200,7 +197,6 @@ button.hero-cta-button {
     top: 0;
     width: 8px;
     height: 100%;
-    /* REMOVED GLOW */
     background: linear-gradient(to bottom, var(--nm-danger), var(--nm-danger-hover), var(--nm-danger));
     box-shadow: none;
     z-index: 10;
@@ -226,7 +222,6 @@ button.hero-cta-button {
     height: 100%;
     background-color: var(--nm-abyss-blue);
     background-image:
-        /* MODIFIED: Removed hexagon background image/pattern */
         url("data:image/svg+xml,%3Csvg viewBox='0 0 800 800' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3E/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
     background-size: cover, cover; 
     position: relative;
@@ -237,7 +232,6 @@ button.hero-cta-button {
     z-index: 0;
 }
 
-/* --- MODIFIED: Uses new Dark Theme Logo as background --- */
 .screen::after {
     content: '';
     position: absolute;
@@ -245,7 +239,6 @@ button.hero-cta-button {
     left: 0;
     width: 100%;
     height: 100%;
-    /* DEFAULT DARK THEME LOGO */
     background-image: url('https://raw.githubusercontent.com/dedsec1121fk/dedsec1121fk.github.io/5860edb8a7468d955336c9cf1d8b357597d6d645/Assets/Images/Logos/Custom%20Black%20Purple%20Fox%20Logo.png');
     background-size: contain;
     background-position: center;
@@ -300,14 +293,13 @@ body.light-theme .phone-container::after {
     overflow-y: auto;
     overflow-x: hidden;
     min-height: 0;
-    padding: 0 20px 20px; /* Increased padding */
+    padding: 0 20px 20px;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-/* MODIFIED: Universal Custom Scrollbar */
 ::-webkit-scrollbar {
     width: 10px;
 }
@@ -324,7 +316,6 @@ body.light-theme .phone-container::after {
     background-color: var(--nm-accent-hover);
 }
 body.light-theme ::-webkit-scrollbar-thumb {
-    /* Ensure scrollbar thumb is visible in light theme */
     background-color: #555555; 
     border-color: var(--nm-dark);
 }
@@ -336,13 +327,10 @@ body.light-theme ::-webkit-scrollbar-thumb {
     align-items: center;
     width: 100%;
     gap: 15px;
-    /* FIX: Reduced margin-bottom from 20px to 10px */
     margin-bottom: 10px;
     padding: 25px 15px 0 15px;
     box-sizing: border-box;
 }
-
-/* --- REMOVED: .header-logo container since we are using .screen::after --- */
 
 .main-header-container h1 {
     margin: 0;
@@ -350,14 +338,11 @@ body.light-theme ::-webkit-scrollbar-thumb {
     white-space: nowrap;
     font-size: clamp(7vw, 9vw, 4.0rem);
     color: var(--nm-accent);
-    /* --- ADDED: Purple glow with black stroke for readability --- */
     text-shadow: 
-        /* Black Stroke */
         -1px -1px 0 #000,  
          1px -1px 0 #000,
         -1px  1px 0 #000,
          1px  1px 0 #000,
-        /* Purple Glow */
         0 0 10px var(--nm-accent),
         0 0 20px var(--nm-accent),
         0 0 30px var(--nm-accent),
@@ -370,7 +355,6 @@ body.light-theme ::-webkit-scrollbar-thumb {
     max-width: 500px; 
 }
 
-/* MODIFIED: Removed all box-shadow for no glow effect */
 @keyframes pulse-cyan {
     0% { box-shadow: none; } 
     50% { box-shadow: none; } 
@@ -382,16 +366,15 @@ body.light-theme ::-webkit-scrollbar-thumb {
     width: 100%;
     padding: 10px 45px;
     background-color: var(--nm-darkest);
-    border: 2px solid var(--nm-search-green); /* Set to nm-accent */
+    border: 2px solid var(--nm-search-green);
     color: var(--nm-text);
     font-family: 'Roboto Mono', monospace;
     font-size: 0.9rem;
     transition: background-color 0.3s ease;
-    /* MODIFIED: Remove clip-path, large border-radius for pill shape */
     clip-path: none; 
     border-radius: 50px; 
     box-sizing: border-box;
-    animation: none; /* Removed pulse animation for no glow */
+    animation: none;
 }
 
 #main-search-input:focus {
@@ -407,12 +390,11 @@ body.light-theme ::-webkit-scrollbar-thumb {
     left: 0;
     width: 100%;
     background-color: var(--nm-dark);
-    border: 1px solid var(--nm-search-green); /* Set to nm-accent */
-    box-shadow: none; /* Removed glow */
+    border: 1px solid var(--nm-search-green);
+    box-shadow: none;
     max-height: 300px;
     overflow-y: auto;
     z-index: 100;
-    /* Large border-radius for rounded results box */
     clip-path: none;
     border-radius: 20px;
 }
@@ -451,13 +433,11 @@ body.light-theme ::-webkit-scrollbar-thumb {
 }
 
 .content-highlight {
-    /* Set to Yellow and removed glow */
     background-color: rgba(255, 255, 0, 0.3); 
     box-shadow: none; 
     transition: background-color 1s ease;
 }
 
-/* --- NEW HERO SECTION STYLES --- */
 .hero-section {
     display: flex;
     flex-direction: column;
@@ -500,10 +480,7 @@ body.light-theme ::-webkit-scrollbar-thumb {
     border-color: var(--nm-accent-hover);
     color: #ffffff;
 }
-/* --- END HERO SECTION STYLES --- */
 
-
-/* --- NEW GRID HEADING STYLES --- */
 .grid-heading {
     width: 100%;
     max-width: 500px;
@@ -516,8 +493,6 @@ body.light-theme ::-webkit-scrollbar-thumb {
     padding-bottom: 5px;
     border-bottom: 1px solid var(--nm-border);
 }
-/* --- END GRID HEADING STYLES --- */
-
 
 .app-grid {
     display: grid;
@@ -540,6 +515,7 @@ body.light-theme ::-webkit-scrollbar-thumb {
     color: var(--nm-text);
 }
 
+/* === MODIFIED: Animation duration changed to 10s === */
 .app-icon {
     background: #000000;
     border: 2px solid var(--nm-accent);
@@ -560,7 +536,7 @@ body.light-theme ::-webkit-scrollbar-thumb {
     gap: 12px;
     box-shadow: none;
     height: 56px;
-    animation: cycle-border-colors 5s infinite steps(1, end);
+    animation: cycle-border-colors 10s infinite steps(1, end); /* 20 colors * 0.5s = 10s */
 }
 
 
@@ -933,7 +909,6 @@ body.light-theme .modal-content {
     opacity: 0.9;
 }
 
-/* === ADDED: Certificate download button override === */
 #download-certificate-btn {
     background-color: var(--nm-accent) !important;
     border-color: var(--nm-accent) !important;
@@ -1166,26 +1141,21 @@ body.light-theme .modal-content {
     pointer-events: none;
 }
 
-/* Magnifying Glass Icon (Left) for Main Search */
 .search-container::before {
     content: '\f002';
     left: 20px;
 }
 
-/* Globe Icon (Right) for Main Search */
 .search-container::after {
     content: '\f0ac';
     right: 20px;
 }
 
-/* Magnifying Glass Icon (Left) for Modal Search */
 .modal-search-container::before {
     content: '\f002';
     left: 20px;
 }
-/* --- END: Search Bar Icons --- */
 
-/* --- Styles from removed inline attributes --- */
 #expanded-img {
     max-width: 90vw;
     max-height: 90vh;
@@ -1279,7 +1249,6 @@ span.sub-item {
     color: #eee;
 }
 
-/* Certificate Modal Styles */
 #certificate-modal .modal-body {
     display: flex;
     flex-direction: column;
@@ -1313,77 +1282,99 @@ span.sub-item {
     display: none;
 }
 
-/* === MODIFIED: Enhanced certificate design === */
+/* === MODIFIED: Professional Certificate Design === */
 #certificate-template {
     position: absolute;
     left: -9999px;
     width: 1056px;
     height: 816px;
-    background-color: #1a1a2e;
-    /* Subtle Guilloche Pattern Background */
-    background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Cdefs%3E%3Cpattern id='p' width='100' height='100' patternUnits='userSpaceOnUse'%3E%3Ccircle cx='50' cy='50' r='48' stroke='%233a4a5e' stroke-width='1' fill='none'/%3E%3Ccircle cx='50' cy='50' r='38' stroke='%233a4a5e' stroke-width='1' fill='none'/%3E%3C/pattern%3E%3C/defs%3E%3Crect width='100%25' height='100%25' fill='url(%23p)' opacity='0.1'/%3E%3C/svg%3E");
-    color: #fff;
-    padding: 40px;
+    background-color: #fdfdf5; /* Light cream background */
+    color: #333; /* Dark text for readability */
+    padding: 30px;
     box-sizing: border-box;
     font-family: 'Noto Serif', serif;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    border: 10px solid #c0c0c0;
-    border-image: linear-gradient(135deg, #e0c56e, #c0c0c0, #e0c56e) 1;
-    box-shadow: inset 0 0 0 2px #e0c56e; /* Inner golden border */
+    border: 2px solid #00204a; /* Dark blue outer border */
+    box-shadow: inset 0 0 0 10px #fdfdf5, inset 0 0 0 12px #b49b69; /* Inner golden border */
     z-index: 0;
 }
 
-/* Watermark Seal */
 #certificate-template::before {
     content: '';
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 350px;
-    height: 350px;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* Official Seal Watermark */
     background-image: url('https://raw.githubusercontent.com/dedsec1121fk/dedsec1121fk.github.io/5860edb8a7468d955336c9cf1d8b357597d6d645/Assets/Images/Logos/Custom%20Black%20Purple%20Fox%20Logo.png');
-    background-size: contain;
+    background-position: center;
+    background-size: 400px;
     background-repeat: no-repeat;
-    opacity: 0.08;
+    opacity: 0.05;
     z-index: -1;
 }
 
+#certificate-template::after {
+    /* Official Seal Graphic */
+    content: '';
+    position: absolute;
+    bottom: 30px;
+    right: 40px;
+    width: 120px;
+    height: 120px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='48' fill='%2300204a'/%3E%3Ccircle cx='50' cy='50' r='42' fill='none' stroke='%23b49b69' stroke-width='4'/%3E%3Cpath d='M50,20 l5,10 h10 l-8,6 l3,10 l-10,-6 l-10,6 l3,-10 l-8,-6 h10 z' fill='%23b49b69'/%3E%3Ctext x='50' y='75' font-family='Noto Serif' font-size='8' fill='%23b49b69' text-anchor='middle' font-weight='bold'%3EOFFICIAL SEAL%3C/text%3E%3C/svg%3E");
+    background-size: contain;
+    background-repeat: no-repeat;
+    z-index: 2;
+}
+
+
 .certificate-header { text-align: center; z-index: 1; }
-.certificate-header h1 { font-size: 52px; margin: 0; color: #e0c56e; font-family: 'Orbitron', sans-serif; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
-.certificate-header h2 { font-size: 32px; margin: 10px 0; }
-.certificate-body { text-align: center; margin: 40px 0; z-index: 1; }
-.certificate-body p { font-size: 24px; margin: 15px 0; line-height: 1.5; }
+.certificate-header h1 { 
+    font-size: 50px; 
+    margin: 0; 
+    color: #00204a; /* Dark blue */
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+.certificate-header h2 { font-size: 28px; margin: 10px 0; font-weight: normal; color: #555;}
+.certificate-body { text-align: center; margin: 30px 0; z-index: 1; }
+.certificate-body p { font-size: 22px; margin: 15px 0; line-height: 1.6; }
+
 #cert-name { 
     font-family: 'Noto Serif', serif;
     font-style: italic;
-    font-size: 44px; 
-    color: #e0c56e;
-    font-weight: bold; 
-    border-bottom: 2px solid #e0c56e;
+    font-size: 48px; 
+    color: #b49b69; /* Muted gold */
+    font-weight: 700;
+    border-bottom: 2px solid #b49b69;
     padding-bottom: 10px;
     margin: 20px 0;
+    display: inline-block;
 }
+
 .certificate-footer { 
     display: flex; 
     justify-content: space-between; 
     width: 100%; 
     align-items: flex-end;
     z-index: 1;
+    padding: 0 20px;
 }
 .certificate-footer .date, .certificate-footer .signature { 
     text-align: center; 
-    font-size: 18px; 
+    font-size: 16px; 
 }
 .certificate-footer .signature span { 
     display: block; 
-    border-top: 1px solid #fff; 
+    border-top: 1px solid #333; 
     padding-top: 10px; 
     margin-top: 40px;
-    font-style: italic;
+    font-style: normal;
 }
 
 
