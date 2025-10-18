@@ -115,7 +115,6 @@ body.light-theme .note.note-warning {
     }
 }
 
-/* === MODIFIED: Animation now targets border-color === */
 @keyframes cycle-border-colors {
     0%   { border-color: #9966FF; } /* Purple */
     20%  { border-color: #66B2FF; } /* Blue */
@@ -296,13 +295,12 @@ body.light-theme .phone-container::after {
     display: none;
 }
 
-/* === MODIFIED: Increased horizontal padding for more breathing room === */
 .home-screen {
     flex-grow: 1;
     overflow-y: auto;
     overflow-x: hidden;
     min-height: 0;
-    padding: 0 20px 20px; /* Increased from 15px */
+    padding: 0 20px 20px; /* Increased padding */
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
@@ -401,11 +399,6 @@ body.light-theme ::-webkit-scrollbar-thumb {
     background-color: var(--nm-dark);
 }
 
-/* *
-* === THIS IS THE FIX ===
-* The two lines below were added to make the suggestions box appear correctly.
-*
-*/
 #search-suggestions-container,
 #search-results-container,
 #useful-info-results-container {
@@ -472,7 +465,6 @@ body.light-theme ::-webkit-scrollbar-thumb {
     text-align: center;
     width: 100%;
     max-width: 500px;
-    /* FIX: Reduced top margin from 15px and bottom margin from 35px */
     margin: 5px 0 5px 0;
     box-sizing: border-box;
 }
@@ -496,11 +488,11 @@ body.light-theme ::-webkit-scrollbar-thumb {
     border-radius: 20px;
     transition: all 0.2s ease;
     box-shadow: none;
-    max-width: 100%; /* Use max-width to allow shrinking */
+    max-width: 100%;
     box-sizing: border-box;
     text-align: center;
-    width: auto; /* Allow button to size to its content */
-    min-width: 280px; /* Prevent it from becoming too small */
+    width: auto;
+    min-width: 280px;
 }
 
 .hero-cta-button:hover {
@@ -520,7 +512,6 @@ body.light-theme ::-webkit-scrollbar-thumb {
     color: var(--nm-text);
     text-transform: uppercase;
     font-size: 1rem;
-    /* FIX: Reduced top margin from 25px to 10px */
     margin: 10px auto 15px;
     padding-bottom: 5px;
     border-bottom: 1px solid var(--nm-border);
@@ -532,7 +523,7 @@ body.light-theme ::-webkit-scrollbar-thumb {
     display: grid;
     grid-template-columns: repeat(4, max-content);
     justify-content: center;
-    gap: 25px; /* MODIFIED: Reduced from 35px */
+    gap: 25px;
     width: 100%;
     max-width: 500px;
     margin: 0 auto 15px;
@@ -549,10 +540,9 @@ body.light-theme ::-webkit-scrollbar-thumb {
     color: var(--nm-text);
 }
 
-/* === MODIFIED: Animate border-color, set static black background === */
 .app-icon {
-    background: #000000; /* Static Pitch Black Background */
-    border: 2px solid var(--nm-accent); /* Increased border width for visibility */
+    background: #000000;
+    border: 2px solid var(--nm-accent);
     color: var(--nm-text);
     cursor: pointer;
     font-family: 'Roboto Mono', monospace;
@@ -570,7 +560,7 @@ body.light-theme ::-webkit-scrollbar-thumb {
     gap: 12px;
     box-shadow: none;
     height: 56px;
-    animation: cycle-border-colors 5s infinite steps(1, end); /* Animate border color */
+    animation: cycle-border-colors 5s infinite steps(1, end);
 }
 
 
@@ -594,7 +584,7 @@ body.light-theme ::-webkit-scrollbar-thumb {
 }
 
 .app-icon:hover {
-    animation: none; /* Pause animation on hover */
+    animation: none;
     background: var(--nm-accent);
     border-color: var(--nm-accent-hover);
     color: var(--nm-darkest);
@@ -603,7 +593,7 @@ body.light-theme ::-webkit-scrollbar-thumb {
 
 .app-wrapper:hover .app-icon,
 .app-wrapper:focus-visible .app-icon {
-    animation: none; /* Pause animation on hover */
+    animation: none;
     background: var(--nm-accent);
     border-color: var(--nm-accent-hover);
     box-shadow: none; 
@@ -616,7 +606,7 @@ body.light-theme ::-webkit-scrollbar-thumb {
 }
 
 .app-icon i {
-    color: var(--nm-accent); /* Set icon color to static purple */
+    color: var(--nm-accent);
     transition: color 0.2s ease;
     font-size: 1.4rem;
     margin: 0;
@@ -943,6 +933,19 @@ body.light-theme .modal-content {
     opacity: 0.9;
 }
 
+/* === ADDED: Certificate download button override === */
+#download-certificate-btn {
+    background-color: var(--nm-accent) !important;
+    border-color: var(--nm-accent) !important;
+    color: #000 !important;
+}
+#download-certificate-btn:hover {
+    background-color: var(--nm-accent-hover) !important;
+    border-color: var(--nm-accent-hover) !important;
+    color: var(--nm-text) !important;
+}
+
+
 .tip {
     background: var(--nm-dark);
     border-left: 2px solid var(--nm-warning);
@@ -1165,19 +1168,19 @@ body.light-theme .modal-content {
 
 /* Magnifying Glass Icon (Left) for Main Search */
 .search-container::before {
-    content: '\f002'; /* fa-search */
+    content: '\f002';
     left: 20px;
 }
 
 /* Globe Icon (Right) for Main Search */
 .search-container::after {
-    content: '\f0ac'; /* fa-globe */
+    content: '\f0ac';
     right: 20px;
 }
 
 /* Magnifying Glass Icon (Left) for Modal Search */
 .modal-search-container::before {
-    content: '\f002'; /* fa-search */
+    content: '\f002';
     left: 20px;
 }
 /* --- END: Search Bar Icons --- */
@@ -1263,7 +1266,7 @@ span.sub-item {
     border-radius: 20px;
     text-align: center;
     border: 1px solid var(--nm-accent);
-    box-sizing: border-box; /* Ensures padding is included in width */
+    box-sizing: border-box;
 }
 .anniversary-banner h2 {
     margin: 0 0 10px 0;
@@ -1310,13 +1313,15 @@ span.sub-item {
     display: none;
 }
 
-/* Hidden Certificate Template for PDF generation */
+/* === MODIFIED: Enhanced certificate design === */
 #certificate-template {
     position: absolute;
     left: -9999px;
     width: 1056px;
     height: 816px;
-    background: #1a1a2e;
+    background-color: #1a1a2e;
+    /* Subtle Guilloche Pattern Background */
+    background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Cdefs%3E%3Cpattern id='p' width='100' height='100' patternUnits='userSpaceOnUse'%3E%3Ccircle cx='50' cy='50' r='48' stroke='%233a4a5e' stroke-width='1' fill='none'/%3E%3Ccircle cx='50' cy='50' r='38' stroke='%233a4a5e' stroke-width='1' fill='none'/%3E%3C/pattern%3E%3C/defs%3E%3Crect width='100%25' height='100%25' fill='url(%23p)' opacity='0.1'/%3E%3C/svg%3E");
     color: #fff;
     padding: 40px;
     box-sizing: border-box;
@@ -1327,14 +1332,35 @@ span.sub-item {
     align-items: center;
     border: 10px solid #c0c0c0;
     border-image: linear-gradient(135deg, #e0c56e, #c0c0c0, #e0c56e) 1;
+    box-shadow: inset 0 0 0 2px #e0c56e; /* Inner golden border */
+    z-index: 0;
 }
-.certificate-header { text-align: center; }
-.certificate-header h1 { font-size: 52px; margin: 0; color: #e0c56e; font-family: 'Orbitron', sans-serif; }
+
+/* Watermark Seal */
+#certificate-template::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 350px;
+    height: 350px;
+    background-image: url('https://raw.githubusercontent.com/dedsec1121fk/dedsec1121fk.github.io/5860edb8a7468d955336c9cf1d8b357597d6d645/Assets/Images/Logos/Custom%20Black%20Purple%20Fox%20Logo.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    opacity: 0.08;
+    z-index: -1;
+}
+
+.certificate-header { text-align: center; z-index: 1; }
+.certificate-header h1 { font-size: 52px; margin: 0; color: #e0c56e; font-family: 'Orbitron', sans-serif; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
 .certificate-header h2 { font-size: 32px; margin: 10px 0; }
-.certificate-body { text-align: center; margin: 40px 0; }
+.certificate-body { text-align: center; margin: 40px 0; z-index: 1; }
 .certificate-body p { font-size: 24px; margin: 15px 0; line-height: 1.5; }
 #cert-name { 
-    font-size: 40px; 
+    font-family: 'Noto Serif', serif;
+    font-style: italic;
+    font-size: 44px; 
     color: #e0c56e;
     font-weight: bold; 
     border-bottom: 2px solid #e0c56e;
@@ -1346,6 +1372,7 @@ span.sub-item {
     justify-content: space-between; 
     width: 100%; 
     align-items: flex-end;
+    z-index: 1;
 }
 .certificate-footer .date, .certificate-footer .signature { 
     text-align: center; 
