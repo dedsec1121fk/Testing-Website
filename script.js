@@ -7,6 +7,27 @@ document.addEventListener('DOMContentLoaded', () => {
     let usefulInformationLoaded = false;
     let isFetchingUsefulInfo = false;
 
+    // --- NEW: Anniversary Theme Activation ---
+    function activateAnniversaryTheme() {
+        const banner = document.getElementById('anniversary-banner');
+        const section = document.getElementById('anniversary-section');
+        if (!banner || !section) return;
+
+        const today = new Date();
+        // The event runs from Oct 20 to Oct 31.
+        // To test the theme outside this window, you can temporarily change the startDate.
+        // For example: const startDate = new Date('2025-10-18');
+        const startDate = new Date('2025-10-20');
+        const endDate = new Date('2025-10-31');
+        endDate.setHours(23, 59, 59, 999); // Ensure the event includes all of Oct 31st.
+
+        if (today >= startDate && today <= endDate) {
+            document.body.classList.add('anniversary-theme');
+            banner.classList.remove('hidden');
+            section.classList.remove('hidden');
+        }
+    }
+
     // --- EVEN MORE ADVANCED SEARCH UTILITY (Used for 'Useful Information' modal) ---
     const SearchEngine = {
         idfMaps: {},
@@ -157,16 +178,82 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+    // --- NEW: Certificate Generation Logic ---
+    function initializeCertificateGenerator() {
+        const form = document.getElementById('certificate-form');
+        const certificateModal = document.getElementById('certificate-modal');
+        if (!form || !certificateModal) return;
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            if (typeof html2canvas === 'undefined' || typeof jspdf === 'undefined') {
+                alert('PDF generation library is still loading. Please try again in a moment.');
+                return;
+            }
+
+            const fullName = document.getElementById('cert-fullname').value.trim();
+            const age = document.getElementById('cert-age').value.trim();
+            const country = document.getElementById('cert-country').value.trim();
+            const city = document.getElementById('cert-city').value.trim();
+            const generateBtn = document.getElementById('generate-cert-btn');
+
+            if (!fullName || !age || !country || !city) {
+                alert('Please fill out all fields to generate your certificate.');
+                return;
+            }
+
+            const originalBtnText = generateBtn.textContent;
+            generateBtn.disabled = true;
+            generateBtn.textContent = 'Generating...';
+
+            const template = document.getElementById('certificate-template');
+            template.querySelector('.cert-name').textContent = fullName;
+            template.querySelector('.cert-age').textContent = age;
+            template.querySelector('.cert-location').textContent = `${city}, ${country}`;
+            
+            const today = new Date();
+            const formattedDate = today.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+            template.querySelector('.cert-date').textContent = formattedDate;
+
+            const { jsPDF } = window.jspdf;
+
+            html2canvas(template, { scale: 2, useCORS: true }).then(canvas => {
+                const imgData = canvas.toDataURL('image/png');
+                const pdf = new jsPDF({
+                    orientation: 'landscape',
+                    unit: 'px',
+                    format: [template.offsetWidth, template.offsetHeight]
+                });
+                pdf.addImage(imgData, 'PNG', 0, 0, template.offsetWidth, template.offsetHeight);
+                pdf.save('DedSec_1st_Anniversary_Certificate.pdf');
+
+                generateBtn.disabled = false;
+                generateBtn.textContent = originalBtnText;
+                
+                // Use the globally available hideModal function
+                hideModal(certificateModal);
+
+            }).catch(err => {
+                console.error("PDF generation failed:", err);
+                alert("Sorry, an error occurred while creating your certificate. Please try again.");
+                generateBtn.disabled = false;
+                generateBtn.textContent = originalBtnText;
+            });
+        });
+    }
+
+    // This function must be defined before it's used by the certificate generator
+    function hideModal(modal) {
+        if (!modal) return;
+        modal.classList.remove('visible');
+    }
+
     // --- PORTFOLIO INITIALIZATION ---
     function initializePortfolio() {
         function showModal(modal) {
             if (!modal) return;
             modal.classList.add('visible');
-        }
-
-        function hideModal(modal) {
-            if (!modal) return;
-            modal.classList.remove('visible');
         }
 
         const languageModal = document.getElementById('language-selection-modal');
@@ -366,9 +453,11 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
         
+        // --- Activate all features ---
+        activateAnniversaryTheme();
         initializeWebSearchSuggestions(); 
         initializeUsefulInfoSearch();
-        initializeCertificateGenerator(); // <-- ADDED THIS
+        initializeCertificateGenerator();
         
         if (languageModalCloseBtn) languageModalCloseBtn.style.display = 'none';
         showModal(languageModal);
@@ -427,7 +516,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 const script = document.createElement('script');
                 script.id = 'jsonp-script';
-                script.src = `httpss://suggestqueries.google.com/complete/search?client=chrome&q=${encodeURIComponent(query)}&callback=handleGoogleSuggestions`;
+                script.src = `https://suggestqueries.google.com/complete/search?client=chrome&q=${encodeURIComponent(query)}&callback=handleGoogleSuggestions`;
                 
                 script.onerror = () => {
                     console.error("Error loading Google suggestions. An ad-blocker might be interfering.");
@@ -758,172 +847,6 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (error) {
             console.error('Failed to load content:', error);
         }
-    }
-
-    // --- NEW: ANNIVERSARY CERTIFICATE GENERATOR ---
-    function initializeCertificateGenerator() {
-        const enForm = document.getElementById('certificate-form');
-        const grForm = document.getElementById('certificate-form-gr');
-        const modal = document.getElementById('anniversary-certificate-modal');
-        
-        if (!enForm || !grForm || !modal) return;
-
-        const handleSubmit = (e) => {
-            e.preventDefault();
-            const form = e.target;
-            const button = form.querySelector('.generate-cert-btn');
-            
-            const name = form.querySelector('.cert-name').value;
-            const age = form.querySelector('.cert-age').value;
-            const country = form.querySelector('.cert-country').value;
-            const city = form.querySelector('.cert-city').value;
-
-            if (!name || !age || !country || !city) return;
-
-            const originalBtnText = button.textContent;
-            button.textContent = (currentLanguage === 'gr' ? 'Δημιουργία...' : 'Generating...');
-            button.disabled = true;
-
-            generateCertificatePDF(name, age, country, city)
-                .then(() => {
-                    button.textContent = (currentLanguage === 'gr' ? 'Έγινε!' : 'Generated!');
-                    setTimeout(() => {
-                        button.textContent = originalBtnText;
-                        button.disabled = false;
-                        modal.classList.remove('visible'); // Hide modal on success
-                        form.reset();
-                    }, 2000);
-                })
-                .catch(error => {
-                    console.error('Failed to generate PDF:', error);
-                    button.textContent = (currentLanguage === 'gr' ? 'Σφάλμα' : 'Error');
-                    alert('Error generating certificate. Please try again.');
-                    setTimeout(() => {
-                        button.textContent = originalBtnText;
-                        button.disabled = false;
-                    }, 2000);
-                });
-        };
-
-        enForm.addEventListener('submit', handleSubmit);
-        grForm.addEventListener('submit', handleSubmit);
-    }
-
-    async function generateCertificatePDF(name, age, country, city) {
-        if (!window.jspdf) {
-            console.error('jsPDF is not loaded!');
-            alert('Error: PDF library not loaded. Please refresh and try again.');
-            return;
-        }
-
-        const { jsPDF } = window.jspdf;
-        const doc = new jsPDF({
-            orientation: 'landscape',
-            unit: 'mm',
-            format: 'a4'
-        });
-
-        const pageWidth = doc.internal.pageSize.getWidth();
-        const pageHeight = doc.internal.pageSize.getHeight();
-        const margin = 15;
-
-        // --- Load Logo ---
-        // This is the URL from the <head> meta tags
-        const logoUrl = 'https://raw.githubusercontent.com/dedsec1121fk/dedsec1121fk.github.io/5860edb8a7468d955336c9cf1d8b357597d6d645/Assets/Images/Logos/Custom%20Black%2Purple%20Fox%20Logo.png';
-        
-        let logoData;
-        try {
-            logoData = await getImageDataUrl(logoUrl);
-        } catch (error) {
-            console.error('Failed to load logo, proceeding without it.', error);
-        }
-
-        // --- Draw Certificate ---
-
-        // 1. Border
-        doc.setLineWidth(1.5);
-        doc.setDrawColor(153, 102, 255); // --nm-accent purple
-        doc.rect(margin, margin, pageWidth - margin * 2, pageHeight - margin * 2);
-
-        // 2. Logo (if loaded)
-        if (logoData) {
-            doc.addImage(logoData, 'PNG', (pageWidth / 2) - 15, margin + 5, 30, 30);
-        }
-
-        // 3. Main Title
-        doc.setFont('times', 'bold');
-        doc.setFontSize(30);
-        doc.setTextColor(153, 102, 255);
-        doc.text('CERTIFICATE OF PARTICIPATION', pageWidth / 2, margin + 50, { align: 'center' });
-
-        // 4. Subtitle
-        doc.setFont('times', 'normal');
-        doc.setFontSize(16);
-        doc.setTextColor(0, 0, 0);
-        doc.text('This is to certify that', pageWidth / 2, margin + 65, { align: 'center' });
-
-        // 5. User's Name
-        doc.setFont('times', 'bolditalic');
-        doc.setFontSize(40);
-        doc.setTextColor(0, 0, 0);
-        doc.text(name, pageWidth / 2, margin + 85, { align: 'center' });
-
-        // 6. User Details
-        doc.setFont('times', 'normal');
-        doc.setFontSize(14);
-        const detailsText = `Age: ${age}  |  From: ${city}, ${country}`;
-        doc.text(detailsText, pageWidth / 2, margin + 98, { align: 'center' });
-
-        // 7. Main Text
-        doc.setFontSize(16);
-        doc.text('has successfully participated in the', pageWidth / 2, margin + 115, { align: 'center' });
-        
-        doc.setFont('times', 'bold');
-        doc.setFontSize(18);
-        doc.setTextColor(153, 102, 255);
-        doc.text('DedSec Project 1-Year Anniversary Event', pageWidth / 2, margin + 125, { align: 'center' });
-
-        // 8. Date & Signature
-        const signatureY = pageHeight - margin - 30;
-        doc.setLineWidth(0.5);
-        doc.setDrawColor(0, 0, 0);
-
-        // Date
-        doc.setFont('times', 'normal');
-        doc.setFontSize(12);
-        doc.setTextColor(0, 0, 0);
-        doc.text('October 20 - October 31, 2025', margin + 20, signatureY + 8);
-        doc.line(margin + 15, signatureY, margin + 85, signatureY);
-        doc.text('Event Date', margin + 50, signatureY + 5, { align: 'center' });
-
-        // Signature
-        doc.text('dedsec1121fk', pageWidth - margin - 50, signatureY - 2, { align: 'center', font: 'times', style: 'italic' });
-        doc.line(pageWidth - margin - 15, signatureY, pageWidth - margin - 85, signatureY);
-        doc.text('DedSec Project', pageWidth - margin - 50, signatureY + 5, { align: 'center' });
-
-
-        // --- Save PDF ---
-        doc.save(`DedSec_Anniversary_Certificate_${name.replace(/ /g, '_')}.pdf`);
-    }
-
-    // Helper function to load an image and convert it to Data URL for jsPDF
-    function getImageDataUrl(url) {
-        return new Promise((resolve, reject) => {
-            const img = new Image();
-            img.crossOrigin = 'Anonymous';
-            img.onload = () => {
-                const canvas = document.createElement('canvas');
-                canvas.width = img.width;
-                canvas.height = img.height;
-                const ctx = canvas.getContext('2d');
-                ctx.drawImage(img, 0, 0);
-                resolve(canvas.toDataURL('image/png'));
-            };
-            img.onerror = (e) => {
-                reject(e);
-            };
-            img.src = url;
-        });
     }
     
     // --- INITIALIZE ALL FEATURES ---

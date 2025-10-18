@@ -43,6 +43,66 @@
     --clip-path-shape: none; 
 }
 
+
+/* --- NEW: 1-YEAR ANNIVERSARY THEME --- */
+@keyframes anniversary-gradient-flow {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+body.anniversary-theme {
+    --nm-abyss-blue: #0f0c29;
+    --nm-darkest: #1d113a;
+    --nm-dark: #24243e;
+    --nm-container: #302b63;
+    --nm-border: #524789;
+    --nm-accent: #e7345f; /* Vibrant Red/Pink */
+    --nm-accent-hover: #ff4e79;
+    --nm-text: #ffffff;
+    --nm-text-muted: #c3b9e8;
+    --nm-success: #00ff7f;
+    --nm-warning: #ffea00;
+    --nm-danger: #ff3352;
+}
+
+body.anniversary-theme .main-header-container h1 {
+    color: var(--nm-text);
+    text-shadow:
+        0 0 5px #fff,
+        0 0 10px #ff00ff,
+        0 0 15px #ff00ff,
+        0 0 20px #00ffff,
+        0 0 25px #00ffff;
+}
+
+body.anniversary-theme .app-icon {
+    border: 1px solid transparent;
+    background: linear-gradient(135deg, #ff00ff, #00ffff, #e7345f, #ff00ff);
+    background-size: 300% 300%;
+    animation: anniversary-gradient-flow 8s ease infinite;
+    color: #ffffff;
+}
+body.anniversary-theme .app-icon:hover {
+    animation-play-state: paused;
+    transform: scale(1.1);
+    box-shadow: 0 0 15px var(--nm-accent);
+}
+
+body.anniversary-theme .app-icon i {
+    color: #ffffff;
+}
+
+body.anniversary-theme .app-wrapper:hover .app-label {
+    color: var(--nm-accent);
+}
+
+body.anniversary-theme #main-search-input {
+    border-color: #6a3093;
+}
+/* --- END: ANNIVERSARY THEME --- */
+
+
 body.light-theme {
     --nm-abyss-blue: #ffffff;
     --nm-darkest: #f0f0f0;
@@ -73,8 +133,7 @@ body.light-theme .copy-btn:hover,
 body.light-theme .modal-footer button:hover,
 body.light-theme .language-button:hover,
 body.light-theme .language-button.selected,
-body.light-theme .store-link a:hover,
-body.light-theme .generate-cert-btn:hover { /* Added cert button */
+body.light-theme .store-link a:hover {
     color: #FFFFFF; /* Use pure white for high contrast on purple backgrounds */
 }
 
@@ -103,20 +162,6 @@ body.light-theme .note.note-warning {
     color: #000000; /* Use black text for readability on yellow background */
     border-left-color: #FBC02D; /* A darker yellow to match the theme */
 }
-
-/* --- Anniversary Light Theme Fixes --- */
-body.light-theme .anniversary-banner {
-    background: linear-gradient(90deg, #e8dffc, #f3eafd);
-    border-color: var(--nm-border);
-    color: var(--nm-text);
-}
-body.light-theme .anniversary-banner i {
-    color: var(--nm-accent);
-}
-body.light-theme .anniversary-button .app-icon {
-    border-color: var(--nm-accent-hover);
-}
-
 
 /* =================================================================
    END OF LIGHT THEME FIXES
@@ -327,6 +372,23 @@ body.light-theme ::-webkit-scrollbar-thumb {
 }
 
 
+/* --- NEW: Anniversary Banner --- */
+#anniversary-banner {
+    width: 100%;
+    background: linear-gradient(90deg, #6a3093 0%, #a044ff 100%);
+    color: white;
+    text-align: center;
+    padding: 12px;
+    font-size: 0.9rem;
+    box-shadow: 0 4px 15px rgba(176, 75, 255, 0.4);
+    border-bottom: 2px solid var(--nm-accent-hover);
+    box-sizing: border-box;
+}
+#anniversary-banner p {
+    margin: 0;
+}
+
+
 .main-header-container {
     display: flex;
     flex-direction: column;
@@ -528,11 +590,16 @@ body.light-theme ::-webkit-scrollbar-thumb {
     display: grid;
     grid-template-columns: repeat(4, max-content);
     justify-content: center;
-    gap: 35px; /* MODIFIED: Set to 35px */
+    gap: 25px; /* MODIFIED: Reduced from 35px to 25px */
     width: 100%;
     max-width: 500px;
     margin: 0 auto 15px;
     align-items: start;
+}
+
+/* Special grid for the single anniversary button */
+#anniversary-section .app-grid {
+    grid-template-columns: max-content;
 }
 
 .app-wrapper {
@@ -1192,6 +1259,140 @@ body.light-theme .modal-content {
 }
 /* --- END: Search Bar Icons --- */
 
+
+/* --- NEW: Certificate Modal Form Styles --- */
+.form-group {
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+}
+.form-group label {
+    margin-bottom: 5px;
+    font-size: 0.8rem;
+    color: var(--nm-text-muted);
+}
+.form-group input {
+    background-color: var(--nm-darkest);
+    border: 1px solid var(--nm-border);
+    border-radius: 8px;
+    padding: 10px;
+    color: var(--nm-text);
+    font-family: 'Roboto Mono', monospace;
+}
+.form-group input:focus {
+    outline: none;
+    border-color: var(--nm-accent);
+}
+
+/* --- NEW: Certificate Template Styling --- */
+#certificate-template {
+    position: absolute;
+    left: -9999px; /* Hide it off-screen */
+    width: 1000px;
+    height: 700px;
+    background-color: #0f0c29;
+    color: #fff;
+    font-family: 'Noto Serif', serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+#certificate-template .cert-border {
+    width: 100%;
+    height: 100%;
+    border: 3px solid #d4af37;
+    padding: 30px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-align: center;
+    background: linear-gradient(45deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0));
+}
+
+#certificate-template .cert-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+#certificate-template .cert-logo {
+    width: 80px;
+    height: auto;
+}
+#certificate-template .cert-header h1 {
+    font-family: 'Orbitron', sans-serif;
+    color: #d4af37;
+    font-size: 2.5rem;
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+#certificate-template .cert-body {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+#certificate-template .cert-body p {
+    font-size: 1.2rem;
+    margin: 10px 0;
+}
+#certificate-template .cert-body h2.cert-name {
+    font-size: 3rem;
+    color: #fff;
+    margin: 15px 0;
+    font-weight: 700;
+    font-style: italic;
+}
+#certificate-template .cert-body h3 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.8rem;
+    color: #a044ff;
+    margin: 10px 0;
+}
+#certificate-template .cert-event-dates {
+    font-size: 1rem;
+    color: #c3b9e8;
+}
+
+#certificate-template .cert-footer {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding-top: 20px;
+    border-top: 1px solid #524789;
+    margin-top: 30px;
+}
+
+#certificate-template .cert-footer div {
+    text-align: center;
+}
+#certificate-template .cert-footer p {
+    margin: 0;
+    font-size: 1.2rem;
+}
+#certificate-template .cert-footer hr {
+    width: 80%;
+    border: 0;
+    border-top: 1px solid #d4af37;
+    margin: 5px auto;
+}
+#certificate-template .cert-footer span {
+    font-size: 0.8rem;
+    color: #c3b9e8;
+}
+#certificate-template .cert-footer .signature {
+    font-family: 'Orbitron', sans-serif;
+    font-style: normal;
+}
+
+
 /* --- Styles from removed inline attributes --- */
 #expanded-img {
     max-width: 90vw;
@@ -1267,139 +1468,6 @@ span.sub-item {
 
 
 /* =================================================================
-   ANNIVERSARY STYLES
-   ================================================================= */
-
-@keyframes party-glow {
-    0% {
-        border-color: var(--nm-accent-hover);
-        box-shadow: 0 0 5px var(--nm-accent-hover), 0 0 10px var(--nm-accent-hover);
-    }
-    33% {
-        border-color: var(--nm-success);
-        box-shadow: 0 0 5px var(--nm-success), 0 0 10px var(--nm-success);
-    }
-    66% {
-        border-color: var(--nm-warning);
-        box-shadow: 0 0 5px var(--nm-warning), 0 0 10px var(--nm-warning);
-    }
-    100% {
-        border-color: var(--nm-accent-hover);
-        box-shadow: 0 0 5px var(--nm-accent-hover), 0 0 10px var(--nm-accent-hover);
-    }
-}
-
-.anniversary-banner {
-    width: 100%;
-    max-width: 500px;
-    background: linear-gradient(90deg, #1a1229, #2b1d42);
-    border: 1px solid var(--nm-accent);
-    border-radius: 20px;
-    padding: 12px 18px;
-    box-sizing: border-box;
-    margin: 10px 0;
-    box-shadow: 0 0 15px rgba(153, 102, 255, 0.3);
-}
-
-.anniversary-banner-content {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
-
-.anniversary-banner i {
-    font-size: 2rem;
-    color: var(--nm-accent-hover);
-    text-shadow: 0 0 10px var(--nm-accent);
-}
-
-.anniversary-banner div {
-    display: flex;
-    flex-direction: column;
-}
-
-.anniversary-banner strong {
-    font-family: 'Orbitron', sans-serif;
-    color: var(--nm-text);
-    font-size: 1rem;
-    font-weight: 700;
-}
-
-.anniversary-banner span {
-    font-size: 0.8rem;
-    color: var(--nm-text-muted);
-}
-
-.anniversary-button .app-icon {
-    animation: party-glow 3s linear infinite;
-}
-
-.anniversary-button .app-icon i {
-    color: var(--nm-warning); /* Gold color for the award icon */
-}
-
-.anniversary-button:hover .app-icon i {
-    color: var(--nm-darkest); /* Revert to dark on hover */
-}
-
-
-/* --- Certificate Modal Form --- */
-.form-group {
-    margin-bottom: 1rem;
-    display: flex;
-    flex-direction: column;
-}
-
-.form-group label {
-    font-family: 'Roboto Mono', monospace;
-    font-size: 0.9rem;
-    color: var(--nm-text-muted);
-    margin-bottom: 8px;
-}
-
-.form-group input {
-    width: 100%;
-    padding: 10px 15px;
-    background-color: var(--nm-darkest);
-    border: 2px solid var(--nm-border);
-    color: var(--nm-text);
-    font-family: 'Roboto Mono', monospace;
-    font-size: 0.9rem;
-    transition: all 0.3s ease;
-    border-radius: 20px; 
-    box-sizing: border-box;
-}
-
-.form-group input:focus {
-    outline: none;
-    background-color: var(--nm-dark);
-    border-color: var(--nm-accent);
-}
-
-.generate-cert-btn {
-    width: 100%;
-    background-color: var(--nm-accent);
-    color: #000000;
-    border: 2px solid var(--nm-accent);
-    font-family: 'Orbitron', sans-serif;
-    text-transform: uppercase;
-    font-weight: 700;
-    font-size: 0.9rem;
-    padding: 12px 15px;
-    border-radius: 20px;
-    transition: all 0.2s ease;
-    box-shadow: none;
-    cursor: pointer;
-    margin-top: 1rem;
-}
-
-.generate-cert-btn:hover {
-    background-color: var(--nm-accent-hover);
-    border-color: var(--nm-accent-hover);
-    color: #ffffff;
-}
-
-/* =================================================================
    TABLET & WIDER SCREEN STYLES
    ================================================================= */
 @media (min-width: 768px) {
@@ -1416,13 +1484,15 @@ span.sub-item {
     .search-container,
     .hero-section,
     .grid-heading,
-    .app-grid,
-    .anniversary-banner { /* Added banner to max-width */
+    .app-grid {
         max-width: 700px;
     }
 
     .app-grid {
         grid-template-columns: repeat(6, max-content);
+    }
+     #anniversary-section .app-grid {
+        grid-template-columns: max-content;
     }
 
     .main-header-container h1 {
@@ -1437,12 +1507,14 @@ span.sub-item {
     .search-container,
     .hero-section,
     .grid-heading,
-    .app-grid,
-    .anniversary-banner { /* Added banner to max-width */
+    .app-grid {
         max-width: 900px;
     }
 
     .app-grid {
         grid-template-columns: repeat(8, max-content);
+    }
+     #anniversary-section .app-grid {
+        grid-template-columns: max-content;
     }
 }

@@ -41,6 +41,11 @@
             <div class="screen-overlay"></div>
             
             <main class="home-screen">
+
+                <div id="anniversary-banner" class="hidden">
+                    <p><strong>1 Year Anniversary Event!</strong> This special theme is active from October 20th to October 31st. Enjoy!</p>
+                </div>
+
                 <div class="main-header-container">
                     <h1 data-en="DedSec Project" data-gr="DedSec Project">DedSec Project</h1>
                     <div class="search-container">
@@ -51,18 +56,19 @@
                     </div>
                 </div>
 
-                <div class="anniversary-banner">
-                    <div class="anniversary-banner-content">
-                        <i class="fas fa-party-horn"></i> <div>
-                            <strong data-en="1-Year Anniversary Event!" data-gr="Εκδήλωση 1ης Επετείου!">1-Year Anniversary Event!</strong>
-                            <span data-en="October 20 - October 31" data-gr="20 Οκτωβρίου - 31 Οκτωβρίου">October 20 - October 31</span>
-                        </div>
-                    </div>
-                </div>
                 <div class="hero-section">
                     <p class="hero-text" data-en="" data-gr=""></p>
                 </div>
 
+                <div id="anniversary-section" class="hidden">
+                    <h4 class="grid-heading" data-en="1st Anniversary Event" data-gr="Εκδήλωση 1ης Επετείου">1st Anniversary Event</h4>
+                    <div class="app-grid">
+                         <button class="app-wrapper" data-modal="certificate">
+                            <div class="app-icon"><i class="fas fa-award"></i></div>
+                            <span class="app-label" data-en="Get Your Certificate" data-gr="Πάρε το Πιστοποιητικό σου">Get Your Certificate</span>
+                        </button>
+                    </div>
+                </div>
 
                 <h4 class="grid-heading" data-en="Explore the Toolkit" data-gr="Εξερευνήστε την Εργαλειοθήκη">Explore the Toolkit</h4>
                 <div class="app-grid">
@@ -90,10 +96,6 @@
                         <span class="app-label" data-en="Collaborations" data-gr="Συνεργασίες">Collaborations</span>
                     </button>
 
-                    <button class="app-wrapper anniversary-button" data-modal="anniversary-certificate">
-                        <div class="app-icon"><i class="fas fa-award"></i></div>
-                        <span class="app-label" data-en="Get Certificate" data-gr="Λήψη Πιστοποιητικού">Get Certificate</span>
-                    </button>
                     <button class="app-wrapper" data-modal="portfolio-github">
                         <div class="app-icon"><i class="fas fa-briefcase"></i></div>
                         <span class="app-label" data-en="Portfolio & GitHub Info" data-gr="Portfolio & GitHub Info">Portfolio & GitHub Info</span>
@@ -136,6 +138,36 @@
         </div>
     </div>
 
+    <div id="certificate-template">
+        <div class="cert-border">
+            <div class="cert-header">
+                <img src="https://raw.githubusercontent.com/dedsec1121fk/dedsec1121fk.github.io/5860edb8a7468d955336c9cf1d8b357597d6d645/Assets/Images/Logos/Custom%20Black%20Purple%20Fox%20Logo.png" alt="Logo" class="cert-logo">
+                <h1>Certificate of Participation</h1>
+            </div>
+            <div class="cert-body">
+                <p>This certifies that</p>
+                <h2 class="cert-name">[NAME HERE]</h2>
+                <p>from <span class="cert-location">[CITY, COUNTRY]</span> (Age: <span class="cert-age">[AGE]</span>)</p>
+                <p>participated in the</p>
+                <h3>DedSec Project 1st Anniversary Event</h3>
+                <p class="cert-event-dates">October 20-31, 2025</p>
+            </div>
+            <div class="cert-footer">
+                <div>
+                    <p class="cert-date">[DATE HERE]</p>
+                    <hr>
+                    <span>Date Issued</span>
+                </div>
+                <div>
+                    <p class="signature">DedSec Project</p>
+                    <hr>
+                    <span>Official</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <div id="image-viewer-modal" class="modal-overlay">
         <img id="expanded-img" src="" alt="Expanded Profile Picture">
     </div>
@@ -151,6 +183,39 @@
               <button class="language-button" data-lang="gr" aria-label="Change language to Greek">Ελληνικά</button>
           </div>
       </div>
+    </div>
+
+    <div id="certificate-modal" class="modal-overlay">
+        <div class="modal-content modal-content-auto-height">
+            <div class="modal-header">
+                <h2 data-en="Generate Anniversary Certificate" data-gr="Δημιουργία Επετειακού Πιστοποιητικού">Generate Anniversary Certificate</h2>
+                <button class="close-modal" aria-label="Close">×</button>
+            </div>
+            <div class="modal-body">
+                <p data-en="Fill in your details below to receive your personalized certificate of participation." data-gr="Συμπληρώστε τα στοιχεία σας παρακάτω για να λάβετε το εξατομικευμένο πιστοποιητικό συμμετοχής σας." style="text-align: center; margin-bottom: 25px;"></p>
+                <form id="certificate-form">
+                    <div class="form-group">
+                        <label for="cert-fullname" data-en="First & Last Name" data-gr="Ονοματεπώνυμο">First & Last Name</label>
+                        <input type="text" id="cert-fullname" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="cert-age" data-en="Age" data-gr="Ηλικία">Age</label>
+                        <input type="number" id="cert-age" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="cert-country" data-en="Country" data-gr="Χώρα">Country</label>
+                        <input type="text" id="cert-country" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="cert-city" data-en="City" data-gr="Πόλη">City</label>
+                        <input type="text" id="cert-city" required>
+                    </div>
+                    <div class="modal-footer" style="padding-top: 20px; border-top: none;">
+                        <button type="submit" id="generate-cert-btn" class="accept-btn" data-en="Download Certificate" data-gr="Λήψη Πιστοποιητικού">Download Certificate</button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
 
     <div id="disclaimer-modal" class="modal-overlay">
@@ -250,7 +315,7 @@
                 <li><b>Settings</b><br>Ένας κεντρικός πίνακας ελέγχου για τη διαχείριση του DedSec Project. Χρησιμοποιήστε τον για να δείτε πληροφορίες συστήματος, να ενημερώσετε όλα τα σενάρια του έργου και τα απαιτούμενα πακέτα, να αλλάξετε το στυλ της γραμμής εντολών του Termux και να επιλέξετε μεταξύ διάταξης μενού λίστας ή πλέγματος. Αυτό το σενάριο τροποποιεί το αρχείο σας <b><code>/data/data/com.termux/files/usr/etc/bash.bashrc</code></b> για να εφαρμόσει τις αλλαγές.</li>
                 <li><b>Loading Screen</b><br>Εγκαθιστά μια προσαρμοσμένη οθόνη φόρτωσης με ASCII art που εμφανίζεται κατά την εκκίνηση του Termux. Μπορείτε να χρησιμοποιήσετε την προεπιλεγμένη εικόνα, να δώσετε τη δική σας και να ορίσετε τη διάρκεια εμφάνισης. Αυτό το σενάριο λειτουργεί προσθέτοντας ρυθμίσεις στο αρχείο σας <b><code>~/.bash_profile</code></b>.</li>
                 <li><b>SSH Defender</b><br>Ένα honeypot SSH βασισμένο σε Python, σχεδιασμένο για τον εντοπισμό και την καταγραφή μη εξουσιοδοτημένων προσπαθειών σύνδεσης. Εναλλάσσεται έξυπνα μεταξύ κοινών θυρών (όπως 22, 2222, 80, 443) και μιμείται έναν πραγματικό διακομιστή SSH για να συλλέξει δεδομένα εισβολέων. Μόλις εντοπιστεί επίθεση σε μια θύρα, "κλειδώνει" σε αυτήν τη θύρα για μόνιμη παρακολούθηση, καταγράφοντας όλη τη δραστηριότητα, τις διευθύνσεις IP και τα δεδομένα που αποστέλλονται. Διαθέτει έναν πίνακα ελέγχου TUI (Text-based User Interface) πραγματικού χρόνου για την παρακολούθηση της δραστηριότητας.</li>
-                <li><b>Smart Notes</b><br>Μια γρήγορη εφαρμογή TUI (Text-based User Interface) για τη διαχείριση σημειώσεων και υπενθυμίσεων απευθείας στο τερματικό. Σας επιτρέπει να δημιουργείτε, να επεξεργάζεστε, να αναζητάτε και να διαγράφετε σημειώσεις, οι οποίες αποθηκεύονται τοπικά. Διαθέτει επίσης ενσωματωμένο σύστημα ημερολογίου για τη ρύθμιση υπενθυμίEOF
+                <li><b>Smart Notes</b><br>Μια γρήγορη εφαρμογή TUI (Text-based User Interface) για τη διαχείριση σημειώσεων και υπενθυμίσεων απευθείας στο τερματικό. Σας επιτρέπει να δημιουργείτε, να επεξεργάζεστε, να αναζητάτε και να διαγράφετε σημειώσεις, οι οποίες αποθηκεύονται τοπικά. Διαθέτει επίσης ενσωματωμένο σύστημα ημερολογίου για τη ρύθμιση υπενθυμίσεων, οι οποίες μπορούν να ενεργοποιήσουν ειδοποιήσεις Termux την προγραμματισμένη ώρα.</li>
                 <li><b>Digital Footprint Finder</b><br>Ένα εργαλείο OSINT (Open Source Intelligence) που χρησιμοποιείται για την ανακάλυψη της διαδικτυακής παρουσίας ενός ονόματος χρήστη σε εκατοντάδες πλατφόρμες. Πραγματοποιεί σάρωση δύο φάσεων: πρώτα ελέγχει μεγάλες πλατφόρμες κοινωνικής δικτύωσης και προγραμματισμού, και μόνο εάν βρεθεί αντιστοιχία, προχωρά σε πλήρη, ευρεία σάρωση. Τα αποτελέσματα αποθηκεύονται σε μορφές <code>.txt</code> και <code>.json</code> στον φάκελο Λήψεων και αποθηκεύονται προσωρινά για 24 ώρες για επιτάχυνση των επόμενων αναζητήσεων.</li>
                 <li><b>Internet Tools</b><br>Μια ολοκληρωμένη σουίτα εργαλείων δικτύου βασισμένη σε TUI για ανάλυση και διάγνωση. Ενσωματώνεται με το Termux:API για σάρωση και διαχείριση Wi-Fi. Οι λειτουργίες περιλαμβάνουν τεστ ταχύτητας διαδικτύου, ανακάλυψη συσκευών τοπικού δικτύου, σαρωτή θυρών τύπου NMAP με ανίχνευση υπηρεσιών, προσομοίωση αναγνώρισης λειτουργικού συστήματος, αναζητήσεις WHOIS/DNS, αναλυτή κεφαλίδων ασφαλείας HTTP και web crawler, μεταξύ άλλων.</li>
             </ol>
@@ -372,58 +437,6 @@
         </div>
     </div>
 
-    <div id="anniversary-certificate-modal" class="modal-overlay">
-      <div class="modal-content modal-content-auto-height">
-          <div class="modal-header">
-            <h2 data-en="1-Year Anniversary Certificate" data-gr="Πιστοποιητικό 1ης Επετείου">1-Year Anniversary Certificate</h2>
-            <button class="close-modal" aria-label="Close">×</button>
-          </div>
-          <div class="modal-body" data-lang-section="en">
-              <p>Thank you for being part of our 1-Year Anniversary! Fill out the form below to generate your personal certificate of participation.</p>
-              <form id="certificate-form">
-                <div class="form-group">
-                    <label for="cert-name-en">First & Last Name:</label>
-                    <input type="text" id="cert-name-en" class="cert-name" placeholder="e.g., Jane Doe" required>
-                </div>
-                <div class="form-group">
-                    <label for="cert-age-en">Age:</label>
-                    <input type="number" id="cert-age-en" class="cert-age" placeholder="e.g., 25" required min="1">
-                </div>
-                <div class="form-group">
-                    <label for="cert-country-en">Country:</label>
-                    <input type="text" id="cert-country-en" class="cert-country" placeholder="e.g., USA" required>
-                </div>
-                <div class="form-group">
-                    <label for="cert-city-en">City:</label>
-                    <input type="text" id="cert-city-en" class="cert-city" placeholder="e.g., New York" required>
-                </div>
-                <button type="submit" id="generate-cert-btn-en" class="generate-cert-btn" data-en="Generate Certificate" data-gr="Δημιουργία Πιστοποιητικού">Generate Certificate</button>
-              </form>
-          </div>
-          <div class="modal-body hidden-by-default" data-lang-section="gr">
-              <p>Σας ευχαριστούμε που είστε μέρος της 1ης Επετείου μας! Συμπληρώστε την παρακάτω φόρμα για να δημιουργήσετε το προσωπικό σας πιστοποιητικό συμμετοχής.</p>
-              <form id="certificate-form-gr">
-                <div class="form-group">
-                    <label for="cert-name-gr">Όνομα & Επώνυμο:</label>
-                    <input type="text" id="cert-name-gr" class="cert-name" placeholder="π.χ., Μαρία Παπαδοπούλου" required>
-                </div>
-                <div class="form-group">
-                    <label for="cert-age-gr">Ηλικία:</label>
-                    <input type="number" id="cert-age-gr" class="cert-age" placeholder="π.χ., 25" required min="1">
-                </div>
-                <div class="form-group">
-                    <label for="cert-country-gr">Χώρα:</label>
-                    <input type="text" id="cert-country-gr" class="cert-country" placeholder="π.χ., Ελλάδα" required>
-                </div>
-                <div class="form-group">
-                    <label for="cert-city-gr">Πόλη:</label>
-                    <input type="text" id="cert-city-gr" class="cert-city" placeholder="π.χ., Αθήνα" required>
-                </div>
-                <button type="submit" id="generate-cert-btn-gr" class="generate-cert-btn" data-en="Generate Certificate" data-gr="Δημιουργία Πιστοποιητικού">Δημιουργία Πιστοποιητικού</button>
-              </form>
-          </div>
-      </div>
-    </div>
     <script src="httpss://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" defer></script>
     <script src="httpss://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>
     <script src="script.js" defer></script>
