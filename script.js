@@ -1,13 +1,13 @@
 document.addEventListener('DOMContentLoaded', () => {
     // --- GLOBAL PORTFOLIO STATE ---
-    let currentLanguage = 'en';
+    let currentLanguage = localStorage.getItem('language') || 'en';
     let usefulInfoSearchIndex = []; // Dedicated index for the modal, BUILT ON DEMAND
     let usefulInfoFiles = []; // Stores the list of files to avoid re-fetching
     let isUsefulInfoIndexBuilt = false; // Flag to check if the full index is ready
     let usefulInformationLoaded = false;
     let isFetchingUsefulInfo = false;
 
-    // --- EVEN MORE ADVANCED SEARCH UTILITY (Used for 'Useful Information' modal) ---
+    // --- ADVANCED SEARCH UTILITY (Used for 'Useful Information' modal) ---
     const SearchEngine = {
         idfMaps: {},
 
@@ -152,7 +152,8 @@ document.addEventListener('DOMContentLoaded', () => {
         highlight(snippet, query, lang) {
             const queryTokens = this.tokenize(query, lang);
             if (queryTokens.length === 0) return snippet;
-            const regex = new RegExp(`(${queryTokens.join('|')})`, 'gi');
+            // Highlight both the full query phrase and individual tokens
+            const regex = new RegExp(`(${queryTokens.join('|')}|${query.trim().replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
             return snippet.replace(regex, '<strong>$1</strong>');
         }
     };
@@ -169,7 +170,7 @@ document.addEventListener('DOMContentLoaded', () => {
             modal.classList.remove('visible');
         }
 
-        // Renamed/Simplified modal variables
+        // Modal elements
         const languageModal = document.getElementById('language-modal'); 
         const anniversaryModal = document.getElementById('anniversary-modal');
         const contactModal = document.getElementById('contact-modal');
@@ -180,13 +181,15 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
+        // Global function to handle language change
         window.changeLanguage = (lang) => {
             currentLanguage = lang;
+            localStorage.setItem('language', lang);
             document.documentElement.lang = lang;
             
             document.querySelectorAll('[data-en]').forEach(el => {
                 const text = el.getAttribute(`data-${lang}`) || el.getAttribute('data-en');
-                const hasElementChild = el.children.length > 0;
+                const hasElementChild = el.children.length > 0 && !el.classList.contains('app-icon');
                 if (!hasElementChild) {
                      el.textContent = text;
                 }
@@ -205,6 +208,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             document.title = "DedSec Project";
 
+            // Update search input placeholders
             const searchInput = document.getElementById('main-search-input');
             if (searchInput) {
                 searchInput.placeholder = lang === 'gr' ? 'Αναζήτηση στη Βάση Δεδομένων...' : 'Search the Database...';
@@ -218,6 +222,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         };
         
+        // --- Language Modal Handlers ---
         languageModal.querySelectorAll('.language-button').forEach(button => {
             button.addEventListener('click', () => {
                 try {
@@ -234,11 +239,12 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
         
-        document.getElementById('open-language-modal-btn')?.addEventListener('click', () => {
+        document.getElementById('open-language-modal-btn')?.addEventListener('click', (e) => {
+            e.preventDefault();
             showModal(languageModal);
         });
 
-        // --- NEW: Anniversary Modal Handlers ---
+        // --- Anniversary Modal Handlers ---
         document.getElementById('open-anniversary-modal')?.addEventListener('click', () => {
              showModal(anniversaryModal);
         });
@@ -248,13 +254,13 @@ document.addEventListener('DOMContentLoaded', () => {
             hideModal(anniversaryModal);
         });
         
-        // --- NEW: Contact Modal Handler ---
+        // --- Contact Modal Handler ---
         document.getElementById('open-contact-modal-btn')?.addEventListener('click', (e) => {
             e.preventDefault();
             showModal(contactModal);
         });
         
-        // --- NEW: Useful Info Modal Handler ---
+        // --- Useful Info Modal Handler ---
         document.querySelector('button.app-wrapper[data-modal-id="useful-information-modal"]')?.addEventListener('click', () => {
             showModal(usefulInfoModal);
             if (!usefulInformationLoaded) fetchUsefulInformation();
@@ -298,13 +304,15 @@ document.addEventListener('DOMContentLoaded', () => {
             const closeModal = () => {
                 hideModal(modal);
                 if (modal.id === 'useful-information-modal') {
+                    // Reset search state when closing Useful Info modal
                     document.getElementById('useful-info-search-input').value = '';
                     document.getElementById('useful-info-results-container').classList.add('hidden');
                     document.getElementById('useful-information-nav').querySelectorAll('.app-icon').forEach(article => {
                         article.style.display = 'flex';
                     });
                 }
-                modal.querySelectorAll('.content-highlight').forEach(el => el.classList.remove('content-highlight'));
+                // Remove highlight from any article content left open
+                document.querySelectorAll('.content-highlight').forEach(el => el.classList.remove('content-highlight'));
             };
             
             modal.addEventListener('click', e => {
@@ -314,14 +322,24 @@ document.addEventListener('DOMContentLoaded', () => {
             modal.querySelector('.close-modal')?.addEventListener('click', closeModal);
         });
         
-        // --- Universal Copy Function ---
+        // --- Universal Copy Function (FIXED to work with dynamic content) ---
         window.copyToClipboard = (button, targetId) => {
             const codeElement = document.getElementById(targetId);
             if (!codeElement || !navigator.clipboard) return; 
-            navigator.clipboard.writeText(codeElement.innerText).then(() => {
+            
+            // Use innerText to get formatted content (without HTML tags)
+            const textToCopy = codeElement.innerText;
+
+            navigator.clipboard.writeText(textToCopy).then(() => {
                 const originalText = button.textContent;
                 button.textContent = (currentLanguage === 'gr') ? 'Αντιγράφηке!' : 'Copied!';
-                setTimeout(() => { button.textContent = originalText; }, 1500);
+                setTimeout(() => { 
+                    // Use a dataset attribute to store the original text if it's the first time
+                    if (!button.dataset.originalText) {
+                        button.dataset.originalText = originalText;
+                    }
+                    button.textContent = button.dataset.originalText; 
+                }, 1500);
             }).catch(err => console.error('Failed to copy text: ', err));
         };
         
@@ -330,9 +348,8 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // --- Initial Load Logic ---
         // If the language hasn't been set, show the language modal first.
-        const savedLanguage = localStorage.getItem('language');
-        if (savedLanguage) {
-            changeLanguage(savedLanguage);
+        if (localStorage.getItem('language')) {
+            changeLanguage(currentLanguage);
             if (!localStorage.getItem('anniversaryViewed')) {
                 showModal(anniversaryModal);
             }
@@ -345,7 +362,6 @@ document.addEventListener('DOMContentLoaded', () => {
     function initializeWebSearchSuggestions() {
         const searchInput = document.getElementById('main-search-input');
         const suggestionsContainer = document.getElementById('search-suggestions-container');
-        // Removed searchForm as we are not using a form submission, but navigating directly
         if (!searchInput || !suggestionsContainer) return;
 
         window.handleGoogleSuggestions = (data) => {
@@ -449,12 +465,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
 
                 const titlesContainer = tempDiv.querySelector('#article-titles');
+                // The actual title is often inside a specific HTML structure
                 const titleEN = titlesContainer?.querySelector('[data-lang="en"]')?.textContent.trim() || fallbackTitleEN;
                 const titleGR = titlesContainer?.querySelector('[data-lang="gr"]')?.textContent.trim() || fallbackTitleGR;
 
                 tempDiv.querySelectorAll('[data-lang-section]').forEach(section => {
                     const lang = section.dataset.langSection;
                     const articleTitle = lang === 'gr' ? titleGR : titleEN;
+                    // Index content from relevant text elements
                     section.querySelectorAll('h3, h4, p, li, b, code').forEach(el => {
                         const text = el.textContent.trim().replace(/\s\s+/g, ' ');
                         if (text.length > 5) {
@@ -497,6 +515,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
+        // Apply titles to the navigation buttons after indexing
         document.querySelectorAll('#useful-information-nav .app-icon[data-url]').forEach(button => {
             const url = button.dataset.url;
             const titles = titleMap.get(url);
@@ -505,6 +524,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if(buttonSpan) {
                    buttonSpan.setAttribute('data-en', titles.en || '');
                    buttonSpan.setAttribute('data-gr', titles.gr || titles.en || '');
+                   // Ensure the current language is displayed
                    buttonSpan.textContent = (currentLanguage === 'gr' ? titles.gr : titles.en) || titles.en || buttonSpan.textContent;
                 }
             }
@@ -529,6 +549,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         };
 
+        // Load index on first focus
         searchInput.addEventListener('focus', async () => {
             if (isUsefulInfoIndexBuilt) return;
 
@@ -537,6 +558,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             progressBarContainer.style.display = 'block';
             progressBar.style.width = '0%';
+            progressText.textContent = '0%';
 
             await buildUsefulInfoSearchIndex(progressBar, progressText);
             
@@ -551,6 +573,7 @@ document.addEventListener('DOMContentLoaded', () => {
             searchInput.focus();
         }, { once: true });
 
+        // Handle search input
         searchInput.addEventListener('input', () => {
             const query = searchInput.value.trim();
             resultsContainer.innerHTML = '';
@@ -631,10 +654,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 button.dataset.url = file.download_url;
                 
                 const initialTitle = currentLanguage === 'gr' ? titleGR : titleEN;
+                // Add data attributes for title translation
                 button.innerHTML = `<i class="fas fa-book-open"></i><span data-en="${titleEN}" data-gr="${titleGR}">${initialTitle}</span>`;
                 
                 button.addEventListener('click', () => {
                     const span = button.querySelector('span');
+                    // Get the modal title based on the currently set language
                     const modalTitle = (currentLanguage === 'gr' ? span.getAttribute('data-gr') : span.getAttribute('data-en')) || titleEN;
                     loadInformationContent(file.download_url, modalTitle);
                 });
@@ -652,6 +677,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function createAndShowArticleModal(title, htmlContent, textToHighlight = null) {
+        // Remove any existing article modal to prevent duplication
         document.querySelectorAll('.article-modal-overlay').forEach(modal => modal.remove());
         const modalOverlay = document.createElement('div');
         modalOverlay.className = 'modal-overlay article-modal-overlay'; 
@@ -665,7 +691,7 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>`;
         document.body.appendChild(modalOverlay);
 
-        // --- FIX for dynamically loaded content ---
+        // --- FIX: Ensure copy-to-clipboard works for dynamic code blocks ---
         let dynamicCodeIdCounter = 0;
         const codeContainers = modalOverlay.querySelectorAll('.code-container');
         codeContainers.forEach(container => {
@@ -673,29 +699,29 @@ document.addEventListener('DOMContentLoaded', () => {
             const codeEl = container.querySelector('code');
 
             if (copyBtn && codeEl) {
-                // Ensure the code element has a unique ID for the copy function to target
+                // 1. Ensure the code element has a unique ID for the copy function to target
                 if (!codeEl.id) {
                     const uniqueId = `dynamic-code-${Date.now()}-${dynamicCodeIdCounter++}`;
                     codeEl.id = uniqueId;
                 }
                 
-                // Attach the event listener to the button
+                // 2. Attach the event listener to the button
                 copyBtn.addEventListener('click', () => {
                     // Call the globally available copyToClipboard function
                     window.copyToClipboard(copyBtn, codeEl.id);
                 });
             }
         });
-        // --- END FIX ---
         
         setTimeout(() => modalOverlay.classList.add('visible'), 10);
-        changeLanguage(currentLanguage);
+        changeLanguage(currentLanguage); // Re-apply language specific attributes inside the modal
     
+        // Highlight the matched search text
         if (textToHighlight) {
             setTimeout(() => {
                 const modalBody = modalOverlay.querySelector('.modal-body');
                 const allElements = modalBody.querySelectorAll('p, li, h3, h4, b, code, .tip, .note');
-                // The search index only stores text content, so we match against it.
+                // Find the specific element that contains the matched text
                 const targetElement = Array.from(allElements).find(el => el.textContent.trim().replace(/\s\s+/g, ' ') === textToHighlight.trim());
                 if (targetElement) {
                     modalBody.scrollTo({ top: targetElement.offsetTop - 50, behavior: 'smooth' });
@@ -705,19 +731,10 @@ document.addEventListener('DOMContentLoaded', () => {
             }, 150);
         }
         
+        // Define close logic
         const closeModal = () => {
             modalOverlay.classList.remove('visible');
             modalOverlay.addEventListener('transitionend', () => modalOverlay.remove(), { once: true });
-            
-            const searchInput = document.getElementById('useful-info-search-input');
-            if (searchInput) searchInput.value = '';
-            
-            const navContainer = document.getElementById('useful-information-nav');
-            if (navContainer) {
-                navContainer.querySelectorAll('.app-icon').forEach(article => {
-                    article.style.display = 'flex';
-                });
-            }
         };
 
         modalOverlay.addEventListener('click', (e) => {
