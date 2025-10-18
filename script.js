@@ -162,6 +162,72 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+    // --- NEW FIXED CERTIFICATE DOWNLOAD FUNCTION ---
+    /**
+     * Generates and downloads the certificate as a PDF using html2canvas and jsPDF.
+     * @param {string} name - Recipient's name.
+     */
+    async function downloadCertificate(name) {
+        const certificateElement = document.getElementById('certificate-template');
+        const downloadButton = document.getElementById('download-certificate-btn');
+        const modal = document.getElementById('certificate-modal');
+        const originalButtonText = downloadButton.innerHTML;
+        const errorEl = document.getElementById('certificate-error');
+    
+        // 1. Set Button to Loading State
+        downloadButton.disabled = true;
+        downloadButton.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Generating PDF...`;
+        if (errorEl) errorEl.style.display = 'none'; // Clear any previous errors
+    
+        try {
+            // 2. Use html2canvas to render the HTML element to a canvas
+            // Use a scale of 2 or higher for better quality
+            const canvas = await html2canvas(certificateElement, {
+                scale: 2, 
+                logging: false, 
+                useCORS: true 
+            });
+    
+            // Use JPEG for potentially smaller file size and good quality
+            const imgData = canvas.toDataURL('image/jpeg', 1.0); 
+            
+            // 3. Initialize jsPDF in Landscape (l), millimeters (mm), A4 size
+            const pdf = new jsPDF('l', 'mm', 'a4'); 
+            
+            const imgWidth = 297; // A4 landscape width (mm)
+            
+            // Calculate the height of the image to maintain aspect ratio
+            const imgHeight = (canvas.height * imgWidth) / canvas.width;
+            
+            // 4. Add the image to the PDF
+            pdf.addImage(imgData, 'JPEG', 0, 0, imgWidth, imgHeight);
+    
+            // 5. Save the PDF file
+            pdf.save(`${name.replace(/\s+/g, '_')}_DedSec_Certificate.pdf`);
+    
+            // Clear fields (moved here from the old event listener)
+            document.getElementById('cert-input-name').value = '';
+            document.getElementById('cert-input-age').value = '';
+            document.getElementById('cert-input-country').value = '';
+            document.getElementById('cert-input-city').value = '';
+    
+        } catch (error) {
+            console.error("Certificate PDF generation failed:", error);
+            if (errorEl) {
+                errorEl.textContent = "Error generating PDF. Please try again.";
+                errorEl.style.display = 'block';
+            }
+            alert('Failed to generate the certificate PDF. Check the console for details.');
+        } finally {
+            // 6. Restore button state and close modal
+            downloadButton.disabled = false;
+            downloadButton.innerHTML = originalButtonText;
+            if (modal) modal.classList.remove('visible');
+        }
+    }
+    // --- END NEW FIXED CERTIFICATE DOWNLOAD FUNCTION ---
+
+
     // --- PORTFOLIO INITIALIZATION ---
     function initializePortfolio() {
         function showModal(modal) {
@@ -388,6 +454,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const city = document.getElementById('cert-input-city').value.trim();
             const errorEl = document.getElementById('certificate-error');
 
+            // --- Input Validation ---
             if (!name || !age || !country || !city) {
                 errorEl.style.display = 'block';
                 return;
@@ -399,37 +466,10 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('cert-age').textContent = age;
             document.getElementById('cert-location').textContent = `${city}, ${country}`;
 
-            const certificateTemplate = document.getElementById('certificate-template');
-            
-            html2canvas(certificateTemplate, { 
-                scale: 3, // Higher scale for better quality
-                useCORS: true // In case images are used in the template later
-            }).then(canvas => {
-                const imgData = canvas.toDataURL('image/png');
-                
-                // A4 landscape is 842 x 595 points. Our template is 1056x816 pixels.
-                // We'll create a PDF matching the pixel dimensions for simplicity.
-                const pdf = new jsPDF({
-                    orientation: 'landscape',
-                    unit: 'px',
-                    format: [certificateTemplate.offsetWidth, certificateTemplate.offsetHeight]
-                });
-
-                pdf.addImage(imgData, 'PNG', 0, 0, certificateTemplate.offsetWidth, certificateTemplate.offsetHeight);
-                pdf.save('DedSec_Anniversary_Certificate.pdf');
-                hideModal(certificateModal);
-
-                // Clear fields
-                document.getElementById('cert-input-name').value = '';
-                document.getElementById('cert-input-age').value = '';
-                document.getElementById('cert-input-country').value = '';
-                document.getElementById('cert-input-city').value = '';
-
-            }).catch(err => {
-                console.error("Error generating PDF: ", err);
-                errorEl.textContent = "Error generating PDF. Please try again.";
-                errorEl.style.display = 'block';
-            });
+            // --- CALL THE NEW ASYNC DOWNLOAD FUNCTION ---
+            downloadCertificate(name);
+            // The downloadCertificate function now handles the heavy lifting, loading state,
+            // clearing fields, and closing the modal upon completion/failure.
         });
         
         initializeWebSearchSuggestions(); 
