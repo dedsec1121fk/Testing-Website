@@ -1158,7 +1158,7 @@ body.light-theme .modal-content {
 .search-container::after,
 .modal-search-container::before {
     /* This assumes Font Awesome is linked in the HTML */
-    font-family: 'Font Awesome 5 Free', 'FontAwesome';
+    font-family: 'Font Awesome 6 Free', 'FontAwesome'; /* CORRECTED */
     font-weight: 900; /* Use solid icons */
     position: absolute;
     top: 50%;
