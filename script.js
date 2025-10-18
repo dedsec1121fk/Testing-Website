@@ -169,14 +169,16 @@ document.addEventListener('DOMContentLoaded', () => {
             modal.classList.remove('visible');
         }
 
-        const languageModal = document.getElementById('language-selection-modal');
+        // Renamed/Simplified modal variables
+        const languageModal = document.getElementById('language-modal'); 
+        const anniversaryModal = document.getElementById('anniversary-modal');
+        const contactModal = document.getElementById('contact-modal');
+        const usefulInfoModal = document.getElementById('useful-information-modal');
+        
         if (!languageModal) {
             console.error("Fatal: Language modal not found. Site cannot start.");
             return;
         }
-        const languageModalCloseBtn = languageModal.querySelector('.close-modal');
-        const disclaimerModal = document.getElementById('disclaimer-modal');
-        const installationModal = document.getElementById('installation-modal');
 
         window.changeLanguage = (lang) => {
             currentLanguage = lang;
@@ -205,7 +207,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const searchInput = document.getElementById('main-search-input');
             if (searchInput) {
-                searchInput.placeholder = lang === 'gr' ? 'Αναζήτηση στο διαδίκτυο...' : 'Search the Web...';
+                searchInput.placeholder = lang === 'gr' ? 'Αναζήτηση στη Βάση Δεδομένων...' : 'Search the Database...';
             }
             
             const usefulInfoSearchInput = document.getElementById('useful-info-search-input');
@@ -224,36 +226,60 @@ document.addEventListener('DOMContentLoaded', () => {
                     console.error("Error changing language:", error);
                 } finally {
                     hideModal(languageModal);
+                    // Show anniversary modal immediately after language selection on first load
+                    if (!localStorage.getItem('anniversaryViewed')) {
+                        showModal(anniversaryModal);
+                    }
                 }
             });
         });
         
-        document.getElementById('lang-switcher-btn')?.addEventListener('click', () => {
-            if (languageModalCloseBtn) languageModalCloseBtn.style.display = ''; 
+        document.getElementById('open-language-modal-btn')?.addEventListener('click', () => {
             showModal(languageModal);
         });
 
-        const themeSwitcherBtn = document.getElementById('theme-switcher-btn');
-        if (themeSwitcherBtn) {
-            const themeIcon = themeSwitcherBtn.querySelector('i');
-            const themeSpan = themeSwitcherBtn.querySelector('span');
+        // --- NEW: Anniversary Modal Handlers ---
+        document.getElementById('open-anniversary-modal')?.addEventListener('click', () => {
+             showModal(anniversaryModal);
+        });
+
+        document.getElementById('close-anniversary-modal')?.addEventListener('click', () => {
+            localStorage.setItem('anniversaryViewed', 'true');
+            hideModal(anniversaryModal);
+        });
+        
+        // --- NEW: Contact Modal Handler ---
+        document.getElementById('open-contact-modal-btn')?.addEventListener('click', (e) => {
+            e.preventDefault();
+            showModal(contactModal);
+        });
+        
+        // --- NEW: Useful Info Modal Handler ---
+        document.querySelector('button.app-wrapper[data-modal-id="useful-information-modal"]')?.addEventListener('click', () => {
+            showModal(usefulInfoModal);
+            if (!usefulInformationLoaded) fetchUsefulInformation();
+        });
+
+
+        // --- Theme Toggle ---
+        const themeToggleBtn = document.getElementById('theme-toggle-btn');
+        if (themeToggleBtn) {
+            const themeIcon = document.getElementById('theme-icon');
 
             const updateThemeButton = (isLightTheme) => {
                 if (isLightTheme) {
                     themeIcon.classList.remove('fa-moon');
                     themeIcon.classList.add('fa-sun');
-                    themeSpan.setAttribute('data-en', 'Light Theme');
-                    themeSpan.setAttribute('data-gr', 'Φωτεινό Θέμα');
                 } else {
                     themeIcon.classList.remove('fa-sun');
                     themeIcon.classList.add('fa-moon');
-                    themeSpan.setAttribute('data-en', 'Theme');
-                    themeSpan.setAttribute('data-gr', 'Θέμα');
                 }
+                // Re-apply language specific text on the label
                 changeLanguage(currentLanguage);
             };
 
-            themeSwitcherBtn.addEventListener('click', () => {
+            themeToggleBtn.addEventListener('click', (e) => {
+                e.preventDefault();
                 document.body.classList.toggle('light-theme');
                 const isLight = document.body.classList.contains('light-theme');
                 localStorage.setItem('theme', isLight ? 'light' : 'dark');
@@ -266,56 +292,8 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             updateThemeButton(document.body.classList.contains('light-theme'));
         }
-
-        document.getElementById('accept-disclaimer')?.addEventListener('click', () => {
-            localStorage.setItem('disclaimerAccepted', 'true');
-            hideModal(disclaimerModal);
-            if (installationModal) {
-                showModal(installationModal);
-            }
-        });
-        document.getElementById('decline-disclaimer')?.addEventListener('click', () => window.location.href = 'https://www.google.com');
         
-        window.openModalAndHighlight = (modalId, highlightText = null) => {
-            if (modalId === 'installation' && !localStorage.getItem('disclaimerAccepted') && disclaimerModal) {
-                showModal(disclaimerModal);
-                return;
-            }
-            const modal = document.getElementById(`${modalId}-modal`);
-            if (modal) {
-                if (modalId === 'language-selection' && languageModalCloseBtn) {
-                     languageModalCloseBtn.style.display = '';
-                }
-                showModal(modal);
-                
-                if (modalId === 'useful-information' && !usefulInformationLoaded) {
-                    fetchUsefulInformation();
-                }
-                
-                if (highlightText) {
-                    setTimeout(() => highlightModalContent(modal, highlightText), 100); 
-                }
-            }
-        };
-
-        const highlightModalContent = (modal, text) => {
-            const modalBody = modal.querySelector('.modal-body');
-            if (!modalBody) return;
-            
-            const allElements = modalBody.querySelectorAll('h3, h4, p, li, b, code, span, .note, .tip, .modal-disclaimer');
-            const targetElement = Array.from(allElements).find(el => el.textContent.trim().replace(/\s\s+/g, ' ') === text.trim());
-
-            if (targetElement) {
-                modalBody.scrollTo({ top: targetElement.offsetTop - 50, behavior: 'smooth' });
-                targetElement.classList.add('content-highlight');
-                setTimeout(() => targetElement.classList.remove('content-highlight'), 2500);
-            }
-        };
-        
-        document.querySelectorAll('button.app-wrapper[data-modal]').forEach(wrapper => {
-            wrapper.addEventListener('click', () => openModalAndHighlight(wrapper.dataset.modal));
-        });
-
+        // --- Universal Modal Closing ---
         document.querySelectorAll('.modal-overlay').forEach(modal => {
             const closeModal = () => {
                 hideModal(modal);
@@ -330,12 +308,13 @@ document.addEventListener('DOMContentLoaded', () => {
             };
             
             modal.addEventListener('click', e => {
-                if (e.target === modal && modal.id !== 'language-selection-modal') closeModal();
+                if (e.target === modal) closeModal();
             });
             
             modal.querySelector('.close-modal')?.addEventListener('click', closeModal);
         });
         
+        // --- Universal Copy Function ---
         window.copyToClipboard = (button, targetId) => {
             const codeElement = document.getElementById(targetId);
             if (!codeElement || !navigator.clipboard) return; 
@@ -346,39 +325,28 @@ document.addEventListener('DOMContentLoaded', () => {
             }).catch(err => console.error('Failed to copy text: ', err));
         };
         
-        const carousel = document.querySelector('.gym-carousel');
-        if (carousel) {
-            const images = carousel.querySelectorAll('.gym-clothing-images img');
-            const prevBtn = carousel.querySelector('.carousel-btn.prev');
-            const nextBtn = carousel.querySelector('.carousel-btn.next');
-            if (images.length > 0) {
-                let currentIndex = 0;
-                const showImage = (index) => images.forEach((img, i) => img.classList.toggle('active', i === index));
-                prevBtn.addEventListener('click', () => {
-                    currentIndex = (currentIndex > 0) ? currentIndex - 1 : images.length - 1;
-                    showImage(currentIndex);
-                });
-                nextBtn.addEventListener('click', () => {
-                    currentIndex = (currentIndex < images.length - 1) ? currentIndex + 1 : 0;
-                    showImage(currentIndex);
-                });
-                showImage(0);
-            }
-        }
-        
         initializeWebSearchSuggestions(); 
         initializeUsefulInfoSearch();
         
-        if (languageModalCloseBtn) languageModalCloseBtn.style.display = 'none';
-        showModal(languageModal);
-        changeLanguage('en'); 
+        // --- Initial Load Logic ---
+        // If the language hasn't been set, show the language modal first.
+        const savedLanguage = localStorage.getItem('language');
+        if (savedLanguage) {
+            changeLanguage(savedLanguage);
+            if (!localStorage.getItem('anniversaryViewed')) {
+                showModal(anniversaryModal);
+            }
+        } else {
+             // Default to showing the language modal on first visit
+             showModal(languageModal);
+        }
     }
 
     function initializeWebSearchSuggestions() {
         const searchInput = document.getElementById('main-search-input');
         const suggestionsContainer = document.getElementById('search-suggestions-container');
-        const searchForm = document.getElementById('main-search-form');
-        if (!searchInput || !suggestionsContainer || !searchForm) return;
+        // Removed searchForm as we are not using a form submission, but navigating directly
+        if (!searchInput || !suggestionsContainer) return;
 
         window.handleGoogleSuggestions = (data) => {
             suggestionsContainer.innerHTML = '';
@@ -391,14 +359,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     itemEl.textContent = suggestion;
                     
                     itemEl.addEventListener('click', () => {
-                        searchInput.value = suggestion;
+                        // Direct navigation using Google search
+                        window.location.href = `https://www.google.com/search?q=${encodeURIComponent(suggestion)}`;
                         suggestionsContainer.classList.add('hidden');
-                        searchForm.submit();
-                        
-                        // Use a short delay to clear the input after the form submits
-                        setTimeout(() => {
-                            searchInput.value = ''; // THIS IS THE ADDED LINE
-                        }, 100);
+                        searchInput.value = ''; 
                     });
                     suggestionsContainer.appendChild(itemEl);
                 });
@@ -426,6 +390,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 const script = document.createElement('script');
                 script.id = 'jsonp-script';
+                // Using the official Google Suggest API
                 script.src = `https://suggestqueries.google.com/complete/search?client=chrome&q=${encodeURIComponent(query)}&callback=handleGoogleSuggestions`;
                 
                 script.onerror = () => {
@@ -437,8 +402,20 @@ document.addEventListener('DOMContentLoaded', () => {
             }, 200);
         });
 
+        // Handle enter key press on main search input
+        searchInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                const query = searchInput.value.trim();
+                if (query.length > 0) {
+                    window.location.href = `https://www.google.com/search?q=${encodeURIComponent(query)}`;
+                }
+                suggestionsContainer.classList.add('hidden');
+                searchInput.value = '';
+            }
+        });
+
         document.addEventListener('click', (e) => {
-            if (!searchForm.contains(e.target)) {
+            if (!searchInput.parentElement.contains(e.target)) {
                 suggestionsContainer.classList.add('hidden');
             }
         });
@@ -462,11 +439,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 let fallbackTitleEN = file.name.replace(/\.html$/, '').replace(/^\d+_/, '').replace(/_/g, ' ');
                 let fallbackTitleGR = fallbackTitleEN;
 
+                // Extract titles from the file name format: 01_Title_EN_(Τίτλος_GR).html
                 const titleRegex = /(.+?)_\((.+?)\)/;
                 const match = file.name.match(titleRegex);
 
                 if (match && match[1] && match[2]) {
-                    fallbackTitleEN = match[1].replace(/_/g, ' ').trim();
+                    fallbackTitleEN = match[1].replace(/^\d+_/, '').replace(/_/g, ' ').trim();
                     fallbackTitleGR = match[2].replace(/_/g, ' ').trim();
                 }
 
@@ -485,7 +463,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                 title: articleTitle,
                                 text,
                                 url: file.download_url,
-                                weight: (el.tagName === 'H3' ? 5 : 1)
+                                weight: (el.tagName === 'H3' || el.tagName === 'H4' ? 5 : 1)
                             };
                             usefulInfoSearchIndex.push(SearchEngine.preprocessItem(item));
                         }
@@ -531,6 +509,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
         });
+        // Ensure all displayed elements are updated after indexing
+        changeLanguage(currentLanguage);
     }
 
     function initializeUsefulInfoSearch() {
@@ -539,21 +519,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const navContainer = document.getElementById('useful-information-nav');
         if (!searchInput || !resultsContainer || !navContainer) return;
 
-        const progressBarContainer = document.createElement('div');
-        progressBarContainer.className = 'progress-bar-container';
+        const progressBarContainer = document.getElementById('info-progress-bar-container');
+        const progressBar = document.getElementById('info-progress-bar');
+        const progressText = document.getElementById('info-progress-text');
         
-        const progressBar = document.createElement('div');
-        progressBar.className = 'progress-bar';
-
-        const progressText = document.createElement('span');
-        progressText.className = 'progress-bar-text';
-        progressText.textContent = '0%';
-
-        progressBarContainer.appendChild(progressBar);
-        progressBarContainer.appendChild(progressText);
-        navContainer.parentNode.insertBefore(progressBarContainer, navContainer);
-
-
         const showNav = (shouldShow) => {
             navContainer.querySelectorAll('.app-icon').forEach(article => {
                 article.style.display = shouldShow ? 'flex' : 'none';
@@ -613,6 +582,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
                 resultsContainer.classList.remove('hidden');
             } else {
+                // If search yields no results, display the full navigation list
                 resultsContainer.classList.add('hidden');
                 showNav(true);
             }
@@ -624,17 +594,23 @@ document.addEventListener('DOMContentLoaded', () => {
         isFetchingUsefulInfo = true;
         const navContainer = document.getElementById('useful-information-nav');
         const GITHUB_API_URL = 'https://api.github.com/repos/dedsec1121fk/dedsec1121fk.github.io/contents/Useful_Information';
-        navContainer.innerHTML = `<p>${currentLanguage === 'gr' ? 'Φόρτωση...' : 'Loading...'}</p>`;
+        const prompt = document.getElementById('useful-info-prompt');
+        
+        prompt.textContent = currentLanguage === 'gr' ? 'Φόρτωση πληροφοριών...' : 'Loading information...';
         
         try {
             const response = await fetch(GITHUB_API_URL);
             if (!response.ok) throw new Error(`GitHub API error: ${response.status}`);
             const files = await response.json();
+            
+            // Sort files alphabetically to ensure stable ordering regardless of API response order
+            files.sort((a, b) => a.name.localeCompare(b.name));
+            
             usefulInfoFiles = files.filter(file => file.type === 'file' && file.name.endsWith('.html'));
             
             navContainer.innerHTML = '';
             if (usefulInfoFiles.length === 0) {
-                 navContainer.innerHTML = `<p>${currentLanguage === 'gr' ? 'Δεν βρέθηκαν πληροφορίες.' : 'No information found.'}</p>`;
+                 prompt.textContent = currentLanguage === 'gr' ? 'Δεν βρέθηκαν πληροφορίες.' : 'No information found.';
                  return;
             }
             
@@ -646,7 +622,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const match = file.name.match(titleRegex);
     
                 if (match && match[1] && match[2]) {
-                    titleEN = match[1].replace(/_/g, ' ').trim();
+                    titleEN = match[1].replace(/^\d+_/, '').replace(/_/g, ' ').trim();
                     titleGR = match[2].replace(/_/g, ' ').trim();
                 }
     
@@ -665,9 +641,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 navContainer.appendChild(button);
             });
             usefulInformationLoaded = true;
+            prompt.textContent = (currentLanguage === 'gr' ? 'Παρακαλώ επιλέξτε μια καταχώρηση από την παρακάτω λίστα για να δείτε το περιεχόμενο της.' : 'Please select an entry from the list below to view its content.');
+            
         } catch (error) {
             console.error('Failed to fetch useful information:', error);
-            navContainer.innerHTML = `<p style="color: var(--nm-danger);">${currentLanguage === 'gr' ? 'Αποτυχία φόρτωσης.' : 'Failed to load.'}</p>`;
+            prompt.innerHTML = `<p style="color: var(--nm-danger);">${currentLanguage === 'gr' ? 'Αποτυχία φόρτωσης.' : 'Failed to load.'}</p>`;
         } finally {
             isFetchingUsefulInfo = false;
         }
@@ -687,8 +665,7 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>`;
         document.body.appendChild(modalOverlay);
 
-        // --- FIX STARTS HERE ---
-        // After inserting the new content, find all copy buttons and attach the event listener.
+        // --- FIX for dynamically loaded content ---
         let dynamicCodeIdCounter = 0;
         const codeContainers = modalOverlay.querySelectorAll('.code-container');
         codeContainers.forEach(container => {
@@ -696,20 +673,20 @@ document.addEventListener('DOMContentLoaded', () => {
             const codeEl = container.querySelector('code');
 
             if (copyBtn && codeEl) {
-                // Ensure the code element has an ID for the copy function to target
+                // Ensure the code element has a unique ID for the copy function to target
                 if (!codeEl.id) {
                     const uniqueId = `dynamic-code-${Date.now()}-${dynamicCodeIdCounter++}`;
                     codeEl.id = uniqueId;
                 }
                 
-                // Add the event listener to the button
+                // Attach the event listener to the button
                 copyBtn.addEventListener('click', () => {
                     // Call the globally available copyToClipboard function
                     window.copyToClipboard(copyBtn, codeEl.id);
                 });
             }
         });
-        // --- FIX ENDS HERE ---
+        // --- END FIX ---
         
         setTimeout(() => modalOverlay.classList.add('visible'), 10);
         changeLanguage(currentLanguage);
@@ -718,6 +695,7 @@ document.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => {
                 const modalBody = modalOverlay.querySelector('.modal-body');
                 const allElements = modalBody.querySelectorAll('p, li, h3, h4, b, code, .tip, .note');
+                // The search index only stores text content, so we match against it.
                 const targetElement = Array.from(allElements).find(el => el.textContent.trim().replace(/\s\s+/g, ' ') === textToHighlight.trim());
                 if (targetElement) {
                     modalBody.scrollTo({ top: targetElement.offsetTop - 50, behavior: 'smooth' });
