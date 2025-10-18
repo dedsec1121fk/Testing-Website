@@ -7,10 +7,175 @@ document.addEventListener('DOMContentLoaded', () => {
     let usefulInformationLoaded = false;
     let isFetchingUsefulInfo = false;
 
-    // --- PDF/CANVAS LIBS ---
-    // Make sure these are loaded in the HTML before this script
-    const { jsPDF } = window.jspdf;
-    const html2canvas = window.html2canvas;
+    // --- CERTIFICATE GENERATION FUNCTIONALITY ---
+    function initializeCertificateGeneration() {
+        const generateBtn = document.getElementById('generate-certificate');
+        const certificateForm = document.querySelector('.certificate-form');
+        const certificatePreview = document.getElementById('certificate-preview');
+
+        if (!generateBtn || !certificateForm) return;
+
+        generateBtn.addEventListener('click', async () => {
+            // Get form values
+            const fullName = document.getElementById('full-name').value.trim();
+            const age = document.getElementById('age').value.trim();
+            const country = document.getElementById('country').value.trim();
+            const city = document.getElementById('city').value.trim();
+
+            // Validate form
+            if (!fullName || !age || !country || !city) {
+                alert(currentLanguage === 'gr' 
+                    ? 'Παρακαλώ συμπληρώστε όλα τα πεδία.' 
+                    : 'Please fill in all fields.');
+                return;
+            }
+
+            if (isNaN(age) || age < 1 || age > 120) {
+                alert(currentLanguage === 'gr'
+                    ? 'Παρακαλώ εισάγετε μια έγκυρη ηλικία (1-120).'
+                    : 'Please enter a valid age (1-120).');
+                return;
+            }
+
+            try {
+                // Show loading state
+                generateBtn.disabled = true;
+                const originalText = generateBtn.querySelector('span').textContent;
+                generateBtn.querySelector('span').textContent = currentLanguage === 'gr' 
+                    ? 'Δημιουργία...' 
+                    : 'Generating...';
+
+                // Generate certificate
+                await generateCertificatePDF(fullName, age, country, city);
+
+                // Show success message
+                certificateForm.innerHTML = `
+                    <div class="certificate-success">
+                        <i class="fas fa-check-circle"></i>
+                        <h3 data-en="Certificate Generated Successfully!" data-gr="Το Πιστοποιητικό Δημιουργήθηκε Επιτυχώς!">
+                            Certificate Generated Successfully!
+                        </h3>
+                        <p data-en="Your anniversary certificate has been downloaded. Thank you for celebrating with us!" 
+                           data-gr="Το πιστοποιητικό επετείου σας έχει ληφθεί. Ευχαριστούμε που γιορτάσατε μαζί μας!">
+                            Your anniversary certificate has been downloaded. Thank you for celebrating with us!
+                        </p>
+                        <button class="certificate-generate-btn" onclick="location.reload()">
+                            <i class="fas fa-redo"></i>
+                            <span data-en="Generate Another Certificate" data-gr="Δημιουργία Άλλου Πιστοποιητικού">
+                                Generate Another Certificate
+                            </span>
+                        </button>
+                    </div>
+                `;
+                
+                // Update language for success message
+                changeLanguage(currentLanguage);
+
+            } catch (error) {
+                console.error('Certificate generation failed:', error);
+                alert(currentLanguage === 'gr'
+                    ? 'Σφάλμα κατά τη δημιουργία του πιστοποιητικού. Παρακαλώ δοκιμάστε ξανά.'
+                    : 'Error generating certificate. Please try again.');
+                
+                // Reset button
+                generateBtn.disabled = false;
+                generateBtn.querySelector('span').textContent = currentLanguage === 'gr'
+                    ? 'Δημιουργία & Λήψη Πιστοποιητικού'
+                    : 'Generate & Download Certificate';
+            }
+        });
+    }
+
+    async function generateCertificatePDF(fullName, age, country, city) {
+        return new Promise((resolve, reject) => {
+            try {
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF('landscape');
+                
+                // Certificate dimensions
+                const pageWidth = doc.internal.pageSize.getWidth();
+                const pageHeight = doc.internal.pageSize.getHeight();
+                
+                // Add background gradient
+                const gradient = doc.context2d.createLinearGradient(0, 0, pageWidth, pageHeight);
+                gradient.addColorStop(0, '#9966FF');
+                gradient.addColorStop(0.5, '#3366FF');
+                gradient.addColorStop(1, '#FF3366');
+                
+                // Set background
+                doc.setFillColor(10, 5, 20);
+                doc.rect(0, 0, pageWidth, pageHeight, 'F');
+                
+                // Add decorative border
+                doc.setDrawColor(153, 102, 255);
+                doc.setLineWidth(3);
+                doc.rect(15, 15, pageWidth - 30, pageHeight - 30);
+                
+                // Add anniversary title
+                doc.setFont('helvetica', 'bold');
+                doc.setFontSize(36);
+                doc.setTextColor(255, 255, 255);
+                doc.text('🎉 1 YEAR ANNIVERSARY 🎉', pageWidth / 2, 50, { align: 'center' });
+                
+                // Add certificate title
+                doc.setFontSize(28);
+                doc.setTextColor(153, 102, 255);
+                doc.text('CERTIFICATE OF PARTICIPATION', pageWidth / 2, 80, { align: 'center' });
+                
+                // Add decorative line
+                doc.setDrawColor(255, 204, 51);
+                doc.setLineWidth(2);
+                doc.line(50, 90, pageWidth - 50, 90);
+                
+                // Add main text
+                doc.setFont('helvetica', 'normal');
+                doc.setFontSize(16);
+                doc.setTextColor(255, 255, 255);
+                doc.text('This certifies that', pageWidth / 2, 120, { align: 'center' });
+                
+                // Add participant name
+                doc.setFont('helvetica', 'bold');
+                doc.setFontSize(24);
+                doc.setTextColor(255, 204, 51);
+                doc.text(fullName.toUpperCase(), pageWidth / 2, 140, { align: 'center' });
+                
+                // Add participation text
+                doc.setFont('helvetica', 'normal');
+                doc.setFontSize(16);
+                doc.setTextColor(255, 255, 255);
+                doc.text('has actively participated in celebrating the', pageWidth / 2, 160, { align: 'center' });
+                doc.text('1st Anniversary of the DedSec Project', pageWidth / 2, 175, { align: 'center' });
+                
+                // Add details section
+                doc.setFontSize(14);
+                doc.text(`Age: ${age}`, pageWidth / 2, 200, { align: 'center' });
+                doc.text(`Location: ${city}, ${country}`, pageWidth / 2, 215, { align: 'center' });
+                
+                // Add event period
+                doc.setFont('helvetica', 'italic');
+                doc.text('Celebration Period: October 20 - October 31, 2025', pageWidth / 2, 240, { align: 'center' });
+                
+                // Add signature area
+                doc.setFont('helvetica', 'bold');
+                doc.setFontSize(12);
+                doc.setTextColor(153, 102, 255);
+                doc.text('DedSec Project Team', pageWidth / 2, 270, { align: 'center' });
+                
+                // Add decorative elements
+                doc.setDrawColor(255, 204, 51);
+                doc.setLineWidth(1);
+                doc.line(pageWidth / 2 - 60, 275, pageWidth / 2 + 60, 275);
+                
+                // Save the PDF
+                const fileName = `DedSec_Anniversary_Certificate_${fullName.replace(/\s+/g, '_')}.pdf`;
+                doc.save(fileName);
+                
+                resolve();
+            } catch (error) {
+                reject(error);
+            }
+        });
+    }
 
     // --- EVEN MORE ADVANCED SEARCH UTILITY (Used for 'Useful Information' modal) ---
     const SearchEngine = {
@@ -162,72 +327,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // --- NEW FIXED CERTIFICATE DOWNLOAD FUNCTION ---
-    /**
-     * Generates and downloads the certificate as a PDF using html2canvas and jsPDF.
-     * @param {string} name - Recipient's name.
-     */
-    async function downloadCertificate(name) {
-        const certificateElement = document.getElementById('certificate-template');
-        const downloadButton = document.getElementById('download-certificate-btn');
-        const modal = document.getElementById('certificate-modal');
-        const originalButtonText = downloadButton.innerHTML;
-        const errorEl = document.getElementById('certificate-error');
-    
-        // 1. Set Button to Loading State
-        downloadButton.disabled = true;
-        downloadButton.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Generating PDF...`;
-        if (errorEl) errorEl.style.display = 'none'; // Clear any previous errors
-    
-        try {
-            // 2. Use html2canvas to render the HTML element to a canvas
-            // Use a scale of 2 or higher for better quality
-            const canvas = await html2canvas(certificateElement, {
-                scale: 2, 
-                logging: false, 
-                useCORS: true 
-            });
-    
-            // Use JPEG for potentially smaller file size and good quality
-            const imgData = canvas.toDataURL('image/jpeg', 1.0); 
-            
-            // 3. Initialize jsPDF in Landscape (l), millimeters (mm), A4 size
-            const pdf = new jsPDF('l', 'mm', 'a4'); 
-            
-            const imgWidth = 297; // A4 landscape width (mm)
-            
-            // Calculate the height of the image to maintain aspect ratio
-            const imgHeight = (canvas.height * imgWidth) / canvas.width;
-            
-            // 4. Add the image to the PDF
-            pdf.addImage(imgData, 'JPEG', 0, 0, imgWidth, imgHeight);
-    
-            // 5. Save the PDF file
-            pdf.save(`${name.replace(/\s+/g, '_')}_DedSec_Certificate.pdf`);
-    
-            // Clear fields (moved here from the old event listener)
-            document.getElementById('cert-input-name').value = '';
-            document.getElementById('cert-input-age').value = '';
-            document.getElementById('cert-input-country').value = '';
-            document.getElementById('cert-input-city').value = '';
-    
-        } catch (error) {
-            console.error("Certificate PDF generation failed:", error);
-            if (errorEl) {
-                errorEl.textContent = "Error generating PDF. Please try again.";
-                errorEl.style.display = 'block';
-            }
-            alert('Failed to generate the certificate PDF. Check the console for details.');
-        } finally {
-            // 6. Restore button state and close modal
-            downloadButton.disabled = false;
-            downloadButton.innerHTML = originalButtonText;
-            if (modal) modal.classList.remove('visible');
-        }
-    }
-    // --- END NEW FIXED CERTIFICATE DOWNLOAD FUNCTION ---
-
-
     // --- PORTFOLIO INITIALIZATION ---
     function initializePortfolio() {
         function showModal(modal) {
@@ -248,7 +347,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const languageModalCloseBtn = languageModal.querySelector('.close-modal');
         const disclaimerModal = document.getElementById('disclaimer-modal');
         const installationModal = document.getElementById('installation-modal');
-        const certificateModal = document.getElementById('certificate-modal');
 
         window.changeLanguage = (lang) => {
             currentLanguage = lang;
@@ -273,7 +371,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 button.classList.toggle('selected', button.dataset.lang === lang);
             });
 
-            document.title = "1st Anniversary Celebration";
+            document.title = "DedSec Project - 1 Year Anniversary";
 
             const searchInput = document.getElementById('main-search-input');
             if (searchInput) {
@@ -384,6 +482,11 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         };
         
+        // Add certificate button event listener
+        document.querySelector('.certificate-btn')?.addEventListener('click', () => {
+            openModalAndHighlight('certificate');
+        });
+
         document.querySelectorAll('button.app-wrapper[data-modal]').forEach(wrapper => {
             wrapper.addEventListener('click', () => openModalAndHighlight(wrapper.dataset.modal));
         });
@@ -437,43 +540,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 showImage(0);
             }
         }
-
-        // --- ANNIVERSARY CERTIFICATE LOGIC ---
-        document.getElementById('get-certificate-btn')?.addEventListener('click', () => {
-            showModal(certificateModal);
-        });
-
-        document.getElementById('download-certificate-btn')?.addEventListener('click', () => {
-            if (!html2canvas || !jsPDF) {
-                console.error("PDF generation libraries are not loaded.");
-                return;
-            }
-            const name = document.getElementById('cert-input-name').value.trim();
-            const age = document.getElementById('cert-input-age').value.trim();
-            const country = document.getElementById('cert-input-country').value.trim();
-            const city = document.getElementById('cert-input-city').value.trim();
-            const errorEl = document.getElementById('certificate-error');
-
-            // --- Input Validation ---
-            if (!name || !age || !country || !city) {
-                errorEl.style.display = 'block';
-                return;
-            }
-            errorEl.style.display = 'none';
-
-            // Populate the hidden template
-            document.getElementById('cert-name').textContent = name;
-            document.getElementById('cert-age').textContent = age;
-            document.getElementById('cert-location').textContent = `${city}, ${country}`;
-
-            // --- CALL THE NEW ASYNC DOWNLOAD FUNCTION ---
-            downloadCertificate(name);
-            // The downloadCertificate function now handles the heavy lifting, loading state,
-            // clearing fields, and closing the modal upon completion/failure.
-        });
         
         initializeWebSearchSuggestions(); 
         initializeUsefulInfoSearch();
+        initializeCertificateGeneration();
         
         if (languageModalCloseBtn) languageModalCloseBtn.style.display = 'none';
         showModal(languageModal);
@@ -549,7 +619,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
-
 
     async function buildUsefulInfoSearchIndex(progressBar, progressText) {
         if (isUsefulInfoIndexBuilt || usefulInfoFiles.length === 0) return;
@@ -658,7 +727,6 @@ document.addEventListener('DOMContentLoaded', () => {
         progressBarContainer.appendChild(progressBar);
         progressBarContainer.appendChild(progressText);
         navContainer.parentNode.insertBefore(progressBarContainer, navContainer);
-
 
         const showNav = (shouldShow) => {
             navContainer.querySelectorAll('.app-icon').forEach(article => {
