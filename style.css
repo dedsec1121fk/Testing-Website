@@ -73,7 +73,8 @@ body.light-theme .copy-btn:hover,
 body.light-theme .modal-footer button:hover,
 body.light-theme .language-button:hover,
 body.light-theme .language-button.selected,
-body.light-theme .store-link a:hover {
+body.light-theme .store-link a:hover,
+body.light-theme .generate-cert-btn:hover { /* Added cert button */
     color: #FFFFFF; /* Use pure white for high contrast on purple backgrounds */
 }
 
@@ -102,6 +103,20 @@ body.light-theme .note.note-warning {
     color: #000000; /* Use black text for readability on yellow background */
     border-left-color: #FBC02D; /* A darker yellow to match the theme */
 }
+
+/* --- Anniversary Light Theme Fixes --- */
+body.light-theme .anniversary-banner {
+    background: linear-gradient(90deg, #e8dffc, #f3eafd);
+    border-color: var(--nm-border);
+    color: var(--nm-text);
+}
+body.light-theme .anniversary-banner i {
+    color: var(--nm-accent);
+}
+body.light-theme .anniversary-button .app-icon {
+    border-color: var(--nm-accent-hover);
+}
+
 
 /* =================================================================
    END OF LIGHT THEME FIXES
@@ -1252,6 +1267,139 @@ span.sub-item {
 
 
 /* =================================================================
+   ANNIVERSARY STYLES
+   ================================================================= */
+
+@keyframes party-glow {
+    0% {
+        border-color: var(--nm-accent-hover);
+        box-shadow: 0 0 5px var(--nm-accent-hover), 0 0 10px var(--nm-accent-hover);
+    }
+    33% {
+        border-color: var(--nm-success);
+        box-shadow: 0 0 5px var(--nm-success), 0 0 10px var(--nm-success);
+    }
+    66% {
+        border-color: var(--nm-warning);
+        box-shadow: 0 0 5px var(--nm-warning), 0 0 10px var(--nm-warning);
+    }
+    100% {
+        border-color: var(--nm-accent-hover);
+        box-shadow: 0 0 5px var(--nm-accent-hover), 0 0 10px var(--nm-accent-hover);
+    }
+}
+
+.anniversary-banner {
+    width: 100%;
+    max-width: 500px;
+    background: linear-gradient(90deg, #1a1229, #2b1d42);
+    border: 1px solid var(--nm-accent);
+    border-radius: 20px;
+    padding: 12px 18px;
+    box-sizing: border-box;
+    margin: 10px 0;
+    box-shadow: 0 0 15px rgba(153, 102, 255, 0.3);
+}
+
+.anniversary-banner-content {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.anniversary-banner i {
+    font-size: 2rem;
+    color: var(--nm-accent-hover);
+    text-shadow: 0 0 10px var(--nm-accent);
+}
+
+.anniversary-banner div {
+    display: flex;
+    flex-direction: column;
+}
+
+.anniversary-banner strong {
+    font-family: 'Orbitron', sans-serif;
+    color: var(--nm-text);
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+.anniversary-banner span {
+    font-size: 0.8rem;
+    color: var(--nm-text-muted);
+}
+
+.anniversary-button .app-icon {
+    animation: party-glow 3s linear infinite;
+}
+
+.anniversary-button .app-icon i {
+    color: var(--nm-warning); /* Gold color for the award icon */
+}
+
+.anniversary-button:hover .app-icon i {
+    color: var(--nm-darkest); /* Revert to dark on hover */
+}
+
+
+/* --- Certificate Modal Form --- */
+.form-group {
+    margin-bottom: 1rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    font-family: 'Roboto Mono', monospace;
+    font-size: 0.9rem;
+    color: var(--nm-text-muted);
+    margin-bottom: 8px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 10px 15px;
+    background-color: var(--nm-darkest);
+    border: 2px solid var(--nm-border);
+    color: var(--nm-text);
+    font-family: 'Roboto Mono', monospace;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    border-radius: 20px; 
+    box-sizing: border-box;
+}
+
+.form-group input:focus {
+    outline: none;
+    background-color: var(--nm-dark);
+    border-color: var(--nm-accent);
+}
+
+.generate-cert-btn {
+    width: 100%;
+    background-color: var(--nm-accent);
+    color: #000000;
+    border: 2px solid var(--nm-accent);
+    font-family: 'Orbitron', sans-serif;
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: 0.9rem;
+    padding: 12px 15px;
+    border-radius: 20px;
+    transition: all 0.2s ease;
+    box-shadow: none;
+    cursor: pointer;
+    margin-top: 1rem;
+}
+
+.generate-cert-btn:hover {
+    background-color: var(--nm-accent-hover);
+    border-color: var(--nm-accent-hover);
+    color: #ffffff;
+}
+
+/* =================================================================
    TABLET & WIDER SCREEN STYLES
    ================================================================= */
 @media (min-width: 768px) {
@@ -1268,7 +1416,8 @@ span.sub-item {
     .search-container,
     .hero-section,
     .grid-heading,
-    .app-grid {
+    .app-grid,
+    .anniversary-banner { /* Added banner to max-width */
         max-width: 700px;
     }
 
@@ -1288,7 +1437,8 @@ span.sub-item {
     .search-container,
     .hero-section,
     .grid-heading,
-    .app-grid {
+    .app-grid,
+    .anniversary-banner { /* Added banner to max-width */
         max-width: 900px;
     }
 

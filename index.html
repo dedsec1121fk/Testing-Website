@@ -43,7 +43,6 @@
             <main class="home-screen">
                 <div class="main-header-container">
                     <h1 data-en="DedSec Project" data-gr="DedSec Project">DedSec Project</h1>
-                    <h3 class="anniversary-banner" data-en="🎉 Happy 1-Year Anniversary! 🎉" data-gr="🎉 Χαρούμενη 1η Επέτειος! 🎉">🎉 Happy 1-Year Anniversary! 🎉</h3>
                     <div class="search-container">
                         <form action="httpss://www.google.com/search" method="get" target="_blank" style="width: 100%;" id="main-search-form">
                             <input type="text" name="q" id="main-search-input" placeholder="Search the Web..." data-en="Search the Web..." data-gr="Αναζήτηση στο διαδίκτυο..." autocomplete="off">
@@ -52,6 +51,14 @@
                     </div>
                 </div>
 
+                <div class="anniversary-banner">
+                    <div class="anniversary-banner-content">
+                        <i class="fas fa-party-horn"></i> <div>
+                            <strong data-en="1-Year Anniversary Event!" data-gr="Εκδήλωση 1ης Επετείου!">1-Year Anniversary Event!</strong>
+                            <span data-en="October 20 - October 31" data-gr="20 Οκτωβρίου - 31 Οκτωβρίου">October 20 - October 31</span>
+                        </div>
+                    </div>
+                </div>
                 <div class="hero-section">
                     <p class="hero-text" data-en="" data-gr=""></p>
                 </div>
@@ -83,6 +90,10 @@
                         <span class="app-label" data-en="Collaborations" data-gr="Συνεργασίες">Collaborations</span>
                     </button>
 
+                    <button class="app-wrapper anniversary-button" data-modal="anniversary-certificate">
+                        <div class="app-icon"><i class="fas fa-award"></i></div>
+                        <span class="app-label" data-en="Get Certificate" data-gr="Λήψη Πιστοποιητικού">Get Certificate</span>
+                    </button>
                     <button class="app-wrapper" data-modal="portfolio-github">
                         <div class="app-icon"><i class="fas fa-briefcase"></i></div>
                         <span class="app-label" data-en="Portfolio & GitHub Info" data-gr="Portfolio & GitHub Info">Portfolio & GitHub Info</span>
@@ -239,7 +250,7 @@
                 <li><b>Settings</b><br>Ένας κεντρικός πίνακας ελέγχου για τη διαχείριση του DedSec Project. Χρησιμοποιήστε τον για να δείτε πληροφορίες συστήματος, να ενημερώσετε όλα τα σενάρια του έργου και τα απαιτούμενα πακέτα, να αλλάξετε το στυλ της γραμμής εντολών του Termux και να επιλέξετε μεταξύ διάταξης μενού λίστας ή πλέγματος. Αυτό το σενάριο τροποποιεί το αρχείο σας <b><code>/data/data/com.termux/files/usr/etc/bash.bashrc</code></b> για να εφαρμόσει τις αλλαγές.</li>
                 <li><b>Loading Screen</b><br>Εγκαθιστά μια προσαρμοσμένη οθόνη φόρτωσης με ASCII art που εμφανίζεται κατά την εκκίνηση του Termux. Μπορείτε να χρησιμοποιήσετε την προεπιλεγμένη εικόνα, να δώσετε τη δική σας και να ορίσετε τη διάρκεια εμφάνισης. Αυτό το σενάριο λειτουργεί προσθέτοντας ρυθμίσεις στο αρχείο σας <b><code>~/.bash_profile</code></b>.</li>
                 <li><b>SSH Defender</b><br>Ένα honeypot SSH βασισμένο σε Python, σχεδιασμένο για τον εντοπισμό και την καταγραφή μη εξουσιοδοτημένων προσπαθειών σύνδεσης. Εναλλάσσεται έξυπνα μεταξύ κοινών θυρών (όπως 22, 2222, 80, 443) και μιμείται έναν πραγματικό διακομιστή SSH για να συλλέξει δεδομένα εισβολέων. Μόλις εντοπιστεί επίθεση σε μια θύρα, "κλειδώνει" σε αυτήν τη θύρα για μόνιμη παρακολούθηση, καταγράφοντας όλη τη δραστηριότητα, τις διευθύνσεις IP και τα δεδομένα που αποστέλλονται. Διαθέτει έναν πίνακα ελέγχου TUI (Text-based User Interface) πραγματικού χρόνου για την παρακολούθηση της δραστηριότητας.</li>
-                <li><b>Smart Notes</b><br>Μια γρήγορη εφαρμογή TUI (Text-based User Interface) για τη διαχείριση σημειώσεων και υπενθυμίσεων απευθείας στο τερματικό. Σας επιτρέπει να δημιουργείτε, να επεξεργάζεστε, να αναζητάτε και να διαγράφετε σημειώσεις, οι οποίες αποθηκεύονται τοπικά. Διαθέτει επίσης ενσωματωμένο σύστημα ημερολογίου για τη ρύθμιση υπενθυμίσεων, οι οποίες μπορούν να ενεργοποιήσουν ειδοποιήσεις Termux την προγραμματισμένη ώρα.</li>
+                <li><b>Smart Notes</b><br>Μια γρήγορη εφαρμογή TUI (Text-based User Interface) για τη διαχείριση σημειώσεων και υπενθυμίσεων απευθείας στο τερματικό. Σας επιτρέπει να δημιουργείτε, να επεξεργάζεστε, να αναζητάτε και να διαγράφετε σημειώσεις, οι οποίες αποθηκεύονται τοπικά. Διαθέτει επίσης ενσωματωμένο σύστημα ημερολογίου για τη ρύθμιση υπενθυμίEOF
                 <li><b>Digital Footprint Finder</b><br>Ένα εργαλείο OSINT (Open Source Intelligence) που χρησιμοποιείται για την ανακάλυψη της διαδικτυακής παρουσίας ενός ονόματος χρήστη σε εκατοντάδες πλατφόρμες. Πραγματοποιεί σάρωση δύο φάσεων: πρώτα ελέγχει μεγάλες πλατφόρμες κοινωνικής δικτύωσης και προγραμματισμού, και μόνο εάν βρεθεί αντιστοιχία, προχωρά σε πλήρη, ευρεία σάρωση. Τα αποτελέσματα αποθηκεύονται σε μορφές <code>.txt</code> και <code>.json</code> στον φάκελο Λήψεων και αποθηκεύονται προσωρινά για 24 ώρες για επιτάχυνση των επόμενων αναζητήσεων.</li>
                 <li><b>Internet Tools</b><br>Μια ολοκληρωμένη σουίτα εργαλείων δικτύου βασισμένη σε TUI για ανάλυση και διάγνωση. Ενσωματώνεται με το Termux:API για σάρωση και διαχείριση Wi-Fi. Οι λειτουργίες περιλαμβάνουν τεστ ταχύτητας διαδικτύου, ανακάλυψη συσκευών τοπικού δικτύου, σαρωτή θυρών τύπου NMAP με ανίχνευση υπηρεσιών, προσομοίωση αναγνώρισης λειτουργικού συστήματος, αναζητήσεις WHOIS/DNS, αναλυτή κεφαλίδων ασφαλείας HTTP και web crawler, μεταξύ άλλων.</li>
             </ol>
@@ -361,22 +372,58 @@
         </div>
     </div>
 
-    <div id="anniversary-modal" class="modal-overlay">
+    <div id="anniversary-certificate-modal" class="modal-overlay">
       <div class="modal-content modal-content-auto-height">
-          <div class="modal-header anniversary-header">
-            <h2 data-en="Happy 1-Year Anniversary!" data-gr="Ευτυχισμένη 1η Επέτειος!">Happy 1-Year Anniversary!</h2>
+          <div class="modal-header">
+            <h2 data-en="1-Year Anniversary Certificate" data-gr="Πιστοποιητικό 1ης Επετείου">1-Year Anniversary Certificate</h2>
             <button class="close-modal" aria-label="Close">×</button>
           </div>
-          <div class="modal-body modal-body-centered">
-              <div class="anniversary-number">1</div>
-              <p data-en="Thank you for being part of the DedSec Project for a whole year. Your support and collaboration mean the world to us. Here's to many more!" data-gr="Σας ευχαριστούμε που είστε μέρος του DedSec Project για έναν ολόκληρο χρόνο. Η υποστήριξη και η συνεργασία σας σημαίνουν τα πάντα για εμάς. Στην υγειά μας για πολλά ακόμη!">
-                Thank you for being part of the DedSec Project for a whole year. Your support and collaboration mean the world to us. Here's to many more!
-              </p>
-              <button id="close-anniversary-modal" class="hero-cta-button" data-en="Continue" data-gr="Συνέχεια">Continue</button>
+          <div class="modal-body" data-lang-section="en">
+              <p>Thank you for being part of our 1-Year Anniversary! Fill out the form below to generate your personal certificate of participation.</p>
+              <form id="certificate-form">
+                <div class="form-group">
+                    <label for="cert-name-en">First & Last Name:</label>
+                    <input type="text" id="cert-name-en" class="cert-name" placeholder="e.g., Jane Doe" required>
+                </div>
+                <div class="form-group">
+                    <label for="cert-age-en">Age:</label>
+                    <input type="number" id="cert-age-en" class="cert-age" placeholder="e.g., 25" required min="1">
+                </div>
+                <div class="form-group">
+                    <label for="cert-country-en">Country:</label>
+                    <input type="text" id="cert-country-en" class="cert-country" placeholder="e.g., USA" required>
+                </div>
+                <div class="form-group">
+                    <label for="cert-city-en">City:</label>
+                    <input type="text" id="cert-city-en" class="cert-city" placeholder="e.g., New York" required>
+                </div>
+                <button type="submit" id="generate-cert-btn-en" class="generate-cert-btn" data-en="Generate Certificate" data-gr="Δημιουργία Πιστοποιητικού">Generate Certificate</button>
+              </form>
+          </div>
+          <div class="modal-body hidden-by-default" data-lang-section="gr">
+              <p>Σας ευχαριστούμε που είστε μέρος της 1ης Επετείου μας! Συμπληρώστε την παρακάτω φόρμα για να δημιουργήσετε το προσωπικό σας πιστοποιητικό συμμετοχής.</p>
+              <form id="certificate-form-gr">
+                <div class="form-group">
+                    <label for="cert-name-gr">Όνομα & Επώνυμο:</label>
+                    <input type="text" id="cert-name-gr" class="cert-name" placeholder="π.χ., Μαρία Παπαδοπούλου" required>
+                </div>
+                <div class="form-group">
+                    <label for="cert-age-gr">Ηλικία:</label>
+                    <input type="number" id="cert-age-gr" class="cert-age" placeholder="π.χ., 25" required min="1">
+                </div>
+                <div class="form-group">
+                    <label for="cert-country-gr">Χώρα:</label>
+                    <input type="text" id="cert-country-gr" class="cert-country" placeholder="π.χ., Ελλάδα" required>
+                </div>
+                <div class="form-group">
+                    <label for="cert-city-gr">Πόλη:</label>
+                    <input type="text" id="cert-city-gr" class="cert-city" placeholder="π.χ., Αθήνα" required>
+                </div>
+                <button type="submit" id="generate-cert-btn-gr" class="generate-cert-btn" data-en="Generate Certificate" data-gr="Δημιουργία Πιστοποιητικού">Δημιουργία Πιστοποιητικού</button>
+              </form>
           </div>
       </div>
     </div>
-
     <script src="httpss://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" defer></script>
     <script src="httpss://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>
     <script src="script.js" defer></script>
