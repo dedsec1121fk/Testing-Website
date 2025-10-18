@@ -133,17 +133,20 @@
            ANNIVERSARY SPECIFIC STYLES
            ================================================================= */
         
-        /* Banner Styles */
+        /* Banner Styles - FIXED: Smaller and properly sized */
         .anniversary-banner {
             background: linear-gradient(90deg, #ff3366, #9966ff, #3366ff);
             color: white;
             text-align: center;
-            padding: 15px;
-            margin: 10px 15px 15px;
-            border-radius: 20px;
+            padding: 12px 15px;
+            margin: 15px 15px 10px;
+            border-radius: 15px;
             box-shadow: 0 5px 15px rgba(153, 102, 255, 0.5);
             position: relative;
             overflow: hidden;
+            width: calc(100% - 30px);
+            max-width: 500px;
+            box-sizing: border-box;
         }
         
         .anniversary-banner::before {
@@ -164,22 +167,22 @@
         }
         
         .anniversary-banner h2 {
-            margin: 0 0 10px;
+            margin: 0 0 8px;
             font-family: 'Orbitron', sans-serif;
-            font-size: 1.5rem;
+            font-size: 1.2rem;
             text-shadow: 0 0 10px rgba(255,255,255,0.7);
         }
         
         .anniversary-banner p {
             margin: 0;
-            font-size: 0.9rem;
+            font-size: 0.8rem;
         }
         
-        /* Certificate Button */
+        /* Certificate Button - FIXED: Smaller and positioned correctly */
         .certificate-button {
             display: block;
-            margin: 0 auto 20px;
-            padding: 12px 25px;
+            margin: 0 auto 15px;
+            padding: 10px 20px;
             background: linear-gradient(90deg, #ff3366, #9966ff);
             color: white;
             border: none;
@@ -190,6 +193,10 @@
             cursor: pointer;
             transition: all 0.3s ease;
             box-shadow: 0 5px 15px rgba(153, 102, 255, 0.5);
+            font-size: 0.85rem;
+            width: calc(100% - 30px);
+            max-width: 500px;
+            box-sizing: border-box;
         }
         
         .certificate-button:hover {
@@ -1375,17 +1382,6 @@
             <div class="screen-overlay"></div>
             
             <main class="home-screen">
-                <!-- ANNIVERSARY BANNER -->
-                <div class="anniversary-banner">
-                    <h2>🎉 1 Year Anniversary! 🎉</h2>
-                    <p>Celebrating one year of DedSec Project! Join us from October 20 to October 31 for special events and exclusive content.</p>
-                </div>
-                
-                <!-- CERTIFICATE BUTTON -->
-                <button class="certificate-button" onclick="openModalAndHighlight('certificate')">
-                    <i class="fas fa-certificate"></i> Get Your Anniversary Certificate
-                </button>
-                
                 <div class="main-header-container">
                     <h1 data-en="DedSec Project" data-gr="DedSec Project">DedSec Project</h1>
                     <div class="search-container">
@@ -1394,6 +1390,17 @@
                         </form>
                         <div id="search-suggestions-container" class="hidden"></div>
                     </div>
+                    
+                    <!-- ANNIVERSARY BANNER - MOVED BELOW SEARCH BAR -->
+                    <div class="anniversary-banner">
+                        <h2>🎉 1 Year Anniversary! 🎉</h2>
+                        <p>Celebrating one year of DedSec Project! Join us from October 20 to October 31 for special events and exclusive content.</p>
+                    </div>
+                    
+                    <!-- CERTIFICATE BUTTON - MOVED BELOW BANNER -->
+                    <button class="certificate-button" onclick="openModalAndHighlight('certificate')">
+                        <i class="fas fa-certificate"></i> Get Your Anniversary Certificate
+                    </button>
                 </div>
 
                 <div class="hero-section">
@@ -2211,241 +2218,4 @@
                             itemEl.classList.add('search-result-item');
                             const snippet = SearchEngine.generateSnippet(result.text, query, currentLanguage);
                             const highlightedSnippet = SearchEngine.highlight(snippet, query, currentLanguage);
-                            itemEl.innerHTML = `<div><strong>${result.title}</strong></div><div>${highlightedSnippet}</div>`;
-                            itemEl.addEventListener('click', () => {
-                                displayUsefulInfoContent(result);
-                                resultsContainer.classList.add('hidden');
-                            });
-                            resultsContainer.appendChild(itemEl);
-                        });
-                        resultsContainer.classList.remove('hidden');
-                    } else {
-                        resultsContainer.classList.add('hidden');
-                    }
-                };
-
-                searchInput.addEventListener('input', () => {
-                    const query = searchInput.value.trim();
-                    if (query.length > 0) {
-                        performSearch(query);
-                    } else {
-                        resultsContainer.classList.add('hidden');
-                    }
-                });
-                
-                searchInput.addEventListener('focus', () => {
-                    if (searchInput.value.trim().length > 0) performSearch(searchInput.value.trim());
-                });
-                
-                searchInput.addEventListener('blur', () => {
-                    setTimeout(() => resultsContainer.classList.add('hidden'), 150);
-                });
-            }
-
-            function fetchUsefulInformation() {
-                if (isFetchingUsefulInfo || usefulInformationLoaded) return;
-                isFetchingUsefulInfo = true;
-
-                const usefulInfoFiles = [
-                    { url: 'https://raw.githubusercontent.com/dedsec1121fk/dedsec1121fk.github.io/main/Assets/Useful-Information/Articles/Useful%20Information%20-%20Android%20Security.txt', title: { en: "Android Security", gr: "Ασφάλεια Android" }, weight: 1.0 },
-                    { url: 'https://raw.githubusercontent.com/dedsec1121fk/dedsec1121fk.github.io/main/Assets/Useful-Information/Articles/Useful%20Information%20-%20General%20Security.txt', title: { en: "General Security", gr: "Γενική Ασφάλεια" }, weight: 1.0 },
-                    { url: 'https://raw.githubusercontent.com/dedsec1121fk/dedsec1121fk.github.io/main/Assets/Useful-Information/Articles/Useful%20Information%20-%20Network%20Security.txt', title: { en: "Network Security", gr: "Ασφάλεια Δικτύου" }, weight: 1.0 },
-                    { url: 'https://raw.githubusercontent.com/dedsec1121fk/dedsec1121fk.github.io/main/Assets/Useful-Information/Articles/Useful%20Information%20-%20Password%20Security.txt', title: { en: "Password Security", gr: "Ασφάλεια Κωδικών" }, weight: 1.0 },
-                    { url: 'https://raw.githubusercontent.com/dedsec1121fk/dedsec1121fk.github.io/main/Assets/Useful-Information/Articles/Useful%20Information%20-%20Social%20Engineering.txt', title: { en: "Social Engineering", gr: "Κοινωνική Μηχανική" }, weight: 1.0 },
-                    { url: 'https://raw.githubusercontent.com/dedsec1121fk/dedsec1121fk.github.io/main/Assets/Useful-Information/Articles/Useful%20Information%20-%20Web%20Security.txt', title: { en: "Web Security", gr: "Ασφάλεια Ιστού" }, weight: 1.0 }
-                ];
-
-                const navContainer = document.getElementById('useful-information-nav');
-                if (!navContainer) return;
-
-                Promise.all(usefulInfoFiles.map(file => fetch(file.url).then(res => res.ok ? res.text() : Promise.reject(`Failed to fetch ${file.url}`)).catch(() => null)))
-                    .then(contents => {
-                        usefulInfoSearchIndex = [];
-                        navContainer.innerHTML = '';
-
-                        contents.forEach((content, index) => {
-                            if (!content) return;
-                            const file = usefulInfoFiles[index];
-                            const [enContent, grContent] = content.split('---').map(s => s.trim());
-
-                            const enItem = {
-                                id: index,
-                                lang: 'en',
-                                title: file.title.en,
-                                text: enContent,
-                                weight: file.weight,
-                                file: file
-                            };
-                            const grItem = {
-                                id: index,
-                                lang: 'gr',
-                                title: file.title.gr,
-                                text: grContent,
-                                weight: file.weight,
-                                file: file
-                            };
-
-                            usefulInfoSearchIndex.push(SearchEngine.preprocessItem(enItem));
-                            usefulInfoSearchIndex.push(SearchEngine.preprocessItem(grItem));
-
-                            const appWrapper = document.createElement('button');
-                            appWrapper.classList.add('app-wrapper');
-                            appWrapper.innerHTML = `
-                                <div class="app-icon"><i class="fas fa-file-alt"></i></div>
-                                <span class="app-label" data-en="${file.title.en}" data-gr="${file.title.gr}">${file.title.en}</span>
-                            `;
-                            appWrapper.addEventListener('click', () => {
-                                const contentToDisplay = currentLanguage === 'gr' ? grContent : enContent;
-                                displayUsefulInfoContent({ title: currentLanguage === 'gr' ? file.title.gr : file.title.en, text: contentToDisplay });
-                            });
-                            navContainer.appendChild(appWrapper);
-                        });
-
-                        SearchEngine.calculateIdf('useful-info', usefulInfoSearchIndex);
-                        isUsefulInfoIndexBuilt = true;
-                        usefulInformationLoaded = true;
-                        isFetchingUsefulInfo = false;
-
-                        const searchInput = document.getElementById('useful-info-search-input');
-                        if (searchInput) {
-                            searchInput.placeholder = currentLanguage === 'gr' ? 'Αναζήτηση άρθρων...' : 'Search articles...';
-                        }
-                        changeLanguage(currentLanguage);
-                    })
-                    .catch(err => {
-                        console.error('Error fetching useful information:', err);
-                        isFetchingUsefulInfo = false;
-                    });
-            }
-
-            function displayUsefulInfoContent(item) {
-                const contentContainer = document.getElementById('useful-information-content');
-                if (!contentContainer) return;
-
-                const sections = item.text.split('\n\n').filter(s => s.trim());
-                let html = `<h3>${item.title}</h3>`;
-                
-                sections.forEach(section => {
-                    if (section.startsWith('## ')) {
-                        html += `<h4>${section.substring(3)}</h4>`;
-                    } else if (section.startsWith('**') && section.endsWith('**')) {
-                        html += `<div class="note note-warning">${section.substring(2, section.length-2)}</div>`;
-                    } else if (section.includes('\n- ')) {
-                        const [heading, ...listItems] = section.split('\n');
-                        html += `<p><strong>${heading}</strong></p><ul>`;
-                        listItems.forEach(li => {
-                            if (li.startsWith('- ')) html += `<li>${li.substring(2)}</li>`;
-                        });
-                        html += `</ul>`;
-                    } else {
-                        html += `<p>${section}</p>`;
-                    }
-                });
-
-                contentContainer.innerHTML = html;
-                contentContainer.scrollIntoView({ behavior: 'smooth' });
-            }
-
-            // --- CERTIFICATE GENERATION ---
-            function generateCertificate() {
-                const firstName = document.getElementById('first-name').value;
-                const lastName = document.getElementById('last-name').value;
-                const age = document.getElementById('age').value;
-                const country = document.getElementById('country').value;
-                const city = document.getElementById('city').value;
-                
-                if (!firstName || !lastName || !age || !country || !city) {
-                    alert('Please fill out all fields');
-                    return;
-                }
-                
-                const { jsPDF } = window.jspdf;
-                const doc = new jsPDF();
-                
-                // Certificate background and styling
-                doc.setFillColor(10, 5, 20);
-                doc.rect(0, 0, 210, 297, 'F');
-                
-                // Title
-                doc.setFontSize(30);
-                doc.setTextColor(153, 102, 255);
-                doc.text('Certificate of Participation', 105, 40, null, null, 'center');
-                
-                // Anniversary text
-                doc.setFontSize(18);
-                doc.setTextColor(255, 255, 255);
-                doc.text('DedSec Project 1-Year Anniversary', 105, 60, null, null, 'center');
-                doc.text('October 20 - October 31', 105, 75, null, null, 'center');
-                
-                // Main certificate text
-                doc.setFontSize(16);
-                doc.text('This certificate is proudly presented to', 105, 100, null, null, 'center');
-                
-                // Name
-                doc.setFontSize(24);
-                doc.setTextColor(255, 51, 102);
-                doc.text(`${firstName} ${lastName}`, 105, 120, null, null, 'center');
-                
-                // Details
-                doc.setFontSize(14);
-                doc.setTextColor(255, 255, 255);
-                doc.text(`Age: ${age}`, 105, 140, null, null, 'center');
-                doc.text(`From: ${city}, ${country}`, 105, 155, null, null, 'center');
-                
-                // Certificate message
-                doc.setFontSize(12);
-                doc.text('In recognition of participation in our 1-year anniversary celebration', 105, 180, null, null, 'center');
-                doc.text('and continued support of the DedSec Project community.', 105, 190, null, null, 'center');
-                
-                // Signature section
-                doc.setFontSize(10);
-                doc.setTextColor(153, 102, 255);
-                doc.text('_________________________', 105, 230, null, null, 'center');
-                doc.text('dedsec1121fk', 105, 240, null, null, 'center');
-                doc.text('Project Creator', 105, 247, null, null, 'center');
-                
-                // Date
-                const today = new Date();
-                const dateString = today.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
-                doc.setTextColor(255, 255, 255);
-                doc.text(`Issued on: ${dateString}`, 105, 270, null, null, 'center');
-                
-                // Border decoration
-                doc.setDrawColor(153, 102, 255);
-                doc.setLineWidth(2);
-                doc.rect(10, 10, 190, 277);
-                
-                // Save the PDF
-                doc.save(`DedSec_Anniversary_Certificate_${firstName}_${lastName}.pdf`);
-                
-                // Show preview
-                const preview = document.getElementById('certificate-preview');
-                const certificateContent = document.getElementById('certificate-content');
-                certificateContent.innerHTML = `
-                    <div style="background: white; color: black; padding: 20px; border-radius: 10px; text-align: center; border: 2px solid #9966ff;">
-                        <h3 style="color: #9966ff;">Certificate of Participation</h3>
-                        <p>DedSec Project 1-Year Anniversary</p>
-                        <p>October 20 - October 31</p>
-                        <p>This certificate is proudly presented to</p>
-                        <h4 style="color: #ff3366;">${firstName} ${lastName}</h4>
-                        <p>Age: ${age}</p>
-                        <p>From: ${city}, ${country}</p>
-                        <p>In recognition of participation in our 1-year anniversary celebration</p>
-                        <p>and continued support of the DedSec Project community.</p>
-                        <div style="margin-top: 30px;">
-                            <p>_________________________</p>
-                            <p><strong>dedsec1121fk</strong></p>
-                            <p>Project Creator</p>
-                        </div>
-                        <p style="margin-top: 20px;">Issued on: ${dateString}</p>
-                    </div>
-                `;
-                preview.style.display = 'block';
-            }
-
-            // Initialize the portfolio
-            initializePortfolio();
-        });
-    </script>
-</body>
-</html>
+                            itemEl.innerHTML = `<div><strong>${result.title}</strong></div><div
