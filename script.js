@@ -251,16 +251,15 @@ document.addEventListener('DOMContentLoaded', () => {
             <i class="fas fa-check"></i>
             <span data-en="Certificate Downloaded!" data-gr="Το Πιστοποιητικό Λήφθηκε!">Certificate Downloaded!</span>
         `;
-        generateBtn.style.background = 'linear-gradient(135deg, #9966FF, #9933FF)'; // CHANGED: Purple gradient
-        generateBtn.style.borderColor = '#9966FF'; // CHANGED: Purple border
+        generateBtn.style.background = 'linear-gradient(135deg, var(--nm-accent), var(--nm-accent-hover))';
+        generateBtn.style.borderColor = 'var(--nm-accent)';
         
-        // Update language for success message
         changeLanguage(currentLanguage);
         
         setTimeout(() => {
             generateBtn.innerHTML = originalHTML;
-            generateBtn.style.background = 'linear-gradient(135deg, var(--nm-accent), var(--nm-accent-hover))'; // CHANGED: Purple gradient
-            generateBtn.style.borderColor = 'var(--nm-accent)'; // CHANGED: Purple border
+            generateBtn.style.background = 'linear-gradient(135deg, var(--nm-accent), var(--nm-accent-hover))';
+            generateBtn.style.borderColor = 'var(--nm-accent)';
             changeLanguage(currentLanguage); // Re-apply language to original text
         }, 3000);
     }
@@ -974,12 +973,36 @@ document.addEventListener('DOMContentLoaded', () => {
         // Insert progress bar before the navigation container
         navContainer.parentNode.insertBefore(progressBarContainer, navContainer);
 
-
         // Helper to show/hide the main navigation list
         const showNav = (shouldShow) => {
             navContainer.style.display = shouldShow ? 'grid' : 'none'; // Use grid display
             promptText.style.display = shouldShow ? 'block' : 'none'; // Toggle prompt text
         };
+
+        // FIXED: Add event delegation for search results
+        resultsContainer.addEventListener('click', (e) => {
+            const searchResultItem = e.target.closest('.search-result-item');
+            if (searchResultItem) {
+                const query = searchInput.value.trim();
+                searchInput.value = '';
+                resultsContainer.classList.add('hidden');
+                showNav(true);
+                
+                // Extract title and text from the result item
+                const title = searchResultItem.querySelector('small').textContent;
+                const text = searchResultItem.textContent.replace(title, '').trim();
+                
+                // Find the corresponding result in the index to get the URL
+                const results = SearchEngine.search(query, usefulInfoSearchIndex, currentLanguage, 'usefulInfo');
+                const matchedResult = results.find(result => 
+                    result.title === title && result.text.includes(text.substring(0, 50))
+                );
+                
+                if (matchedResult) {
+                    loadInformationContent(matchedResult.url, matchedResult.title, query);
+                }
+            }
+        });
 
         // Trigger index building on first focus
         searchInput.addEventListener('focus', async () => {
@@ -1051,13 +1074,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     // Display snippet and title
                     itemEl.innerHTML = `${highlightedSnippet} <small>${result.title}</small>`;
                     
-                    // Click listener to load the full article and highlight
-                    itemEl.addEventListener('click', () => {
-                        searchInput.value = ''; // Clear search input
-                        resultsContainer.classList.add('hidden'); // Hide results
-                        // Load content and pass text for highlighting
-                        loadInformationContent(result.url, result.title, result.text); 
-                    });
                     resultsContainer.appendChild(itemEl);
                 });
                 resultsContainer.classList.remove('hidden'); // Show results container

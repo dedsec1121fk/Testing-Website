@@ -222,8 +222,8 @@ body.light-theme .note.note-warning {
 }
 
 #generate-certificate {
-    background: linear-gradient(135deg, var(--nm-success), #00CC00);
-    border: 2px solid var(--nm-success);
+    background: linear-gradient(135deg, var(--nm-accent), var(--nm-accent-hover));
+    border: 2px solid var(--nm-accent);
     color: #000000;
     padding: 15px 30px;
     border-radius: 20px;
@@ -240,9 +240,9 @@ body.light-theme .note.note-warning {
 }
 
 #generate-certificate:hover {
-    background: linear-gradient(135deg, #00CC00, var(--nm-success));
+    background: linear-gradient(135deg, var(--nm-accent-hover), var(--nm-accent));
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(0, 255, 0, 0.3);
+    box-shadow: 0 6px 20px rgba(153, 102, 255, 0.3);
 }
 
 /* Certificate Preview Styles */
@@ -1464,10 +1464,9 @@ body.light-theme .modal-content {
     left: 20px;
 }
 
-/* Globe Icon (Right) for Main Search */
-.search-container::after {
-    content: '\f0ac'; /* fa-globe */
-    right: 20px;
+/* Remove globe icon from modal search */
+.modal-search-container::after {
+    display: none;
 }
 
 /* Magnifying Glass Icon (Left) for Modal Search */
