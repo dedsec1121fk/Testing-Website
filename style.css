@@ -12,7 +12,7 @@
     --nm-container: #1F2A38;  
     --nm-border: #3A4A5E;      
     --nm-accent: #9966FF;      /* Digital Lavender (Used for borders/success/title) */
-    --nm-accent-hover: #9933FF; /* Brighter, more distinct PURPLE for Main Title */
+    --nm-accent-hover: #9933FF; /* Brighter PURPLE for hover/secondary title */
     --nm-text: #FFFFFF;        /* All text/titles default to PURE WHITE */
     --nm-text-muted: #7A8899;  
     /* DANGER/FAIL: Red */
@@ -159,10 +159,11 @@ a:hover {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
 }
 
+/* REVERTED: Using base accent color for main title */
 .main-header-container h1 {
     font-family: 'Orbitron', sans-serif;
     font-size: 1.8rem;
-    color: var(--nm-accent-hover);
+    color: var(--nm-accent); 
     margin-bottom: 10px;
     text-align: left;
     text-transform: uppercase;
@@ -305,6 +306,7 @@ a:hover {
     font-family: 'Noto Serif', serif;
 }
 
+/* REVERTED: Using base accent color for grid headings */
 .grid-heading {
     font-family: 'Inter', sans-serif;
     font-size: 1.2rem;
@@ -353,52 +355,13 @@ a:hover {
     color: var(--nm-text);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
     position: relative;
-    /* NEW ADDITION: Initial border for animation target */
+    /* REVERTED: Removed color-cycle border and animation application */
     border: 3px solid transparent; 
     transition: transform 0.2s, box-shadow 0.2s;
+    animation: none;
 }
 
-/* NEW ADDITION: Multi-Color Border Animation Keyframes (30 colors, 0.5s per color, 15s total duration) */
-@keyframes color-cycle {
-    0%   { border-color: #FF0000; } /* Red */
-    3.3% { border-color: #FF7F00; } /* Orange */
-    6.6% { border-color: #FFFF00; } /* Yellow */
-    9.9% { border-color: #7FFF00; } /* Chartreuse */
-    13.2% { border-color: #00FF00; } /* Green */
-    16.5% { border-color: #00FF7F; } /* Spring Green */
-    19.8% { border-color: #00FFFF; } /* Cyan */
-    23.1% { border-color: #007FFF; } /* Azure */
-    26.4% { border-color: #0000FF; } /* Blue */
-    29.7% { border-color: #7F00FF; } /* Violet */
-    33.0% { border-color: #FF00FF; } /* Magenta (Purple/Red mix) */
-    36.3% { border-color: #FF007F; } /* Rose */
-    39.6% { border-color: #CC0000; } /* Deep Red */
-    42.9% { border-color: #CC6600; } /* Dark Orange */
-    46.2% { border-color: #CCCC00; } /* Olive */
-    49.5% { border-color: #66CC00; } /* Lime Green */
-    52.8% { border-color: #00CC00; } /* Dark Green */
-    56.1% { border-color: #00CC66; } /* Sea Green */
-    59.4% { border-color: #00CCCC; } /* Teal */
-    62.7% { border-color: #0066CC; } /* Royal Blue */
-    66.0% { border-color: #0000CC; } /* Navy Blue */
-    69.3% { border-color: #6600CC; } /* Dark Violet (Deep Purple) */
-    72.6% { border-color: #CC00CC; } /* Fuchsia */
-    75.9% { border-color: #CC0066; } /* Dark Pink */
-    77.9% { border-color: #8A2BE2; } /* BlueViolet */
-    79.8% { border-color: #4B0082; } /* Indigo */
-    82.1% { border-color: #DA70D6; } /* Orchid */
-    85.4% { border-color: #9370DB; } /* MediumPurple */
-    88.7% { border-color: #800080; } /* Purple */
-    92.0% { border-color: #483D8B; } /* DarkSlateBlue */
-    95.3% { border-color: #FF4500; } /* OrangeRed */
-    98.6% { border-color: #FF0000; } /* Red (Loop back) */
-    100% { border-color: #FF0000; }
-}
-
-/* NEW ADDITION: Apply animation to the border */
-.app-icon {
-    animation: color-cycle 15s linear infinite;
-}
+/* REVERTED: Removed @keyframes color-cycle */
 
 .app-icon i, .app-icon img {
     font-size: 1.5rem;
@@ -491,7 +454,6 @@ a:hover {
     transform: scale(1);
 }
 
-/* NEW ADDITION: For modals with dynamic content height (like the certification form) */
 .modal-content-auto-height {
     max-height: none; 
     overflow-y: auto;
@@ -506,6 +468,7 @@ a:hover {
     margin-bottom: 15px;
 }
 
+/* REVERTED: Using base accent color for modal titles */
 .modal-header h2 {
     font-size: 1.4rem;
     color: var(--nm-accent);
@@ -779,7 +742,7 @@ a:hover {
 .gym-clothing-images img {
     width: 100%;
     flex-shrink: 0;
-    display: none; /* Hidden by default */
+    display: none; 
 }
 
 .gym-clothing-images img.active {
@@ -827,7 +790,7 @@ a:hover {
     border-radius: 0;
 }
 
-/* NEW ADDITION: Certification Form Styles */
+/* Certification Form Styles */
 #certification-form {
     display: flex;
     flex-direction: column;

@@ -316,6 +316,11 @@ document.addEventListener('DOMContentLoaded', () => {
             wrapper.addEventListener('click', () => openModalAndHighlight(wrapper.dataset.modal));
         });
 
+        // NEW ADDITION: Event listener for the Anniversary/Certificate Button
+        document.getElementById('certification-button')?.addEventListener('click', () => {
+             openModalAndHighlight('certification');
+        });
+
         document.querySelectorAll('.modal-overlay').forEach(modal => {
             const closeModal = () => {
                 hideModal(modal);
@@ -368,11 +373,157 @@ document.addEventListener('DOMContentLoaded', () => {
         
         initializeWebSearchSuggestions(); 
         initializeUsefulInfoSearch();
-        
+        initializeCertificateGeneration(); // NEW ADDITION: Initialize the certificate form
+
         if (languageModalCloseBtn) languageModalCloseBtn.style.display = 'none';
         showModal(languageModal);
         changeLanguage('en'); 
     }
+    
+    // --- NEW ADDITION: CERTIFICATE GENERATION LOGIC ---
+
+    function initializeCertificateGeneration() {
+        const form = document.getElementById('certification-form');
+        if (!form) return;
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const fullName = document.getElementById('cert-full-name').value.trim();
+            const dedication = document.getElementById('cert-dedication').value.trim();
+            const courseId = document.getElementById('cert-course-id').value.trim();
+            
+            if (fullName === '' || courseId === '') {
+                 alert(currentLanguage === 'gr' ? 'Παρακαλώ συμπληρώστε όλα τα υποχρεωτικά πεδία.' : 'Please fill in all required fields.');
+                 return;
+            }
+
+            // Generate the certificate PDF
+            generateCertificate(fullName, dedication, courseId);
+            
+            // Optional: Close the modal after submission (or let the user decide)
+            // const modal = document.getElementById('certification-modal');
+            // hideModal(modal);
+        });
+    }
+
+    function generateCertificate(fullName, dedication, courseId) {
+        // Ensure jsPDF library is loaded
+        if (typeof jspdf === 'undefined') {
+            console.error("jsPDF library not loaded. Check the script tag in index.html.");
+            alert(currentLanguage === 'gr' ? 'Σφάλμα: Η βιβλιοθήκη PDF δεν φορτώθηκε.' : 'Error: PDF library not loaded.');
+            return;
+        }
+
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF({
+            orientation: 'landscape',
+            unit: 'mm',
+            format: 'a4' 
+        });
+
+        // Constants for A4 Landscape (297mm x 210mm)
+        const pageWidth = 297;
+        const pageHeight = 210;
+
+        // Colors (Matching the theme)
+        const darkPurple = '#6A0DAD'; 
+        const lightAccent = '#9966FF'; 
+        const textColor = '#0B121C'; 
+
+        // --- 1. Background and Border ---
+        doc.setFillColor(245, 245, 255); // Off-white/light gray background
+        doc.rect(0, 0, pageWidth, pageHeight, 'F');
+        
+        // Outer border (Dark Purple)
+        doc.setDrawColor(darkPurple);
+        doc.setLineWidth(3);
+        doc.rect(5, 5, pageWidth - 10, pageHeight - 10, 'S');
+
+        // Inner border/Ribbon (Light Accent)
+        doc.setDrawColor(lightAccent);
+        doc.setLineWidth(1.5);
+        doc.rect(10, 10, pageWidth - 20, pageHeight - 20, 'S');
+        
+        doc.setFillColor(darkPurple);
+        doc.rect(10, 10, 10, pageHeight - 20, 'F'); // Left vertical ribbon
+        doc.rect(277, 10, 10, pageHeight - 20, 'F'); // Right vertical ribbon
+        
+        // --- 2. Title and Header ---
+        doc.setFont('times', 'bold');
+        doc.setTextColor(textColor); 
+        doc.setFontSize(36);
+        doc.text(pageWidth / 2, 35, currentLanguage === 'gr' ? 'ΠΙΣΤΟΠΟΙΗΤΙΚΟ ΟΛΟΚΛΗΡΩΣΗΣ' : 'CERTIFICATE OF COMPLETION', null, null, 'center');
+
+        doc.setFontSize(20);
+        doc.setTextColor(darkPurple); 
+        doc.text(pageWidth / 2, 50, currentLanguage === 'gr' ? 'Με μεγάλη τιμή απονέμεται στον/στην' : 'Proudly Presented To', null, null, 'center');
+
+        // --- 3. Name of Recipient (The most prominent element) ---
+        doc.setFontSize(50);
+        doc.setFont('courier', 'bold'); 
+        doc.setTextColor(lightAccent); 
+        doc.text(pageWidth / 2, 85, fullName.toUpperCase(), null, null, 'center');
+        
+        doc.setDrawColor(lightAccent);
+        doc.line(pageWidth / 2 - 70, 90, pageWidth / 2 + 70, 90); // Line under name
+
+        // --- 4. Dedication / Achievement Text ---
+        const achievementText = currentLanguage === 'gr' 
+            ? 'Για την επιτυχή ολοκλήρωση της εκπαίδευσης και την απόκτηση γνώσεων στις ψηφιακές τεχνολογίες και την κυβερνοασφάλεια.' 
+            : 'For the successful completion of training and the acquisition of advanced knowledge in digital technologies and cybersecurity.';
+        
+        doc.setFontSize(18);
+        doc.setFont('times', 'italic');
+        doc.setTextColor(textColor);
+        doc.text(pageWidth / 2, 115, achievementText, null, null, 'center');
+        
+        // Custom Dedication (if provided)
+        if (dedication) {
+            doc.setFontSize(14);
+            doc.setFont('times', 'normal');
+            doc.text(pageWidth / 2, 130, currentLanguage === 'gr' ? `Αφιέρωση: ${dedication}` : `Dedication: ${dedication}`, null, null, 'center');
+        }
+
+        // --- 5. Signatures and Dates ---
+        const date = new Date().toLocaleDateString(currentLanguage === 'gr' ? 'el-GR' : 'en-US', { 
+            year: 'numeric', month: 'long', day: 'numeric' 
+        });
+
+        doc.setFontSize(14);
+        doc.setFont('times', 'normal');
+        doc.setTextColor(textColor);
+
+        // Date
+        doc.text(pageWidth / 2, 160, currentLanguage === 'gr' ? `Ημερομηνία: ${date}` : `Date Issued: ${date}`, null, null, 'center');
+
+        // Signature Lines
+        const sigY = 185;
+        const sigX1 = 60;
+        const sigX2 = pageWidth - 60;
+        
+        doc.setDrawColor(textColor);
+        doc.setLineWidth(0.5);
+        doc.line(sigX1 - 25, sigY, sigX1 + 25, sigY); // Line 1
+        doc.line(sigX2 - 25, sigY, sigX2 + 25, sigY); // Line 2
+
+        doc.setFontSize(12);
+        doc.text(sigX1, sigY + 5, currentLanguage === 'gr' ? 'Διευθυντής' : 'Director of Operations', null, null, 'center');
+        doc.text(sigX2, sigY + 5, currentLanguage === 'gr' ? 'Εκπαιδευτής' : 'Lead Instructor', null, null, 'center');
+
+        // Certificate ID / Footer
+        doc.setFontSize(10);
+        doc.setTextColor(100, 100, 100); // Gray
+        doc.text(pageWidth / 2, pageHeight - 15, currentLanguage === 'gr' 
+            ? `Αριθμός Πιστοποιητικού: ${courseId} | DedSec Project ${new Date().getFullYear()}` 
+            : `Certificate ID: ${courseId} | DedSec Project ${new Date().getFullYear()}`, null, null, 'center');
+
+        // --- 6. Final Save ---
+        const filename = `${fullName.replace(/\s/g, '_')}_DedSec_Certificate.pdf`;
+        doc.save(filename);
+    }
+    
+    // --- END CERTIFICATE GENERATION LOGIC ---
 
     function initializeWebSearchSuggestions() {
         const searchInput = document.getElementById('main-search-input');
@@ -472,7 +623,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 const titlesContainer = tempDiv.querySelector('#article-titles');
                 const titleEN = titlesContainer?.querySelector('[data-lang="en"]')?.textContent.trim() || fallbackTitleEN;
-                const titleGR = titlesContainer?.querySelector('[data-lang="gr"]')?.textContent.trim() || fallbackTitleGR;
+                const titleGR = titlesContainer?.querySelector('[data-lang="gr"]')?.textContent.trim() || fallbackTitleEN; // Fallback to EN if GR is missing
 
                 tempDiv.querySelectorAll('[data-lang-section]').forEach(section => {
                     const lang = section.dataset.langSection;
@@ -687,7 +838,6 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>`;
         document.body.appendChild(modalOverlay);
 
-        // --- FIX STARTS HERE (Ensuring copyToClipboard works for dynamically loaded content) ---
         let dynamicCodeIdCounter = 0;
         const codeContainers = modalOverlay.querySelectorAll('.code-container');
         codeContainers.forEach(container => {
@@ -695,20 +845,16 @@ document.addEventListener('DOMContentLoaded', () => {
             const codeEl = container.querySelector('code');
 
             if (copyBtn && codeEl) {
-                // Ensure the code element has an ID for the copy function to target
                 if (!codeEl.id) {
                     const uniqueId = `dynamic-code-${Date.now()}-${dynamicCodeIdCounter++}`;
                     codeEl.id = uniqueId;
                 }
                 
-                // Add the event listener to the button
                 copyBtn.addEventListener('click', () => {
-                    // Call the globally available copyToClipboard function
                     window.copyToClipboard(copyBtn, codeEl.id);
                 });
             }
         });
-        // --- FIX ENDS HERE ---
         
         setTimeout(() => modalOverlay.classList.add('visible'), 10);
         changeLanguage(currentLanguage);
