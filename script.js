@@ -7,6 +7,34 @@ document.addEventListener('DOMContentLoaded', () => {
     let usefulInformationLoaded = false;
     let isFetchingUsefulInfo = false;
 
+    // --- CERTIFICATE TRANSLATIONS ---
+    const certificateTranslations = {
+        en: {
+            title: 'Certificate of Participation',
+            subtitle: 'DedSec Project - 1 Year Anniversary',
+            certifies: 'This certifies that',
+            participated: 'participated in the 1 Year Anniversary version of the DedSec Project website.',
+            event: 'Event held October 20 - October 31, 2025.',
+            issuedTo: 'Issued To',
+            age: 'Age',
+            location: 'Location',
+            dateIssued: 'Date Issued',
+            team: 'DedSec Project Team'
+        },
+        gr: {
+            title: 'Πιστοποιητικό Συμμετοχής',
+            subtitle: 'DedSec Project - 1η Επέτειος',
+            certifies: 'Το παρόν πιστοποιεί ότι',
+            participated: 'συμμετείχε στην έκδοση της 1ης επετείου της ιστοσελίδας του DedSec Project.',
+            event: 'Η εκδήλωση πραγματοποιήθηκε από 20 Οκτωβρίου έως 31 Οκτωβρίου 2025.',
+            issuedTo: 'Εκδόθηκε σε',
+            age: 'Ηλικία',
+            location: 'Τοποθεσία',
+            dateIssued: 'Ημερομηνία Έκδοσης',
+            team: 'Ομάδα DedSec Project'
+        }
+    };
+
     // --- ANNIVERSARY CERTIFICATE FUNCTIONALITY ---
     function initializeCertificateFeature() {
         const certificateBtn = document.querySelector('.certificate-btn');
@@ -78,88 +106,86 @@ document.addEventListener('DOMContentLoaded', () => {
     function generateCertificatePDF(firstName, lastName, age, country, city) {
         try {
             const { jsPDF } = window.jspdf;
-            const doc = new jsPDF('landscape', 'mm', 'a4'); // Horizontal A4
+            const doc = new jsPDF('landscape', 'mm', 'a4');
+            
+            // Get translations for current language
+            const translations = certificateTranslations[currentLanguage];
+            const fullName = `${firstName} ${lastName}`;
 
             // ---- Design Changes ----
-            const purpleColor = '#9966FF'; // --nm-accent
+            const purpleColor = '#9966FF';
             const blackColor = '#000000';
             const greyColor = '#555555';
 
             // 1. White Background
             doc.setFillColor(255, 255, 255);
-            doc.rect(0, 0, 297, 210, 'F'); // A4 landscape dimensions
+            doc.rect(0, 0, 297, 210, 'F');
 
-            // 2. Simple Purple Border (Optional, uncomment if desired)
-            // doc.setDrawColor(153, 102, 255); // Purple
-            // doc.setLineWidth(1);
-            // doc.rect(10, 10, 277, 190); // Inner rectangle border
-
-            // 3. Title (Purple Text)
+            // 2. Title (Purple Text) - TRANSLATED
             doc.setFontSize(28);
             doc.setFont('helvetica', 'bold');
             doc.setTextColor(purpleColor);
-            doc.text('Certificate of Participation', 148.5, 40, { align: 'center' }); // Centered horizontally
+            doc.text(translations.title, 148.5, 40, { align: 'center' });
 
-            // 4. Subtitle (Purple Text)
+            // 3. Subtitle (Purple Text) - TRANSLATED
             doc.setFontSize(18);
             doc.setFont('helvetica', 'italic');
             doc.setTextColor(purpleColor);
-            doc.text('DedSec Project - 1 Year Anniversary', 148.5, 55, { align: 'center' });
+            doc.text(translations.subtitle, 148.5, 55, { align: 'center' });
 
-            // 5. Main Body Text (Black Text)
+            // 4. Main Body Text (Black Text) - TRANSLATED
             doc.setFontSize(14);
             doc.setFont('helvetica', 'normal');
             doc.setTextColor(blackColor);
-            doc.text('This certifies that', 148.5, 80, { align: 'center' });
+            doc.text(translations.certifies, 148.5, 80, { align: 'center' });
 
-            // 6. Recipient Name (Purple Text, Bold)
+            // 5. Recipient Name (Purple Text, Bold)
             doc.setFontSize(30);
             doc.setFont('helvetica', 'bold');
             doc.setTextColor(purpleColor);
-            const fullName = `${firstName} ${lastName}`;
-            // Simple underline for name
             const nameWidth = doc.getTextWidth(fullName);
             const nameX = 148.5 - (nameWidth / 2);
             doc.text(fullName, 148.5, 100, { align: 'center' });
-            doc.setDrawColor(153, 102, 255); // Purple line
+            doc.setDrawColor(153, 102, 255);
             doc.setLineWidth(0.5);
-            doc.line(nameX - 5, 105, nameX + nameWidth + 5, 105); // Line under name
+            doc.line(nameX - 5, 105, nameX + nameWidth + 5, 105);
 
-
-            // 7. Participation Text (Black Text)
+            // 6. Participation Text (Black Text) - TRANSLATED
             doc.setFontSize(14);
             doc.setFont('helvetica', 'normal');
             doc.setTextColor(blackColor);
-            doc.text('participated in the 1 Year Anniversary version of the DedSec Project website.', 148.5, 125, { align: 'center' });
-            doc.text(`Event held October 20 - October 31, 2025.`, 148.5, 135, { align: 'center' });
+            doc.text(translations.participated, 148.5, 125, { align: 'center' });
+            doc.text(translations.event, 148.5, 135, { align: 'center' });
 
-
-            // 8. Details (Smaller Grey Text)
+            // 7. Details (Smaller Grey Text) - TRANSLATED
             doc.setFontSize(10);
             doc.setTextColor(greyColor);
             const detailY = 170;
-            doc.text(`Issued To: ${fullName}`, 20, detailY);
-            doc.text(`Age: ${age}`, 20, detailY + 7);
-            doc.text(`Location: ${city}, ${country}`, 20, detailY + 14);
+            doc.text(`${translations.issuedTo}: ${fullName}`, 20, detailY);
+            doc.text(`${translations.age}: ${age}`, 20, detailY + 7);
+            doc.text(`${translations.location}: ${city}, ${country}`, 20, detailY + 14);
 
-            // 9. Date (Smaller Grey Text - Right side)
-            const today = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
-            doc.text(`Date Issued: ${today}`, 277, detailY, { align: 'right' });
+            // 8. Date (Smaller Grey Text - Right side) - TRANSLATED
+            const today = new Date().toLocaleDateString(currentLanguage === 'gr' ? 'el-GR' : 'en-US', { 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            });
+            doc.text(`${translations.dateIssued}: ${today}`, 277, detailY, { align: 'right' });
 
-
-            // 10. Signature Area (Grey Text/Purple Line - Right side)
+            // 9. Signature Area (Grey Text/Purple Line - Right side) - TRANSLATED
             doc.setFontSize(10);
             doc.setTextColor(greyColor);
-            doc.text('DedSec Project Team', 277, detailY + 14, { align: 'right'});
-            doc.setDrawColor(153, 102, 255); // Purple line
+            doc.text(translations.team, 277, detailY + 14, { align: 'right'});
+            doc.setDrawColor(153, 102, 255);
             doc.setLineWidth(0.5);
-            doc.line(220, detailY + 10, 277, detailY + 10); // Signature line
-
-
-            // ---- End Design Changes ----
+            doc.line(220, detailY + 10, 277, detailY + 10);
 
             // Save the PDF
-            const fileName = `DedSec_Anniversary_Certificate_${firstName}_${lastName}.pdf`;
+            const fileName = currentLanguage === 'gr' 
+                ? `Πιστοποιητικό_Επετείου_DedSec_${firstName}_${lastName}.pdf`
+                : `DedSec_Anniversary_Certificate_${firstName}_${lastName}.pdf`;
+            
             doc.save(fileName);
 
             // Show success message
@@ -170,8 +196,6 @@ document.addEventListener('DOMContentLoaded', () => {
             alert("An error occurred while generating the certificate PDF. Please try again.");
         }
     }
-    // --- END MODIFIED PDF FUNCTION ---
-
 
     function showCertificateSuccess(firstName) {
         const generateBtn = document.getElementById('generate-certificate');
