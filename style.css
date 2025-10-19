@@ -65,11 +65,11 @@ body.light-theme .screen::after {
     padding: 12px;
     margin: 15px auto;
     width: 100%;
-    max-width: 400px; /* Reduced from 500px */
+    max-width: 440px; /* Changed from 400px to 440px (10% bigger than 400px) */
     text-align: center;
     box-shadow: 0 4px 15px rgba(138, 43, 226, 0.4);
     animation: banner-pulse 3s ease-in-out infinite;
-    opacity: 0.7; /* Added 70% transparency */
+    opacity: 0.8; /* Changed from 0.7 to 0.8 */
 }
 
 @keyframes banner-pulse {
@@ -180,7 +180,13 @@ body.light-theme .screen::after {
     box-shadow: 0 4px 10px rgba(138, 43, 226, 0.4);
 }
 
-/* Professional Certificate Preview */
+.generate-certificate-btn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* Professional Certificate Template */
 .certificate-container {
     background: linear-gradient(135deg, #0f0820, #1d1138);
     border: 4px solid;
@@ -319,29 +325,6 @@ body.light-theme .screen::after {
     font-weight: bold;
     font-size: 1rem;
     color: #ffcc00;
-}
-
-.download-certificate-btn {
-    background: linear-gradient(135deg, #33ff99, #00cc66);
-    color: #000;
-    border: none;
-    border-radius: 20px;
-    padding: 12px 25px;
-    font-family: 'Orbitron', sans-serif;
-    font-weight: 700;
-    cursor: pointer;
-    width: 100%;
-    max-width: 300px;
-    margin: 25px auto 0;
-    display: block;
-    transition: all 0.3s ease;
-    font-size: 1rem;
-}
-
-.download-certificate-btn:hover {
-    background: linear-gradient(135deg, #00cc66, #33ff99);
-    transform: translateY(-2px);
-    box-shadow: 0 6px 15px rgba(51, 255, 153, 0.5);
 }
 
 /* Success message for download */
@@ -1643,3 +1626,4 @@ span.sub-item {
         grid-template-columns: repeat(8, max-content);
     }
 }
+

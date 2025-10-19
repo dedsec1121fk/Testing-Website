@@ -12,8 +12,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const certificateButton = document.querySelector('.certificate-button');
         const certificateModal = document.getElementById('certificate-modal');
         const certificateForm = document.getElementById('certificate-form');
-        const certificatePreview = document.getElementById('certificate-preview');
-        const downloadCertificateBtn = document.getElementById('download-certificate');
 
         // Open certificate modal when certificate button is clicked
         certificateButton.addEventListener('click', () => {
@@ -21,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         // Handle certificate form submission
-        certificateForm.addEventListener('submit', (e) => {
+        certificateForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             
             // Get form values
@@ -37,7 +35,39 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
-            // Update certificate content
+            // Change button text to show downloading
+            const submitButton = certificateForm.querySelector('.generate-certificate-btn');
+            const originalText = submitButton.textContent;
+            submitButton.textContent = currentLanguage === 'gr' ? 'Λήψη...' : 'Downloading...';
+            submitButton.disabled = true;
+
+            try {
+                // Generate and download certificate immediately
+                await generateAndDownloadCertificate(firstName, lastName, age, country, city);
+                
+                // Show success message
+                alert(currentLanguage === 'gr' ? 
+                    'Το πιστοποιητικό λήφθηκε επιτυχώς!' : 
+                    'Certificate downloaded successfully!');
+                    
+                // Reset form
+                certificateForm.reset();
+                
+            } catch (error) {
+                console.error('Error generating certificate:', error);
+                alert(currentLanguage === 'gr' ? 
+                    'Σφάλμα δημιουργίας πιστοποιητικού. Παρακαλώ δοκιμάστε ξανά.' : 
+                    'Error generating certificate. Please try again.');
+            } finally {
+                // Restore button
+                submitButton.textContent = originalText;
+                submitButton.disabled = false;
+            }
+        });
+
+        // Function to generate and download certificate
+        async function generateAndDownloadCertificate(firstName, lastName, age, country, city) {
+            // Update certificate template content
             document.getElementById('certificate-name').textContent = `${firstName} ${lastName}`;
             document.getElementById('certificate-age').textContent = currentLanguage === 'gr' ? `Ηλικία: ${age}` : `Age: ${age}`;
             document.getElementById('certificate-location').textContent = currentLanguage === 'gr' ? `Τοποθεσία: ${city}, ${country}` : `Location: ${city}, ${country}`;
@@ -50,69 +80,53 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             document.getElementById('certificate-date').textContent = currentLanguage === 'gr' ? `Ημερομηνία: ${currentDate}` : `Date: ${currentDate}`;
 
-            // Show preview and scroll to it
-            certificatePreview.classList.remove('hidden');
-            certificatePreview.scrollIntoView({ behavior: 'smooth' });
-        });
+            // Get the certificate template element
+            const certificateElement = document.querySelector('.certificate');
+            
+            // Use html2canvas to capture the certificate as an image
+            const canvas = await html2canvas(certificateElement, {
+                scale: 2, // Higher quality
+                useCORS: true,
+                allowTaint: true,
+                backgroundColor: null
+            });
 
-        // Handle certificate download
-        downloadCertificateBtn.addEventListener('click', async () => {
-            try {
-                const certificateElement = document.querySelector('.certificate');
-                
-                // Use html2canvas to capture the certificate as an image
-                const canvas = await html2canvas(certificateElement, {
-                    scale: 2, // Higher quality
-                    useCORS: true,
-                    allowTaint: true,
-                    backgroundColor: null
-                });
+            // Convert canvas to image data
+            const imgData = canvas.toDataURL('image/png');
 
-                // Convert canvas to image data
-                const imgData = canvas.toDataURL('image/png');
+            // Create PDF
+            const { jsPDF } = window.jspdf;
+            const pdf = new jsPDF('landscape', 'mm', 'a4');
+            
+            // Calculate dimensions to fit certificate in PDF
+            const pdfWidth = pdf.internal.pageSize.getWidth();
+            const pdfHeight = pdf.internal.pageSize.getHeight();
+            const imgWidth = canvas.width;
+            const imgHeight = canvas.height;
+            const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight);
+            const imgX = (pdfWidth - imgWidth * ratio) / 2;
+            const imgY = (pdfHeight - imgHeight * ratio) / 2;
 
-                // Create PDF
-                const { jsPDF } = window.jspdf;
-                const pdf = new jsPDF('landscape', 'mm', 'a4');
-                
-                // Calculate dimensions to fit certificate in PDF
-                const pdfWidth = pdf.internal.pageSize.getWidth();
-                const pdfHeight = pdf.internal.pageSize.getHeight();
-                const imgWidth = canvas.width;
-                const imgHeight = canvas.height;
-                const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight);
-                const imgX = (pdfWidth - imgWidth * ratio) / 2;
-                const imgY = (pdfHeight - imgHeight * ratio) / 2;
-
-                // Add image to PDF
-                pdf.addImage(imgData, 'PNG', imgX, imgY, imgWidth * ratio, imgHeight * ratio);
-                
-                // Download PDF
-                const fullName = document.getElementById('certificate-name').textContent;
-                pdf.save(`DedSec_Anniversary_Certificate_${fullName.replace(/\s+/g, '_')}.pdf`);
-                
-            } catch (error) {
-                console.error('Error generating certificate PDF:', error);
-                alert(currentLanguage === 'gr' ? 
-                    'Σφάλμα δημιουργίας πιστοποιητικού. Παρακαλώ δοκιμάστε ξανά.' : 
-                    'Error generating certificate. Please try again.');
-            }
-        });
+            // Add image to PDF
+            pdf.addImage(imgData, 'PNG', imgX, imgY, imgWidth * ratio, imgHeight * ratio);
+            
+            // Download PDF
+            const fullName = `${firstName} ${lastName}`;
+            pdf.save(`DedSec_Anniversary_Certificate_${fullName.replace(/\s+/g, '_')}.pdf`);
+        }
 
         // Close certificate modal
         certificateModal.querySelector('.close-modal').addEventListener('click', () => {
             certificateModal.classList.remove('visible');
-            // Reset form and hide preview
+            // Reset form
             certificateForm.reset();
-            certificatePreview.classList.add('hidden');
         });
 
         certificateModal.addEventListener('click', (e) => {
             if (e.target === certificateModal) {
                 certificateModal.classList.remove('visible');
-                // Reset form and hide preview
+                // Reset form
                 certificateForm.reset();
-                certificatePreview.classList.add('hidden');
             }
         });
     }
