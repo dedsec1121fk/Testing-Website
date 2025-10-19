@@ -589,6 +589,11 @@ body.light-theme .phone-container::after {
     display: flex;
     flex-direction: column;
     align-items: center;
+    /* FIX 1 (Standard CSS): Prevents content shift by reserving scrollbar space equally on both sides */
+    scrollbar-gutter: stable both-sides; 
+    
+    /* FIX 2 (WebKit/Non-Standard): Makes the scrollbar overlay the content */
+    overflow-y: overlay; 
 }
 
 /* MODIFIED: Universal Custom Scrollbar */
