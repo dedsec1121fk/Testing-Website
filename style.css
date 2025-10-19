@@ -257,15 +257,19 @@ body.light-theme .note.note-warning {
 }
 
 .certificate {
-    background: linear-gradient(135deg, #1a1a2e, #16213e);
-    border: 4px solid #FFD700;
+    /* MODIFIED: White background */
+    background: #FFFFFF; 
+    /* MODIFIED: Purple border */
+    border: 4px solid var(--nm-accent);
     border-radius: 15px;
     padding: 40px 30px;
-    color: #ffffff;
+    /* MODIFIED: Black text for readability on white */
+    color: #000000; 
     font-family: 'Noto Serif', serif;
     text-align: center;
     position: relative;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    /* MODIFIED: Lighter shadow for white background */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); 
 }
 
 .certificate-header {
@@ -274,13 +278,15 @@ body.light-theme .note.note-warning {
 
 .certificate-logo {
     font-size: 3rem;
-    color: #FFD700;
+    /* MODIFIED: Use a dark color for the logo icon */
+    color: var(--nm-accent-hover); 
     margin-bottom: 15px;
 }
 
 .certificate-header h1 {
     font-size: 2.2rem;
-    color: #FFD700;
+    /* MODIFIED: Main title color to purple */
+    color: var(--nm-accent-hover); 
     margin: 0 0 10px 0;
     font-weight: bold;
     text-transform: uppercase;
@@ -308,11 +314,13 @@ body.light-theme .note.note-warning {
 .recipient-name {
     font-size: 2.5rem;
     font-weight: bold;
-    color: #FFD700;
+    /* MODIFIED: Recipient name color to purple */
+    color: var(--nm-accent); 
     margin: 20px 0;
     padding: 10px;
-    border-bottom: 2px solid #FFD700;
-    border-top: 2px solid #FFD700;
+    /* MODIFIED: Purple top/bottom border */
+    border-bottom: 2px solid var(--nm-accent); 
+    border-top: 2px solid var(--nm-accent); 
     font-family: 'Orbitron', sans-serif;
     text-transform: uppercase;
     letter-spacing: 1px;
@@ -338,7 +346,8 @@ body.light-theme .note.note-warning {
 
 .detail-item span:first-child {
     font-weight: bold;
-    color: #FFD700;
+    /* MODIFIED: Detail headers color to purple */
+    color: var(--nm-accent); 
 }
 
 .signature {
@@ -348,7 +357,8 @@ body.light-theme .note.note-warning {
 .signature-line {
     width: 200px;
     height: 1px;
-    background: #ffffff;
+    /* MODIFIED: Signature line to a dark color */
+    background: #333333; 
     margin: 0 auto 10px auto;
 }
 
