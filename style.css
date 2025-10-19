@@ -588,8 +588,7 @@ body.light-theme .phone-container::after {
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    /* This ensures all direct children (header, search, grid) are centered */
-    align-items: center; 
+    align-items: center;
 }
 
 /* MODIFIED: Universal Custom Scrollbar */
@@ -656,7 +655,7 @@ body.light-theme ::-webkit-scrollbar-thumb {
     position: relative;
     width: 100%;
     max-width: 500px; 
-    margin: 0 auto; 
+    margin: 0 auto; /* <-- FIX: Ensures centering on mobile/small screens */
 }
 
 /* MODIFIED: Removed all box-shadow for no glow effect */
@@ -760,7 +759,7 @@ body.light-theme ::-webkit-scrollbar-thumb {
     width: 100%;
     max-width: 500px;
     /* FIX: Reduced top margin from 15px and bottom margin from 35px */
-    margin: 5px auto;
+    margin: 5px auto; /* <-- FIX: Ensures centering on mobile/small screens */
     padding: 10px;
     box-sizing: border-box;
 }
@@ -809,7 +808,7 @@ body.light-theme ::-webkit-scrollbar-thumb {
     text-transform: uppercase;
     font-size: 1rem;
     /* FIX: Reduced top margin from 25px to 10px */
-    margin: 10px auto 15px;
+    margin: 10px auto 15px; /* <-- FIX: Ensures centering on mobile/small screens */
     padding-bottom: 5px;
     border-bottom: 1px solid var(--nm-border);
 }
@@ -823,7 +822,7 @@ body.light-theme ::-webkit-scrollbar-thumb {
     gap: 35px; /* MODIFIED: Set to 35px */
     width: 100%;
     max-width: 500px;
-    margin: 0 auto 15px;
+    margin: 0 auto 15px; /* <-- FIX: Ensures centering on mobile/small screens */
     align-items: start;
 }
 
@@ -1585,7 +1584,7 @@ span.sub-item {
     .grid-heading,
     .app-grid {
         max-width: 700px;
-        /* Ensure auto margins still apply to content blocks */
+        /* Ensure auto margins still apply to content blocks on desktop */
         margin-left: auto;
         margin-right: auto;
     }
@@ -1608,7 +1607,7 @@ span.sub-item {
     .grid-heading,
     .app-grid {
         max-width: 900px;
-        /* Ensure auto margins still apply to content blocks */
+        /* Ensure auto margins still apply to content blocks on desktop */
         margin-left: auto;
         margin-right: auto;
     }
