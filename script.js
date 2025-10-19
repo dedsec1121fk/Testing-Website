@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!text) return [];
             return text
                 .toLowerCase()
-                .replace(/[.,/#!$%\^&\*;:{}=\-_`~()]/g, "")
+                .replace(/[.,/#!$%\\^&\\*;:{}=\\-_`~()]/g, "")
                 .split(/\s+/)
                 .filter(word => word.length > 1);
         },
@@ -40,355 +40,615 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
             });
 
-            const idfMap = new Map();
-            for (const [token, freq] of docFreq.entries()) {
-                idfMap.set(token, Math.log(totalDocs / (1 + freq)));
-            }
-            this.idfMaps[indexName] = idfMap;
+            this.idfMaps[indexName] = new Map();
+            docFreq.forEach((freq, token) => {
+                this.idfMaps[indexName].set(token, Math.log(totalDocs / (freq + 1)));
+            });
         },
 
-        _getNgrams(word, n = 2) {
-            const ngrams = new Set();
-            if (!word || word.length < n) return ngrams;
-            for (let i = 0; i <= word.length - n; i++) {
-                ngrams.add(word.substring(i, i + n));
-            }
-            return ngrams;
+        getTfIdf(tokens, indexName) {
+            if (!this.idfMaps[indexName]) return 0;
+            const tf = new Map();
+            tokens.forEach(token => {
+                tf.set(token, (tf.get(token) || 0) + 1);
+            });
+
+            let score = 0;
+            tf.forEach((count, token) => {
+                const idf = this.idfMaps[indexName].get(token) || 0;
+                score += (count / tokens.length) * idf;
+            });
+            return score;
         },
 
-        _calculateSimilarity(word1, word2) {
-            if (!word1 || !word2) return 0;
-            const ngrams1 = this._getNgrams(word1);
-            const ngrams2 = this._getNgrams(word2);
-            const intersection = new Set([...ngrams1].filter(x => ngrams2.has(x)));
-            const union = ngrams1.size + ngrams2.size - intersection.size;
-            return union === 0 ? 0 : intersection.size / union;
-        },
+        search(query, indexName, index) {
+            const queryTokens = this.tokenize(query, 'en'); // Assume search query is generally language-agnostic
+            if (queryTokens.length === 0 || index.length === 0) return [];
 
-        search(query, index, lang, indexName) {
-            const queryTokens = this.tokenize(query, lang);
-            if (queryTokens.length === 0) return [];
-            const idfMap = this.idfMaps[indexName] || new Map();
+            const results = index.map(item => {
+                const titleScore = this.getTfIdf(queryTokens.filter(q => item.titleTokens.includes(q)), indexName) * 3; // Boost title score
+                const bodyScore = this.getTfIdf(queryTokens.filter(q => item.textTokens.includes(q)), indexName) * 1;
+                const totalScore = titleScore + bodyScore;
 
-            const scoredResults = index
-                .filter(item => item.lang === lang)
-                .map(item => {
-                    let score = 0;
-                    const foundTokens = new Set();
-
-                    queryTokens.forEach(qToken => {
-                        const idf = idfMap.get(qToken) || 0.5;
-                        let tokenFound = false;
-
-                        let exactTitleMatches = item.titleTokens.filter(t => t === qToken).length;
-                        if (exactTitleMatches > 0) {
-                            score += exactTitleMatches * 10 * idf;
-                            tokenFound = true;
-                        }
-                        let exactTextMatches = item.textTokens.filter(t => t === qToken).length;
-                        if (exactTextMatches > 0) {
-                            score += exactTextMatches * 2 * idf;
-                            tokenFound = true;
-                        }
-                        if(tokenFound) foundTokens.add(qToken);
-
-                        if (!tokenFound) {
-                            let bestSimilarity = 0;
-                            const allItemTokens = [...item.titleTokens, ...item.textTokens];
-                            allItemTokens.forEach(tToken => {
-                                const similarity = this._calculateSimilarity(qToken, tToken);
-                                if (similarity > bestSimilarity) bestSimilarity = similarity;
-                            });
-                            
-                            if (bestSimilarity > 0.7) {
-                               score += bestSimilarity * 5 * idf;
-                               foundTokens.add(qToken);
-                            }
-                        }
-                    });
-
-                    if (foundTokens.size === queryTokens.length && queryTokens.length > 1) score *= 1.5;
-                    if (item.text.toLowerCase().includes(query.toLowerCase().trim())) score *= 1.2;
-                    score *= item.weight || 1;
-
-                    return { ...item, score };
-                });
-
-            return scoredResults
-                .filter(item => item.score > 0)
-                .sort((a, b) => b.score - a.score);
-        },
-        
-        generateSnippet(text, query, lang) {
-            const queryTokens = this.tokenize(query, lang);
-            if (queryTokens.length === 0) return text.substring(0, 120) + (text.length > 120 ? '...' : '');
-    
-            let bestIndex = -1;
-            const lowerCaseText = text.toLowerCase();
-    
-            for (const token of queryTokens) {
-                const index = lowerCaseText.indexOf(token);
-                if (index !== -1) {
-                    bestIndex = index;
-                    break; 
+                // Simple check for exact match in title or body for a minimum score
+                const matchesTitle = queryTokens.some(q => item.titleTokens.includes(q));
+                const matchesBody = queryTokens.some(q => item.textTokens.includes(q));
+                
+                if (totalScore > 0 || matchesTitle || matchesBody) {
+                    return { item, score: totalScore, matches: queryTokens.filter(q => item.titleTokens.includes(q) || item.textTokens.includes(q)) };
                 }
-            }
-            
-            if (bestIndex === -1) {
-                 return text.substring(0, 120) + (text.length > 120 ? '...' : '');
-            }
-    
-            const snippetLength = 120;
-            const start = Math.max(0, bestIndex - Math.round(snippetLength / 4));
-            const end = Math.min(text.length, start + snippetLength);
-            
-            let snippet = text.substring(start, end);
-            if (start > 0) snippet = '... ' + snippet;
-            if (end < text.length) snippet = snippet + ' ...';
-    
-            return snippet;
-        },
+                return null;
+            }).filter(Boolean);
 
-        highlight(snippet, query, lang) {
-            const queryTokens = this.tokenize(query, lang);
-            if (queryTokens.length === 0) return snippet;
-            const regex = new RegExp(`(${queryTokens.join('|')})`, 'gi');
-            return snippet.replace(regex, '<strong>$1</strong>');
+            results.sort((a, b) => b.score - a.score);
+
+            // Filter out low-scoring results and return only top 10
+            return results
+                .filter(res => res.score > 0 || res.matches.length > 0)
+                .slice(0, 10);
         }
     };
 
-    // --- PORTFOLIO INITIALIZATION ---
+    // --- INITIALIZATION ---
     function initializePortfolio() {
-        function showModal(modal) {
-            if (!modal) return;
-            modal.classList.add('visible');
-        }
-
-        function hideModal(modal) {
-            if (!modal) return;
-            modal.classList.remove('visible');
-        }
-
-        const languageModal = document.getElementById('language-selection-modal');
-        if (!languageModal) {
-            console.error("Fatal: Language modal not found. Site cannot start.");
-            return;
-        }
-        const languageModalCloseBtn = languageModal.querySelector('.close-modal');
-        const disclaimerModal = document.getElementById('disclaimer-modal');
-        const installationModal = document.getElementById('installation-modal');
+        loadLanguageSettings();
+        setupLanguageToggle();
+        setupAppInteractions();
+        setupModals();
+        setupUsefulInfoModal();
+        setupGymCarousel();
+        setupMainSearch();
+        setupCertificateGeneration(); // Added call for setup
+        
+        // Hide the pre-filled certificate template container initially
         const certificateModal = document.getElementById('certificate-modal');
-        const certificateBtn = document.getElementById('certificate-btn');
-        const generateCertificateBtn = document.getElementById('generate-certificate');
-
-        // Certificate functionality
-        if (certificateBtn) {
-            certificateBtn.addEventListener('click', () => {
-                showModal(certificateModal);
-            });
+        if (certificateModal) {
+            certificateModal.classList.add('hidden');
         }
 
-        if (generateCertificateBtn) {
-            generateCertificateBtn.addEventListener('click', generateCertificate);
-        }
-
-        window.changeLanguage = (lang) => {
-            currentLanguage = lang;
-            document.documentElement.lang = lang;
-            
-            document.querySelectorAll('[data-en]').forEach(el => {
-                const text = el.getAttribute(`data-${lang}`) || el.getAttribute('data-en');
-                const hasElementChild = el.children.length > 0;
-                if (!hasElementChild) {
-                     el.textContent = text;
-                }
-            });
-
-            document.querySelectorAll('[data-lang-section]').forEach(el => {
-                el.style.display = el.dataset.langSection === lang ? 'block' : 'none';
-                if (el.classList.contains('hidden-by-default')) {
-                    el.classList.toggle('hidden-by-default', el.dataset.langSection !== lang);
-                }
-            });
-            
-            document.querySelectorAll('.language-button').forEach(button => {
-                button.classList.toggle('selected', button.dataset.lang === lang);
-            });
-
-            document.title = "DedSec Project - 1 Year Anniversary";
-
-            const searchInput = document.getElementById('main-search-input');
-            if (searchInput) {
-                searchInput.placeholder = lang === 'gr' ? 'Αναζήτηση στο διαδίκτυο...' : 'Search the Web...';
-            }
-            
-            const usefulInfoSearchInput = document.getElementById('useful-info-search-input');
-            if (usefulInfoSearchInput && !isUsefulInfoIndexBuilt) {
-                 usefulInfoSearchInput.placeholder = lang === 'gr' ? 'Πατήστε για φόρτωση αναζήτησης...' : 'Click to load search...';
-            } else if (usefulInfoSearchInput) {
-                usefulInfoSearchInput.placeholder = lang === 'gr' ? 'Αναζήτηση άρθρων...' : 'Search articles...';
-            }
-        };
-        
-        languageModal.querySelectorAll('.language-button').forEach(button => {
-            button.addEventListener('click', () => {
-                try {
-                    changeLanguage(button.dataset.lang);
-                } catch (error) {
-                    console.error("Error changing language:", error);
-                } finally {
-                    hideModal(languageModal);
-                }
-            });
-        });
-        
-        document.getElementById('lang-switcher-btn')?.addEventListener('click', () => {
-            if (languageModalCloseBtn) languageModalCloseBtn.style.display = ''; 
-            showModal(languageModal);
-        });
-
-        const themeSwitcherBtn = document.getElementById('theme-switcher-btn');
-        if (themeSwitcherBtn) {
-            const themeIcon = themeSwitcherBtn.querySelector('i');
-            const themeSpan = themeSwitcherBtn.querySelector('span');
-
-            const updateThemeButton = (isLightTheme) => {
-                if (isLightTheme) {
-                    themeIcon.classList.remove('fa-moon');
-                    themeIcon.classList.add('fa-sun');
-                    themeSpan.setAttribute('data-en', 'Light Theme');
-                    themeSpan.setAttribute('data-gr', 'Φωτεινό Θέμα');
+        // Set up scroll indicator
+        const homeScreen = document.querySelector('.home-screen');
+        const scrollIndicator = document.getElementById('scroll-indicator-thumb');
+        if (homeScreen && scrollIndicator) {
+            const updateScrollIndicator = () => {
+                const scrollableHeight = homeScreen.scrollHeight - homeScreen.clientHeight;
+                if (scrollableHeight > 0) {
+                    const scrollFraction = homeScreen.scrollTop / scrollableHeight;
+                    const indicatorHeight = scrollIndicator.clientHeight;
+                    const maxTop = homeScreen.clientHeight - indicatorHeight;
+                    const newTop = scrollFraction * maxTop;
+                    scrollIndicator.style.top = `${newTop}px`;
+                    scrollIndicator.style.opacity = '1'; 
                 } else {
-                    themeIcon.classList.remove('fa-sun');
-                    themeIcon.classList.add('fa-moon');
-                    themeSpan.setAttribute('data-en', 'Theme');
-                    themeSpan.setAttribute('data-gr', 'Θέμα');
+                    scrollIndicator.style.opacity = '0';
                 }
-                changeLanguage(currentLanguage);
             };
 
-            themeSwitcherBtn.addEventListener('click', () => {
-                document.body.classList.toggle('light-theme');
-                const isLight = document.body.classList.contains('light-theme');
-                localStorage.setItem('theme', isLight ? 'light' : 'dark');
-                updateThemeButton(isLight);
-            });
-            
-            const savedTheme = localStorage.getItem('theme');
-            if (savedTheme === 'light') {
-                document.body.classList.add('light-theme');
-            }
-            updateThemeButton(document.body.classList.contains('light-theme'));
+            homeScreen.addEventListener('scroll', updateScrollIndicator);
+            updateScrollIndicator(); 
+            window.addEventListener('resize', updateScrollIndicator);
         }
-
-        document.getElementById('accept-disclaimer')?.addEventListener('click', () => {
-            localStorage.setItem('disclaimerAccepted', 'true');
-            hideModal(disclaimerModal);
-            if (installationModal) {
-                showModal(installationModal);
-            }
-        });
-        document.getElementById('decline-disclaimer')?.addEventListener('click', () => window.location.href = 'https://www.google.com');
-        
-        window.openModalAndHighlight = (modalId, highlightText = null) => {
-            if (modalId === 'installation' && !localStorage.getItem('disclaimerAccepted') && disclaimerModal) {
-                showModal(disclaimerModal);
-                return;
-            }
-            const modal = document.getElementById(`${modalId}-modal`);
-            if (modal) {
-                if (modalId === 'language-selection' && languageModalCloseBtn) {
-                     languageModalCloseBtn.style.display = '';
-                }
-                showModal(modal);
-                
-                if (modalId === 'useful-information' && !usefulInformationLoaded) {
-                    fetchUsefulInformation();
-                }
-                
-                if (highlightText) {
-                    setTimeout(() => highlightModalContent(modal, highlightText), 100); 
-                }
-            }
-        };
-
-        const highlightModalContent = (modal, text) => {
-            const modalBody = modal.querySelector('.modal-body');
-            if (!modalBody) return;
-            
-            const allElements = modalBody.querySelectorAll('h3, h4, p, li, b, code, span, .note, .tip, .modal-disclaimer');
-            const targetElement = Array.from(allElements).find(el => el.textContent.trim().replace(/\s\s+/g, ' ') === text.trim());
-
-            if (targetElement) {
-                modalBody.scrollTo({ top: targetElement.offsetTop - 50, behavior: 'smooth' });
-                targetElement.classList.add('content-highlight');
-                setTimeout(() => targetElement.classList.remove('content-highlight'), 2500);
-            }
-        };
-        
-        document.querySelectorAll('button.app-wrapper[data-modal]').forEach(wrapper => {
-            wrapper.addEventListener('click', () => openModalAndHighlight(wrapper.dataset.modal));
-        });
-
-        document.querySelectorAll('.modal-overlay').forEach(modal => {
-            const closeModal = () => {
-                hideModal(modal);
-                if (modal.id === 'useful-information-modal') {
-                    document.getElementById('useful-info-search-input').value = '';
-                    document.getElementById('useful-info-results-container').classList.add('hidden');
-                    document.getElementById('useful-information-nav').querySelectorAll('.app-icon').forEach(article => {
-                        article.style.display = 'flex';
-                    });
-                }
-                modal.querySelectorAll('.content-highlight').forEach(el => el.classList.remove('content-highlight'));
-            };
-            
-            modal.addEventListener('click', e => {
-                if (e.target === modal && modal.id !== 'language-selection-modal') closeModal();
-            });
-            
-            modal.querySelector('.close-modal')?.addEventListener('click', closeModal);
-        });
-        
-        window.copyToClipboard = (button, targetId) => {
-            const codeElement = document.getElementById(targetId);
-            if (!codeElement || !navigator.clipboard) return; 
-            navigator.clipboard.writeText(codeElement.innerText).then(() => {
-                const originalText = button.textContent;
-                button.textContent = (currentLanguage === 'gr') ? 'Αντιγράφηке!' : 'Copied!';
-                setTimeout(() => { button.textContent = originalText; }, 1500);
-            }).catch(err => console.error('Failed to copy text: ', err));
-        };
-        
-        const carousel = document.querySelector('.gym-carousel');
-        if (carousel) {
-            const images = carousel.querySelectorAll('.gym-clothing-images img');
-            const prevBtn = carousel.querySelector('.carousel-btn.prev');
-            const nextBtn = carousel.querySelector('.carousel-btn.next');
-            if (images.length > 0) {
-                let currentIndex = 0;
-                const showImage = (index) => images.forEach((img, i) => img.classList.toggle('active', i === index));
-                prevBtn.addEventListener('click', () => {
-                    currentIndex = (currentIndex > 0) ? currentIndex - 1 : images.length - 1;
-                    showImage(currentIndex);
-                });
-                nextBtn.addEventListener('click', () => {
-                    currentIndex = (currentIndex < images.length - 1) ? currentIndex + 1 : 0;
-                    showImage(currentIndex);
-                });
-                showImage(0);
-            }
-        }
-        
-        initializeWebSearchSuggestions(); 
-        initializeUsefulInfoSearch();
-        
-        if (languageModalCloseBtn) languageModalCloseBtn.style.display = 'none';
-        showModal(languageModal);
-        changeLanguage('en'); 
     }
 
-    // Certificate Generation Function - FIXED VERSION
+    // --- LANGUAGE UTILITY ---
+    function loadLanguageSettings() {
+        const savedLang = localStorage.getItem('dedsec-lang') || 'en';
+        setLanguage(savedLang);
+    }
+
+    function setLanguage(lang) {
+        currentLanguage = lang;
+        localStorage.setItem('dedsec-lang', lang);
+
+        document.querySelectorAll('[data-en]').forEach(el => {
+            const enText = el.getAttribute('data-en');
+            const grText = el.getAttribute('data-gr');
+            el.textContent = lang === 'gr' ? (grText || enText) : enText;
+        });
+
+        document.querySelectorAll('[data-en-placeholder]').forEach(el => {
+            const enPlaceholder = el.getAttribute('data-en-placeholder');
+            const grPlaceholder = el.getAttribute('data-gr-placeholder');
+            el.placeholder = lang === 'gr' ? (grPlaceholder || enPlaceholder) : enPlaceholder;
+        });
+
+        document.querySelectorAll('.language-button').forEach(button => {
+            button.classList.remove('selected');
+        });
+        document.querySelector(`.language-button[data-lang="${lang}"]`).classList.add('selected');
+    }
+
+    function setupLanguageToggle() {
+        document.querySelectorAll('.language-button').forEach(button => {
+            button.addEventListener('click', (e) => {
+                const lang = e.currentTarget.getAttribute('data-lang');
+                if (lang) {
+                    setLanguage(lang);
+                }
+            });
+        });
+    }
+
+    // --- MODAL UTILITY ---
+    function showModal(modalElement) {
+        modalElement.classList.remove('hidden');
+        modalElement.classList.add('visible');
+        document.body.style.overflow = 'hidden'; 
+    }
+
+    function hideModal(modalElement) {
+        modalElement.classList.remove('visible');
+        modalElement.addEventListener('transitionend', () => {
+            modalElement.classList.add('hidden');
+            document.body.style.overflow = ''; 
+        }, { once: true });
+    }
+
+    function setupModals() {
+        document.querySelectorAll('.modal-overlay').forEach(modal => {
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal || e.target.classList.contains('close-modal')) {
+                    hideModal(modal);
+                }
+            });
+            modal.querySelector('.close-modal').addEventListener('click', () => hideModal(modal));
+        });
+    }
+
+    // --- APP INTERACTION ---
+    function setupAppInteractions() {
+        document.querySelectorAll('.app-wrapper').forEach(wrapper => {
+            wrapper.addEventListener('click', (e) => {
+                e.preventDefault();
+                const appName = wrapper.getAttribute('data-app');
+                const appUrl = wrapper.getAttribute('data-url');
+                
+                if (appName) {
+                    openApp(appName, appUrl);
+                }
+            });
+        });
+    }
+
+    function openApp(appName, appUrl) {
+        const modalId = `${appName}-modal`;
+        const modal = document.getElementById(modalId);
+        
+        if (modal) {
+            showModal(modal);
+        } else if (appUrl) {
+            window.open(appUrl, '_blank');
+        } else {
+            console.warn(`App not configured: ${appName}`);
+        }
+    }
+
+    // --- MAIN SEARCH (Local/Modal Trigger) ---
+    function setupMainSearch() {
+        const searchInput = document.getElementById('main-search-input');
+        const resultsContainer = document.getElementById('search-results-container');
+        const homeScreen = document.querySelector('.home-screen');
+        const allWrappers = document.querySelectorAll('.app-wrapper');
+        const sections = document.querySelectorAll('[data-search-tag]');
+
+        searchInput.addEventListener('input', () => {
+            const query = searchInput.value.toLowerCase().trim();
+            resultsContainer.innerHTML = '';
+
+            if (query.length < 2) {
+                resultsContainer.classList.add('hidden');
+                sections.forEach(sec => sec.classList.remove('hidden'));
+                allWrappers.forEach(app => app.classList.remove('hidden'));
+                homeScreen.querySelectorAll('.content-highlight').forEach(el => {
+                    el.classList.remove('content-highlight');
+                });
+                return;
+            }
+
+            const results = [];
+            const appSearch = [
+                { name: 'DedSec Terminal', tag: 'terminal', icon: 'fa-terminal', app: 'terminal', type: 'App' },
+                { name: 'DedSec Database', tag: 'database', icon: 'fa-server', app: 'database', type: 'App' },
+                { name: 'Fox Chat', tag: 'chat communication', icon: 'fa-comment', app: 'chat', type: 'App' },
+                { name: 'Radio Music Player', tag: 'radio music player', icon: 'fa-radio', app: 'radio', type: 'App' },
+                { name: 'OSINTDS', tag: 'osint intelligence', icon: 'fa-globe', app: 'osintds', type: 'App' },
+                { name: 'AdGen', tag: 'adgen ad generator', icon: 'fa-pen-nib', app: 'adgen', type: 'App' },
+                { name: 'Termux Customization', tag: 'termux customization', icon: 'fa-brush', app: 'termux-customization', type: 'App' },
+                { name: 'Python Gym Clothing', tag: 'python gym clothing', icon: 'fa-shirt', app: 'python-gym', type: 'App' },
+                { name: 'URL Masker', tag: 'url masker link shortener', icon: 'fa-link', app: 'url-masker', type: 'App' },
+                { name: 'XSS Validator', tag: 'xss cross site scripting validator', icon: 'fa-code', app: 'xss-validator', type: 'App' },
+                { name: 'Android App Launcher', tag: 'android app launcher', icon: 'fa-mobile-alt', app: 'app-launcher', type: 'App' },
+                { name: 'SQLi Tester', tag: 'sqli sql injection tester', icon: 'fa-database', app: 'sqli-tester', type: 'App' },
+            ];
+
+            // 1. Search Apps (Higher Priority)
+            appSearch.forEach(app => {
+                const combinedText = `${app.name} ${app.tag}`.toLowerCase();
+                if (combinedText.includes(query)) {
+                    results.push({ 
+                        name: app.name, 
+                        type: app.type, 
+                        app: app.app,
+                        description: `Open the ${app.name} App`
+                    });
+                }
+            });
+
+            // 2. Search Useful Information Index (Lower Priority - only show top result/prompt)
+            if (isUsefulInfoIndexBuilt) {
+                const infoResults = SearchEngine.search(query, 'useful-info-index', usefulInfoSearchIndex);
+                if (infoResults.length > 0) {
+                    const topResult = infoResults[0];
+                    results.push({
+                        name: topResult.item.title,
+                        type: 'Article',
+                        app: 'useful-information',
+                        description: `Search "${query}" in Useful Information`
+                    });
+                } else if (query.length >= 2) {
+                     results.push({
+                        name: `Search: "${query}"`,
+                        type: 'Article',
+                        app: 'useful-information',
+                        description: `No direct article found. Click to search inside the Useful Information modal.`
+                    });
+                }
+            }
+
+
+            if (results.length > 0) {
+                resultsContainer.classList.remove('hidden');
+                
+                results.forEach(result => {
+                    const item = document.createElement('div');
+                    item.className = 'search-result-item';
+                    item.innerHTML = `<strong>${result.name}</strong><small>${result.description}</small>`;
+                    
+                    item.addEventListener('click', () => {
+                        searchInput.value = '';
+                        resultsContainer.classList.add('hidden');
+                        
+                        // Handle result click
+                        if (result.app === 'useful-information') {
+                            const infoModal = document.getElementById('useful-information-modal');
+                            if (infoModal) {
+                                showModal(infoModal);
+                                // The useful info modal handles its own search logic
+                                const infoSearchInput = document.getElementById('useful-info-search-input');
+                                infoSearchInput.value = query;
+                                infoSearchInput.dispatchEvent(new Event('input'));
+                            }
+                        } else {
+                            openApp(result.app);
+                        }
+                    });
+                    resultsContainer.appendChild(item);
+                });
+            } else {
+                resultsContainer.classList.add('hidden');
+            }
+            
+            // Highlight/filter apps on main screen (only when search is active)
+            const queryWords = query.split(/\s+/).filter(w => w.length > 1);
+
+            allWrappers.forEach(app => {
+                const appName = app.getAttribute('data-app');
+                const appData = appSearch.find(a => a.app === appName);
+                if (appData) {
+                    const combinedText = `${appData.name} ${appData.tag}`.toLowerCase();
+                    const isMatch = queryWords.every(word => combinedText.includes(word));
+                    app.classList.toggle('hidden', !isMatch);
+                }
+            });
+
+            // Highlight/filter sections
+            sections.forEach(sec => {
+                const tag = sec.getAttribute('data-search-tag');
+                const isSectionVisible = Array.from(sec.querySelectorAll('.app-wrapper')).some(app => !app.classList.contains('hidden'));
+                sec.classList.toggle('hidden', !isSectionVisible);
+            });
+        });
+
+        // Hide results when clicking elsewhere
+        document.addEventListener('click', (e) => {
+            if (!resultsContainer.contains(e.target) && e.target !== searchInput) {
+                resultsContainer.classList.add('hidden');
+            }
+        });
+    }
+
+    // --- USEFUL INFORMATION MODAL ---
+    function setupUsefulInfoModal() {
+        const infoModal = document.getElementById('useful-information-modal');
+        const navContainer = document.getElementById('useful-information-nav');
+        const contentContainer = document.getElementById('useful-information-content');
+        const searchInput = document.getElementById('useful-info-search-input');
+        const resultsContainer = document.getElementById('useful-info-results-container');
+        const promptElement = document.getElementById('useful-info-prompt');
+        const progressBarContainer = document.querySelector('.progress-bar-container');
+        const progressBar = document.querySelector('.progress-bar');
+        const progressBarText = document.querySelector('.progress-bar-text');
+
+        infoModal.addEventListener('click', (e) => {
+            if (e.target.classList.contains('app-icon') && e.target.closest('#useful-information-nav')) {
+                const file = usefulInfoFiles.find(f => f.filename === e.target.getAttribute('data-file'));
+                if (file) {
+                    loadInformationContent(file.url, file.title, searchInput.value);
+                }
+            }
+        });
+
+        infoModal.addEventListener('transitionend', (e) => {
+            if (e.propertyName === 'opacity' && infoModal.classList.contains('visible') && !usefulInformationLoaded && !isFetchingUsefulInfo) {
+                loadUsefulInformationIndex();
+            }
+            
+            if (!infoModal.classList.contains('visible')) {
+                // Reset state when modal closes
+                contentContainer.innerHTML = '';
+                promptElement.classList.remove('hidden');
+                navContainer.classList.remove('hidden');
+                searchInput.value = '';
+                resultsContainer.innerHTML = '';
+                resultsContainer.classList.add('hidden');
+                navContainer.querySelectorAll('.app-icon').forEach(article => {
+                    article.style.display = 'flex';
+                });
+            }
+        });
+        
+        async function loadUsefulInformationIndex() {
+            isFetchingUsefulInfo = true;
+            progressBarContainer.style.display = 'block';
+            progressBar.style.width = '0%';
+            progressBarText.textContent = currentLanguage === 'gr' ? 'Φόρτωση Άρθρων...' : 'Loading Articles...';
+            
+            try {
+                const response = await fetch('Useful%20Information/index.json');
+                if (!response.ok) throw new Error(`Failed to load index: ${response.status}`);
+                const files = await response.json();
+                usefulInfoFiles = files; // Store the file list
+                
+                progressBar.style.width = '30%';
+                progressBarText.textContent = currentLanguage === 'gr' ? 'Δημιουργία Ευρετηρίου...' : 'Building Search Index...';
+                
+                // 1. Display Navigation Links
+                navContainer.innerHTML = '';
+                files.forEach(file => {
+                    const article = document.createElement('div');
+                    article.className = 'app-icon';
+                    article.setAttribute('data-file', file.filename);
+                    article.innerHTML = `
+                        <i class="fas fa-file-alt"></i>
+                        <span>${file.title}<span class="sub-item">${file.description}</span></span>
+                    `;
+                    navContainer.appendChild(article);
+                });
+                
+                // 2. Build Search Index
+                usefulInfoSearchIndex = files.map(file => SearchEngine.preprocessItem({
+                    title: file.title,
+                    text: file.description, // Use description as searchable text for pre-index
+                    url: file.url,
+                    filename: file.filename,
+                    lang: 'en'
+                }));
+                SearchEngine.calculateIdf('useful-info-index', usefulInfoSearchIndex);
+                isUsefulInfoIndexBuilt = true;
+                usefulInformationLoaded = true;
+                
+                progressBar.style.width = '100%';
+                progressBarText.textContent = currentLanguage === 'gr' ? 'Έτοιμο!' : 'Ready!';
+
+                // Hide progress bar and trigger any pending search
+                setTimeout(() => {
+                    progressBarContainer.style.display = 'none';
+                    if (searchInput.value.trim()) {
+                        searchInput.dispatchEvent(new Event('input'));
+                    }
+                }, 500);
+
+            } catch (error) {
+                console.error('Error loading useful information index:', error);
+                navContainer.innerHTML = currentLanguage === 'gr' ? '<p>Αποτυχία φόρτωσης πληροφοριών.</p>' : '<p>Failed to load information.</p>';
+                progressBarContainer.style.display = 'none';
+            } finally {
+                isFetchingUsefulInfo = false;
+            }
+        }
+        
+        searchInput.addEventListener('input', () => {
+            const query = searchInput.value.toLowerCase().trim();
+            contentContainer.innerHTML = ''; 
+            promptElement.classList.remove('hidden');
+            
+            if (query.length < 2) {
+                resultsContainer.classList.add('hidden');
+                navContainer.classList.remove('hidden');
+                navContainer.querySelectorAll('.app-icon').forEach(article => {
+                    article.style.display = 'flex';
+                });
+                return;
+            }
+            
+            if (!isUsefulInfoIndexBuilt) return; // Wait for index to build
+
+            const searchResults = SearchEngine.search(query, 'useful-info-index', usefulInfoSearchIndex);
+            
+            navContainer.classList.add('hidden');
+            resultsContainer.classList.remove('hidden');
+            resultsContainer.innerHTML = '';
+            
+            if (searchResults.length > 0) {
+                searchResults.forEach(res => {
+                    const item = document.createElement('div');
+                    item.className = 'search-result-item';
+                    item.innerHTML = `<strong>${res.item.title}</strong><small>${res.item.text}</small>`;
+                    
+                    item.addEventListener('click', () => {
+                        loadInformationContent(res.item.url, res.item.title, query);
+                        resultsContainer.classList.add('hidden');
+                        searchInput.value = ''; // Clear search after selection
+                    });
+                    resultsContainer.appendChild(item);
+                });
+            } else {
+                resultsContainer.innerHTML = currentLanguage === 'gr' ? '<p style="padding: 15px;">Δεν βρέθηκαν αποτελέσματα.</p>' : '<p style="padding: 15px;">No results found.</p>';
+            }
+        });
+
+        // Hide results when clicking elsewhere inside the modal
+        infoModal.addEventListener('click', (e) => {
+            if (!resultsContainer.contains(e.target) && e.target !== searchInput) {
+                resultsContainer.classList.add('hidden');
+                if (searchInput.value.trim() === '') {
+                    navContainer.classList.remove('hidden');
+                }
+            }
+        });
+
+    }
+
+    function createAndShowArticleModal(title, htmlContent, textToHighlight) {
+        const infoModal = document.getElementById('useful-information-modal');
+        const navContainer = document.getElementById('useful-information-nav');
+        const contentContainer = document.getElementById('useful-information-content');
+        const promptElement = document.getElementById('useful-info-prompt');
+
+        promptElement.classList.add('hidden');
+        navContainer.classList.add('hidden');
+        contentContainer.innerHTML = `<h3>${title}</h3>${htmlContent}`;
+
+        // Highlight logic
+        if (textToHighlight) {
+            const highlightText = textToHighlight.toLowerCase().trim();
+            const elementsToHighlight = contentContainer.querySelectorAll('p, li, span, h4, h5, h6');
+            
+            elementsToHighlight.forEach(el => {
+                let innerHTML = el.innerHTML;
+                const regex = new RegExp(`(${highlightText})`, 'gi');
+                
+                if (innerHTML.toLowerCase().includes(highlightText)) {
+                    // Temporarily replace < and > to protect HTML tags
+                    innerHTML = innerHTML.replace(/<(?=[^>]*>)/g, '&#60;').replace(/(?<=<[^>]*?)>/g, '&#62;');
+                    
+                    // Apply highlight wrapper (using a unique marker to avoid recursive highlighting)
+                    innerHTML = innerHTML.replace(regex, (match) => 
+                        `<span class="content-highlight-temp">${match}</span>`
+                    );
+                    
+                    // Restore < and >
+                    innerHTML = innerHTML.replace(/&#60;/g, '<').replace(/&#62;/g, '>');
+                    
+                    el.innerHTML = innerHTML;
+
+                    // Rename the temp marker to the final class
+                    el.querySelectorAll('.content-highlight-temp').forEach(span => {
+                        span.classList.add('content-highlight');
+                        span.classList.remove('content-highlight-temp');
+                    });
+                    
+                    // Scroll to first highlight
+                    const firstHighlight = contentContainer.querySelector('.content-highlight');
+                    if (firstHighlight) {
+                        firstHighlight.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        
+                        // Fade out highlight after a delay
+                        setTimeout(() => {
+                            contentContainer.querySelectorAll('.content-highlight').forEach(highlight => {
+                                highlight.classList.remove('content-highlight');
+                            });
+                        }, 2500);
+                    }
+                }
+            });
+        }
+    }
+
+    async function loadInformationContent(url, title, textToHighlight = null) {
+        try {
+            const response = await fetch(url);
+            if (!response.ok) throw new Error(`Fetch failed: ${response.status}`);
+            const htmlContent = await response.text();
+            createAndShowArticleModal(title, htmlContent, textToHighlight);
+        } catch (error) {
+            console.error('Failed to load content:', error);
+            const contentContainer = document.getElementById('useful-information-content');
+            contentContainer.innerHTML = `<h3>${title}</h3><p style="color: var(--nm-danger);">Failed to load article content.</p>`;
+        }
+    }
+
+
+    // --- PYTHON GYM CAROUSEL ---
+    function setupGymCarousel() {
+        const carousel = document.querySelector('.gym-clothing-images');
+        if (!carousel) return;
+        
+        const images = Array.from(carousel.querySelectorAll('img'));
+        if (images.length === 0) return;
+
+        let currentIndex = 0;
+
+        function showImage(index) {
+            images.forEach((img, i) => {
+                img.classList.toggle('active', i === index);
+            });
+            currentIndex = index;
+        }
+
+        function nextImage() {
+            currentIndex = (currentIndex + 1) % images.length;
+            showImage(currentIndex);
+        }
+
+        function prevImage() {
+            currentIndex = (currentIndex - 1 + images.length) % images.length;
+            showImage(currentIndex);
+        }
+
+        // Initialize carousel
+        showImage(0);
+
+        // Setup buttons
+        document.querySelector('.carousel-btn.next').addEventListener('click', nextImage);
+        document.querySelector('.carousel-btn.prev').addEventListener('click', prevImage);
+    }
+    
+    // --- CERTIFICATE GENERATION ---
+    function setupCertificateGeneration() {
+        document.getElementById('generate-certificate').addEventListener('click', generateCertificate);
+        
+        // Setup close button on the form modal
+        const certificateModal = document.getElementById('certificate-modal');
+        if (certificateModal) {
+            certificateModal.querySelector('.close-modal').addEventListener('click', () => {
+                document.getElementById('certificate-form').reset();
+                hideModal(certificateModal);
+            });
+        }
+        
+        // Setup anniversary button to show the form modal
+        document.getElementById('show-certificate-form').addEventListener('click', () => {
+            const formModal = document.getElementById('certificate-form-modal');
+            if (formModal) {
+                showModal(formModal);
+            }
+        });
+        
+        // Setup button to start generation
+        document.getElementById('start-certificate-generation').addEventListener('click', () => {
+            const formModal = document.getElementById('certificate-form-modal');
+            hideModal(formModal);
+            // The generateCertificate function is called directly by the inner button's listener
+            // which is handled by document.getElementById('generate-certificate').addEventListener('click', generateCertificate);
+            // This button's listener should just trigger the final step, but for the current setup:
+            // The start-certificate-generation button is redundant if generate-certificate is the final action.
+            // Assuming 'start-certificate-generation' just triggers the final form check and generation:
+            generateCertificate();
+        });
+    }
+
+    // Certificate Generation Function - FIXED VERSION with Delay
     function generateCertificate() {
         const firstName = document.getElementById('first-name').value.trim();
         const lastName = document.getElementById('last-name').value.trim();
@@ -402,7 +662,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // Update certificate template
+        // 1. Update certificate template with user data
         const fullName = `${firstName} ${lastName}`;
         const location = `${city}, ${country}`;
         const issueDate = new Date().toLocaleDateString('en-US', { 
@@ -416,456 +676,92 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('certificate-location').textContent = location;
         document.getElementById('certificate-issue-date').textContent = issueDate;
 
-        // Generate PDF - FIXED VERSION
+        // 2. Prepare the element for capture (Off-screen but visible)
         const { jsPDF } = window.jspdf;
         const certificateElement = document.getElementById('certificate-content');
-
-        // Make certificate visible temporarily for capture
+        
+        // Save original display properties
         const originalDisplay = certificateElement.style.display;
+
+        // Force visibility and move off-screen for capture compatibility
         certificateElement.style.display = 'block';
-        certificateElement.style.position = 'absolute';
+        certificateElement.style.visibility = 'visible'; // Important: ensures it's fully ready
+        certificateElement.style.position = 'fixed';
         certificateElement.style.left = '-9999px';
+        certificateElement.style.top = '0';
         certificateElement.style.width = '800px';
         certificateElement.style.height = '600px';
 
-        html2canvas(certificateElement, {
-            scale: 2,
-            useCORS: true,
-            logging: false,
-            backgroundColor: '#0B121C',
-            width: 800,
-            height: 600
-        }).then(canvas => {
-            // Restore original display
-            certificateElement.style.display = originalDisplay;
-            certificateElement.style.position = '';
-            certificateElement.style.left = '';
-            certificateElement.style.width = '';
-            certificateElement.style.height = '';
+        // 3. Add a small delay to ensure the browser fully renders the changes
+        setTimeout(() => {
+            html2canvas(certificateElement, {
+                scale: 2,
+                useCORS: true,
+                logging: false,
+                backgroundColor: '#0B121C',
+                width: 800,
+                height: 600
+            }).then(canvas => {
+                // 4. Restore original display immediately after capture
+                certificateElement.style.display = originalDisplay;
+                certificateElement.style.visibility = 'hidden'; 
+                certificateElement.style.position = 'fixed';
+                certificateElement.style.left = '0';
+                certificateElement.style.top = '0';
+                certificateElement.style.width = '800px';
+                certificateElement.style.height = '600px';
 
-            const imgData = canvas.toDataURL('image/png');
-            const pdf = new jsPDF('landscape', 'mm', 'a4');
-            const pdfWidth = pdf.internal.pageSize.getWidth();
-            const pdfHeight = pdf.internal.pageSize.getHeight();
-            
-            // Calculate dimensions to fit the PDF
-            const imgWidth = canvas.width;
-            const imgHeight = canvas.height;
-            const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight);
-            const imgX = (pdfWidth - imgWidth * ratio) / 2;
-            const imgY = (pdfHeight - imgHeight * ratio) / 2;
-            
-            pdf.addImage(imgData, 'PNG', imgX, imgY, imgWidth * ratio, imgHeight * ratio);
-            pdf.save(`DedSec_Anniversary_Certificate_${firstName}_${lastName}.pdf`);
-            
-            // Reset form and close modal
-            document.getElementById('certificate-form').reset();
-            hideModal(document.getElementById('certificate-modal'));
-            
-            // Show success message
-            alert(currentLanguage === 'gr' 
-                ? 'Το πιστοποιητικό λήφθηκε επιτυχώς!' 
-                : 'Certificate downloaded successfully!');
-        }).catch(error => {
-            console.error('Error generating certificate:', error);
-            // Restore original display in case of error
-            certificateElement.style.display = originalDisplay;
-            certificateElement.style.position = '';
-            certificateElement.style.left = '';
-            certificateElement.style.width = '';
-            certificateElement.style.height = '';
-            
-            alert(currentLanguage === 'gr' 
-                ? 'Σφάλμα κατά τη δημιουργία του πιστοποιητικού.' 
-                : 'Error generating certificate.');
-        });
-    }
-
-    function initializeWebSearchSuggestions() {
-        const searchInput = document.getElementById('main-search-input');
-        const suggestionsContainer = document.getElementById('search-suggestions-container');
-        const searchForm = document.getElementById('main-search-form');
-        if (!searchInput || !suggestionsContainer || !searchForm) return;
-
-        window.handleGoogleSuggestions = (data) => {
-            suggestionsContainer.innerHTML = '';
-            const suggestions = data[1];
-
-            if (suggestions && Array.isArray(suggestions) && suggestions.length > 0) {
-                suggestions.slice(0, 5).forEach(suggestion => {
-                    const itemEl = document.createElement('div');
-                    itemEl.classList.add('search-result-item');
-                    itemEl.textContent = suggestion;
-                    
-                    itemEl.addEventListener('click', () => {
-                        searchInput.value = suggestion;
-                        suggestionsContainer.classList.add('hidden');
-                        searchForm.submit();
-                        
-                        // Use a short delay to clear the input after the form submits
-                        setTimeout(() => {
-                            searchInput.value = ''; // THIS IS THE ADDED LINE
-                        }, 100);
-                    });
-                    suggestionsContainer.appendChild(itemEl);
-                });
-                suggestionsContainer.classList.remove('hidden');
-            } else {
-                suggestionsContainer.classList.add('hidden');
-            }
-        };
-
-        let debounceTimer;
-        searchInput.addEventListener('input', () => {
-            const query = searchInput.value.trim();
-            clearTimeout(debounceTimer);
-
-            if (query.length < 1) {
-                suggestionsContainer.classList.add('hidden');
-                return;
-            }
-            
-            debounceTimer = setTimeout(() => {
-                const oldScript = document.getElementById('jsonp-script');
-                if (oldScript) {
-                    oldScript.remove();
-                }
-
-                const script = document.createElement('script');
-                script.id = 'jsonp-script';
-                script.src = `https://suggestqueries.google.com/complete/search?client=chrome&q=${encodeURIComponent(query)}&callback=handleGoogleSuggestions`;
+                const imgData = canvas.toDataURL('image/png');
+                const pdf = new jsPDF('landscape', 'mm', 'a4');
+                const pdfWidth = pdf.internal.pageSize.getWidth();
+                const pdfHeight = pdf.internal.pageSize.getHeight();
                 
-                script.onerror = () => {
-                    console.error("Error loading Google suggestions. An ad-blocker might be interfering.");
-                    suggestionsContainer.classList.add('hidden');
-                };
+                // Calculate dimensions to fit the PDF
+                const imgWidth = canvas.width;
+                const imgHeight = canvas.height;
+                const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight);
+                const imgX = (pdfWidth - imgWidth * ratio) / 2;
+                const imgY = (pdfHeight - imgHeight * ratio) / 2;
                 
-                document.head.appendChild(script);
-            }, 200);
-        });
+                pdf.addImage(imgData, 'PNG', imgX, imgY, imgWidth * ratio, imgHeight * ratio);
+                pdf.save(`DedSec_Anniversary_Certificate_${firstName}_${lastName}.pdf`);
+                
+                // Reset form and close modal
+                document.getElementById('certificate-form').reset();
+                
+                // Hide both form and main certificate modal just in case
+                const formModal = document.getElementById('certificate-form-modal');
+                if (formModal) hideModal(formModal); 
+                const certModal = document.getElementById('certificate-modal');
+                if (certModal) hideModal(certModal);
 
-        document.addEventListener('click', (e) => {
-            if (!searchForm.contains(e.target)) {
-                suggestionsContainer.classList.add('hidden');
-            }
-        });
-    }
-
-
-    async function buildUsefulInfoSearchIndex(progressBar, progressText) {
-        if (isUsefulInfoIndexBuilt || usefulInfoFiles.length === 0) return;
-
-        let filesLoaded = 0;
-        const totalFiles = usefulInfoFiles.length;
-
-        const indexPromises = usefulInfoFiles.map(async (file) => {
-            try {
-                const response = await fetch(file.download_url);
-                if (!response.ok) return;
-                const htmlContent = await response.text();
-                const tempDiv = document.createElement('div');
-                tempDiv.innerHTML = htmlContent;
-
-                let fallbackTitleEN = file.name.replace(/\.html$/, '').replace(/^\d+_/, '').replace(/_/g, ' ');
-                let fallbackTitleGR = fallbackTitleEN;
-
-                const titleRegex = /(.+?)_\((.+?)\)/;
-                const match = file.name.match(titleRegex);
-
-                if (match && match[1] && match[2]) {
-                    fallbackTitleEN = match[1].replace(/_/g, ' ').trim();
-                    fallbackTitleGR = match[2].replace(/_/g, ' ').trim();
-                }
-
-                const titlesContainer = tempDiv.querySelector('#article-titles');
-                const titleEN = titlesContainer?.querySelector('[data-lang="en"]')?.textContent.trim() || fallbackTitleEN;
-                const titleGR = titlesContainer?.querySelector('[data-lang="gr"]')?.textContent.trim() || fallbackTitleGR;
-
-                tempDiv.querySelectorAll('[data-lang-section]').forEach(section => {
-                    const lang = section.dataset.langSection;
-                    const articleTitle = lang === 'gr' ? titleGR : titleEN;
-                    section.querySelectorAll('h3, h4, p, li, b, code').forEach(el => {
-                        const text = el.textContent.trim().replace(/\s\s+/g, ' ');
-                        if (text.length > 5) {
-                            const item = {
-                                lang,
-                                title: articleTitle,
-                                text,
-                                url: file.download_url,
-                                weight: (el.tagName === 'H3' ? 5 : 1)
-                            };
-                            usefulInfoSearchIndex.push(SearchEngine.preprocessItem(item));
-                        }
-                    });
-                });
-            } catch (e) {
-                console.error(`Failed to index file: ${file.name}`, e);
-            } finally {
-                filesLoaded++;
-                const progress = (filesLoaded / totalFiles) * 100;
-                progressBar.style.width = `${progress}%`;
-                progressText.textContent = `${Math.round(progress)}%`;
-            }
-        });
-
-        await Promise.all(indexPromises);
-        SearchEngine.calculateIdf('usefulInfo', usefulInfoSearchIndex);
-        isUsefulInfoIndexBuilt = true;
-    }
-
-    function updateUsefulInfoButtonTitles() {
-        const titleMap = new Map();
-
-        usefulInfoSearchIndex.forEach(item => {
-            if (!titleMap.has(item.url)) {
-                titleMap.set(item.url, {});
-            }
-            const langTitles = titleMap.get(item.url);
-            if (!langTitles[item.lang]) {
-                langTitles[item.lang] = item.title;
-            }
-        });
-
-        document.querySelectorAll('#useful-information-nav .app-icon[data-url]').forEach(button => {
-            const url = button.dataset.url;
-            const titles = titleMap.get(url);
-            if (titles) {
-                const buttonSpan = button.querySelector('span');
-                if(buttonSpan) {
-                   buttonSpan.setAttribute('data-en', titles.en || '');
-                   buttonSpan.setAttribute('data-gr', titles.gr || titles.en || '');
-                   buttonSpan.textContent = (currentLanguage === 'gr' ? titles.gr : titles.en) || titles.en || buttonSpan.textContent;
-                }
-            }
-        });
-    }
-
-    function initializeUsefulInfoSearch() {
-        const searchInput = document.getElementById('useful-info-search-input');
-        const resultsContainer = document.getElementById('useful-info-results-container');
-        const navContainer = document.getElementById('useful-information-nav');
-        if (!searchInput || !resultsContainer || !navContainer) return;
-
-        const progressBarContainer = document.createElement('div');
-        progressBarContainer.className = 'progress-bar-container';
-        
-        const progressBar = document.createElement('div');
-        progressBar.className = 'progress-bar';
-
-        const progressText = document.createElement('span');
-        progressText.className = 'progress-bar-text';
-        progressText.textContent = '0%';
-
-        progressBarContainer.appendChild(progressBar);
-        progressBarContainer.appendChild(progressText);
-        navContainer.parentNode.insertBefore(progressBarContainer, navContainer);
-
-
-        const showNav = (shouldShow) => {
-            navContainer.querySelectorAll('.app-icon').forEach(article => {
-                article.style.display = shouldShow ? 'flex' : 'none';
+                
+                // Show success message
+                alert(currentLanguage === 'gr' 
+                    ? 'Το πιστοποιητικό λήφθηκε επιτυχώς!' 
+                    : 'Certificate downloaded successfully!');
+            }).catch(error => {
+                console.error('Error generating certificate:', error);
+                // Restore original display in case of error
+                certificateElement.style.display = originalDisplay;
+                certificateElement.style.visibility = 'hidden';
+                certificateElement.style.position = 'fixed';
+                certificateElement.style.left = '0';
+                certificateElement.style.top = '0';
+                certificateElement.style.width = '800px';
+                certificateElement.style.height = '600px';
+                
+                alert(currentLanguage === 'gr' 
+                    ? 'Σφάλμα κατά τη δημιουργία του πιστοποιητικού.' 
+                    : 'Error generating certificate.');
+                
+                // Ensure form modal is closed on failure
+                const formModal = document.getElementById('certificate-form-modal');
+                if (formModal) hideModal(formModal); 
             });
-        };
-
-        searchInput.addEventListener('focus', async () => {
-            if (isUsefulInfoIndexBuilt) return;
-
-            searchInput.placeholder = currentLanguage === 'gr' ? 'Ευρετηρίαση άρθρων...' : 'Indexing articles...';
-            searchInput.disabled = true;
-
-            progressBarContainer.style.display = 'block';
-            progressBar.style.width = '0%';
-
-            await buildUsefulInfoSearchIndex(progressBar, progressText);
-            
-            updateUsefulInfoButtonTitles();
-
-            setTimeout(() => {
-                progressBarContainer.style.display = 'none';
-            }, 500);
-
-            searchInput.disabled = false;
-            searchInput.placeholder = currentLanguage === 'gr' ? 'Αναζήτηση άρθρων...' : 'Search articles...';
-            searchInput.focus();
-        }, { once: true });
-
-        searchInput.addEventListener('input', () => {
-            const query = searchInput.value.trim();
-            resultsContainer.innerHTML = '';
-
-            if (!isUsefulInfoIndexBuilt || query.length < 2) {
-                resultsContainer.classList.add('hidden');
-                showNav(true);
-                return;
-            }
-            
-            showNav(false);
-
-            const results = SearchEngine.search(query, usefulInfoSearchIndex, currentLanguage, 'usefulInfo');
-
-            if (results.length > 0) {
-                results.slice(0, 7).forEach(result => {
-                    const itemEl = document.createElement('div');
-                    itemEl.classList.add('search-result-item');
-                    const snippet = SearchEngine.generateSnippet(result.text, query, currentLanguage);
-                    const highlightedSnippet = SearchEngine.highlight(snippet, query, currentLanguage);
-
-                    itemEl.innerHTML = `${highlightedSnippet} <small>${result.title}</small>`;
-                    itemEl.addEventListener('click', () => {
-                        searchInput.value = '';
-                        resultsContainer.classList.add('hidden');
-                        loadInformationContent(result.url, result.title, result.text);
-                    });
-                    resultsContainer.appendChild(itemEl);
-                });
-                resultsContainer.classList.remove('hidden');
-            } else {
-                resultsContainer.classList.add('hidden');
-                showNav(true);
-            }
-        });
+        }, **50**); // The crucial 50ms delay for browser repaint
     }
 
-    async function fetchUsefulInformation() {
-        if (usefulInformationLoaded || isFetchingUsefulInfo) return;
-        isFetchingUsefulInfo = true;
-        const navContainer = document.getElementById('useful-information-nav');
-        const GITHUB_API_URL = 'https://api.github.com/repos/dedsec1121fk/dedsec1121fk.github.io/contents/Useful_Information';
-        navContainer.innerHTML = `<p>${currentLanguage === 'gr' ? 'Φόρτωση...' : 'Loading...'}</p>`;
-        
-        try {
-            const response = await fetch(GITHUB_API_URL);
-            if (!response.ok) throw new Error(`GitHub API error: ${response.status}`);
-            const files = await response.json();
-            usefulInfoFiles = files.filter(file => file.type === 'file' && file.name.endsWith('.html'));
-            
-            navContainer.innerHTML = '';
-            if (usefulInfoFiles.length === 0) {
-                 navContainer.innerHTML = `<p>${currentLanguage === 'gr' ? 'Δεν βρέθηκαν πληροφορίες.' : 'No information found.'}</p>`;
-                 return;
-            }
-            
-            usefulInfoFiles.forEach(file => {
-                let titleEN = file.name.replace(/\.html$/, '').replace(/^\d+_/, '').replace(/_/g, ' ');
-                let titleGR = titleEN; 
-    
-                const titleRegex = /(.+?)_\((.+?)\)/;
-                const match = file.name.match(titleRegex);
-    
-                if (match && match[1] && match[2]) {
-                    titleEN = match[1].replace(/_/g, ' ').trim();
-                    titleGR = match[2].replace(/_/g, ' ').trim();
-                }
-    
-                const button = document.createElement('button');
-                button.className = 'app-icon';
-                button.dataset.url = file.download_url;
-                
-                const initialTitle = currentLanguage === 'gr' ? titleGR : titleEN;
-                button.innerHTML = `<i class="fas fa-book-open"></i><span data-en="${titleEN}" data-gr="${titleGR}">${initialTitle}</span>`;
-                
-                button.addEventListener('click', () => {
-                    const span = button.querySelector('span');
-                    const modalTitle = (currentLanguage === 'gr' ? span.getAttribute('data-gr') : span.getAttribute('data-en')) || titleEN;
-                    loadInformationContent(file.download_url, modalTitle);
-                });
-                navContainer.appendChild(button);
-            });
-            usefulInformationLoaded = true;
-        } catch (error) {
-            console.error('Failed to fetch useful information:', error);
-            navContainer.innerHTML = `<p style="color: var(--nm-danger);">${currentLanguage === 'gr' ? 'Αποτυχία φόρτωσης.' : 'Failed to load.'}</p>`;
-        } finally {
-            isFetchingUsefulInfo = false;
-        }
-    }
-
-    function createAndShowArticleModal(title, htmlContent, textToHighlight = null) {
-        document.querySelectorAll('.article-modal-overlay').forEach(modal => modal.remove());
-        const modalOverlay = document.createElement('div');
-        modalOverlay.className = 'modal-overlay article-modal-overlay'; 
-        modalOverlay.innerHTML = `
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h2>${title}</h2>
-                    <button class="close-modal">&times;</button>
-                </div>
-                <div class="modal-body">${htmlContent}</div>
-            </div>`;
-        document.body.appendChild(modalOverlay);
-
-        // --- FIX STARTS HERE (Ensuring copy buttons work on dynamically loaded content) ---
-        // After inserting the new content, find all copy buttons and attach the event listener.
-        let dynamicCodeIdCounter = 0;
-        const codeContainers = modalOverlay.querySelectorAll('.code-container');
-        codeContainers.forEach(container => {
-            const copyBtn = container.querySelector('.copy-btn');
-            const codeEl = container.querySelector('code');
-
-            if (copyBtn && codeEl) {
-                // Ensure the code element has an ID for the copy function to target
-                if (!codeEl.id) {
-                    const uniqueId = `dynamic-code-${Date.now()}-${dynamicCodeIdCounter++}`;
-                    codeEl.id = uniqueId;
-                }
-                
-                // Add the event listener to the button
-                copyBtn.addEventListener('click', () => {
-                    // Call the globally available copyToClipboard function
-                    window.copyToClipboard(copyBtn, codeEl.id);
-                });
-            }
-        });
-        // --- FIX ENDS HERE ---
-        
-        setTimeout(() => modalOverlay.classList.add('visible'), 10);
-        changeLanguage(currentLanguage);
-    
-        if (textToHighlight) {
-            setTimeout(() => {
-                const modalBody = modalOverlay.querySelector('.modal-body');
-                const allElements = modalBody.querySelectorAll('p, li, h3, h4, b, code, .tip, .note');
-                const targetElement = Array.from(allElements).find(el => el.textContent.trim().replace(/\s\s+/g, ' ') === textToHighlight.trim());
-                if (targetElement) {
-                    modalBody.scrollTo({ top: targetElement.offsetTop - 50, behavior: 'smooth' });
-                    targetElement.classList.add('content-highlight');
-                    setTimeout(() => targetElement.classList.remove('content-highlight'), 2500);
-                }
-            }, 150);
-        }
-        
-        const closeModal = () => {
-            modalOverlay.classList.remove('visible');
-            modalOverlay.addEventListener('transitionend', () => modalOverlay.remove(), { once: true });
-            
-            const searchInput = document.getElementById('useful-info-search-input');
-            if (searchInput) searchInput.value = '';
-            
-            const navContainer = document.getElementById('useful-information-nav');
-            if (navContainer) {
-                navContainer.querySelectorAll('.app-icon').forEach(article => {
-                    article.style.display = 'flex';
-                });
-            }
-        };
-
-        modalOverlay.addEventListener('click', (e) => {
-            if (e.target === modalOverlay) closeModal();
-        });
-        modalOverlay.querySelector('.close-modal').addEventListener('click', closeModal);
-    }
-
-    async function loadInformationContent(url, title, textToHighlight = null) {
-        try {
-            const response = await fetch(url);
-            if (!response.ok) throw new Error(`Fetch failed: ${response.status}`);
-            const htmlContent = await response.text();
-            createAndShowArticleModal(title, htmlContent, textToHighlight);
-        } catch (error) {
-            console.error('Failed to load content:', error);
-        }
-    }
-    
     // --- INITIALIZE ALL FEATURES ---
     initializePortfolio();
 });
