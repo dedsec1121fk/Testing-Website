@@ -60,14 +60,16 @@ document.addEventListener('DOMContentLoaded', () => {
         const country = formData.get('country');
         const city = formData.get('city');
 
-        // Update preview
+        /*
+        // Update preview - REMOVED AS PER REQUEST
         document.getElementById('preview-name').textContent = `${firstName} ${lastName}`;
         document.getElementById('preview-age').textContent = age;
         document.getElementById('preview-location').textContent = `${city}, ${country}`;
         document.getElementById('preview-date').textContent = new Date().toLocaleDateString();
 
-        // Show preview
+        // Show preview - REMOVED AS PER REQUEST
         preview.classList.remove('hidden');
+        */
 
         // Generate PDF
         generateCertificatePDF(firstName, lastName, age, country, city);
@@ -849,7 +851,7 @@ document.addEventListener('DOMContentLoaded', () => {
             usefulInformationLoaded = true;
         } catch (error) {
             console.error('Failed to fetch useful information:', error);
-            navContainer.innerHTML = `<p style="color: var(--nm-danger);">${currentLanguage === 'gr' ? 'Αποτυχία φόρτωσης.' : 'Failed to load.'}</p>`;
+            navContainer.innerHTML = `<p style="color: var(--nm-danger);">${currentLanguage === 'gr' ? 'Αποτυχία φόρτωσnς.' : 'Failed to load.'}</p>`;
         } finally {
             isFetchingUsefulInfo = false;
         }
