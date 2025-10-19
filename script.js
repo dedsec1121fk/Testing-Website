@@ -1,775 +1,856 @@
-// =============================================================================
-// DedSec Project Website Script
-// =============================================================================
+document.addEventListener('DOMContentLoaded', () => {
+    // --- GLOBAL PORTFOLIO STATE ---
+    let currentLanguage = 'en';
+    let usefulInfoSearchIndex = []; // Dedicated index for the modal, BUILT ON DEMAND
+    let usefulInfoFiles = []; // Stores the list of files to avoid re-fetching
+    let isUsefulInfoIndexBuilt = false; // Flag to check if the full index is ready
+    let usefulInformationLoaded = false;
+    let isFetchingUsefulInfo = false;
 
-// Wait for DOM to be fully loaded
-document.addEventListener('DOMContentLoaded', function() {
-    // Initialize the application
-    initializeApp();
-});
+    // --- EVEN MORE ADVANCED SEARCH UTILITY (Used for 'Useful Information' modal) ---
+    const SearchEngine = {
+        idfMaps: {},
 
-// Main initialization function
-function initializeApp() {
-    console.log('Initializing DedSec Project Website...');
-    
-    // Initialize all components
-    initializeScrollIndicator();
-    initializeModals();
-    initializeSearch();
-    initializeThemeSwitcher();
-    initializeLanguageSwitcher();
-    initializeCarousels();
-    initializeUsefulInformation();
-    initializeCertificateSystem();
-    
-    // Show disclaimer modal on first visit
-    checkDisclaimerStatus();
-}
+        tokenize(text, lang) {
+            if (!text) return [];
+            return text
+                .toLowerCase()
+                .replace(/[.,/#!$%\^&\*;:{}=\-_`~()]/g, "")
+                .split(/\s+/)
+                .filter(word => word.length > 1);
+        },
 
-// =============================================================================
-// SCROLL INDICATOR
-// =============================================================================
+        preprocessItem(item) {
+            return {
+                ...item,
+                titleTokens: this.tokenize(item.title, item.lang),
+                textTokens: this.tokenize(item.text, item.lang)
+            };
+        },
 
-function initializeScrollIndicator() {
-    const scrollIndicator = document.getElementById('scroll-indicator-thumb');
-    const homeScreen = document.querySelector('.home-screen');
-    
-    if (!scrollIndicator || !homeScreen) return;
-    
-    homeScreen.addEventListener('scroll', function() {
-        const scrollTop = homeScreen.scrollTop;
-        const scrollHeight = homeScreen.scrollHeight - homeScreen.clientHeight;
-        const scrollPercentage = (scrollTop / scrollHeight) * 100;
+        calculateIdf(indexName, index) {
+            const docFreq = new Map();
+            const totalDocs = index.length;
+            if (totalDocs === 0) return;
+
+            index.forEach(item => {
+                const seenTokens = new Set([...item.titleTokens, ...item.textTokens]);
+                seenTokens.forEach(token => {
+                    docFreq.set(token, (docFreq.get(token) || 0) + 1);
+                });
+            });
+
+            const idfMap = new Map();
+            for (const [token, freq] of docFreq.entries()) {
+                idfMap.set(token, Math.log(totalDocs / (1 + freq)));
+            }
+            this.idfMaps[indexName] = idfMap;
+        },
+
+        _getNgrams(word, n = 2) {
+            const ngrams = new Set();
+            if (!word || word.length < n) return ngrams;
+            for (let i = 0; i <= word.length - n; i++) {
+                ngrams.add(word.substring(i, i + n));
+            }
+            return ngrams;
+        },
+
+        _calculateSimilarity(word1, word2) {
+            if (!word1 || !word2) return 0;
+            const ngrams1 = this._getNgrams(word1);
+            const ngrams2 = this._getNgrams(word2);
+            const intersection = new Set([...ngrams1].filter(x => ngrams2.has(x)));
+            const union = ngrams1.size + ngrams2.size - intersection.size;
+            return union === 0 ? 0 : intersection.size / union;
+        },
+
+        search(query, index, lang, indexName) {
+            const queryTokens = this.tokenize(query, lang);
+            if (queryTokens.length === 0) return [];
+            const idfMap = this.idfMaps[indexName] || new Map();
+
+            const scoredResults = index
+                .filter(item => item.lang === lang)
+                .map(item => {
+                    let score = 0;
+                    const foundTokens = new Set();
+
+                    queryTokens.forEach(qToken => {
+                        const idf = idfMap.get(qToken) || 0.5;
+                        let tokenFound = false;
+
+                        let exactTitleMatches = item.titleTokens.filter(t => t === qToken).length;
+                        if (exactTitleMatches > 0) {
+                            score += exactTitleMatches * 10 * idf;
+                            tokenFound = true;
+                        }
+                        let exactTextMatches = item.textTokens.filter(t => t === qToken).length;
+                        if (exactTextMatches > 0) {
+                            score += exactTextMatches * 2 * idf;
+                            tokenFound = true;
+                        }
+                        if(tokenFound) foundTokens.add(qToken);
+
+                        if (!tokenFound) {
+                            let bestSimilarity = 0;
+                            const allItemTokens = [...item.titleTokens, ...item.textTokens];
+                            allItemTokens.forEach(tToken => {
+                                const similarity = this._calculateSimilarity(qToken, tToken);
+                                if (similarity > bestSimilarity) bestSimilarity = similarity;
+                            });
+                            
+                            if (bestSimilarity > 0.7) {
+                               score += bestSimilarity * 5 * idf;
+                               foundTokens.add(qToken);
+                            }
+                        }
+                    });
+
+                    if (foundTokens.size === queryTokens.length && queryTokens.length > 1) score *= 1.5;
+                    if (item.text.toLowerCase().includes(query.toLowerCase().trim())) score *= 1.2;
+                    score *= item.weight || 1;
+
+                    return { ...item, score };
+                });
+
+            return scoredResults
+                .filter(item => item.score > 0)
+                .sort((a, b) => b.score - a.score);
+        },
         
-        if (scrollHeight > 0) {
-            const thumbHeight = Math.max(40, (homeScreen.clientHeight / scrollHeight) * homeScreen.clientHeight);
-            const thumbPosition = (scrollPercentage / 100) * (homeScreen.clientHeight - thumbHeight);
+        generateSnippet(text, query, lang) {
+            const queryTokens = this.tokenize(query, lang);
+            if (queryTokens.length === 0) return text.substring(0, 120) + (text.length > 120 ? '...' : '');
+    
+            let bestIndex = -1;
+            const lowerCaseText = text.toLowerCase();
+    
+            for (const token of queryTokens) {
+                const index = lowerCaseText.indexOf(token);
+                if (index !== -1) {
+                    bestIndex = index;
+                    break; 
+                }
+            }
             
-            scrollIndicator.style.height = `${thumbHeight}px`;
-            scrollIndicator.style.top = `${thumbPosition}px`;
-            scrollIndicator.style.opacity = '1';
-        } else {
-            scrollIndicator.style.opacity = '0';
-        }
-    });
-}
-
-// =============================================================================
-// MODAL MANAGEMENT
-// =============================================================================
-
-function initializeModals() {
-    // Close modals when clicking outside
-    document.addEventListener('click', function(event) {
-        if (event.target.classList.contains('modal-overlay')) {
-            closeAllModals();
-        }
-    });
-    
-    // Close modals with Escape key
-    document.addEventListener('keydown', function(event) {
-        if (event.key === 'Escape') {
-            closeAllModals();
-        }
-    });
-    
-    // Initialize all modal triggers
-    const modalTriggers = document.querySelectorAll('[data-modal]');
-    modalTriggers.forEach(trigger => {
-        trigger.addEventListener('click', function() {
-            const modalId = this.getAttribute('data-modal') + '-modal';
-            openModal(modalId);
-        });
-    });
-    
-    // Initialize close buttons
-    const closeButtons = document.querySelectorAll('.close-modal');
-    closeButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            closeAllModals();
-        });
-    });
-}
-
-function openModal(modalId) {
-    const modal = document.getElementById(modalId);
-    if (modal) {
-        closeAllModals();
-        modal.classList.add('visible');
-        document.body.style.overflow = 'hidden';
-    }
-}
-
-function closeAllModals() {
-    const modals = document.querySelectorAll('.modal-overlay');
-    modals.forEach(modal => {
-        modal.classList.remove('visible');
-    });
-    document.body.style.overflow = '';
-}
-
-// =============================================================================
-// SEARCH FUNCTIONALITY
-// =============================================================================
-
-function initializeSearch() {
-    const searchInput = document.getElementById('main-search-input');
-    const searchForm = document.getElementById('main-search-form');
-    const searchSuggestions = document.getElementById('search-suggestions-container');
-    
-    if (!searchInput || !searchForm) return;
-    
-    // Search suggestions
-    searchInput.addEventListener('input', function() {
-        const query = this.value.trim();
-        
-        if (query.length > 0) {
-            showSearchSuggestions(query);
-        } else {
-            hideSearchSuggestions();
-        }
-    });
-    
-    // Hide suggestions when clicking outside
-    document.addEventListener('click', function(event) {
-        if (!searchSuggestions.contains(event.target) && event.target !== searchInput) {
-            hideSearchSuggestions();
-        }
-    });
-    
-    // Handle form submission
-    searchForm.addEventListener('submit', function(e) {
-        const query = searchInput.value.trim();
-        if (query.length === 0) {
-            e.preventDefault();
-        }
-    });
-}
-
-function showSearchSuggestions(query) {
-    const suggestionsContainer = document.getElementById('search-suggestions-container');
-    if (!suggestionsContainer) return;
-    
-    // Simple suggestion logic - can be expanded
-    const suggestions = [
-        { text: 'Installation Guide', url: 'https://www.google.com/search?q=DedSec+Project+installation' },
-        { text: 'GitHub Repository', url: 'https://github.com/dedsec1121fk/DedSec' },
-        { text: 'Contact Information', url: 'https://www.google.com/search?q=DedSec+Project+contact' },
-        { text: 'Privacy Policy', url: 'https://www.google.com/search?q=DedSec+Project+privacy' }
-    ].filter(item => 
-        item.text.toLowerCase().includes(query.toLowerCase())
-    );
-    
-    if (suggestions.length > 0) {
-        suggestionsContainer.innerHTML = suggestions.map(item => 
-            `<div class="search-result-item" onclick="window.open('${item.url}', '_blank')">${item.text}</div>`
-        ).join('');
-        suggestionsContainer.classList.remove('hidden');
-    } else {
-        hideSearchSuggestions();
-    }
-}
-
-function hideSearchSuggestions() {
-    const suggestionsContainer = document.getElementById('search-suggestions-container');
-    if (suggestionsContainer) {
-        suggestionsContainer.classList.add('hidden');
-    }
-}
-
-// =============================================================================
-// THEME SWITCHER
-// =============================================================================
-
-function initializeThemeSwitcher() {
-    const themeSwitcher = document.getElementById('theme-switcher-btn');
-    if (!themeSwitcher) return;
-    
-    // Load saved theme
-    const savedTheme = localStorage.getItem('dedsec-theme') || 'dark';
-    setTheme(savedTheme);
-    
-    themeSwitcher.addEventListener('click', function() {
-        const currentTheme = document.body.classList.contains('light-theme') ? 'light' : 'dark';
-        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-        setTheme(newTheme);
-    });
-}
-
-function setTheme(theme) {
-    if (theme === 'light') {
-        document.body.classList.add('light-theme');
-        document.body.classList.remove('dark-theme');
-    } else {
-        document.body.classList.add('dark-theme');
-        document.body.classList.remove('light-theme');
-    }
-    localStorage.setItem('dedsec-theme', theme);
-}
-
-// =============================================================================
-// LANGUAGE SWITCHER
-// =============================================================================
-
-function initializeLanguageSwitcher() {
-    const langSwitcher = document.getElementById('lang-switcher-btn');
-    const langModal = document.getElementById('language-selection-modal');
-    const langButtons = document.querySelectorAll('.language-button');
-    
-    if (!langSwitcher) return;
-    
-    // Load saved language
-    const savedLang = localStorage.getItem('dedsec-language') || 'en';
-    setLanguage(savedLang);
-    
-    langSwitcher.addEventListener('click', function() {
-        openModal('language-selection-modal');
-    });
-    
-    langButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            const lang = this.getAttribute('data-lang');
-            setLanguage(lang);
-            closeAllModals();
-        });
-    });
-}
-
-function setLanguage(lang) {
-    // Update all elements with data attributes
-    const elements = document.querySelectorAll('[data-en], [data-gr]');
-    elements.forEach(element => {
-        const enText = element.getAttribute('data-en');
-        const grText = element.getAttribute('data-gr');
-        
-        if (lang === 'gr' && grText) {
-            if (element.tagName === 'INPUT' && element.hasAttribute('placeholder')) {
-                element.setAttribute('placeholder', grText);
-            } else {
-                element.textContent = grText;
+            if (bestIndex === -1) {
+                 return text.substring(0, 120) + (text.length > 120 ? '...' : '');
             }
-        } else if (enText) {
-            if (element.tagName === 'INPUT' && element.hasAttribute('placeholder')) {
-                element.setAttribute('placeholder', enText);
-            } else {
-                element.textContent = enText;
-            }
-        }
-    });
     
-    // Handle lang-section elements
-    const langSections = document.querySelectorAll('[data-lang-section]');
-    langSections.forEach(section => {
-        if (section.getAttribute('data-lang-section') === lang) {
-            section.classList.remove('hidden-by-default');
-        } else {
-            section.classList.add('hidden-by-default');
-        }
-    });
+            const snippetLength = 120;
+            const start = Math.max(0, bestIndex - Math.round(snippetLength / 4));
+            const end = Math.min(text.length, start + snippetLength);
+            
+            let snippet = text.substring(start, end);
+            if (start > 0) snippet = '... ' + snippet;
+            if (end < text.length) snippet = snippet + ' ...';
     
-    localStorage.setItem('dedsec-language', lang);
-}
-
-// =============================================================================
-// CAROUSELS
-// =============================================================================
-
-function initializeCarousels() {
-    const carousels = document.querySelectorAll('.gym-carousel');
-    
-    carousels.forEach(carousel => {
-        const images = carousel.querySelectorAll('.gym-clothing-images img');
-        const prevBtn = carousel.querySelector('.carousel-btn.prev');
-        const nextBtn = carousel.querySelector('.carousel-btn.next');
-        let currentIndex = 0;
-        
-        if (images.length === 0) return;
-        
-        function showImage(index) {
-            images.forEach(img => img.classList.remove('active'));
-            images[index].classList.add('active');
-            currentIndex = index;
-        }
-        
-        function nextImage() {
-            let nextIndex = (currentIndex + 1) % images.length;
-            showImage(nextIndex);
-        }
-        
-        function prevImage() {
-            let prevIndex = (currentIndex - 1 + images.length) % images.length;
-            showImage(prevIndex);
-        }
-        
-        // Auto-advance every 5 seconds
-        let autoAdvance = setInterval(nextImage, 5000);
-        
-        // Pause auto-advance on hover
-        carousel.addEventListener('mouseenter', () => clearInterval(autoAdvance));
-        carousel.addEventListener('mouseleave', () => {
-            autoAdvance = setInterval(nextImage, 5000);
-        });
-        
-        // Button controls
-        if (prevBtn) prevBtn.addEventListener('click', prevImage);
-        if (nextBtn) nextBtn.addEventListener('click', nextImage);
-        
-        // Show first image
-        showImage(0);
-    });
-}
-
-// =============================================================================
-// USEFUL INFORMATION
-// =============================================================================
-
-function initializeUsefulInformation() {
-    const searchInput = document.getElementById('useful-info-search-input');
-    const resultsContainer = document.getElementById('useful-info-results-container');
-    const navContainer = document.getElementById('useful-information-nav');
-    const contentContainer = document.getElementById('useful-information-content');
-    
-    if (!navContainer) return;
-    
-    // Useful information data structure
-    const usefulInfoData = {
-        "installation": {
-            title: { en: "Installation Guide", gr: "Οδηγός Εγκατάστασης" },
-            icon: "fas fa-download",
-            content: {
-                en: `<h3>Complete Installation Guide</h3>
-                <p>Follow these steps to install the DedSec Project on your Android device:</p>
-                <ol>
-                    <li>Install Termux from F-Droid.</li>
-                    <li>Update packages: <code>pkg update -y && pkg upgrade -y</code>.</li>
-                    <li>Install Git: <code>pkg install git -y</code>.</li>
-                    <li>Clone repository: <code>git clone https://github.com/dedsec1121fk/DedSec</code>.</li>
-                    <li>Run setup: <code>cd DedSec && bash Setup.sh</code>.</li>
-                </ol>`,
-                gr: `<h3>Πλήρης Οδηγός Εγκατάστασης</h3>
-                <p>Ακολουθήστε αυτά τα βήματα για να εγκαταστήσετε το DedSec Project στη συσκευή σας Android:</p>
-                <ol>
-                    <li>Εγκαταστήστε το Termux από το F-Droid.</li>
-                    <li>Ενημερώστε τα πακέτα: <code>pkg update -y && pkg upgrade -y</code>.</li>
-                    <li>Εγκαταστήστε το Git: <code>pkg install git -y</code>.</li>
-                    <li>Κλωνοποιήστε το αποθετήριο: <code>git clone https://github.com/dedsec1121fk/DedSec</code>.</li>
-                    <li>Εκτελέστε τη ρύθμιση: <code>cd DedSec && bash Setup.sh</code>.</li>
-                </ol>`
-            }
+            return snippet;
         },
-        "troubleshooting": {
-            title: { en: "Troubleshooting", gr: "Αντιμετώπιση Προβλημάτων" },
-            icon: "fas fa-tools",
-            content: {
-                en: `<h3>Common Issues and Solutions</h3>
-                <ul>
-                    <li><strong>Termux won't start:</strong> Reinstall from F-Droid.</li>
-                    <li><strong>Git clone fails:</strong> Check internet connection.</li>
-                    <li><strong>Permission denied:</strong> Run termux-setup-storage.</li>
-                    <li><strong>Script not found:</strong> Ensure you're in the DedSec directory.</li>
-                </ul>`,
-                gr: `<h3>Συχνά Προβλήματα και Λύσεις</h3>
-                <ul>
-                    <li><strong>Το Termux δεν ξεκινά:</strong> Επανεγκαταστήστε από το F-Droid.</li>
-                    <li><strong>Αποτυχία Git clone:</strong> Ελέγξτε τη σύνδεση στο διαδίκτυο.</li>
-                    <li><strong>Απορρίφθηκε η άδεια:</strong> Εκτελέστε termux-setup-storage.</li>
-                    <li><strong>Δεν βρέθηκε το σενάριο:</strong> Βεβαιωθείτε ότι βρίσκεστε στον κατάλογο DedSec.</li>
-                </ul>`
-            }
-        },
-        "legal": {
-            title: { en: "Legal Information", gr: "Νομικές Πληροφορίες" },
-            icon: "fas fa-gavel",
-            content: {
-                en: `<h3>Legal Disclaimer</h3>
-                <p>This project is for educational and ethical testing purposes only. You must only use these tools on systems you own or have explicit permission to test.</p>
-                <p>Unauthorized access to computer systems is illegal. The developers are not responsible for any misuse of this software.</p>`,
-                gr: `<h3>Νομική Αποποίηση Ευθύνης</h3>
-                <p>Αυτό το έργο προορίζεται μόνο για εκπαιδευτικούς και ηθικούς σκοπούς δοκιμών. Πρέπει να χρησιμοποιείτε αυτά τα εργαλεία μόνο σε συστήματα που σας ανήκουν ή έχετε ρητή άδεια να δοκιμάσετε.</p>
-                <p>Η μη εξουσιοδοτημένη πρόσβαση σε συστήματα υπολογιστών είναι παράνομη. Οι προγραμματιστές δεν φέρουν ευθύνη για οποιαδήποτε κατάχρηση αυτού του λογισμικού.</p>`
-            }
+
+        highlight(snippet, query, lang) {
+            const queryTokens = this.tokenize(query, lang);
+            if (queryTokens.length === 0) return snippet;
+            const regex = new RegExp(`(${queryTokens.join('|')})`, 'gi');
+            return snippet.replace(regex, '<strong>$1</strong>');
         }
     };
-    
-    // Populate navigation
-    const currentLang = localStorage.getItem('dedsec-language') || 'en';
-    navContainer.innerHTML = '';
-    
-    Object.entries(usefulInfoData).forEach(([key, data]) => {
-        const button = document.createElement('button');
-        button.className = 'app-wrapper';
-        button.innerHTML = `
-            <div class="app-icon"><i class="${data.icon}"></i></div>
-            <span class="app-label">${data.title[currentLang]}</span>
-        `;
-        button.addEventListener('click', () => {
-            displayUsefulInfoContent(key, data);
-        });
-        navContainer.appendChild(button);
-    });
-    
-    // Initialize search functionality
-    if (searchInput && resultsContainer) {
-        searchInput.addEventListener('input', function() {
-            const query = this.value.trim().toLowerCase();
+
+    // --- PORTFOLIO INITIALIZATION ---
+    function initializePortfolio() {
+        function showModal(modal) {
+            if (!modal) return;
+            modal.classList.add('visible');
+        }
+
+        function hideModal(modal) {
+            if (!modal) return;
+            modal.classList.remove('visible');
+        }
+
+        // --- ANNIVERSARY EVENT LOGIC ---
+        function handleAnniversaryEvent() {
+            const banner = document.getElementById('anniversary-banner');
+            const certButton = document.getElementById('get-certificate-btn');
+            const certModal = document.getElementById('certificate-modal');
+            const downloadCertBtn = document.getElementById('download-certificate-btn');
+            const certForm = document.getElementById('certificate-form');
+
+            if (!banner || !certButton || !certModal || !downloadCertBtn || !certForm) return;
+
+            const currentDate = new Date();
+            const currentYear = currentDate.getFullYear();
+            const startDate = new Date(currentYear, 9, 20); // Month is 0-indexed, so 9 is October
+            const endDate = new Date(currentYear, 9, 31, 23, 59, 59); // End of day October 31st
+
+            if (currentDate >= startDate && currentDate <= endDate) {
+                document.body.classList.add('anniversary-theme');
+                banner.classList.remove('hidden');
+                certButton.classList.remove('hidden');
+
+                certButton.addEventListener('click', () => showModal(certModal));
+
+                downloadCertBtn.addEventListener('click', () => {
+                    if (!certForm.checkValidity()) {
+                        certForm.reportValidity();
+                        return;
+                    }
+                    
+                    const firstName = document.getElementById('first-name').value;
+                    const lastName = document.getElementById('last-name').value;
+                    const age = document.getElementById('age').value;
+                    const country = document.getElementById('country').value;
+                    const city = document.getElementById('city').value;
+                    
+                    try {
+                        const { jsPDF } = window.jspdf;
+                        const doc = new jsPDF('landscape', 'mm', 'a4');
+                        
+                        // Simple certificate design
+                        doc.setFont('helvetica', 'bold');
+                        doc.setFontSize(34);
+                        doc.text('Certificate of Participation', 148.5, 30, { align: 'center' });
+
+                        doc.setFont('helvetica', 'normal');
+                        doc.setFontSize(16);
+                        doc.text('This is to certify that', 148.5, 50, { align: 'center' });
+
+                        doc.setFont('helvetica', 'bold');
+                        doc.setFontSize(26);
+                        doc.text(`${firstName} ${lastName}`, 148.5, 70, { align: 'center' });
+                        
+                        doc.setFont('helvetica', 'normal');
+                        doc.setFontSize(14);
+                        doc.text(`Age: ${age}, from ${city}, ${country}`, 148.5, 85, { align: 'center' });
+
+                        doc.setFontSize(16);
+                        doc.text('participated in the', 148.5, 105, { align: 'center' });
+                        
+                        doc.setFont('helvetica', 'bold');
+                        doc.setFontSize(22);
+                        doc.text('DedSec Project 1st Anniversary Celebration', 148.5, 120, { align: 'center' });
+
+                        doc.setFont('helvetica', 'italic');
+                        doc.setFontSize(12);
+                        doc.text(`Event Period: October 20th - 31st, ${currentYear}`, 148.5, 135, { align: 'center' });
+
+                        doc.setFontSize(10);
+                        doc.text(`© ${currentYear} DedSec Project. All Rights Reserved.`, 148.5, 180, { align: 'center' });
+                        
+                        doc.save(`DedSec_Anniversary_Certificate_${firstName}_${lastName}.pdf`);
+
+                        hideModal(certModal);
+                        certForm.reset();
+                    } catch(e) {
+                        console.error("Error generating PDF:", e);
+                        alert("Could not generate PDF. Please try again later.");
+                    }
+                });
+            }
+        }
+        
+        const languageModal = document.getElementById('language-selection-modal');
+        if (!languageModal) {
+            console.error("Fatal: Language modal not found. Site cannot start.");
+            return;
+        }
+        const languageModalCloseBtn = languageModal.querySelector('.close-modal');
+        const disclaimerModal = document.getElementById('disclaimer-modal');
+        const installationModal = document.getElementById('installation-modal');
+
+        window.changeLanguage = (lang) => {
+            currentLanguage = lang;
+            document.documentElement.lang = lang;
             
-            if (query.length > 0) {
-                const results = Object.entries(usefulInfoData)
-                    .filter(([key, data]) => 
-                        data.title.en.toLowerCase().includes(query) || 
-                        data.title.gr.toLowerCase().includes(query) ||
-                        data.content.en.toLowerCase().includes(query) ||
-                        data.content.gr.toLowerCase().includes(query)
-                    )
-                    .map(([key, data]) => ({
-                        key,
-                        title: data.title[currentLang],
-                        content: data.content[currentLang].replace(/<[^>]*>/g, '').substring(0, 100) + '...'
-                    }));
-                
-                if (results.length > 0) {
-                    resultsContainer.innerHTML = results.map(result => 
-                        `<div class="search-result-item" onclick="displayUsefulInfoContent('${result.key}', usefulInfoData['${result.key}'])">
-                            <strong>${result.title}</strong><br>
-                            <small>${result.content}</small>
-                        </div>`
-                    ).join('');
-                    resultsContainer.classList.remove('hidden');
-                } else {
-                    resultsContainer.classList.add('hidden');
+            document.querySelectorAll('[data-en]').forEach(el => {
+                const text = el.getAttribute(`data-${lang}`) || el.getAttribute('data-en');
+                const hasElementChild = el.children.length > 0 && !(el.id === 'get-certificate-btn'); // ensure button text is updated
+                 if (!hasElementChild || el.tagName === 'BUTTON' || el.tagName === 'A') {
+                     // Find the deepest text node if it's a complex element like a button
+                    let textNode = Array.from(el.childNodes).find(node => node.nodeType === 3);
+                    if (textNode) {
+                         textNode.textContent = text;
+                    } else if (el.firstChild && el.firstChild.nodeType === 3) {
+                         el.firstChild.textContent = text;
+                    } else if (!hasElementChild) {
+                         el.textContent = text;
+                    }
+                 }
+            });
+            
+            document.querySelectorAll('[data-lang-section]').forEach(el => {
+                el.style.display = el.dataset.langSection === lang ? 'block' : 'none';
+                if (el.classList.contains('hidden-by-default')) {
+                    el.classList.toggle('hidden-by-default', el.dataset.langSection !== lang);
                 }
+            });
+            
+            document.querySelectorAll('.language-button').forEach(button => {
+                button.classList.toggle('selected', button.dataset.lang === lang);
+            });
+
+            document.title = "DedSec Project";
+
+            const searchInput = document.getElementById('main-search-input');
+            if (searchInput) {
+                searchInput.placeholder = lang === 'gr' ? 'Αναζήτηση στο διαδίκτυο...' : 'Search the Web...';
+            }
+            
+            const usefulInfoSearchInput = document.getElementById('useful-info-search-input');
+            if (usefulInfoSearchInput && !isUsefulInfoIndexBuilt) {
+                 usefulInfoSearchInput.placeholder = lang === 'gr' ? 'Πατήστε για φόρτωση αναζήτησης...' : 'Click to load search...';
+            } else if (usefulInfoSearchInput) {
+                usefulInfoSearchInput.placeholder = lang === 'gr' ? 'Αναζήτηση άρθρων...' : 'Search articles...';
+            }
+        };
+        
+        languageModal.querySelectorAll('.language-button').forEach(button => {
+            button.addEventListener('click', () => {
+                try {
+                    changeLanguage(button.dataset.lang);
+                } catch (error) {
+                    console.error("Error changing language:", error);
+                } finally {
+                    hideModal(languageModal);
+                }
+            });
+        });
+        
+        document.getElementById('lang-switcher-btn')?.addEventListener('click', () => {
+            if (languageModalCloseBtn) languageModalCloseBtn.style.display = ''; 
+            showModal(languageModal);
+        });
+
+        const themeSwitcherBtn = document.getElementById('theme-switcher-btn');
+        if (themeSwitcherBtn) {
+            const themeIcon = themeSwitcherBtn.querySelector('i');
+            const themeSpan = themeSwitcherBtn.querySelector('span');
+
+            const updateThemeButton = (isLightTheme) => {
+                if (isLightTheme) {
+                    themeIcon.classList.remove('fa-moon');
+                    themeIcon.classList.add('fa-sun');
+                    themeSpan.setAttribute('data-en', 'Light Theme');
+                    themeSpan.setAttribute('data-gr', 'Φωτεινό Θέμα');
+                } else {
+                    themeIcon.classList.remove('fa-sun');
+                    themeIcon.classList.add('fa-moon');
+                    themeSpan.setAttribute('data-en', 'Theme');
+                    themeSpan.setAttribute('data-gr', 'Θέμα');
+                }
+                changeLanguage(currentLanguage);
+            };
+
+            themeSwitcherBtn.addEventListener('click', () => {
+                document.body.classList.toggle('light-theme');
+                const isLight = document.body.classList.contains('light-theme');
+                localStorage.setItem('theme', isLight ? 'light' : 'dark');
+                updateThemeButton(isLight);
+            });
+            
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'light') {
+                document.body.classList.add('light-theme');
+            }
+            updateThemeButton(document.body.classList.contains('light-theme'));
+        }
+
+        document.getElementById('accept-disclaimer')?.addEventListener('click', () => {
+            localStorage.setItem('disclaimerAccepted', 'true');
+            hideModal(disclaimerModal);
+            if (installationModal) {
+                showModal(installationModal);
+            }
+        });
+        document.getElementById('decline-disclaimer')?.addEventListener('click', () => window.location.href = 'https://www.google.com');
+        
+        window.openModalAndHighlight = (modalId, highlightText = null) => {
+            if (modalId === 'installation' && !localStorage.getItem('disclaimerAccepted') && disclaimerModal) {
+                showModal(disclaimerModal);
+                return;
+            }
+            const modal = document.getElementById(`${modalId}-modal`);
+            if (modal) {
+                if (modalId === 'language-selection' && languageModalCloseBtn) {
+                     languageModalCloseBtn.style.display = '';
+                }
+                showModal(modal);
+                
+                if (modalId === 'useful-information' && !usefulInformationLoaded) {
+                    fetchUsefulInformation();
+                }
+                
+                if (highlightText) {
+                    setTimeout(() => highlightModalContent(modal, highlightText), 100); 
+                }
+            }
+        };
+
+        const highlightModalContent = (modal, text) => {
+            const modalBody = modal.querySelector('.modal-body');
+            if (!modalBody) return;
+            
+            const allElements = modalBody.querySelectorAll('h3, h4, p, li, b, code, span, .note, .tip, .modal-disclaimer');
+            const targetElement = Array.from(allElements).find(el => el.textContent.trim().replace(/\s\s+/g, ' ') === text.trim());
+
+            if (targetElement) {
+                modalBody.scrollTo({ top: targetElement.offsetTop - 50, behavior: 'smooth' });
+                targetElement.classList.add('content-highlight');
+                setTimeout(() => targetElement.classList.remove('content-highlight'), 2500);
+            }
+        };
+        
+        document.querySelectorAll('button.app-wrapper[data-modal]').forEach(wrapper => {
+            wrapper.addEventListener('click', () => openModalAndHighlight(wrapper.dataset.modal));
+        });
+
+        document.querySelectorAll('.modal-overlay').forEach(modal => {
+            const closeModal = () => {
+                hideModal(modal);
+                if (modal.id === 'useful-information-modal') {
+                    document.getElementById('useful-info-search-input').value = '';
+                    document.getElementById('useful-info-results-container').classList.add('hidden');
+                    document.getElementById('useful-information-nav').querySelectorAll('.app-icon').forEach(article => {
+                        article.style.display = 'flex';
+                    });
+                }
+                modal.querySelectorAll('.content-highlight').forEach(el => el.classList.remove('content-highlight'));
+            };
+            
+            modal.addEventListener('click', e => {
+                if (e.target === modal && modal.id !== 'language-selection-modal') closeModal();
+            });
+            
+            modal.querySelector('.close-modal')?.addEventListener('click', closeModal);
+        });
+        
+        window.copyToClipboard = (button, targetId) => {
+            const codeElement = document.getElementById(targetId);
+            if (!codeElement || !navigator.clipboard) return; 
+            navigator.clipboard.writeText(codeElement.innerText).then(() => {
+                const originalText = button.textContent;
+                button.textContent = (currentLanguage === 'gr') ? 'Αντιγράφηке!' : 'Copied!';
+                setTimeout(() => { button.textContent = originalText; }, 1500);
+            }).catch(err => console.error('Failed to copy text: ', err));
+        };
+        
+        const carousel = document.querySelector('.gym-carousel');
+        if (carousel) {
+            const images = carousel.querySelectorAll('.gym-clothing-images img');
+            const prevBtn = carousel.querySelector('.carousel-btn.prev');
+            const nextBtn = carousel.querySelector('.carousel-btn.next');
+            if (images.length > 0) {
+                let currentIndex = 0;
+                const showImage = (index) => images.forEach((img, i) => img.classList.toggle('active', i === index));
+                prevBtn.addEventListener('click', () => {
+                    currentIndex = (currentIndex > 0) ? currentIndex - 1 : images.length - 1;
+                    showImage(currentIndex);
+                });
+                nextBtn.addEventListener('click', () => {
+                    currentIndex = (currentIndex < images.length - 1) ? currentIndex + 1 : 0;
+                    showImage(currentIndex);
+                });
+                showImage(0);
+            }
+        }
+        
+        // --- INITIATE ANNIVERSARY CHECK ---
+        handleAnniversaryEvent();
+        
+        initializeWebSearchSuggestions(); 
+        initializeUsefulInfoSearch();
+        
+        if (languageModalCloseBtn) languageModalCloseBtn.style.display = 'none';
+        showModal(languageModal);
+        changeLanguage('en'); 
+    }
+
+    function initializeWebSearchSuggestions() {
+        const searchInput = document.getElementById('main-search-input');
+        const suggestionsContainer = document.getElementById('search-suggestions-container');
+        const searchForm = document.getElementById('main-search-form');
+        if (!searchInput || !suggestionsContainer || !searchForm) return;
+
+        window.handleGoogleSuggestions = (data) => {
+            suggestionsContainer.innerHTML = '';
+            const suggestions = data[1];
+
+            if (suggestions && Array.isArray(suggestions) && suggestions.length > 0) {
+                suggestions.slice(0, 5).forEach(suggestion => {
+                    const itemEl = document.createElement('div');
+                    itemEl.classList.add('search-result-item');
+                    itemEl.textContent = suggestion;
+                    
+                    itemEl.addEventListener('click', () => {
+                        searchInput.value = suggestion;
+                        suggestionsContainer.classList.add('hidden');
+                        searchForm.submit();
+                        
+                        // Use a short delay to clear the input after the form submits
+                        setTimeout(() => {
+                            searchInput.value = ''; // THIS IS THE ADDED LINE
+                        }, 100);
+                    });
+                    suggestionsContainer.appendChild(itemEl);
+                });
+                suggestionsContainer.classList.remove('hidden');
+            } else {
+                suggestionsContainer.classList.add('hidden');
+            }
+        };
+
+        let debounceTimer;
+        searchInput.addEventListener('input', () => {
+            const query = searchInput.value.trim();
+            clearTimeout(debounceTimer);
+
+            if (query.length < 1) {
+                suggestionsContainer.classList.add('hidden');
+                return;
+            }
+            
+            debounceTimer = setTimeout(() => {
+                const oldScript = document.getElementById('jsonp-script');
+                if (oldScript) {
+                    oldScript.remove();
+                }
+
+                const script = document.createElement('script');
+                script.id = 'jsonp-script';
+                script.src = `https://suggestqueries.google.com/complete/search?client=chrome&q=${encodeURIComponent(query)}&callback=handleGoogleSuggestions`;
+                
+                script.onerror = () => {
+                    console.error("Error loading Google suggestions. An ad-blocker might be interfering.");
+                    suggestionsContainer.classList.add('hidden');
+                };
+                
+                document.head.appendChild(script);
+            }, 200);
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!searchForm.contains(e.target)) {
+                suggestionsContainer.classList.add('hidden');
+            }
+        });
+    }
+
+
+    async function buildUsefulInfoSearchIndex(progressBar, progressText) {
+        if (isUsefulInfoIndexBuilt || usefulInfoFiles.length === 0) return;
+
+        let filesLoaded = 0;
+        const totalFiles = usefulInfoFiles.length;
+
+        const indexPromises = usefulInfoFiles.map(async (file) => {
+            try {
+                const response = await fetch(file.download_url);
+                if (!response.ok) return;
+                const htmlContent = await response.text();
+                const tempDiv = document.createElement('div');
+                tempDiv.innerHTML = htmlContent;
+
+                let fallbackTitleEN = file.name.replace(/\.html$/, '').replace(/^\d+_/, '').replace(/_/g, ' ');
+                let fallbackTitleGR = fallbackTitleEN;
+
+                const titleRegex = /(.+?)_\((.+?)\)/;
+                const match = file.name.match(titleRegex);
+
+                if (match && match[1] && match[2]) {
+                    fallbackTitleEN = match[1].replace(/_/g, ' ').trim();
+                    fallbackTitleGR = match[2].replace(/_/g, ' ').trim();
+                }
+
+                const titlesContainer = tempDiv.querySelector('#article-titles');
+                const titleEN = titlesContainer?.querySelector('[data-lang="en"]')?.textContent.trim() || fallbackTitleEN;
+                const titleGR = titlesContainer?.querySelector('[data-lang="gr"]')?.textContent.trim() || fallbackTitleGR;
+
+                tempDiv.querySelectorAll('[data-lang-section]').forEach(section => {
+                    const lang = section.dataset.langSection;
+                    const articleTitle = lang === 'gr' ? titleGR : titleEN;
+                    section.querySelectorAll('h3, h4, p, li, b, code').forEach(el => {
+                        const text = el.textContent.trim().replace(/\s\s+/g, ' ');
+                        if (text.length > 5) {
+                            const item = {
+                                lang,
+                                title: articleTitle,
+                                text,
+                                url: file.download_url,
+                                weight: (el.tagName === 'H3' ? 5 : 1)
+                            };
+                            usefulInfoSearchIndex.push(SearchEngine.preprocessItem(item));
+                        }
+                    });
+                });
+            } catch (e) {
+                console.error(`Failed to index file: ${file.name}`, e);
+            } finally {
+                filesLoaded++;
+                const progress = (filesLoaded / totalFiles) * 100;
+                progressBar.style.width = `${progress}%`;
+                progressText.textContent = `${Math.round(progress)}%`;
+            }
+        });
+
+        await Promise.all(indexPromises);
+        SearchEngine.calculateIdf('usefulInfo', usefulInfoSearchIndex);
+        isUsefulInfoIndexBuilt = true;
+    }
+
+    function updateUsefulInfoButtonTitles() {
+        const titleMap = new Map();
+
+        usefulInfoSearchIndex.forEach(item => {
+            if (!titleMap.has(item.url)) {
+                titleMap.set(item.url, {});
+            }
+            const langTitles = titleMap.get(item.url);
+            if (!langTitles[item.lang]) {
+                langTitles[item.lang] = item.title;
+            }
+        });
+
+        document.querySelectorAll('#useful-information-nav .app-icon[data-url]').forEach(button => {
+            const url = button.dataset.url;
+            const titles = titleMap.get(url);
+            if (titles) {
+                const buttonSpan = button.querySelector('span');
+                if(buttonSpan) {
+                   buttonSpan.setAttribute('data-en', titles.en || '');
+                   buttonSpan.setAttribute('data-gr', titles.gr || titles.en || '');
+                   buttonSpan.textContent = (currentLanguage === 'gr' ? titles.gr : titles.en) || titles.en || buttonSpan.textContent;
+                }
+            }
+        });
+    }
+
+    function initializeUsefulInfoSearch() {
+        const searchInput = document.getElementById('useful-info-search-input');
+        const resultsContainer = document.getElementById('useful-info-results-container');
+        const navContainer = document.getElementById('useful-information-nav');
+        if (!searchInput || !resultsContainer || !navContainer) return;
+
+        const progressBarContainer = document.createElement('div');
+        progressBarContainer.className = 'progress-bar-container';
+        
+        const progressBar = document.createElement('div');
+        progressBar.className = 'progress-bar';
+
+        const progressText = document.createElement('span');
+        progressText.className = 'progress-bar-text';
+        progressText.textContent = '0%';
+
+        progressBarContainer.appendChild(progressBar);
+        progressBarContainer.appendChild(progressText);
+        navContainer.parentNode.insertBefore(progressBarContainer, navContainer);
+
+
+        const showNav = (shouldShow) => {
+            navContainer.querySelectorAll('.app-icon').forEach(article => {
+                article.style.display = shouldShow ? 'flex' : 'none';
+            });
+        };
+
+        searchInput.addEventListener('focus', async () => {
+            if (isUsefulInfoIndexBuilt) return;
+
+            searchInput.placeholder = currentLanguage === 'gr' ? 'Ευρετηρίαση άρθρων...' : 'Indexing articles...';
+            searchInput.disabled = true;
+
+            progressBarContainer.style.display = 'block';
+            progressBar.style.width = '0%';
+
+            await buildUsefulInfoSearchIndex(progressBar, progressText);
+            
+            updateUsefulInfoButtonTitles();
+
+            setTimeout(() => {
+                progressBarContainer.style.display = 'none';
+            }, 500);
+
+            searchInput.disabled = false;
+            searchInput.placeholder = currentLanguage === 'gr' ? 'Αναζήτηση άρθρων...' : 'Search articles...';
+            searchInput.focus();
+        }, { once: true });
+
+        searchInput.addEventListener('input', () => {
+            const query = searchInput.value.trim();
+            resultsContainer.innerHTML = '';
+
+            if (!isUsefulInfoIndexBuilt || query.length < 2) {
+                resultsContainer.classList.add('hidden');
+                showNav(true);
+                return;
+            }
+            
+            showNav(false);
+
+            const results = SearchEngine.search(query, usefulInfoSearchIndex, currentLanguage, 'usefulInfo');
+
+            if (results.length > 0) {
+                results.slice(0, 7).forEach(result => {
+                    const itemEl = document.createElement('div');
+                    itemEl.classList.add('search-result-item');
+                    const snippet = SearchEngine.generateSnippet(result.text, query, currentLanguage);
+                    const highlightedSnippet = SearchEngine.highlight(snippet, query, currentLanguage);
+
+                    itemEl.innerHTML = `${highlightedSnippet} <small>${result.title}</small>`;
+                    itemEl.addEventListener('click', () => {
+                        searchInput.value = '';
+                        resultsContainer.classList.add('hidden');
+                        loadInformationContent(result.url, result.title, result.text);
+                    });
+                    resultsContainer.appendChild(itemEl);
+                });
+                resultsContainer.classList.remove('hidden');
             } else {
                 resultsContainer.classList.add('hidden');
-            }
-        });
-        
-        // Hide results when clicking outside
-        document.addEventListener('click', function(event) {
-            if (!resultsContainer.contains(event.target) && event.target !== searchInput) {
-                resultsContainer.classList.add('hidden');
+                showNav(true);
             }
         });
     }
-}
 
-function displayUsefulInfoContent(key, data) {
-    const contentContainer = document.getElementById('useful-information-content');
-    const prompt = document.getElementById('useful-info-prompt');
-    const currentLang = localStorage.getItem('dedsec-language') || 'en';
-    
-    if (contentContainer && prompt) {
-        contentContainer.innerHTML = data.content[currentLang];
-        prompt.style.display = 'none';
-        contentContainer.style.display = 'block';
-    }
-}
-
-// =============================================================================
-// CERTIFICATE SYSTEM
-// =============================================================================
-
-function initializeCertificateSystem() {
-    const certificateBtn = document.getElementById('certificate-btn');
-    const certificateModal = document.getElementById('certificate-modal');
-    const certificateForm = document.getElementById('certificate-form');
-    const cancelBtn = document.getElementById('cancel-certificate');
-    
-    if (!certificateBtn) return;
-    
-    certificateBtn.addEventListener('click', function() {
-        openModal('certificate-modal');
-    });
-    
-    if (cancelBtn) {
-        cancelBtn.addEventListener('click', function() {
-            closeAllModals();
-        });
-    }
-    
-    if (certificateForm) {
-        certificateForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            generateCertificate();
-        });
-    }
-}
-
-function generateCertificate() {
-    const fullName = document.getElementById('full-name').value;
-    const age = document.getElementById('age').value;
-    const country = document.getElementById('country').value;
-    const city = document.getElementById('city').value;
-    
-    if (!fullName || !age || !country || !city) {
-        alert('Please fill in all fields.');
-        return;
-    }
-    
-    // Create certificate content with periods at the end of sentences
-    const certificateContent = `
-        <!DOCTYPE html>
-        <html>
-        <head>
-            <style>
-                body {
-                    font-family: 'Arial', sans-serif;
-                    text-align: center;
-                    padding: 40px;
-                    background: linear-gradient(135deg, #8A2BE2, #4B0082, #FF1493, #00BFFF);
-                    color: white;
-                }
-                .certificate {
-                    background: rgba(255, 255, 255, 0.95);
-                    color: #333;
-                    padding: 50px;
-                    border-radius: 20px;
-                    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-                    max-width: 800px;
-                    margin: 0 auto;
-                }
-                h1 {
-                    color: #8A2BE2;
-                    font-size: 2.5em;
-                    margin-bottom: 20px;
-                }
-                h2 {
-                    color: #4B0082;
-                    font-size: 1.8em;
-                    margin-bottom: 30px;
-                }
-                .details {
-                    font-size: 1.2em;
-                    margin: 20px 0;
-                    text-align: left;
-                    display: inline-block;
-                }
-                .signature {
-                    margin-top: 50px;
-                    border-top: 2px solid #8A2BE2;
-                    padding-top: 20px;
-                    display: inline-block;
-                }
-                .logo {
-                    font-size: 3em;
-                    margin-bottom: 20px;
-                }
-            </style>
-        </head>
-        <body>
-            <div class="certificate">
-                <div class="logo">🎉</div>
-                <h1>Certificate of Participation.</h1>
-                <h2>DedSec Project 1st Anniversary.</h2>
-                <p>This certifies that.</p>
-                <h2 style="color: #8A2BE2;">${fullName}.</h2>
-                <p>has participated in the DedSec Project 1st Anniversary Celebration.</p>
-                <div class="details">
-                    <p><strong>Age:</strong> ${age}.</p>
-                    <p><strong>Location:</strong> ${city}, ${country}.</p>
-                    <p><strong>Date:</strong> October 20-31, 2024.</p>
-                </div>
-                <div class="signature">
-                    <p><strong>DedSec Project Team.</strong></p>
-                </div>
-            </div>
-        </body>
-        </html>
-    `;
-    
-    // Generate PDF
-    generatePDF(certificateContent, `${fullName}_DedSec_Certificate.pdf`);
-}
-
-function generatePDF(htmlContent, filename) {
-    // Check if jsPDF is available
-    if (typeof jsPDF !== 'undefined') {
-        const { jsPDF } = window.jspdf;
-        const doc = new jsPDF();
+    async function fetchUsefulInformation() {
+        if (usefulInformationLoaded || isFetchingUsefulInfo) return;
+        isFetchingUsefulInfo = true;
+        const navContainer = document.getElementById('useful-information-nav');
+        const GITHUB_API_URL = 'https://api.github.com/repos/dedsec1121fk/dedsec1121fk.github.io/contents/Useful_Information';
+        navContainer.innerHTML = `<p>${currentLanguage === 'gr' ? 'Φόρτωση...' : 'Loading...'}</p>`;
         
-        // Add HTML content to PDF
-        doc.html(htmlContent, {
-            callback: function(doc) {
-                doc.save(filename);
-                closeAllModals();
+        try {
+            const response = await fetch(GITHUB_API_URL);
+            if (!response.ok) throw new Error(`GitHub API error: ${response.status}`);
+            const files = await response.json();
+            usefulInfoFiles = files.filter(file => file.type === 'file' && file.name.endsWith('.html'));
+            
+            navContainer.innerHTML = '';
+            if (usefulInfoFiles.length === 0) {
+                 navContainer.innerHTML = `<p>${currentLanguage === 'gr' ? 'Δεν βρέθηκαν πληροφορίες.' : 'No information found.'}</p>`;
+                 return;
+            }
+            
+            usefulInfoFiles.forEach(file => {
+                let titleEN = file.name.replace(/\.html$/, '').replace(/^\d+_/, '').replace(/_/g, ' ');
+                let titleGR = titleEN; 
+    
+                const titleRegex = /(.+?)_\((.+?)\)/;
+                const match = file.name.match(titleRegex);
+    
+                if (match && match[1] && match[2]) {
+                    titleEN = match[1].replace(/_/g, ' ').trim();
+                    titleGR = match[2].replace(/_/g, ' ').trim();
+                }
+    
+                const button = document.createElement('button');
+                button.className = 'app-icon';
+                button.dataset.url = file.download_url;
                 
-                // Reset form
-                document.getElementById('certificate-form').reset();
-            },
-            x: 10,
-            y: 10,
-            width: 190,
-            windowWidth: 800
+                const initialTitle = currentLanguage === 'gr' ? titleGR : titleEN;
+                button.innerHTML = `<i class="fas fa-book-open"></i><span data-en="${titleEN}" data-gr="${titleGR}">${initialTitle}</span>`;
+                
+                button.addEventListener('click', () => {
+                    const span = button.querySelector('span');
+                    const modalTitle = (currentLanguage === 'gr' ? span.getAttribute('data-gr') : span.getAttribute('data-en')) || titleEN;
+                    loadInformationContent(file.download_url, modalTitle);
+                });
+                navContainer.appendChild(button);
+            });
+            usefulInformationLoaded = true;
+        } catch (error) {
+            console.error('Failed to fetch useful information:', error);
+            navContainer.innerHTML = `<p style="color: var(--nm-danger);">${currentLanguage === 'gr' ? 'Αποτυχία φόρτωσης.' : 'Failed to load.'}</p>`;
+        } finally {
+            isFetchingUsefulInfo = false;
+        }
+    }
+
+    function createAndShowArticleModal(title, htmlContent, textToHighlight = null) {
+        document.querySelectorAll('.article-modal-overlay').forEach(modal => modal.remove());
+        const modalOverlay = document.createElement('div');
+        modalOverlay.className = 'modal-overlay article-modal-overlay'; 
+        modalOverlay.innerHTML = `
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>${title}</h2>
+                    <button class="close-modal">&times;</button>
+                </div>
+                <div class="modal-body">${htmlContent}</div>
+            </div>`;
+        document.body.appendChild(modalOverlay);
+
+        // --- FIX STARTS HERE ---
+        // After inserting the new content, find all copy buttons and attach the event listener.
+        let dynamicCodeIdCounter = 0;
+        const codeContainers = modalOverlay.querySelectorAll('.code-container');
+        codeContainers.forEach(container => {
+            const copyBtn = container.querySelector('.copy-btn');
+            const codeEl = container.querySelector('code');
+
+            if (copyBtn && codeEl) {
+                // Ensure the code element has an ID for the copy function to target
+                if (!codeEl.id) {
+                    const uniqueId = `dynamic-code-${Date.now()}-${dynamicCodeIdCounter++}`;
+                    codeEl.id = uniqueId;
+                }
+                
+                // Add the event listener to the button
+                copyBtn.addEventListener('click', () => {
+                    // Call the globally available copyToClipboard function
+                    window.copyToClipboard(copyBtn, codeEl.id);
+                });
+            }
         });
-    } else {
-        // Fallback: Create a downloadable HTML file
-        const blob = new Blob([htmlContent], { type: 'text/html' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = filename.replace('.pdf', '.html');
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
+        // --- FIX ENDS HERE ---
         
-        closeAllModals();
-        document.getElementById('certificate-form').reset();
+        setTimeout(() => modalOverlay.classList.add('visible'), 10);
+        changeLanguage(currentLanguage);
+    
+        if (textToHighlight) {
+            setTimeout(() => {
+                const modalBody = modalOverlay.querySelector('.modal-body');
+                const allElements = modalBody.querySelectorAll('p, li, h3, h4, b, code, .tip, .note');
+                const targetElement = Array.from(allElements).find(el => el.textContent.trim().replace(/\s\s+/g, ' ') === textToHighlight.trim());
+                if (targetElement) {
+                    modalBody.scrollTo({ top: targetElement.offsetTop - 50, behavior: 'smooth' });
+                    targetElement.classList.add('content-highlight');
+                    setTimeout(() => targetElement.classList.remove('content-highlight'), 2500);
+                }
+            }, 150);
+        }
         
-        alert('Certificate downloaded as HTML file (PDF generation requires internet connection).');
-    }
-}
+        const closeModal = () => {
+            modalOverlay.classList.remove('visible');
+            modalOverlay.addEventListener('transitionend', () => modalOverlay.remove(), { once: true });
+            
+            const searchInput = document.getElementById('useful-info-search-input');
+            if (searchInput) searchInput.value = '';
+            
+            const navContainer = document.getElementById('useful-information-nav');
+            if (navContainer) {
+                navContainer.querySelectorAll('.app-icon').forEach(article => {
+                    article.style.display = 'flex';
+                });
+            }
+        };
 
-// =============================================================================
-// DISCLAIMER MANAGEMENT
-// =============================================================================
-
-function checkDisclaimerStatus() {
-    const disclaimerAccepted = localStorage.getItem('dedsec-disclaimer-accepted');
-    
-    if (!disclaimerAccepted) {
-        setTimeout(() => {
-            openModal('disclaimer-modal');
-        }, 1000);
-    }
-}
-
-function initializeDisclaimer() {
-    const acceptBtn = document.getElementById('accept-disclaimer');
-    const declineBtn = document.getElementById('decline-disclaimer');
-    
-    if (acceptBtn) {
-        acceptBtn.addEventListener('click', function() {
-            localStorage.setItem('dedsec-disclaimer-accepted', 'true');
-            closeAllModals();
+        modalOverlay.addEventListener('click', (e) => {
+            if (e.target === modalOverlay) closeModal();
         });
+        modalOverlay.querySelector('.close-modal').addEventListener('click', closeModal);
+    }
+
+    async function loadInformationContent(url, title, textToHighlight = null) {
+        try {
+            const response = await fetch(url);
+            if (!response.ok) throw new Error(`Fetch failed: ${response.status}`);
+            const htmlContent = await response.text();
+            createAndShowArticleModal(title, htmlContent, textToHighlight);
+        } catch (error) {
+            console.error('Failed to load content:', error);
+        }
     }
     
-    if (declineBtn) {
-        declineBtn.addEventListener('click', function() {
-            // Redirect to a safe page or show warning
-            alert('You must accept the disclaimer to use this website.');
-        });
-    }
-}
-
-// Initialize disclaimer when DOM is loaded
-document.addEventListener('DOMContentLoaded', function() {
-    initializeDisclaimer();
+    // --- INITIALIZE ALL FEATURES ---
+    initializePortfolio();
 });
-
-// =============================================================================
-// UTILITY FUNCTIONS
-// =============================================================================
-
-// Copy to clipboard function
-function copyToClipboard(button, elementId) {
-    const element = document.getElementById(elementId);
-    if (!element) return;
-    
-    const textToCopy = element.textContent || element.innerText;
-    
-    navigator.clipboard.writeText(textToCopy).then(function() {
-        // Visual feedback
-        const originalText = button.textContent;
-        button.textContent = 'Copied!';
-        button.style.backgroundColor = '#00FF00';
-        button.style.color = '#000000';
-        
-        setTimeout(function() {
-            button.textContent = originalText;
-            button.style.backgroundColor = '';
-            button.style.color = '';
-        }, 2000);
-    }).catch(function(err) {
-        console.error('Failed to copy text: ', err);
-        alert('Failed to copy text to clipboard');
-    });
-}
-
-// Image viewer functionality
-function viewImage(imgElement) {
-    const expandedImg = document.getElementById('expanded-img');
-    const imageViewer = document.getElementById('image-viewer-modal');
-    
-    if (expandedImg && imageViewer) {
-        expandedImg.src = imgElement.src;
-        openModal('image-viewer-modal');
-    }
-}
-
-// Close image viewer when clicking the image
-document.addEventListener('DOMContentLoaded', function() {
-    const expandedImg = document.getElementById('expanded-img');
-    if (expandedImg) {
-        expandedImg.addEventListener('click', function() {
-            closeAllModals();
-        });
-    }
-});
-
-// Make functions globally available for HTML onclick attributes
-window.copyToClipboard = copyToClipboard;
-window.viewImage = viewImage;
-window.openModal = openModal;
-window.closeAllModals = closeAllModals;
-window.displayUsefulInfoContent = displayUsefulInfoContent;
-
-// Global usefulInfoData for search functionality
-window.usefulInfoData = {
-    "installation": {
-        title: { en: "Installation Guide", gr: "Οδηγός Εγκατάστασης" },
-        icon: "fas fa-download",
-        content: {
-            en: `<h3>Complete Installation Guide</h3>
-            <p>Follow these steps to install the DedSec Project on your Android device:</p>
-            <ol>
-                <li>Install Termux from F-Droid.</li>
-                <li>Update packages: <code>pkg update -y && pkg upgrade -y</code>.</li>
-                <li>Install Git: <code>pkg install git -y</code>.</li>
-                <li>Clone repository: <code>git clone https://github.com/dedsec1121fk/DedSec</code>.</li>
-                <li>Run setup: <code>cd DedSec && bash Setup.sh</code>.</li>
-            </ol>`,
-            gr: `<h3>Πλήρης Οδηγός Εγκατάστασης</h3>
-            <p>Ακολουθήστε αυτά τα βήματα για να εγκαταστήσετε το DedSec Project στη συσκευή σας Android:</p>
-            <ol>
-                <li>Εγκαταστήστε το Termux από το F-Droid.</li>
-                <li>Ενημερώστε τα πακέτα: <code>pkg update -y && pkg upgrade -y</code>.</li>
-                <li>Εγκαταστήστε το Git: <code>pkg install git -y</code>.</li>
-                <li>Κλωνοποιήστε το αποθετήριο: <code>git clone https://github.com/dedsec1121fk/DedSec</code>.</li>
-                <li>Εκτελέστε τη ρύθμιση: <code>cd DedSec && bash Setup.sh</code>.</li>
-            </ol>`
-        }
-    },
-    "troubleshooting": {
-        title: { en: "Troubleshooting", gr: "Αντιμετώπιση Προβλημάτων" },
-        icon: "fas fa-tools",
-        content: {
-            en: `<h3>Common Issues and Solutions</h3>
-            <ul>
-                <li><strong>Termux won't start:</strong> Reinstall from F-Droid.</li>
-                <li><strong>Git clone fails:</strong> Check internet connection.</li>
-                <li><strong>Permission denied:</strong> Run termux-setup-storage.</li>
-                <li><strong>Script not found:</strong> Ensure you're in the DedSec directory.</li>
-            </ul>`,
-            gr: `<h3>Συχνά Προβλήματα και Λύσεις</h3>
-            <ul>
-                <li><strong>Το Termux δεν ξεκινά:</strong> Επανεγκαταστήστε από το F-Droid.</li>
-                <li><strong>Αποτυχία Git clone:</strong> Ελέγξτε τη σύνδεση στο διαδίκτυο.</li>
-                <li><strong>Απορρίφθηκε η άδεια:</strong> Εκτελέστε termux-setup-storage.</li>
-                <li><strong>Δεν βρέθηκε το σενάριο:</strong> Βεβαιωθείτε ότι βρίσκεστε στον κατάλογο DedSec.</li>
-            </ul>`
-        }
-    },
-    "legal": {
-        title: { en: "Legal Information", gr: "Νομικές Πληροφορίες" },
-        icon: "fas fa-gavel",
-        content: {
-            en: `<h3>Legal Disclaimer</h3>
-            <p>This project is for educational and ethical testing purposes only. You must only use these tools on systems you own or have explicit permission to test.</p>
-            <p>Unauthorized access to computer systems is illegal. The developers are not responsible for any misuse of this software.</p>`,
-            gr: `<h3>Νομική Αποποίηση Ευθύνης</h3>
-            <p>Αυτό το έργο προορίζεται μόνο για εκπαιδευτικούς και ηθικούς σκοπούς δοκιμών. Πρέπει να χρησιμοποιείτε αυτά τα εργαλεία μόνο σε συστήματα που σας ανήκουν ή έχετε ρητή άδεια να δοκιμάσετε.</p>
-            <p>Η μη εξουσιοδοτημένη πρόσβαση σε συστήματα υπολογιστών είναι παράνομη. Οι προγραμματιστές δεν φέρουν ευθύνη για οποιαδήποτε κατάχρηση αυτού του λογισμικού.</p>`
-        }
-    }
-};

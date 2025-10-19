@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>DedSec Project - 1 Year Anniversary</title>
+    <title>DedSec Project</title>
     
     <meta name="description" content="The DedSec Project is a toolkit for digital self-defense, offering tools and educational resources on cybersecurity and ethical hacking.">
     <meta name="keywords" content="DedSec, DedSec Project, Termux, Ethical Hacking, Cybersecurity, Digital Self-Defense, Phone Hacking, Termux Tutorial, Android Hacking, Phishing Attacks, Security Scripts, Python, Command Line, URL Masker, Hacking Education, Penetration Testing, Data Privacy, Fox Chat, End-to-End Encrypted Chat, DedSec Database, File Storage Server, Radio Music Player, OSINTDS, Open Source Intelligence, Web Reconnaissance, SQLi, XSS, HTML Inspector, Android App Launcher, Termux Resources, Python Gym Clothing, AdGen, Terminal Customization, bash.bashrc, .bash_profile">
-    <meta property="og:title" content="DedSec Project - 1 Year Anniversary">
+    <meta property="og:title" content="DedSec Project">
     <meta property="og:description" content="DedSec has given you the truth, do what you will.">
     <meta property="og:image" content="https://raw.githubusercontent.com/dedsec1121fk/dedsec1121fk.github.io/5860edb8a7468d955336c9cf1d8b357597d6d645/Assets/Images/Logos/Custom%20Black%2Purple%20Fox%20Logo.png">
     <meta property="og:type" content="website">
@@ -51,24 +51,14 @@
                     </div>
                 </div>
 
-                <!-- Anniversary Banner -->
-                <div class="anniversary-banner">
-                    <div class="anniversary-content">
-                        <h2>🎉 1 Year Anniversary! 🎉</h2>
-                        <p>Celebrating one year of DedSec Project from <strong>October 20 to October 31</strong></p>
-                        <p>Join us in this special event!</p>
-                    </div>
-                </div>
-
-                <!-- Certificate Button -->
-                <button class="certificate-button" id="certificate-btn">
-                    <i class="fas fa-certificate"></i>
-                    <span data-en="Get Anniversary Certificate" data-gr="Λήψη Πιστοποιητικού Επέτειου">Get Anniversary Certificate</span>
-                </button>
-
                 <div class="hero-section">
+                    <div id="anniversary-banner" class="hidden">
+                        <p data-en="🎉 1 Year Anniversary Celebration! This special theme is active from October 20th to October 31st. 🎉" data-gr="🎉 Γιορτή 1 Χρόνου! Αυτό το ειδικό θέμα είναι ενεργό από τις 20 Οκτωβρίου έως τις 31 Οκτωβρίου. 🎉"></p>
+                    </div>
+                    <button id="get-certificate-btn" class="hero-cta-button hidden" data-en="Get Your Anniversary Certificate" data-gr="Αποκτήστε το Πιστοποιητικό Επετείου σας">Get Your Anniversary Certificate</button>
                     <p class="hero-text" data-en="" data-gr=""></p>
                 </div>
+
 
                 <h4 class="grid-heading" data-en="Explore the Toolkit" data-gr="Εξερευνήστε την Εργαλειοθήκη">Explore the Toolkit</h4>
                 <div class="app-grid">
@@ -88,6 +78,7 @@
                     </button>
                 </div>
 
+
                 <h4 class="grid-heading" data-en="About & Community" data-gr="Σχετικά & Κοινότητα">About & Community</h4>
                 <div class="app-grid">
                     <button class="app-wrapper" data-modal="collaborations">
@@ -105,6 +96,7 @@
                         <span class="app-label" data-en="Contact Us & Credits" data-gr="Επικοινωνία & Συντελεστές">Contact Us & Credits</span>
                     </button>
                 </div>
+
 
                 <h4 class="grid-heading" data-en="Settings & Legal" data-gr="Ρυθμίσεις & Νομικά">Settings & Legal</h4>
                 <div class="app-grid">
@@ -124,6 +116,7 @@
                     </button>
                 </div>
 
+
                 <footer class="main-footer">
                     <p data-lang-section="en">© 2025 DedSec Project. All Rights Reserved.</p>
                     <p data-lang-section="gr" class="hidden-by-default">© 2025 DedSec Project. Με επιφύλαξη παντός δικαιώματος.</p>
@@ -132,42 +125,6 @@
                     <p>Made by dedsec1121fk.</p>
                 </footer>
             </main>
-        </div>
-    </div>
-
-    <!-- Certificate Modal -->
-    <div id="certificate-modal" class="modal-overlay">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 data-en="Get Your Anniversary Certificate" data-gr="Λήψη Πιστοποιητικού Επέτειου">Get Your Anniversary Certificate</h2>
-                <button class="close-modal" aria-label="Close">×</button>
-            </div>
-            <div class="modal-body">
-                <div class="certificate-form">
-                    <form id="certificate-form">
-                        <div class="form-group">
-                            <label for="full-name" data-en="Full Name" data-gr="Πλήρες Όνομα">Full Name</label>
-                            <input type="text" id="full-name" name="full-name" required placeholder="Enter your first and last name">
-                        </div>
-                        <div class="form-group">
-                            <label for="age" data-en="Age" data-gr="Ηλικία">Age</label>
-                            <input type="number" id="age" name="age" required placeholder="Enter your age" min="1" max="120">
-                        </div>
-                        <div class="form-group">
-                            <label for="country" data-en="Country" data-gr="Χώρα">Country</label>
-                            <input type="text" id="country" name="country" required placeholder="Enter your country">
-                        </div>
-                        <div class="form-group">
-                            <label for="city" data-en="City" data-gr="Πόλη">City</label>
-                            <input type="text" id="city" name="city" required placeholder="Enter your city">
-                        </div>
-                        <div class="form-actions">
-                            <button type="button" class="decline-btn" id="cancel-certificate" data-en="Cancel" data-gr="Ακύρωση">Cancel</button>
-                            <button type="submit" class="accept-btn" data-en="Download Certificate" data-gr="Λήψη Πιστοποιητικού">Download Certificate</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
         </div>
     </div>
 
@@ -188,10 +145,44 @@
       </div>
     </div>
 
-    <!-- Disclaimer Modal (Now only shown when installation is clicked) -->
+    <div id="certificate-modal" class="modal-overlay">
+        <div class="modal-content modal-content-auto-height">
+            <div class="modal-header">
+                <h2 data-en="1st Anniversary Certificate" data-gr="Πιστοποιητικό 1ης Επετείου">1st Anniversary Certificate</h2>
+                <button class="close-modal" aria-label="Close">×</button>
+            </div>
+            <div class="modal-body">
+                <form id="certificate-form" style="display: flex; flex-direction: column; gap: 15px;">
+                    <div>
+                        <label for="first-name" data-en="First Name" data-gr="Όνομα">First Name</label>
+                        <input type="text" id="first-name" required style="width: 100%; padding: 8px; margin-top: 5px; box-sizing: border-box; background-color: var(--nm-darkest); border: 1px solid var(--nm-border); color: var(--nm-text); border-radius: 5px;">
+                    </div>
+                    <div>
+                        <label for="last-name" data-en="Last Name" data-gr="Επώνυμο">Last Name</label>
+                        <input type="text" id="last-name" required style="width: 100%; padding: 8px; margin-top: 5px; box-sizing: border-box; background-color: var(--nm-darkest); border: 1px solid var(--nm-border); color: var(--nm-text); border-radius: 5px;">
+                    </div>
+                    <div>
+                        <label for="age" data-en="Age" data-gr="Ηλικία">Age</label>
+                        <input type="number" id="age" required style="width: 100%; padding: 8px; margin-top: 5px; box-sizing: border-box; background-color: var(--nm-darkest); border: 1px solid var(--nm-border); color: var(--nm-text); border-radius: 5px;">
+                    </div>
+                    <div>
+                        <label for="country" data-en="Country" data-gr="Χώρα">Country</label>
+                        <input type="text" id="country" required style="width: 100%; padding: 8px; margin-top: 5px; box-sizing: border-box; background-color: var(--nm-darkest); border: 1px solid var(--nm-border); color: var(--nm-text); border-radius: 5px;">
+                    </div>
+                    <div>
+                        <label for="city" data-en="City" data-gr="Πόλη">City</label>
+                        <input type="text" id="city" required style="width: 100%; padding: 8px; margin-top: 5px; box-sizing: border-box; background-color: var(--nm-darkest); border: 1px solid var(--nm-border); color: var(--nm-text); border-radius: 5px;">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button id="download-certificate-btn" class="accept-btn" data-en="Download PDF" data-gr="Λήψη PDF">Download PDF</button>
+            </div>
+        </div>
+    </div>
     <div id="disclaimer-modal" class="modal-overlay">
       <div class="modal-content">
-          <div class="modal-header"><h2 data-en="Disclaimer & Terms of Use" data-gr="Αποποίηση Ευθύνης & Όροι Χρήσης">Disclaimer & Terms of Use</h2><button class="close-modal" aria-label="Close">×</button></div>
+          <div class="modal-header"><h2 data-en="Disclaimer & Terms of Use" data-gr="Αποποίηση Ευθύνης & Όροι Χρήσης">Disclaimer & Terms of Use</h2></div>
           <div class="modal-body" data-lang-section="en">
             <div class="note">
                 <p><strong>PLEASE READ CAREFULLY BEFORE PROCEEDING.</strong></p>

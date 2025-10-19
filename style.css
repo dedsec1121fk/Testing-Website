@@ -1,45 +1,40 @@
 /*
     =================================================================
-    
+    DEDSEC PROJECT BASE STYLES & ANNIVERSARY THEME
 =================================================================
 */
 
 :root {
-    /* MODIFIED: Digital Lavender Palette */
-    --nm-abyss-blue: #01040a; 
+    /* MODIFIED: Digital Lavender Palette & Anniversary Colors (Purple/Blue/Red) */
+    --nm-abyss-blue: #0a011a;  /* Darker purple-blue for background */
     --nm-darkest: #0B121C;    
     --nm-dark: #151E2A;       
-    --nm-container: #1F2A38;  
-    --nm-border: #3A4A5E;      
-    --nm-accent: #9966FF;      /* Digital Lavender (Used for borders/success/title) */
-    --nm-accent-hover: #9933FF; /* Brighter, more distinct PURPLE for Main Title */
+    --nm-container: #1d1b36; /* Muted purple */
+    --nm-border: #4a3a5e;     
+    --nm-accent: #c48cff;      /* Lighter Digital Lavender/Purple */
+    --nm-accent-hover: #9933FF; /* Brighter, more distinct PURPLE */
     --nm-text: #FFFFFF;        /* All text/titles default to PURE WHITE */
-    --nm-text-muted: #7A8899;  
-    /* DANGER/FAIL: Red */
-    --nm-danger: #FF0000;      
+    --nm-text-muted: #8d809e;  
+    /* DANGER/FAIL: Anniversary Red */
+    --nm-danger: #ff3366;      
     --nm-danger-hover: #FF0000; 
     /* SUCCESS: Green */
     --nm-success: #00FF00;     
     /* WARNING/HIGHLIGHT: Yellow */
     --nm-warning: #FFFF00;     
     
-    --glow-rgb: 153, 102, 255; /* RGB components for the accent color */
+    --glow-rgb: 200, 100, 255; /* RGB components for the accent color */
     --glow-color: rgba(var(--glow-rgb), 0.0); 
-    /* Search Bar Color: MODIFIED to use main accent color */
     --nm-search-green: var(--nm-accent); 
-    /* Search Bar Glow: MODIFIED to remove glow */
     --glow-color-search: rgba(var(--glow-rgb), 0.0); 
-    /* Highlight Red Glow (kept for compatibility, though red is not requested) */
     --glow-color-danger: rgba(255, 0, 0, 0.0); 
-    /* Highlighter Yellow Glow */
     --glow-color-warning: rgba(255, 255, 0, 0.8); 
 
-    --warning-bg: rgba(255, 255, 0, 0.1); /* Yellow background for warning notes */
+    --warning-bg: rgba(255, 255, 0, 0.1); 
     --danger-bg: rgba(255, 0, 0, 0.1);
 
     --safe-area-inset-bottom: env(safe-area-inset-bottom, 10px);
     --shape-cut: 20px;
-    /* REMOVED: Remove custom clip path variable */
     --clip-path-shape: none; 
 }
 
@@ -49,8 +44,8 @@ body.light-theme {
     --nm-dark: #e9e9e9;
     --nm-container: #ffffff;
     --nm-border: #cccccc;
-    --nm-text: #000000;        /* Light theme text is BLACK */
-    --nm-text-muted: #555555;  /* Light theme muted text is darker gray */
+    --nm-text: #000000;        
+    --nm-text-muted: #555555;  
     --nm-warning: #9966FF; 
     --glow-color: rgba(var(--glow-rgb), 0.3);
 }
@@ -58,14 +53,13 @@ body.light-theme {
 /* --- ADDED/MODIFIED FOR LIGHT THEME BACKGROUND LOGO SWAP --- */
 body.light-theme .screen::after {
     background-image: url('https://raw.githubusercontent.com/dedsec1121fk/dedsec1121fk.github.io/6f776cd9772a079a6d26370dddab911bf7cde8cd/Assets/Images/Logos/Custom%20White%20Purple%20Fox%20Logo.jpg') !important;
-    opacity: 0.3; /* Keep visibility for light theme */
+    opacity: 0.3; 
 }
 
 /* =================================================================
    LIGHT THEME FIXES
    ================================================================= */
 
-/* Fix low-contrast text on accent-colored backgrounds (hover states, etc.) */
 body.light-theme .app-icon:hover,
 body.light-theme .app-wrapper:hover .app-icon i,
 body.light-theme .search-result-item:hover,
@@ -74,37 +68,33 @@ body.light-theme .modal-footer button:hover,
 body.light-theme .language-button:hover,
 body.light-theme .language-button.selected,
 body.light-theme .store-link a:hover {
-    color: #FFFFFF; /* Use pure white for high contrast on purple backgrounds */
+    color: #FFFFFF; 
 }
 
-/* Fix muted text in search results on hover */
 body.light-theme #search-results-container .search-result-item:hover small,
 body.light-theme #useful-info-results-container .search-result-item:hover small {
     color: rgba(255, 255, 255, 0.85);
 }
 
-/* Fix hardcoded dark backgrounds */
 body.light-theme .modal-header {
-    background: rgba(0,0,0,0.03); /* A very light, almost white background */
+    background: rgba(0,0,0,0.03); 
 }
 body.light-theme .modal-body code {
-    background: rgba(0,0,0,0.08); /* A light gray background for code snippets */
+    background: rgba(0,0,0,0.08); 
 }
 
-/* Fix accept/decline button text color */
 body.light-theme .decline-btn,
 body.light-theme .accept-btn {
-    color: #FFFFFF !important; /* Use white text for high contrast on bright red/green */
+    color: #FFFFFF !important; 
 }
 
-/* Fix inconsistent warning note styling */
 body.light-theme .note.note-warning {
-    color: #000000; /* Use black text for readability on yellow background */
-    border-left-color: #FBC02D; /* A darker yellow to match the theme */
+    color: #000000; 
+    border-left-color: #FBC02D; 
 }
 
 /* =================================================================
-   END OF LIGHT THEME FIXES
+   ANIMATIONS & KEYFRAMES
    ================================================================= */
 
 @keyframes scanline-scroll {
@@ -112,13 +102,12 @@ body.light-theme .note.note-warning {
     100% { transform: translateY(-50%); }
 }
 
-/* MODIFIED: Remove text glitch animation entirely */
+/* MODIFIED: Removed text glitch/flicker animations */
 @keyframes text-glitch {
     0% { transform: translate(0, 0) skew(0); }
     100% { transform: translate(0, 0) skew(0); }
 }
 
-/* MODIFIED: Remove flickering effect and associated text-shadows (glowing) */
 @keyframes flicker {
   0%, 100% {
     opacity: 1;
@@ -126,42 +115,43 @@ body.light-theme .note.note-warning {
   }
 }
 
-/* --- NEW: Rainbow border animation for app icons --- */
-@keyframes rainbow-border {
-    0% { border-color: #FF00FF; }   /* Purple */
-    3.33% { border-color: #E600FF; }
-    6.66% { border-color: #CC00FF; }
-    10% { border-color: #B300FF; }
-    13.33% { border-color: #9900FF; }
-    16.66% { border-color: #8000FF; }
-    20% { border-color: #6600FF; }
-    23.33% { border-color: #4D00FF; }
-    26.66% { border-color: #3300FF; }
-    30% { border-color: #1A00FF; }
-    33.33% { border-color: #0000FF; } /* Blue */
-    36.66% { border-color: #001AFF; }
-    40% { border-color: #0033FF; }
-    43.33% { border-color: #004DFF; }
-    46.66% { border-color: #0066FF; }
-    50% { border-color: #0080FF; }
-    53.33% { border-color: #0099FF; }
-    56.66% { border-color: #00B3FF; }
-    60% { border-color: #00CCFF; }
-    63.33% { border-color: #00E6FF; }
-    66.66% { border-color: #00FFFF; }
-    70% { border-color: #00FFE6; }
-    73.33% { border-color: #00FFCC; }
-    76.66% { border-color: #00FFB3; }
-    80% { border-color: #00FF99; }
-    83.33% { border-color: #00FF80; }
-    86.66% { border-color: #00FF66; }
-    90% { border-color: #00FF4D; }
-    93.33% { border-color: #00FF33; }
-    96.66% { border-color: #00FF1A; }
-    100% { border-color: #FF00FF; } /* Back to purple */
+/* --- ADDED: Anniversary Icon Border Animation (33 colors over 16.5s) --- */
+@keyframes anniversary-glow {
+    0% { border-color: #ff00ff; } /* Magenta */
+    3% { border-color: #ff00cc; }
+    6% { border-color: #ff0099; }
+    9% { border-color: #ff0066; }
+    12% { border-color: #ff0033; } /* Red */
+    15% { border-color: #ff3300; }
+    18% { border-color: #ff6600; }
+    21% { border-color: #ff9900; }
+    24% { border-color: #ffcc00; }
+    27% { border-color: #ffff00; } /* Yellow */
+    30% { border-color: #ccff00; }
+    33% { border-color: #99ff00; }
+    36% { border-color: #66ff00; }
+    39% { border-color: #33ff00; }
+    42% { border-color: #00ff00; } /* Green */
+    45% { border-color: #00ff33; }
+    48% { border-color: #00ff66; }
+    51% { border-color: #00ff99; }
+    54% { border-color: #00ffcc; }
+    57% { border-color: #00ffff; } /* Cyan */
+    60% { border-color: #00ccff; }
+    63% { border-color: #0099ff; }
+    66% { border-color: #0066ff; }
+    69% { border-color: #0033ff; }
+    72% { border-color: #0000ff; } /* Blue */
+    75% { border-color: #3300ff; }
+    78% { border-color: #6600ff; }
+    81% { border-color: #9900ff; }
+    84% { border-color: #cc00ff; }
+    87% { border-color: #ff00ff; } /* Back to Magenta */
+    90% { border-color: #ff00e1; }
+    93% { border-color: #d400ff; }
+    96% { border-color: #a200ff; }
+    100% { border-color: #ff00ff; }
 }
-
-/* REMOVED: Pulsing glow animation for the main title */
 
 
 html, body {
@@ -217,7 +207,6 @@ button.hero-cta-button {
     top: 0;
     width: 8px;
     height: 100%;
-    /* REMOVED GLOW */
     background: linear-gradient(to bottom, var(--nm-danger), var(--nm-danger-hover), var(--nm-danger));
     box-shadow: none;
     z-index: 10;
@@ -243,7 +232,6 @@ button.hero-cta-button {
     height: 100%;
     background-color: var(--nm-abyss-blue);
     background-image:
-        /* MODIFIED: Removed hexagon background image/pattern */
         url("data:image/svg+xml,%3Csvg viewBox='0 0 800 800' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3E/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
     background-size: cover, cover; 
     position: relative;
@@ -254,7 +242,6 @@ button.hero-cta-button {
     z-index: 0;
 }
 
-/* --- MODIFIED: Uses new Dark Theme Logo as background --- */
 .screen::after {
     content: '';
     position: absolute;
@@ -262,7 +249,6 @@ button.hero-cta-button {
     left: 0;
     width: 100%;
     height: 100%;
-    /* DEFAULT DARK THEME LOGO */
     background-image: url('https://raw.githubusercontent.com/dedsec1121fk/dedsec1121fk.github.io/5860edb8a7468d955336c9cf1d8b357597d6d645/Assets/Images/Logos/Custom%20Black%20Purple%20Fox%20Logo.png');
     background-size: contain;
     background-position: center;
@@ -341,7 +327,6 @@ body.light-theme .phone-container::after {
     background-color: var(--nm-accent-hover);
 }
 body.light-theme ::-webkit-scrollbar-thumb {
-    /* Ensure scrollbar thumb is visible in light theme */
     background-color: #555555; 
     border-color: var(--nm-dark);
 }
@@ -353,13 +338,10 @@ body.light-theme ::-webkit-scrollbar-thumb {
     align-items: center;
     width: 100%;
     gap: 15px;
-    /* FIX: Reduced margin-bottom from 20px to 10px */
     margin-bottom: 10px;
     padding: 25px 15px 0 15px;
     box-sizing: border-box;
 }
-
-/* --- REMOVED: .header-logo container since we are using .screen::after --- */
 
 .main-header-container h1 {
     margin: 0;
@@ -374,10 +356,10 @@ body.light-theme ::-webkit-scrollbar-thumb {
          1px -1px 0 #000,
         -1px  1px 0 #000,
          1px  1px 0 #000,
-        /* Purple Glow */
+        /* Purple/Red Glow */
         0 0 10px var(--nm-accent),
         0 0 20px var(--nm-accent),
-        0 0 30px var(--nm-accent),
+        0 0 30px var(--nm-danger), 
         0 0 40px var(--nm-accent-hover);
 }
 
@@ -387,7 +369,6 @@ body.light-theme ::-webkit-scrollbar-thumb {
     max-width: 500px; 
 }
 
-/* MODIFIED: Removed all box-shadow for no glow effect */
 @keyframes pulse-cyan {
     0% { box-shadow: none; } 
     50% { box-shadow: none; } 
@@ -399,16 +380,15 @@ body.light-theme ::-webkit-scrollbar-thumb {
     width: 100%;
     padding: 10px 45px;
     background-color: var(--nm-darkest);
-    border: 2px solid var(--nm-search-green); /* Set to nm-accent */
+    border: 2px solid var(--nm-search-green); 
     color: var(--nm-text);
     font-family: 'Roboto Mono', monospace;
     font-size: 0.9rem;
     transition: background-color 0.3s ease;
-    /* MODIFIED: Remove clip-path, large border-radius for pill shape */
     clip-path: none; 
     border-radius: 50px; 
     box-sizing: border-box;
-    animation: none; /* Removed pulse animation for no glow */
+    animation: none; 
 }
 
 #main-search-input:focus {
@@ -416,11 +396,6 @@ body.light-theme ::-webkit-scrollbar-thumb {
     background-color: var(--nm-dark);
 }
 
-/* *
-* === THIS IS THE FIX ===
-* The two lines below were added to make the suggestions box appear correctly.
-*
-*/
 #search-suggestions-container,
 #search-results-container,
 #useful-info-results-container {
@@ -429,12 +404,11 @@ body.light-theme ::-webkit-scrollbar-thumb {
     left: 0;
     width: 100%;
     background-color: var(--nm-dark);
-    border: 1px solid var(--nm-search-green); /* Set to nm-accent */
-    box-shadow: none; /* Removed glow */
+    border: 1px solid var(--nm-search-green); 
+    box-shadow: none; 
     max-height: 300px;
     overflow-y: auto;
     z-index: 100;
-    /* Large border-radius for rounded results box */
     clip-path: none;
     border-radius: 20px;
 }
@@ -473,156 +447,12 @@ body.light-theme ::-webkit-scrollbar-thumb {
 }
 
 .content-highlight {
-    /* Set to Yellow and removed glow */
     background-color: rgba(255, 255, 0, 0.3); 
     box-shadow: none; 
     transition: background-color 1s ease;
 }
 
-/* --- NEW ANNIVERSARY BANNER STYLES --- */
-.anniversary-banner {
-    width: 100%;
-    max-width: 500px;
-    background: linear-gradient(135deg, #8A2BE2, #4B0082, #FF1493, #00BFFF);
-    border: 2px solid #8A2BE2;
-    border-radius: 20px;
-    padding: 15px;
-    margin: 15px 0;
-    text-align: center;
-    box-shadow: 0 4px 15px rgba(138, 43, 226, 0.3);
-    opacity: 0.85;
-    transition: all 0.3s ease;
-}
-
-.anniversary-banner:hover {
-    opacity: 0.95;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(138, 43, 226, 0.4);
-}
-
-.anniversary-content h2 {
-    margin: 0 0 10px 0;
-    color: white;
-    font-family: 'Orbitron', sans-serif;
-    font-size: 1.3rem;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-}
-
-.anniversary-content p {
-    margin: 5px 0;
-    color: white;
-    font-size: 0.9rem;
-    line-height: 1.4;
-}
-
-.anniversary-content strong {
-    color: #FFFF00;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
-}
-
-/* --- NEW CERTIFICATE BUTTON STYLES --- */
-.certificate-button {
-    width: 100%;
-    max-width: 500px;
-    background: linear-gradient(135deg, #8A2BE2, #4B0082);
-    border: 2px solid #8A2BE2;
-    border-radius: 20px;
-    padding: 12px 20px;
-    margin: 10px 0 20px 0;
-    color: white;
-    font-family: 'Orbitron', sans-serif;
-    font-size: 0.9rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    transition: all 0.3s ease;
-    opacity: 0.85;
-    box-shadow: 0 4px 15px rgba(138, 43, 226, 0.3);
-}
-
-.certificate-button:hover {
-    opacity: 0.95;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(138, 43, 226, 0.4);
-    background: linear-gradient(135deg, #9932CC, #8A2BE2);
-}
-
-.certificate-button i {
-    font-size: 1.2rem;
-}
-
-/* --- NEW CERTIFICATE FORM STYLES --- */
-.certificate-form {
-    max-width: 500px;
-    margin: 0 auto;
-}
-
-.form-group {
-    margin-bottom: 20px;
-}
-
-.form-group label {
-    display: block;
-    margin-bottom: 8px;
-    color: var(--nm-text);
-    font-weight: bold;
-    font-size: 0.9rem;
-}
-
-.form-group input {
-    width: 100%;
-    padding: 12px 15px;
-    background-color: var(--nm-darkest);
-    border: 2px solid var(--nm-accent);
-    color: var(--nm-text);
-    font-family: 'Roboto Mono', monospace;
-    font-size: 0.9rem;
-    border-radius: 10px;
-    box-sizing: border-box;
-    transition: all 0.3s ease;
-}
-
-.form-group input:focus {
-    outline: none;
-    background-color: var(--nm-dark);
-    border-color: var(--nm-accent-hover);
-}
-
-.form-actions {
-    display: flex;
-    gap: 15px;
-    justify-content: center;
-    margin-top: 25px;
-}
-
-.form-actions button {
-    padding: 12px 25px;
-    border: none;
-    border-radius: 10px;
-    font-family: 'Orbitron', sans-serif;
-    font-weight: 700;
-    text-transform: uppercase;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.form-actions button[type="submit"] {
-    background: linear-gradient(135deg, #00FF00, #00CC00);
-    color: #000;
-}
-
-.form-actions button[type="submit"]:hover {
-    background: linear-gradient(135deg, #00CC00, #00AA00);
-    transform: translateY(-2px);
-}
-
-/* --- END NEW ANNIVERSARY STYLES --- */
-
-/* --- NEW HERO SECTION STYLES --- */
+/* --- HERO SECTION STYLES --- */
 .hero-section {
     display: flex;
     flex-direction: column;
@@ -630,7 +460,6 @@ body.light-theme ::-webkit-scrollbar-thumb {
     text-align: center;
     width: 100%;
     max-width: 500px;
-    /* FIX: Reduced top margin from 15px and bottom margin from 35px */
     margin: 5px 0 5px 0;
     padding: 10px;
     box-sizing: border-box;
@@ -669,6 +498,60 @@ body.light-theme ::-webkit-scrollbar-thumb {
 }
 /* --- END HERO SECTION STYLES --- */
 
+/* --- ANNIVERSARY THEME STYLES (Banner & Button Opacity) --- */
+body.anniversary-theme #anniversary-banner {
+    background-color: var(--nm-container);
+    color: var(--nm-text);
+    padding: 10px 15px;
+    margin: 15px auto 10px auto; 
+    border-radius: 10px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 1em;
+    width: 90%;
+    max-width: 700px;
+    box-sizing: border-box;
+    opacity: 0.85; /* 85% opacity */
+    box-shadow: 0 0 10px rgba(var(--glow-rgb), 0.3);
+}
+
+#get-certificate-btn {
+    background-color: var(--nm-accent);
+    color: var(--nm-abyss-blue); 
+    font-weight: bold;
+    padding: 12px 20px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-size: 1em;
+    width: 90%;
+    max-width: 700px;
+    box-sizing: border-box;
+    margin: 0 auto 20px auto; 
+    display: block;
+    transition: background-color 0.3s ease, opacity 0.3s ease;
+    opacity: 0.85; /* 85% opacity */
+}
+
+#get-certificate-btn:hover {
+    background-color: var(--nm-accent-hover);
+    opacity: 1.0;
+}
+
+/* Certificate Modal Form Styling for consistency */
+#certificate-modal input {
+    /* Styles are mostly in index.html inline, but enforce theme in CSS too */
+    background-color: var(--nm-darkest); 
+    border: 1px solid var(--nm-border); 
+    color: var(--nm-text);
+    border-radius: 5px;
+}
+#certificate-modal input:focus {
+    border-color: var(--nm-accent);
+    outline: none;
+}
+/* --- END ANNIVERSARY THEME STYLES --- */
+
 
 /* --- NEW GRID HEADING STYLES --- */
 .grid-heading {
@@ -679,7 +562,6 @@ body.light-theme ::-webkit-scrollbar-thumb {
     color: var(--nm-text);
     text-transform: uppercase;
     font-size: 1rem;
-    /* FIX: Reduced top margin from 25px to 10px */
     margin: 10px auto 15px;
     padding-bottom: 5px;
     border-bottom: 1px solid var(--nm-border);
@@ -689,10 +571,10 @@ body.light-theme ::-webkit-scrollbar-thumb {
 
 .app-grid {
     display: grid;
-    /* MODIFIED: Reduced gap from 35px to 25px to prevent icons from going outside */
+    /* MODIFIED: Reduced space between icons - 4 columns on mobile */
     grid-template-columns: repeat(4, max-content);
     justify-content: center;
-    gap: 25px;
+    gap: 15px; /* Tighter spacing for icons on smaller screens */
     width: 100%;
     max-width: 500px;
     margin: 0 auto 15px;
@@ -710,12 +592,9 @@ body.light-theme ::-webkit-scrollbar-thumb {
 }
 
 .app-icon {
-    /* Pitch Black Background */
     background: #000000; 
-    /* MODIFIED: Added rainbow border animation */
-    border: 1px solid var(--nm-accent);
-    animation: rainbow-border 15s infinite linear;
-    color: var(--nm-text); /* Enforce White text/icon */
+    border: 3px solid var(--nm-accent); /* Increased border width for visibility */
+    color: var(--nm-text); 
     cursor: pointer;
     font-family: 'Roboto Mono', monospace;
     transition: all 0.2s ease;
@@ -727,12 +606,16 @@ body.light-theme ::-webkit-scrollbar-thumb {
     padding: 10px 15px;
     box-sizing: border-box;
     position: relative;
-    /* Circular shape maintained for app icons */
-    clip-path: none;
-    border-radius: 50%;
+    border-radius: 50%; /* Enforce circle border */
     gap: 12px;
-    box-shadow: none; /* Removed glow */
-    height: 56px;
+    box-shadow: none; 
+    height: 64px; /* Defaulted to a consistent size */
+}
+
+/* Apply slow color-changing border animation only in anniversary theme */
+body.anniversary-theme .app-icon {
+    animation: anniversary-glow 16.5s linear infinite; /* 33 colors * 0.5s = 16.5s */
+    transition: none; /* Disable standard CSS transition on border for animation */
 }
 
 .app-wrapper .app-icon {
@@ -741,20 +624,15 @@ body.light-theme ::-webkit-scrollbar-thumb {
     height: 64px;
     padding: 0;
     gap: 0;
-    /* Enforce circle on button wrapper icon */
     border-radius: 50%; 
 }
 
 .app-label {
     font-size: 0.75rem;
     font-weight: 400;
-    color: var(--nm-text); /* Enforce White text */
+    color: var(--nm-text); 
     text-align: center;
-    /* MODIFIED: Use normal word-break to ensure words wrap to the next line 
-       instead of being broken mid-word */
     word-break: normal; 
-    /* ADDED: Use overflow-wrap to handle words that are individually too long 
-       for the 70px parent container, preventing overflow. */
     overflow-wrap: break-word;
     line-height: 1.2;
 }
@@ -764,8 +642,7 @@ body.light-theme ::-webkit-scrollbar-thumb {
     border-color: var(--nm-accent-hover);
     color: var(--nm-darkest);
     box-shadow: none; 
-    /* Stop animation on hover for better UX */
-    animation: none;
+    animation-play-state: paused; /* Pause animation on hover */
 }
 
 .app-wrapper:hover .app-icon,
@@ -774,8 +651,7 @@ body.light-theme ::-webkit-scrollbar-thumb {
     border-color: var(--nm-accent-hover);
     box-shadow: none; 
     outline: none;
-    /* Stop animation on hover for better UX */
-    animation: none;
+    animation-play-state: paused; 
 }
 
 .app-wrapper:hover .app-label,
@@ -784,7 +660,7 @@ body.light-theme ::-webkit-scrollbar-thumb {
 }
 
 .app-icon i {
-    color: var(--nm-text); /* Enforce White icon color */
+    color: var(--nm-text); 
     transition: color 0.2s ease;
     font-size: 1.4rem;
     margin: 0;
@@ -802,11 +678,11 @@ body.light-theme ::-webkit-scrollbar-thumb {
 }
 
 body.light-theme .app-icon {
-    /* Corrected colors for light theme icons */
     background: var(--nm-container);
     border: 1px solid var(--nm-border);
     box-shadow: 0 1px 3px rgba(0,0,0,0.08);
     color: var(--nm-text);
+    animation: none; 
 }
 
 body.light-theme .app-icon:hover {
@@ -835,8 +711,6 @@ body.light-theme .app-icon:hover {
     height: auto;
     border: 1px solid var(--nm-border);
     background-color: var(--nm-container);
-    /* Added uniform border-radius */
-    clip-path: none;
     border-radius: 20px; 
 }
 
@@ -845,7 +719,7 @@ body.light-theme .app-icon:hover {
     padding: 1rem;
     font-size: 0.7rem;
     color: var(--nm-text-muted);
-    margin-top: 25px; /* Added margin to push it down */
+    margin-top: 25px; 
 }
 
 .modal-overlay {
@@ -888,12 +762,11 @@ body.light-theme .modal-overlay {
     overflow: hidden;
     transform: translateY(20px);
     transition: all 0.3s ease;
-    /* Added uniform border-radius */
-    clip-path: none;
     border-radius: 20px;
 }
 .modal-content-auto-height { 
     height: auto;
+    max-height: 90vh; 
 }
 
 body.light-theme .modal-content {
@@ -1009,7 +882,6 @@ body.light-theme .modal-content {
     background: var(--nm-darkest);
     font-size: 0.85em;
     color: var(--nm-text-muted);
-    /* Added uniform border-radius */
     border-radius: 20px;
 }
 
@@ -1020,8 +892,6 @@ body.light-theme .modal-content {
     padding: 15px;
     margin: 1em 0;
     transition: background-color 0.3s ease;
-    /* Added uniform border-radius */
-    clip-path: none;
     border-radius: 20px;
     box-shadow: inset 0 0 10px rgba(0,0,0,0.5); 
 }
@@ -1050,8 +920,6 @@ body.light-theme .modal-content {
     font-size: 0.7rem;
     text-transform: uppercase;
     transition: all 0.2s ease;
-    /* Added uniform border-radius */
-    clip-path: none;
     border-radius: 20px;
 }
 .copy-btn:hover {
@@ -1082,8 +950,6 @@ body.light-theme .modal-content {
     cursor: pointer;
     transition: all 0.2s ease;
     position: relative;
-    /* Added uniform border-radius */
-    clip-path: none;
     border-radius: 20px;
     box-shadow: none; 
 }
@@ -1124,7 +990,7 @@ body.light-theme .modal-content {
     box-shadow: none; 
     margin: 1em 0;
     padding: 0.8em 1em;
-    border-radius: 0 20px 20px 0; /* Rounded right side only, typical for tips */
+    border-radius: 0 20px 20px 0; 
     transition: all 0.3s ease;
 }
 
@@ -1142,9 +1008,9 @@ body.light-theme .modal-content {
     padding: 12px 15px;
     gap: 15px;
     justify-content: center;
-    /* Enforce pill shape on list items */
-    clip-path: none;
     border-radius: 20px; 
+    animation: none; 
+    border-width: 1px;
 }
 
 .hidden { 
@@ -1186,8 +1052,6 @@ body.light-theme .modal-content {
     max-width: 100%;
     box-sizing: border-box;
     line-height: 1.4;
-    /* Added uniform border-radius */
-    clip-path: none;
     border-radius: 20px;
 }
 .store-link a:hover {
@@ -1205,8 +1069,6 @@ body.light-theme .modal-content {
     overflow: hidden;
     border: 1px solid var(--nm-border);
     background-color: var(--nm-container);
-    /* Added uniform border-radius */
-    clip-path: none;
     border-radius: 20px;
 }
 .gym-clothing-images {
@@ -1270,19 +1132,19 @@ body.light-theme .modal-content {
 /* --- Progress Bar for Useful Information Search --- */
 .progress-bar-container {
     width: 100%;
-    height: 18px; /* Increased height for text */
+    height: 18px; 
     background-color: var(--nm-darkest);
     border-radius: 20px;
     overflow: hidden;
     margin-bottom: 10px;
-    position: relative; /* Needed for absolute positioning of text */
-    display: none; /* Hidden by default */
+    position: relative; 
+    display: none; 
     border: 1px solid var(--nm-border);
 }
 .progress-bar {
     width: 0%;
     height: 100%;
-    background-color: #8A2BE2; /* Purple */
+    background-color: #8A2BE2; 
     transition: width 0.2s ease-in-out;
     border-radius: 20px;
 }
@@ -1295,152 +1157,187 @@ body.light-theme .modal-content {
     font-size: 0.7rem;
     font-weight: bold;
     text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
-    white-space: nowrap;
-    pointer-events: none; /* Prevent text from blocking clicks */
 }
 
-/* --- Note Styles --- */
-.note {
-    background: var(--nm-darkest);
-    border-left: 4px solid var(--nm-accent);
-    padding: 15px;
-    margin: 1em 0;
-    border-radius: 0 20px 20px 0;
-    transition: all 0.3s ease;
-}
-.note.note-warning {
-    border-left-color: var(--nm-warning);
-    background: var(--warning-bg);
-}
-.note.note-danger {
-    border-left-color: var(--nm-danger);
-    background: var(--danger-bg);
-}
-.note p:first-child { margin-top: 0; }
-.note p:last-child { margin-bottom: 0; }
-
-.sub-item {
-    font-size: 0.8em;
-    color: var(--nm-text-muted);
-    margin-left: 1em;
-    display: block;
-}
-
-.modal-divider {
-    border: none;
-    height: 1px;
-    background-color: var(--nm-border);
-    margin: 1.5rem 0;
-}
 
 .modal-search-container {
-    margin-bottom: 1.5rem;
-}
-#useful-info-search-input {
+    margin-bottom: 20px;
+    position: relative;
     width: 100%;
-    padding: 10px 15px;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.modal-search-container input {
+    width: 100%;
+    padding: 10px 15px 10px 45px;
     background-color: var(--nm-darkest);
-    border: 1px solid var(--nm-accent);
+    border: 2px solid var(--nm-search-green); 
     color: var(--nm-text);
     font-family: 'Roboto Mono', monospace;
     font-size: 0.9rem;
-    /* Added uniform border-radius */
-    clip-path: none;
-    border-radius: 20px;
-    box-sizing: border-box;
     transition: background-color 0.3s ease;
+    border-radius: 50px;
+    box-sizing: border-box;
+    animation: none; 
 }
-#useful-info-search-input:focus {
+
+.modal-search-container input:focus {
     outline: none;
     background-color: var(--nm-dark);
 }
 
+/* --- ADDED: Search Bar Icons --- */
+.search-container::before,
+.search-container::after,
+.modal-search-container::before {
+    font-family: 'Font Awesome 5 Free', 'FontAwesome';
+    font-weight: 900; 
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--nm-text-muted);
+    z-index: 2;
+    pointer-events: none; 
+}
+
+/* Magnifying Glass Icon (Left) for Main Search */
+.search-container::before {
+    content: '\f002'; 
+    left: 20px;
+}
+
+/* Globe Icon (Right) for Main Search */
+.search-container::after {
+    content: '\f0ac'; 
+    right: 20px;
+}
+
+/* Magnifying Glass Icon (Left) for Modal Search */
+.modal-search-container::before {
+    content: '\f002'; 
+    left: 20px;
+}
+/* --- END: Search Bar Icons --- */
+
+/* --- Styles from removed inline attributes --- */
+#expanded-img {
+    max-width: 90vw;
+    max-height: 90vh;
+    border: 3px solid var(--nm-accent);
+    box-shadow: none; 
+    border-radius: 20px;
+}
+.modal-divider {
+    margin: 2rem 0;
+    border-color: var(--nm-border);
+}
+.text-center {
+    text-align: center;
+}
+.note.note-warning {
+    background-color: var(--warning-bg);
+    color: white;
+    font-weight: bold;
+    border-left: 4px solid var(--nm-warning);
+    padding: 1rem;
+    border-radius: 20px;
+}
+.note.note-danger {
+    border-left: 4px solid var(--nm-danger);
+    background: var(--danger-bg);
+    padding: 1rem;
+    border-radius: 20px;
+}
+.certificate-footer .signature span {
+    font-style: italic;
+}
+.ad-image {
+    width: 100%;
+    max-width: 400px;
+    margin: 1rem auto;
+    display: block;
+    border-radius: 20px; 
+    border: 1px solid var(--nm-border);
+}
 #useful-info-prompt {
     text-align: center;
     color: var(--nm-text-muted);
-    font-style: italic;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
+}
+#useful-information-nav {
+    grid-template-columns: 1fr;
+    max-width: 100%;
+    gap: 15px; 
+    justify-content: initial; 
+}
+/* Apply pill shape to the list of articles inside the Useful Information modal */
+#useful-information-nav .app-icon {
+    width: 100%; 
+    height: auto; 
+    padding: 12px 15px; 
+    border-radius: 20px;
+    animation: none; 
+    border-width: 1px;
+}
+/* Ensure the text is white */
+#useful-information-nav .app-icon span {
+    color: var(--nm-text);
+}
+span.sub-item {
+    display: block;
+    font-size: 0.85em;
+    line-height: 1.3;
 }
 
-/* --- Image Viewer --- */
-#expanded-img {
-    max-width: 90%;
-    max-height: 90%;
-    object-fit: contain;
-    border-radius: 10px;
-    box-shadow: 0 0 30px rgba(0,0,0,0.7);
-    cursor: zoom-out;
-}
 
-/* --- Responsive Adjustments --- */
-@media (max-width: 600px) {
+/* =================================================================
+   TABLET & WIDER SCREEN STYLES
+   ================================================================= */
+@media (min-width: 768px) {
+    .phone-container {
+        width: 95%;
+        max-width: 1400px;
+        height: 90vh;
+        border-radius: 40px;
+        overflow: hidden;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+        border: 4px solid var(--nm-darkest);
+    }
+
+    .search-container,
+    .hero-section,
+    .grid-heading,
     .app-grid {
-        grid-template-columns: repeat(3, max-content);
-        gap: 20px;
+        max-width: 700px;
     }
-    .github-stats {
-        gap: 10px;
-    }
-    .github-stats img {
-        width: 100%;
-    }
-    .modal-body {
-        padding: 15px;
-    }
-    .modal-content {
-        width: 98%;
-        height: 90%;
-    }
-    .modal-footer {
-        flex-direction: column;
-        align-items: center;
-    }
-    .modal-footer button {
-        width: 80%;
-        max-width: 250px;
-    }
-    .contact-grid .app-icon {
-        max-width: 100%;
-    }
-    .gym-carousel {
-        max-width: 100%;
-    }
-    .anniversary-banner {
-        padding: 10px;
-        margin: 10px 0;
-    }
-    .anniversary-content h2 {
-        font-size: 1.1rem;
-    }
-    .certificate-button {
-        padding: 10px 15px;
-        font-size: 0.8rem;
-    }
-    .form-actions {
-        flex-direction: column;
-        align-items: center;
-    }
-    .form-actions button {
-        width: 80%;
-        max-width: 250px;
-    }
-}
 
-@media (max-width: 400px) {
     .app-grid {
-        grid-template-columns: repeat(2, max-content);
+        /* MODIFIED: Reduce space between icons */
+        grid-template-columns: repeat(6, max-content);
         gap: 15px;
     }
+
     .main-header-container h1 {
-        font-size: 1.8rem;
+        font-size: clamp(2.5rem, 4vw, 3.5rem);
     }
-    .anniversary-content h2 {
-        font-size: 1rem;
+}
+
+/* =================================================================
+   LARGE DESKTOP STYLES
+   ================================================================= */
+@media (min-width: 1200px) {
+    .search-container,
+    .hero-section,
+    .grid-heading,
+    .app-grid {
+        max-width: 900px;
     }
-    .anniversary-content p {
-        font-size: 0.8rem;
-    }
-    .certificate-button {
-        font-size: 0.75rem;
+
+    .app-grid {
+        /* MODIFIED: Reduce space between icons */
+        grid-template-columns: repeat(8, max-content);
+        gap: 15px;
     }
 }
