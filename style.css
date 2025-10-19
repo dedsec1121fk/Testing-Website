@@ -120,36 +120,27 @@ body.light-theme .note.note-warning {
     box-shadow: 0 4px 15px rgba(153, 102, 255, 0.3);
     position: relative;
     z-index: 5;
-    box-sizing: border-box; 
+    box-sizing: border-box; /* <-- THIS IS THE FIX FOR THE BANNER */
 }
 
 .anniversary-content {
     display: flex;
-    /* Center icon and text vertically and reduce gap */
-    align-items: center;
-    gap: 10px; 
+    align-items: flex-start;
+    gap: 15px;
     margin-bottom: 15px;
 }
 
 .anniversary-icon {
     font-size: 2rem;
     color: var(--nm-text);
-    /* Center icon horizontally */
-    margin: 0 auto; 
     flex-shrink: 0;
-}
-
-.anniversary-text {
-    /* Allow text to take up available space */
-    flex-grow: 1; 
 }
 
 .anniversary-text h3 {
     margin: 0 0 10px 0;
     color: var(--nm-text);
     font-family: 'Orbitron', sans-serif;
-    /* Slightly reduced font size to help prevent wrapping */
-    font-size: 1.1rem; 
+    font-size: 1.2rem;
     text-align: center;
 }
 
@@ -631,8 +622,6 @@ body.light-theme ::-webkit-scrollbar-thumb {
     margin-bottom: 10px;
     padding: 25px 15px 0 15px;
     box-sizing: border-box;
-    /* ADDED: Max-width to align with search bar and grid */
-    max-width: 500px;
 }
 
 /* --- REMOVED: .header-logo container since we are using .screen::after --- */
@@ -764,7 +753,7 @@ body.light-theme ::-webkit-scrollbar-thumb {
     width: 100%;
     max-width: 500px;
     /* FIX: Reduced top margin from 15px and bottom margin from 35px */
-    margin: 5px auto 5px auto;
+    margin: 5px 0 5px 0;
     padding: 10px;
     box-sizing: border-box;
 }
@@ -822,22 +811,24 @@ body.light-theme ::-webkit-scrollbar-thumb {
 
 .app-grid {
     display: grid;
-    /* MODIFIED: Keep the items grouped tightly */
-    grid-template-columns: repeat(4, max-content);
-    /* REMOVED: justify-content: center; to let auto margins handle centering */
+    /* MODIFIED: Change to 3 fractional units to ensure items fill the width 
+       and centers the overall group of 3 icons on the screen by distributing space evenly. */
+    grid-template-columns: repeat(3, 1fr);
+    /* REMOVED: justify-content: center; */
     gap: 35px; /* MODIFIED: Set to 35px */
     width: 100%;
     max-width: 500px;
     margin: 0 auto 15px; /* Use auto margin to center the grid element itself */
     align-items: start;
+    /* ADDED: Centers the content within each 1fr column */
+    justify-items: center; 
 }
 
 .app-wrapper {
     width: 70px;
     display: flex;
     flex-direction: column;
-    /* This ensures vertical children (icon & label) are horizontally centered */
-    align-items: center; 
+    align-items: center;
     gap: 8px;
     text-decoration: none;
     color: var(--nm-text);
@@ -854,8 +845,7 @@ body.light-theme ::-webkit-scrollbar-thumb {
     display: flex;
     flex-direction: row;
     align-items: center;
-    /* MODIFIED: Ensure content is centered inside the icon circle */
-    justify-content: center; 
+    justify-content: flex-start;
     text-decoration: none;
     padding: 10px 15px;
     box-sizing: border-box;
@@ -882,8 +872,7 @@ body.light-theme ::-webkit-scrollbar-thumb {
     font-size: 0.75rem;
     font-weight: 400;
     color: var(--nm-text); /* Enforce White text */
-    /* MODIFIED: Ensure text is centered below the icon */
-    text-align: center; 
+    text-align: center;
     /* MODIFIED: Use normal word-break to ensure words wrap to the next line 
        instead of being broken mid-word */
     word-break: normal; 
@@ -1588,6 +1577,7 @@ span.sub-item {
     }
 
     .app-grid {
+        /* On wider screens, return to the original 6 columns for desktop layout */
         grid-template-columns: repeat(6, max-content);
     }
 
@@ -1608,6 +1598,7 @@ span.sub-item {
     }
 
     .app-grid {
+        /* On very wide screens, return to the original 8 columns for desktop layout */
         grid-template-columns: repeat(8, max-content);
     }
 }
