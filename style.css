@@ -125,22 +125,31 @@ body.light-theme .note.note-warning {
 
 .anniversary-content {
     display: flex;
-    align-items: flex-start;
-    gap: 15px;
+    /* MODIFIED: Center icon and text vertically and reduce gap */
+    align-items: center;
+    gap: 10px; 
     margin-bottom: 15px;
 }
 
 .anniversary-icon {
     font-size: 2rem;
     color: var(--nm-text);
+    /* ADDED: Center icon horizontally */
+    margin: 0 auto; 
     flex-shrink: 0;
+}
+
+.anniversary-text {
+    /* ADDED: Allow text to take up available space */
+    flex-grow: 1; 
 }
 
 .anniversary-text h3 {
     margin: 0 0 10px 0;
     color: var(--nm-text);
     font-family: 'Orbitron', sans-serif;
-    font-size: 1.2rem;
+    /* MODIFIED: Slightly reduced font size to help prevent wrapping */
+    font-size: 1.1rem; 
     text-align: center;
 }
 
@@ -841,7 +850,8 @@ body.light-theme ::-webkit-scrollbar-thumb {
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: flex-start;
+    /* MODIFIED: Ensure content is centered inside the icon circle */
+    justify-content: center; 
     text-decoration: none;
     padding: 10px 15px;
     box-sizing: border-box;
@@ -868,7 +878,8 @@ body.light-theme ::-webkit-scrollbar-thumb {
     font-size: 0.75rem;
     font-weight: 400;
     color: var(--nm-text); /* Enforce White text */
-    text-align: center;
+    /* MODIFIED: Ensure text is centered below the icon */
+    text-align: center; 
     /* MODIFIED: Use normal word-break to ensure words wrap to the next line 
        instead of being broken mid-word */
     word-break: normal; 
