@@ -477,19 +477,34 @@ button.hero-cta-button {
     transition: background-color 0.3s ease, width 0.3s ease, height 0.3s ease, border-radius 0.3s ease;
 }
 
+/* --- MODIFIED: ADDED/REPURPOSED for Scrollbar Tracks on Both Sides --- */
+.phone-container::before,
 .phone-container::after {
     content: '';
     position: absolute;
-    right: 0;
     top: 0;
-    width: 8px;
+    width: 10px; /* Match scrollbar width */
     height: 100%;
-    /* REMOVED GLOW */
-    background: linear-gradient(to bottom, var(--nm-danger), var(--nm-danger-hover), var(--nm-danger));
-    box-shadow: none;
+    background-color: var(--nm-dark); /* Match scrollbar track color */
     z-index: 10;
-    display: none; 
+    box-shadow: none;
+    display: block !important; /* Ensure visibility, overriding any previous 'display: none' */
+    transition: background-color 0.3s ease;
 }
+/* Left Scrollbar Track */
+.phone-container::before {
+    left: 0;
+    border-right: 1px solid var(--nm-border); /* Subtle separation */
+}
+/* Right Scrollbar Track */
+.phone-container::after {
+    right: 0;
+    background-color: var(--nm-dark); 
+    border-left: 1px solid var(--nm-border); /* Subtle separation */
+}
+/* --- END DUAL SCROLLBAR TRACKS --- */
+
+/* REMOVED: The old .phone-container::after block was deleted here as it is replaced by the above */
 
 #scroll-indicator-thumb {
     position: absolute;
@@ -601,11 +616,13 @@ body.light-theme .phone-container::after {
     width: 10px;
 }
 ::-webkit-scrollbar-track {
-    background: var(--nm-dark);
+    /* Set to transparent, as we are now using :before/:after on .phone-container for the track visuals */
+    background: transparent; 
 }
 ::-webkit-scrollbar-thumb {
     background-color: var(--nm-accent);
     border-radius: 10px;
+    /* Change border color to match the surrounding track */
     border: 2px solid var(--nm-dark);
     box-shadow: none;
 }
