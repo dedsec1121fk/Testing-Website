@@ -113,7 +113,7 @@ body.light-theme .note.note-warning {
     border: 2px solid var(--nm-accent);
     border-radius: 20px;
     padding: 20px;
-    margin: 15px auto; /* Already centered, but explicitly here for completeness */
+    margin: 15px auto;
     max-width: 480px;
     width: 100%;
     opacity: 0.85;
@@ -125,9 +125,7 @@ body.light-theme .note.note-warning {
 
 .anniversary-content {
     display: flex;
-    /* --- FIX: Center icon and text content horizontally and vertically --- */
-    align-items: center; 
-    justify-content: center;
+    align-items: flex-start;
     gap: 15px;
     margin-bottom: 15px;
 }
@@ -153,7 +151,7 @@ body.light-theme .note.note-warning {
     color: var(--nm-text);
     font-size: 0.9rem;
     line-height: 1.4;
-    text-align: center; /* --- FIX: Center paragraph text --- */
+    text-align: left;
 }
 
 .certificate-btn {
@@ -590,7 +588,7 @@ body.light-theme .phone-container::after {
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    align-items: center; /* This handles the main content centering */
+    align-items: center;
 }
 
 /* MODIFIED: Universal Custom Scrollbar */
@@ -627,10 +625,8 @@ body.light-theme ::-webkit-scrollbar-thumb {
     padding: 25px 15px 0 15px;
     box-sizing: border-box;
     /* FIX: Center the container */
-    margin-left: auto;
-    margin-right: auto;
-    /* --- FIX: Explicitly center the text content within the container --- */
-    text-align: center;
+    /* REMOVED: margin-left: auto; */
+    /* REMOVED: margin-right: auto; */
 }
 
 /* --- REMOVED: .header-logo container since we are using .screen::after --- */
@@ -660,8 +656,6 @@ body.light-theme ::-webkit-scrollbar-thumb {
     width: 100%;
     max-width: 500px; 
     margin: 0 auto; 
-    /* --- FIX: Explicitly center text content for any internal elements --- */
-    text-align: center;
 }
 
 /* MODIFIED: Removed all box-shadow for no glow effect */
@@ -761,7 +755,7 @@ body.light-theme ::-webkit-scrollbar-thumb {
     display: flex;
     flex-direction: column;
     align-items: center;
-    text-align: center; /* Already centered, reinforcing */
+    text-align: center;
     width: 100%;
     max-width: 500px;
     /* FIX: Reduced top margin from 15px and bottom margin from 35px */
@@ -808,7 +802,7 @@ body.light-theme ::-webkit-scrollbar-thumb {
 .grid-heading {
     width: 100%;
     max-width: 500px;
-    text-align: center; /* Already centered, reinforcing */
+    text-align: center;
     font-family: 'Orbitron', sans-serif;
     color: var(--nm-text);
     text-transform: uppercase;
@@ -824,11 +818,11 @@ body.light-theme ::-webkit-scrollbar-thumb {
 .app-grid {
     display: grid;
     grid-template-columns: repeat(4, max-content);
-    justify-content: center; /* This centers the grid horizontally */
+    justify-content: center;
     gap: 35px; /* MODIFIED: Set to 35px */
     width: 100%;
     max-width: 500px;
-    margin: 0 auto 15px; /* This ensures the container is centered */
+    margin: 0 auto 15px;
     align-items: start;
 }
 
@@ -836,7 +830,7 @@ body.light-theme ::-webkit-scrollbar-thumb {
     width: 70px;
     display: flex;
     flex-direction: column;
-    align-items: center; /* This centers the icon and label relative to each other */
+    align-items: center;
     gap: 8px;
     text-decoration: none;
     color: var(--nm-text);
@@ -867,7 +861,7 @@ body.light-theme ::-webkit-scrollbar-thumb {
 }
 
 .app-wrapper .app-icon {
-    justify-content: center; /* This centers the icon within the circular button */
+    justify-content: center;
     width: 64px;
     height: 64px;
     padding: 0;
@@ -880,7 +874,7 @@ body.light-theme ::-webkit-scrollbar-thumb {
     font-size: 0.75rem;
     font-weight: 400;
     color: var(--nm-text); /* Enforce White text */
-    text-align: center; /* This centers the label text */
+    text-align: center;
     /* MODIFIED: Use normal word-break to ensure words wrap to the next line 
        instead of being broken mid-word */
     word-break: normal; 
@@ -968,7 +962,7 @@ body.light-theme .app-icon:hover {
 }
 
 .main-footer {
-    text-align: center; /* Already centered, reinforcing */
+    text-align: center;
     padding: 1rem;
     font-size: 0.7rem;
     color: var(--nm-text-muted);
