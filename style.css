@@ -107,7 +107,7 @@ body.light-theme .note.note-warning {
    ANNIVERSARY STYLES
    ================================================================= */
 
-/* Anniversary Banner - REVERTED TO PURPLE THEME */
+/* Anniversary Banner */
 .anniversary-banner {
     background: linear-gradient(135deg, var(--nm-accent), var(--nm-accent-hover));
     border: 2px solid var(--nm-accent);
@@ -117,10 +117,10 @@ body.light-theme .note.note-warning {
     max-width: 480px;
     width: 100%;
     opacity: 0.85;
-    box-shadow: 0 4px 15px rgba(var(--glow-rgb), 0.5); /* PURPLE glow */
+    box-shadow: 0 4px 15px rgba(153, 102, 255, 0.3);
     position: relative;
     z-index: 5;
-    box-sizing: border-box; 
+    box-sizing: border-box; /* <-- THIS IS THE FIX FOR THE BANNER */
 }
 
 .anniversary-content {
@@ -154,13 +154,11 @@ body.light-theme .note.note-warning {
     text-align: left;
 }
 
-/* Certificate Button - REVERTED TO PURPLE/WHITE TEXT */
 .certificate-btn {
     width: 100%;
-    /* PURPLE Gradient */
-    background: linear-gradient(135deg, var(--nm-accent), var(--nm-accent-hover));
-    border: 2px solid var(--nm-accent);
-    color: #FFFFFF; /* White text for contrast on purple */
+    background: linear-gradient(135deg, #FFD700, #FF6B6B);
+    border: 2px solid #FFD700;
+    color: #000000;
     padding: 12px 20px;
     border-radius: 20px;
     font-family: 'Orbitron', sans-serif;
@@ -172,15 +170,15 @@ body.light-theme .note.note-warning {
     align-items: center;
     justify-content: center;
     gap: 10px;
-    opacity: 0.95;
-    box-shadow: 0 4px 15px rgba(var(--glow-rgb), 0.3); /* Purple glow */
+    opacity: 0.85;
+    box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
 }
 
 .certificate-btn:hover {
-    background: linear-gradient(135deg, var(--nm-accent-hover), var(--nm-accent));
-    border-color: var(--nm-accent-hover);
+    background: linear-gradient(135deg, #FF6B6B, #FFD700);
+    border-color: #FF6B6B;
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(var(--glow-rgb), 0.8); /* Stronger Purple glow */
+    box-shadow: 0 6px 20px rgba(255, 215, 0, 0.5);
 }
 
 /* Certificate Form Styles */
@@ -226,10 +224,9 @@ body.light-theme .note.note-warning {
 }
 
 #generate-certificate {
-    /* Kept PURPLE/WHITE, adjusted gradient for better contrast */
-    background: linear-gradient(135deg, var(--nm-accent), var(--nm-accent-hover)); 
-    border: 2px solid var(--nm-accent);
-    color: #FFFFFF; 
+    background: linear-gradient(135deg, var(--nm-success), #00CC00);
+    border: 2px solid var(--nm-success);
+    color: #000000;
     padding: 15px 30px;
     border-radius: 20px;
     font-family: 'Orbitron', sans-serif;
@@ -245,12 +242,12 @@ body.light-theme .note.note-warning {
 }
 
 #generate-certificate:hover {
-    background: linear-gradient(135deg, var(--nm-accent-hover), var(--nm-accent)); 
+    background: linear-gradient(135deg, #00CC00, var(--nm-success));
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(var(--glow-rgb), 0.3); 
+    box-shadow: 0 6px 20px rgba(0, 255, 0, 0.3);
 }
 
-/* Certificate Preview Styles - CORRECTED to WHITE BACKGROUND, PURPLE ACCENTS */
+/* Certificate Preview Styles */
 .certificate-preview {
     margin-top: 30px;
     padding: 20px;
@@ -260,14 +257,11 @@ body.light-theme .note.note-warning {
 }
 
 .certificate {
-    /* WHITE BACKGROUND */
-    background: #FFFFFF; 
-    /* PURPLE BORDER */
-    border: 4px solid var(--nm-accent); 
+    background: linear-gradient(135deg, #1a1a2e, #16213e);
+    border: 4px solid #FFD700;
     border-radius: 15px;
     padding: 40px 30px;
-    /* BLACK TEXT */
-    color: #000000; 
+    color: #ffffff;
     font-family: 'Noto Serif', serif;
     text-align: center;
     position: relative;
@@ -280,15 +274,13 @@ body.light-theme .note.note-warning {
 
 .certificate-logo {
     font-size: 3rem;
-    /* PURPLE LOGO */
-    color: var(--nm-accent-hover); 
+    color: #FFD700;
     margin-bottom: 15px;
 }
 
 .certificate-header h1 {
     font-size: 2.2rem;
-    /* PURPLE TITLE */
-    color: var(--nm-accent); 
+    color: #FFD700;
     margin: 0 0 10px 0;
     font-weight: bold;
     text-transform: uppercase;
@@ -297,8 +289,7 @@ body.light-theme .note.note-warning {
 
 .certificate-header h2 {
     font-size: 1.5rem;
-    /* PURPLE ACCENT */
-    color: var(--nm-accent-hover); 
+    color: var(--nm-accent);
     margin: 0;
     font-weight: normal;
     font-style: italic;
@@ -312,19 +303,16 @@ body.light-theme .note.note-warning {
     font-size: 1.1rem;
     margin: 15px 0;
     line-height: 1.6;
-    /* BLACK TEXT */
-    color: #000000; 
 }
 
 .recipient-name {
     font-size: 2.5rem;
     font-weight: bold;
-    /* PURPLE NAME AND BORDER */
-    color: var(--nm-accent-hover); 
+    color: #FFD700;
     margin: 20px 0;
     padding: 10px;
-    border-bottom: 2px solid var(--nm-accent); 
-    border-top: 2px solid var(--nm-accent); 
+    border-bottom: 2px solid #FFD700;
+    border-top: 2px solid #FFD700;
     font-family: 'Orbitron', sans-serif;
     text-transform: uppercase;
     letter-spacing: 1px;
@@ -336,8 +324,7 @@ body.light-theme .note.note-warning {
     align-items: flex-end;
     margin-top: 40px;
     padding-top: 20px;
-    /* Dark gray/black border for line */
-    border-top: 1px solid #444444; 
+    border-top: 1px solid var(--nm-border);
 }
 
 .certificate-details {
@@ -347,14 +334,11 @@ body.light-theme .note.note-warning {
 .detail-item {
     margin: 8px 0;
     font-size: 0.9rem;
-    /* BLACK TEXT */
-    color: #000000; 
 }
 
 .detail-item span:first-child {
     font-weight: bold;
-    /* PURPLE DETAIL ITEM TITLE */
-    color: var(--nm-accent); 
+    color: #FFD700;
 }
 
 .signature {
@@ -364,18 +348,16 @@ body.light-theme .note.note-warning {
 .signature-line {
     width: 200px;
     height: 1px;
-    /* BLACK LINE */
-    background: #000000; 
+    background: #ffffff;
     margin: 0 auto 10px auto;
 }
 
 .signature span {
     font-style: italic;
-    /* Muted black/dark gray text */
-    color: #555555; 
+    color: var(--nm-text-muted);
 }
 
-/* Multi-color Border Animation for App Icons - KEPT ORIGINAL RAINBOW ANIMATION */
+/* Multi-color Border Animation for App Icons */
 @keyframes multiColorBorder {
     0% { border-color: #FF0000; }
     3.33% { border-color: #FF3300; }
@@ -832,25 +814,14 @@ body.light-theme ::-webkit-scrollbar-thumb {
 .app-grid {
     display: grid;
     grid-template-columns: repeat(4, max-content);
-    /* MODIFIED: Changed justify-content from center to flex-start and 
-       added margin-left to push the grid more to the right */
-    justify-content: flex-start; 
-    margin-left: 20px; /* Adjust this value to control the right shift */
-    gap: 35px; 
+    justify-content: center;
+    gap: 35px; /* MODIFIED: Set to 35px */
     width: 100%;
     max-width: 500px;
-    margin-right: auto;
-    margin-bottom: 15px;
+    margin: 0 auto 15px;
     align-items: start;
-}
-
-@media (min-width: 768px) {
-    .app-grid {
-        grid-template-columns: repeat(6, max-content);
-        /* Revert to center on larger screens for better layout */
-        justify-content: center;
-        margin-left: auto;
-    }
+    /* ADDED: Shift left by 5px to visually center content by compensating for the 10px scrollbar area on the right. */
+    transform: translateX(-5px);
 }
 
 .app-wrapper {
