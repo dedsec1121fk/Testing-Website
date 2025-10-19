@@ -52,6 +52,15 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
+        // <-- THIS IS THE FIX FOR THE DOWNLOAD -->
+        // Check if the jsPDF library is loaded before proceeding
+        if (typeof window.jspdf === 'undefined' || typeof window.jspdf.jsPDF === 'undefined') {
+            alert('Certificate library is still loading. Please try again in a moment.');
+            console.error("jsPDF library (window.jspdf.jsPDF) not found.");
+            return;
+        }
+        // <-- END OF FIX -->
+
         // Get form data
         const formData = new FormData(form);
         const firstName = formData.get('firstName');
@@ -851,7 +860,7 @@ document.addEventListener('DOMContentLoaded', () => {
             usefulInformationLoaded = true;
         } catch (error) {
             console.error('Failed to fetch useful information:', error);
-            navContainer.innerHTML = `<p style="color: var(--nm-danger);">${currentLanguage === 'gr' ? 'Αποτυχία φόρτωσnς.' : 'Failed to load.'}</p>`;
+            navContainer.innerHTML = `<p style="color: var(--nm-danger);">${currentLanguage === 'gr' ? 'Αποτυχία φόρτωσης.' : 'Failed to load.'}</p>`;
         } finally {
             isFetchingUsefulInfo = false;
         }
