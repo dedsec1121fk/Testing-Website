@@ -1,448 +1,313 @@
 /*
     =================================================================
-    DEDSEC PROJECT - 1 YEAR ANNIVERSARY THEME
-    =================================================================
+    
+=================================================================
 */
 
 :root {
-    /* Anniversary Color Palette - Purple/Blue/Red Theme */
-    --nm-abyss-blue: #0a0414; 
-    --nm-darkest: #120827;    
-    --nm-dark: #1a1238;       
-    --nm-container: #241a4a;  
-    --nm-border: #3a2a6e;      
-    --nm-accent: #8a2be2;      /* BlueViolet - Primary accent */
-    --nm-accent-hover: #9932cc; /* DarkOrchid */
-    --nm-text: #FFFFFF;        
-    --nm-text-muted: #a899e6;  
+    /* MODIFIED: Digital Lavender Palette */
+    --nm-abyss-blue: #01040a; 
+    --nm-darkest: #0B121C;    
+    --nm-dark: #151E2A;       
+    --nm-container: #1F2A38;  
+    --nm-border: #3A4A5E;      
+    --nm-accent: #9966FF;      /* Digital Lavender (Used for borders/success/title) */
+    --nm-accent-hover: #9933FF; /* Brighter, more distinct PURPLE for Main Title */
+    --nm-text: #FFFFFF;        /* All text/titles default to PURE WHITE */
+    --nm-text-muted: #7A8899;  
     /* DANGER/FAIL: Red */
-    --nm-danger: #ff3366;      
-    --nm-danger-hover: #ff0044; 
+    --nm-danger: #FF0000;      
+    --nm-danger-hover: #FF0000; 
     /* SUCCESS: Green */
-    --nm-success: #33ff99;     
+    --nm-success: #00FF00;     
     /* WARNING/HIGHLIGHT: Yellow */
-    --nm-warning: #ffcc00;     
+    --nm-warning: #FFFF00;     
     
-    /* Anniversary Glow Colors */
-    --glow-purple: rgba(138, 43, 226, 0.7);
-    --glow-blue: rgba(51, 153, 255, 0.7);
-    --glow-red: rgba(255, 51, 102, 0.7);
-    
+    --glow-rgb: 153, 102, 255; /* RGB components for the accent color */
+    --glow-color: rgba(var(--glow-rgb), 0.0); 
+    /* Search Bar Color: MODIFIED to use main accent color */
+    --nm-search-green: var(--nm-accent); 
+    /* Search Bar Glow: MODIFIED to remove glow */
+    --glow-color-search: rgba(var(--glow-rgb), 0.0); 
+    /* Highlight Red Glow (kept for compatibility, though red is not requested) */
+    --glow-color-danger: rgba(255, 0, 0, 0.0); 
+    /* Highlighter Yellow Glow */
+    --glow-color-warning: rgba(255, 255, 0, 0.8); 
+
+    --warning-bg: rgba(255, 255, 0, 0.1); /* Yellow background for warning notes */
+    --danger-bg: rgba(255, 0, 0, 0.1);
+
     --safe-area-inset-bottom: env(safe-area-inset-bottom, 10px);
     --shape-cut: 20px;
+    /* REMOVED: Remove custom clip path variable */
     --clip-path-shape: none; 
 }
 
 body.light-theme {
-    --nm-abyss-blue: #f5f0ff;
-    --nm-darkest: #e6e1f5;
-    --nm-dark: #d8d0eb;
+    --nm-abyss-blue: #ffffff;
+    --nm-darkest: #f0f0f0;
+    --nm-dark: #e9e9e9;
     --nm-container: #ffffff;
-    --nm-border: #c4b5e6;
-    --nm-text: #2a004e;
-    --nm-text-muted: #5a4a8c;
-    --nm-warning: #8a2be2;
-    --glow-purple: rgba(138, 43, 226, 0.3);
-    --glow-blue: rgba(51, 153, 255, 0.3);
-    --glow-red: rgba(255, 51, 102, 0.3);
+    --nm-border: #cccccc;
+    --nm-text: #000000;        /* Light theme text is BLACK */
+    --nm-text-muted: #555555;  /* Light theme muted text is darker gray */
+    --nm-warning: #9966FF; 
+    --glow-color: rgba(var(--glow-rgb), 0.3);
 }
 
 /* --- ADDED/MODIFIED FOR LIGHT THEME BACKGROUND LOGO SWAP --- */
 body.light-theme .screen::after {
     background-image: url('https://raw.githubusercontent.com/dedsec1121fk/dedsec1121fk.github.io/6f776cd9772a079a6d26370dddab911bf7cde8cd/Assets/Images/Logos/Custom%20White%20Purple%20Fox%20Logo.jpg') !important;
-    opacity: 0.3;
+    opacity: 0.3; /* Keep visibility for light theme */
 }
 
 /* =================================================================
-   ANNIVERSARY SPECIFIC STYLES
+   ANNIVERSARY STYLES
    ================================================================= */
 
-/* Anniversary Banner */
 .anniversary-banner {
-    background: linear-gradient(135deg, var(--nm-accent), #3366ff, #ff3366);
+    background: linear-gradient(135deg, #8A2BE2, #4169E1, #DC143C);
     border: 2px solid transparent;
     border-radius: 20px;
-    padding: 12px;
+    padding: 15px;
     margin: 15px auto;
-    width: calc(100% - 30px); /* Account for scrollbar space */
-    max-width: 440px; /* Changed from 400px to 440px (10% bigger than 400px) */
+    width: 100%;
+    max-width: 500px;
     text-align: center;
-    box-shadow: 0 4px 15px rgba(138, 43, 226, 0.4);
-    animation: banner-pulse 3s ease-in-out infinite;
-    opacity: 0.8; /* Changed from 0.7 to 0.8 */
+    box-shadow: 0 4px 15px rgba(138, 43, 226, 0.3);
+    opacity: 0.85;
+    animation: bannerPulse 3s ease-in-out infinite;
 }
 
-@keyframes banner-pulse {
-    0%, 100% { transform: scale(1); box-shadow: 0 4px 15px rgba(138, 43, 226, 0.4); }
-    50% { transform: scale(1.02); box-shadow: 0 6px 20px rgba(138, 43, 226, 0.6); }
+@keyframes bannerPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.02); }
 }
 
 .anniversary-content h2 {
-    margin: 0 0 8px 0;
-    font-family: 'Orbitron', sans-serif;
-    font-size: 1.2rem; /* Slightly smaller */
     color: white;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    margin: 0 0 8px 0;
+    font-size: 1.4rem;
+    font-family: 'Orbitron', sans-serif;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
 }
 
 .anniversary-content p {
-    margin: 0;
-    font-size: 0.8rem; /* Slightly smaller */
     color: white;
-    line-height: 1.4;
+    margin: 5px 0;
+    font-size: 0.9rem;
 }
 
-/* Certificate Button */
+.anniversary-dates {
+    font-weight: bold;
+    font-size: 0.85rem !important;
+    color: #FFFF00 !important;
+    margin-top: 8px !important;
+}
+
 .certificate-button {
-    background: linear-gradient(135deg, var(--nm-accent), #3366ff);
-    color: white;
-    border: none;
+    background: linear-gradient(135deg, #8A2BE2, #4169E1, #DC143C);
+    border: 2px solid transparent;
     border-radius: 20px;
     padding: 12px 20px;
-    margin: 10px auto 20px;
+    margin: 10px auto 20px auto;
+    width: 100%;
+    max-width: 500px;
+    color: white;
     font-family: 'Orbitron', sans-serif;
-    font-size: 0.9rem;
     font-weight: 700;
+    font-size: 0.9rem;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 10px;
-    width: calc(100% - 30px); /* Account for scrollbar space */
-    max-width: 400px; /* Match banner width */
     transition: all 0.3s ease;
-    box-shadow: 0 4px 10px rgba(138, 43, 226, 0.4);
+    opacity: 0.85;
+    box-shadow: 0 4px 15px rgba(138, 43, 226, 0.3);
 }
 
 .certificate-button:hover {
-    background: linear-gradient(135deg, #3366ff, var(--nm-accent));
+    opacity: 1;
     transform: translateY(-2px);
-    box-shadow: 0 6px 15px rgba(138, 43, 226, 0.6);
+    box-shadow: 0 6px 20px rgba(138, 43, 226, 0.5);
 }
 
-/* Certificate Form */
+/* Certificate Form Styles */
 .certificate-form-container {
     max-width: 500px;
     margin: 0 auto;
 }
 
-.certificate-instructions {
-    text-align: center;
-    margin-bottom: 20px;
-    color: var(--nm-text-muted);
-}
-
 .form-group {
-    margin-bottom: 15px;
+    margin-bottom: 20px;
 }
 
 .form-group label {
     display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
+    margin-bottom: 8px;
     color: var(--nm-text);
+    font-weight: bold;
 }
 
 .form-group input {
     width: 100%;
-    padding: 10px 15px;
+    padding: 12px 15px;
     background-color: var(--nm-darkest);
-    border: 2px solid var(--nm-border);
-    color: var(--nm-text);
+    border: 2px solid var(--nm-accent);
     border-radius: 10px;
+    color: var(--nm-text);
     font-family: 'Roboto Mono', monospace;
+    font-size: 0.9rem;
     box-sizing: border-box;
+    transition: all 0.3s ease;
 }
 
 .form-group input:focus {
     outline: none;
-    border-color: var(--nm-accent);
-    box-shadow: 0 0 0 2px rgba(138, 43, 226, 0.3);
+    border-color: var(--nm-accent-hover);
+    background-color: var(--nm-dark);
 }
 
-.generate-certificate-btn {
-    background: linear-gradient(135deg, var(--nm-accent), #3366ff);
-    color: white;
-    border: none;
-    border-radius: 20px;
-    padding: 12px 25px;
-    font-family: 'Orbitron', sans-serif;
-    font-weight: 700;
-    cursor: pointer;
-    width: 100%;
-    transition: all 0.3s ease;
-    margin-top: 10px;
-}
-
-.generate-certificate-btn:hover {
-    background: linear-gradient(135deg, #3366ff, var(--nm-accent));
-    transform: translateY(-2px);
-    box-shadow: 0 4px 10px rgba(138, 43, 226, 0.4);
-}
-
-.generate-certificate-btn:disabled {
-    opacity: 0.7;
-    cursor: not-allowed;
-    transform: none;
-}
-
-/* Professional Certificate Template */
-.certificate-container {
-    background: linear-gradient(135deg, #0f0820, #1d1138);
-    border: 4px solid;
-    border-image: linear-gradient(45deg, var(--nm-accent), #3366ff, #ff3366) 1;
-    border-radius: 12px;
-    padding: 35px;
-    margin: 25px 0;
+.form-actions {
     text-align: center;
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.7);
-    position: relative;
-    overflow: hidden;
+    margin-top: 30px;
 }
 
-.certificate-container::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="1" fill="%23ffffff" opacity="0.05"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
-    pointer-events: none;
-}
-
-.certificate-header {
-    position: relative;
-    margin-bottom: 25px;
-    padding-bottom: 15px;
-    border-bottom: 2px solid rgba(138, 43, 226, 0.3);
-}
-
-.certificate-header h2 {
-    color: #ffcc00;
+/* Certificate Template Styles */
+.certificate {
+    background: linear-gradient(135deg, #0B121C, #1F2A38);
+    border: 4px solid;
+    border-image: linear-gradient(45deg, #8A2BE2, #4169E1, #DC143C) 1;
+    padding: 40px;
+    max-width: 800px;
+    margin: 0 auto;
+    color: white;
     font-family: 'Orbitron', sans-serif;
-    margin-bottom: 8px;
-    font-size: 2.2rem;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    text-align: center;
 }
 
-.certificate-header p {
-    color: var(--nm-text-muted);
-    margin-bottom: 0;
-    font-size: 1.3rem;
-    font-weight: 600;
-}
-
-.certificate-body {
-    margin: 30px 0;
-    position: relative;
-}
-
-.certificate-body::before {
-    content: '★';
-    position: absolute;
-    top: -15px;
-    left: 50%;
-    transform: translateX(-50%);
-    color: #ffcc00;
-    font-size: 2rem;
-}
-
-.certificate-body h3 {
-    color: #ffffff;
-    font-size: 2.4rem;
-    margin: 20px 0;
-    font-family: 'Orbitron', sans-serif;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-    background: linear-gradient(135deg, #ffffff, #a899e6);
+.certificate-header h1 {
+    font-size: 2.5rem;
+    margin: 0 0 10px 0;
+    background: linear-gradient(45deg, #8A2BE2, #4169E1, #DC143C);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
 }
 
-.certificate-body p {
-    margin: 12px 0;
-    font-size: 1.1rem;
-    line-height: 1.6;
-    color: #e6e1ff;
+.certificate-header h2 {
+    font-size: 1.5rem;
+    margin: 0 0 20px 0;
+    color: var(--nm-text);
+}
+
+.certificate-body {
+    margin: 30px 0;
+}
+
+.recipient-name {
+    font-size: 2rem;
+    font-weight: bold;
+    margin: 20px 0;
+    color: #FFFF00;
+    padding: 10px;
+    border: 2px solid #FFFF00;
+    border-radius: 10px;
+    background: rgba(255, 255, 0, 0.1);
 }
 
 .certificate-details {
-    margin-top: 25px;
-    display: flex;
-    justify-content: space-around;
-    flex-wrap: wrap;
-    background: rgba(138, 43, 226, 0.1);
-    padding: 15px;
-    border-radius: 8px;
-    border: 1px solid rgba(138, 43, 226, 0.3);
+    margin: 20px 0;
+    font-size: 1.1rem;
 }
 
-.certificate-details p {
-    margin: 8px 15px;
-    font-weight: bold;
-    font-size: 1rem;
-    color: #ffcc00;
+.certificate-date {
+    margin-top: 30px;
+    font-style: italic;
 }
 
 .certificate-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    margin-top: 35px;
+    margin-top: 40px;
+    border-top: 2px solid var(--nm-border);
     padding-top: 20px;
-    border-top: 2px solid rgba(138, 43, 226, 0.3);
-    position: relative;
 }
 
 .signature {
-    text-align: left;
-}
-
-.signature p {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 1.4rem;
-    margin: 0;
-    color: var(--nm-accent);
-    font-weight: bold;
-}
-
-.signature span {
-    font-size: 0.9rem;
-    color: var(--nm-text-muted);
-    display: block;
-    margin-top: 5px;
-}
-
-.date {
-    text-align: right;
-}
-
-.date p {
-    margin: 0;
-    font-weight: bold;
-    font-size: 1rem;
-    color: #ffcc00;
-}
-
-/* Success message for download */
-.download-success {
-    background: linear-gradient(135deg, #33ff99, #00cc66);
-    color: #000;
-    border-radius: 10px;
-    padding: 10px 15px;
-    margin: 15px auto;
+    display: inline-block;
     text-align: center;
-    font-weight: bold;
-    max-width: 300px;
-    display: none;
 }
 
-.download-success.show {
-    display: block;
-    animation: fadeInOut 3s ease-in-out;
-}
-
-@keyframes fadeInOut {
-    0%, 100% { opacity: 0; transform: translateY(-10px); }
-    20%, 80% { opacity: 1; transform: translateY(0); }
+.signature-line {
+    width: 200px;
+    height: 1px;
+    background: var(--nm-text);
+    margin: 20px auto 10px auto;
 }
 
 /* =================================================================
-   ANIMATED ICON BORDERS
+   MULTICOLOR ICON BORDER ANIMATION
    ================================================================= */
+@keyframes multicolorBorder {
+    0% { border-color: #8A2BE2; }
+    25% { border-color: #4169E1; }
+    50% { border-color: #DC143C; }
+    75% { border-color: #FF1493; }
+    100% { border-color: #8A2BE2; }
+}
 
 .app-icon {
-    background: #000000;
-    border: 2px solid transparent;
-    color: var(--nm-text);
-    cursor: pointer;
-    font-family: 'Roboto Mono', monospace;
-    transition: all 0.2s ease;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: flex-start;
-    text-decoration: none;
-    padding: 10px 15px;
-    box-sizing: border-box;
-    position: relative;
-    border-radius: 50%;
-    gap: 12px;
-    box-shadow: none;
-    height: 56px;
-    animation: border-glow 4s ease-in-out infinite;
+    animation: multicolorBorder 4s linear infinite;
 }
 
-@keyframes border-glow {
-    0% {
-        border-color: var(--nm-accent);
-        box-shadow: 0 0 5px var(--glow-purple);
-    }
-    33% {
-        border-color: #3366ff;
-        box-shadow: 0 0 10px var(--glow-blue);
-    }
-    66% {
-        border-color: #ff3366;
-        box-shadow: 0 0 5px var(--glow-red);
-    }
-    100% {
-        border-color: var(--nm-accent);
-        box-shadow: 0 0 5px var(--glow-purple);
-    }
-}
-
-.app-wrapper .app-icon {
-    justify-content: center;
-    width: 64px;
-    height: 64px;
-    padding: 0;
-    gap: 0;
-    border-radius: 50%;
-}
+/* =================================================================
+   END ANNIVERSARY STYLES
+   ================================================================= */
 
 /* =================================================================
    LIGHT THEME FIXES
    ================================================================= */
 
-body.light-theme .anniversary-banner {
-    color: white; /* Keep text white for readability on gradient */
+/* Fix low-contrast text on accent-colored backgrounds (hover states, etc.) */
+body.light-theme .app-icon:hover,
+body.light-theme .app-wrapper:hover .app-icon i,
+body.light-theme .search-result-item:hover,
+body.light-theme .copy-btn:hover,
+body.light-theme .modal-footer button:hover,
+body.light-theme .language-button:hover,
+body.light-theme .language-button.selected,
+body.light-theme .store-link a:hover {
+    color: #FFFFFF; /* Use pure white for high contrast on purple backgrounds */
 }
 
-body.light-theme .certificate-button,
-body.light-theme .generate-certificate-btn {
-    color: white; /* Keep text white for readability on gradient */
+/* Fix muted text in search results on hover */
+body.light-theme #search-results-container .search-result-item:hover small,
+body.light-theme #useful-info-results-container .search-result-item:hover small {
+    color: rgba(255, 255, 255, 0.85);
 }
 
-body.light-theme .certificate-container {
-    background: linear-gradient(135deg, #f5f0ff, #e6e1f5);
-    color: var(--nm-text);
+/* Fix hardcoded dark backgrounds */
+body.light-theme .modal-header {
+    background: rgba(0,0,0,0.03); /* A very light, almost white background */
+}
+body.light-theme .modal-body code {
+    background: rgba(0,0,0,0.08); /* A light gray background for code snippets */
 }
 
-body.light-theme .app-icon {
-    background: var(--nm-container);
+/* Fix accept/decline button text color */
+body.light-theme .decline-btn,
+body.light-theme .accept-btn {
+    color: #FFFFFF !important; /* Use white text for high contrast on bright red/green */
+}
+
+/* Fix inconsistent warning note styling */
+body.light-theme .note.note-warning {
+    color: #000000; /* Use black text for readability on yellow background */
+    border-left-color: #FBC02D; /* A darker yellow to match the theme */
 }
 
 /* =================================================================
-   REDUCED GRID GAP
-   ================================================================= */
-
-.app-grid {
-    display: grid;
-    grid-template-columns: repeat(4, max-content);
-    justify-content: center;
-    gap: 20px; /* Reduced from 35px to 20px */
-    width: 100%;
-    max-width: 500px;
-    margin: 0 auto 15px;
-    align-items: start;
-}
-
-/* =================================================================
-   REST OF THE ORIGINAL STYLES (UNCHANGED)
+   END OF LIGHT THEME FIXES
    ================================================================= */
 
 @keyframes scanline-scroll {
@@ -450,17 +315,22 @@ body.light-theme .app-icon {
     100% { transform: translateY(-50%); }
 }
 
+/* MODIFIED: Remove text glitch animation entirely */
 @keyframes text-glitch {
     0% { transform: translate(0, 0) skew(0); }
     100% { transform: translate(0, 0) skew(0); }
 }
 
+/* MODIFIED: Remove flickering effect and associated text-shadows (glowing) */
 @keyframes flicker {
   0%, 100% {
     opacity: 1;
     text-shadow: none;
   }
 }
+
+/* REMOVED: Pulsing glow animation for the main title */
+
 
 html, body {
     height: 100%;
@@ -480,6 +350,7 @@ body {
     align-items: center;
 }
 
+/* --- ADDED: Reset for button elements used as app icons --- */
 .app-grid button.app-wrapper {
     background: none;
     border: none;
@@ -514,6 +385,7 @@ button.hero-cta-button {
     top: 0;
     width: 8px;
     height: 100%;
+    /* REMOVED GLOW */
     background: linear-gradient(to bottom, var(--nm-danger), var(--nm-danger-hover), var(--nm-danger));
     box-shadow: none;
     z-index: 10;
@@ -539,6 +411,7 @@ button.hero-cta-button {
     height: 100%;
     background-color: var(--nm-abyss-blue);
     background-image:
+        /* MODIFIED: Removed hexagon background image/pattern */
         url("data:image/svg+xml,%3Csvg viewBox='0 0 800 800' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3E/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
     background-size: cover, cover; 
     position: relative;
@@ -617,16 +490,14 @@ body.light-theme .phone-container::after {
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 100%; /* Ensure full width */
 }
 
-/* FIXED: Custom Scrollbar that doesn't cover content */
+/* MODIFIED: Universal Custom Scrollbar */
 ::-webkit-scrollbar {
-    width: 8px; /* Reduced from 10px */
+    width: 10px;
 }
 ::-webkit-scrollbar-track {
     background: var(--nm-dark);
-    margin: 5px 0; /* Add margin to prevent covering content */
 }
 ::-webkit-scrollbar-thumb {
     background-color: var(--nm-accent);
@@ -638,27 +509,19 @@ body.light-theme .phone-container::after {
     background-color: var(--nm-accent-hover);
 }
 body.light-theme ::-webkit-scrollbar-thumb {
+    /* Ensure scrollbar thumb is visible in light theme */
     background-color: #555555; 
     border-color: var(--nm-dark);
 }
 
-/* Ensure content doesn't get covered by scrollbar */
-.main-header-container,
-.hero-section,
-.grid-heading,
-.app-grid,
-.main-footer {
-    width: calc(100% - 15px); /* Account for scrollbar */
-    padding-right: 8px; /* Extra padding for scrollbar */
-    box-sizing: border-box;
-}
 
 .main-header-container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: calc(100% - 15px);
+    width: 100%;
     gap: 15px;
+    /* FIX: Reduced margin-bottom from 20px to 10px */
     margin-bottom: 10px;
     padding: 25px 15px 0 15px;
     box-sizing: border-box;
@@ -790,8 +653,9 @@ body.light-theme ::-webkit-scrollbar-thumb {
     flex-direction: column;
     align-items: center;
     text-align: center;
-    width: calc(100% - 15px);
+    width: 100%;
     max-width: 500px;
+    /* FIX: Reduced top margin from 15px and bottom margin from 35px */
     margin: 5px 0 5px 0;
     padding: 10px;
     box-sizing: border-box;
@@ -833,13 +697,14 @@ body.light-theme ::-webkit-scrollbar-thumb {
 
 /* --- NEW GRID HEADING STYLES --- */
 .grid-heading {
-    width: calc(100% - 15px);
+    width: 100%;
     max-width: 500px;
     text-align: center;
     font-family: 'Orbitron', sans-serif;
     color: var(--nm-text);
     text-transform: uppercase;
     font-size: 1rem;
+    /* FIX: Reduced top margin from 25px to 10px */
     margin: 10px auto 15px;
     padding-bottom: 5px;
     border-bottom: 1px solid var(--nm-border);
@@ -851,8 +716,8 @@ body.light-theme ::-webkit-scrollbar-thumb {
     display: grid;
     grid-template-columns: repeat(4, max-content);
     justify-content: center;
-    gap: 20px; /* MODIFIED: Reduced from 35px to 20px */
-    width: calc(100% - 15px);
+    gap: 25px; /* MODIFIED: Reduced from 35px to 25px to prevent overflow */
+    width: 100%;
     max-width: 500px;
     margin: 0 auto 15px;
     align-items: start;
@@ -999,7 +864,6 @@ body.light-theme .app-icon:hover {
     font-size: 0.7rem;
     color: var(--nm-text-muted);
     margin-top: 25px; /* Added margin to push it down */
-    width: calc(100% - 15px);
 }
 
 .modal-overlay {
@@ -1607,7 +1471,9 @@ span.sub-item {
     .search-container,
     .hero-section,
     .grid-heading,
-    .app-grid {
+    .app-grid,
+    .anniversary-banner,
+    .certificate-button {
         max-width: 700px;
     }
 
@@ -1627,7 +1493,9 @@ span.sub-item {
     .search-container,
     .hero-section,
     .grid-heading,
-    .app-grid {
+    .app-grid,
+    .anniversary-banner,
+    .certificate-button {
         max-width: 900px;
     }
 

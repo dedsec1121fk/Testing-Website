@@ -7,158 +7,6 @@ document.addEventListener('DOMContentLoaded', () => {
     let usefulInformationLoaded = false;
     let isFetchingUsefulInfo = false;
 
-    // --- CERTIFICATE FUNCTIONALITY ---
-    function initializeCertificateFeature() {
-        const certificateButton = document.querySelector('.certificate-button');
-        const certificateModal = document.getElementById('certificate-modal');
-        const certificateForm = document.getElementById('certificate-form');
-
-        // Open certificate modal when certificate button is clicked
-        certificateButton.addEventListener('click', () => {
-            certificateModal.classList.add('visible');
-        });
-
-        // Handle certificate form submission
-        certificateForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            // Get form values
-            const firstName = document.getElementById('first-name').value.trim();
-            const lastName = document.getElementById('last-name').value.trim();
-            const age = document.getElementById('age').value;
-            const country = document.getElementById('country').value.trim();
-            const city = document.getElementById('city').value.trim();
-
-            // Validate all fields are filled
-            if (!firstName || !lastName || !age || !country || !city) {
-                alert(currentLanguage === 'gr' ? 'Παρακαλώ συμπληρώστε όλα τα πεδία.' : 'Please fill in all fields.');
-                return;
-            }
-
-            // Change button text to show downloading
-            const submitButton = certificateForm.querySelector('.generate-certificate-btn');
-            const originalText = submitButton.textContent;
-            submitButton.textContent = currentLanguage === 'gr' ? 'Λήψη...' : 'Downloading...';
-            submitButton.disabled = true;
-
-            try {
-                // Generate and download certificate immediately
-                await generateAndDownloadCertificate(firstName, lastName, age, country, city);
-                
-                // Show success message
-                alert(currentLanguage === 'gr' ? 
-                    'Το πιστοποιητικό λήφθηκε επιτυχώς!' : 
-                    'Certificate downloaded successfully!');
-                    
-                // Reset form and close modal
-                certificateForm.reset();
-                certificateModal.classList.remove('visible');
-                
-            } catch (error) {
-                console.error('Error generating certificate:', error);
-                alert(currentLanguage === 'gr' ? 
-                    'Σφάλμα δημιουργίας πιστοποιητικού. Παρακαλώ δοκιμάστε ξανά.' : 
-                    'Error generating certificate. Please try again.');
-            } finally {
-                // Restore button
-                submitButton.textContent = originalText;
-                submitButton.disabled = false;
-            }
-        });
-
-        // Function to generate and download certificate
-        async function generateAndDownloadCertificate(firstName, lastName, age, country, city) {
-            // Create a temporary certificate element for PDF generation
-            const tempCertificate = document.createElement('div');
-            tempCertificate.className = 'certificate-container';
-            tempCertificate.innerHTML = `
-                <div class="certificate">
-                    <div class="certificate-header">
-                        <h2>${currentLanguage === 'gr' ? 'Πιστοποιητικό Συμμετοχής' : 'Certificate of Participation'}</h2>
-                        <p>${currentLanguage === 'gr' ? 'DedSec Project 1η Επέτειος' : 'DedSec Project 1st Anniversary'}</p>
-                    </div>
-                    <div class="certificate-body">
-                        <p>${currentLanguage === 'gr' ? 'Το παρόν βεβαιώνει ότι' : 'This certifies that'}</p>
-                        <h3>${firstName} ${lastName}</h3>
-                        <p>${currentLanguage === 'gr' ? 'συμμετείχε στην 1η επετειακή γιορτή του DedSec Project' : 'has participated in the 1st Anniversary celebration of the DedSec Project'}</p>
-                        <p>${currentLanguage === 'gr' ? 'που πραγματοποιήθηκε από 20 Οκτωβρίου έως 31 Οκτωβρίου 2025' : 'held from October 20 to October 31, 2025'}</p>
-                        <div class="certificate-details">
-                            <p>${currentLanguage === 'gr' ? `Ηλικία: ${age}` : `Age: ${age}`}</p>
-                            <p>${currentLanguage === 'gr' ? `Τοποθεσία: ${city}, ${country}` : `Location: ${city}, ${country}`}</p>
-                        </div>
-                    </div>
-                    <div class="certificate-footer">
-                        <div class="signature">
-                            <p>dedsec1121fk</p>
-                            <span>${currentLanguage === 'gr' ? 'Δημιουργός Έργου' : 'Project Creator'}</span>
-                        </div>
-                        <div class="date">
-                            <p>${currentLanguage === 'gr' ? `Ημερομηνία: ${new Date().toLocaleDateString('el-GR')}` : `Date: ${new Date().toLocaleDateString('en-US')}`}</p>
-                        </div>
-                    </div>
-                </div>
-            `;
-
-            // Add temporary certificate to the body but keep it off-screen
-            tempCertificate.style.position = 'fixed';
-            tempCertificate.style.left = '-9999px';
-            tempCertificate.style.top = '-9999px';
-            document.body.appendChild(tempCertificate);
-
-            try {
-                // Use html2canvas to capture the certificate as an image
-                const canvas = await html2canvas(tempCertificate, {
-                    scale: 2, // Higher quality
-                    useCORS: true,
-                    allowTaint: false,
-                    backgroundColor: '#0f0820'
-                });
-
-                // Convert canvas to image data
-                const imgData = canvas.toDataURL('image/png');
-
-                // Create PDF
-                const { jsPDF } = window.jspdf;
-                const pdf = new jsPDF('landscape', 'mm', 'a4');
-                
-                // Calculate dimensions to fit certificate in PDF
-                const pdfWidth = pdf.internal.pageSize.getWidth();
-                const pdfHeight = pdf.internal.pageSize.getHeight();
-                const imgWidth = canvas.width;
-                const imgHeight = canvas.height;
-                const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight);
-                const imgX = (pdfWidth - imgWidth * ratio) / 2;
-                const imgY = (pdfHeight - imgHeight * ratio) / 2;
-
-                // Add image to PDF
-                pdf.addImage(imgData, 'PNG', imgX, imgY, imgWidth * ratio, imgHeight * ratio);
-                
-                // Download PDF
-                const fullName = `${firstName} ${lastName}`;
-                pdf.save(`DedSec_Anniversary_Certificate_${fullName.replace(/\s+/g, '_')}.pdf`);
-                
-            } finally {
-                // Always remove the temporary certificate
-                document.body.removeChild(tempCertificate);
-            }
-        }
-
-        // Close certificate modal
-        certificateModal.querySelector('.close-modal').addEventListener('click', () => {
-            certificateModal.classList.remove('visible');
-            // Reset form
-            certificateForm.reset();
-        });
-
-        certificateModal.addEventListener('click', (e) => {
-            if (e.target === certificateModal) {
-                certificateModal.classList.remove('visible');
-                // Reset form
-                certificateForm.reset();
-            }
-        });
-    }
-
     // --- EVEN MORE ADVANCED SEARCH UTILITY (Used for 'Useful Information' modal) ---
     const SearchEngine = {
         idfMaps: {},
@@ -329,6 +177,20 @@ document.addEventListener('DOMContentLoaded', () => {
         const languageModalCloseBtn = languageModal.querySelector('.close-modal');
         const disclaimerModal = document.getElementById('disclaimer-modal');
         const installationModal = document.getElementById('installation-modal');
+        const certificateModal = document.getElementById('certificate-modal');
+        const certificateBtn = document.getElementById('certificate-btn');
+        const generateCertificateBtn = document.getElementById('generate-certificate');
+
+        // Certificate functionality
+        if (certificateBtn) {
+            certificateBtn.addEventListener('click', () => {
+                showModal(certificateModal);
+            });
+        }
+
+        if (generateCertificateBtn) {
+            generateCertificateBtn.addEventListener('click', generateCertificate);
+        }
 
         window.changeLanguage = (lang) => {
             currentLanguage = lang;
@@ -520,11 +382,72 @@ document.addEventListener('DOMContentLoaded', () => {
         
         initializeWebSearchSuggestions(); 
         initializeUsefulInfoSearch();
-        initializeCertificateFeature();
         
         if (languageModalCloseBtn) languageModalCloseBtn.style.display = 'none';
         showModal(languageModal);
         changeLanguage('en'); 
+    }
+
+    // Certificate Generation Function
+    function generateCertificate() {
+        const firstName = document.getElementById('first-name').value.trim();
+        const lastName = document.getElementById('last-name').value.trim();
+        const age = document.getElementById('age').value;
+        const country = document.getElementById('country').value.trim();
+        const city = document.getElementById('city').value.trim();
+
+        // Validate form
+        if (!firstName || !lastName || !age || !country || !city) {
+            alert(currentLanguage === 'gr' ? 'Παρακαλώ συμπληρώστε όλα τα πεδία.' : 'Please fill in all fields.');
+            return;
+        }
+
+        // Update certificate template
+        const fullName = `${firstName} ${lastName}`;
+        const location = `${city}, ${country}`;
+        const issueDate = new Date().toLocaleDateString('en-US', { 
+            year: 'numeric', 
+            month: 'long', 
+            day: 'numeric' 
+        });
+
+        document.getElementById('certificate-name').textContent = fullName;
+        document.getElementById('certificate-age').textContent = age;
+        document.getElementById('certificate-location').textContent = location;
+        document.getElementById('certificate-issue-date').textContent = issueDate;
+
+        // Generate PDF
+        const { jsPDF } = window.jspdf;
+        const certificateElement = document.getElementById('certificate-content');
+
+        html2canvas(certificateElement, {
+            scale: 2,
+            useCORS: true,
+            logging: false,
+            backgroundColor: '#0B121C'
+        }).then(canvas => {
+            const imgData = canvas.toDataURL('image/png');
+            const pdf = new jsPDF('landscape', 'mm', 'a4');
+            const pdfWidth = pdf.internal.pageSize.getWidth();
+            const pdfHeight = pdf.internal.pageSize.getHeight();
+            
+            pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+            pdf.save(`DedSec_Anniversary_Certificate_${firstName}_${lastName}.pdf`);
+            
+            // Reset form and close modal
+            document.getElementById('certificate-form').reset();
+            hideModal(document.getElementById('certificate-modal'));
+            
+            // Show success message
+            alert(currentLanguage === 'gr' 
+                ? 'Το πιστοποιητικό λήφθηκε επιτυχώς!' 
+                : 'Certificate downloaded successfully!');
+        }).catch(error => {
+            console.error('Error generating certificate:', error);
+            alert(currentLanguage === 'gr' 
+                ? 'Σφάλμα κατά τη δημιουργία του πιστοποιητικού.' 
+                : 'Error generating certificate.');
+        });
     }
 
     function initializeWebSearchSuggestions() {
@@ -638,4 +561,280 @@ document.addEventListener('DOMContentLoaded', () => {
                                 title: articleTitle,
                                 text,
                                 url: file.download_url,
-                                weight: (
+                                weight: (el.tagName === 'H3' ? 5 : 1)
+                            };
+                            usefulInfoSearchIndex.push(SearchEngine.preprocessItem(item));
+                        }
+                    });
+                });
+            } catch (e) {
+                console.error(`Failed to index file: ${file.name}`, e);
+            } finally {
+                filesLoaded++;
+                const progress = (filesLoaded / totalFiles) * 100;
+                progressBar.style.width = `${progress}%`;
+                progressText.textContent = `${Math.round(progress)}%`;
+            }
+        });
+
+        await Promise.all(indexPromises);
+        SearchEngine.calculateIdf('usefulInfo', usefulInfoSearchIndex);
+        isUsefulInfoIndexBuilt = true;
+    }
+
+    function updateUsefulInfoButtonTitles() {
+        const titleMap = new Map();
+
+        usefulInfoSearchIndex.forEach(item => {
+            if (!titleMap.has(item.url)) {
+                titleMap.set(item.url, {});
+            }
+            const langTitles = titleMap.get(item.url);
+            if (!langTitles[item.lang]) {
+                langTitles[item.lang] = item.title;
+            }
+        });
+
+        document.querySelectorAll('#useful-information-nav .app-icon[data-url]').forEach(button => {
+            const url = button.dataset.url;
+            const titles = titleMap.get(url);
+            if (titles) {
+                const buttonSpan = button.querySelector('span');
+                if(buttonSpan) {
+                   buttonSpan.setAttribute('data-en', titles.en || '');
+                   buttonSpan.setAttribute('data-gr', titles.gr || titles.en || '');
+                   buttonSpan.textContent = (currentLanguage === 'gr' ? titles.gr : titles.en) || titles.en || buttonSpan.textContent;
+                }
+            }
+        });
+    }
+
+    function initializeUsefulInfoSearch() {
+        const searchInput = document.getElementById('useful-info-search-input');
+        const resultsContainer = document.getElementById('useful-info-results-container');
+        const navContainer = document.getElementById('useful-information-nav');
+        if (!searchInput || !resultsContainer || !navContainer) return;
+
+        const progressBarContainer = document.createElement('div');
+        progressBarContainer.className = 'progress-bar-container';
+        
+        const progressBar = document.createElement('div');
+        progressBar.className = 'progress-bar';
+
+        const progressText = document.createElement('span');
+        progressText.className = 'progress-bar-text';
+        progressText.textContent = '0%';
+
+        progressBarContainer.appendChild(progressBar);
+        progressBarContainer.appendChild(progressText);
+        navContainer.parentNode.insertBefore(progressBarContainer, navContainer);
+
+
+        const showNav = (shouldShow) => {
+            navContainer.querySelectorAll('.app-icon').forEach(article => {
+                article.style.display = shouldShow ? 'flex' : 'none';
+            });
+        };
+
+        searchInput.addEventListener('focus', async () => {
+            if (isUsefulInfoIndexBuilt) return;
+
+            searchInput.placeholder = currentLanguage === 'gr' ? 'Ευρετηρίαση άρθρων...' : 'Indexing articles...';
+            searchInput.disabled = true;
+
+            progressBarContainer.style.display = 'block';
+            progressBar.style.width = '0%';
+
+            await buildUsefulInfoSearchIndex(progressBar, progressText);
+            
+            updateUsefulInfoButtonTitles();
+
+            setTimeout(() => {
+                progressBarContainer.style.display = 'none';
+            }, 500);
+
+            searchInput.disabled = false;
+            searchInput.placeholder = currentLanguage === 'gr' ? 'Αναζήτηση άρθρων...' : 'Search articles...';
+            searchInput.focus();
+        }, { once: true });
+
+        searchInput.addEventListener('input', () => {
+            const query = searchInput.value.trim();
+            resultsContainer.innerHTML = '';
+
+            if (!isUsefulInfoIndexBuilt || query.length < 2) {
+                resultsContainer.classList.add('hidden');
+                showNav(true);
+                return;
+            }
+            
+            showNav(false);
+
+            const results = SearchEngine.search(query, usefulInfoSearchIndex, currentLanguage, 'usefulInfo');
+
+            if (results.length > 0) {
+                results.slice(0, 7).forEach(result => {
+                    const itemEl = document.createElement('div');
+                    itemEl.classList.add('search-result-item');
+                    const snippet = SearchEngine.generateSnippet(result.text, query, currentLanguage);
+                    const highlightedSnippet = SearchEngine.highlight(snippet, query, currentLanguage);
+
+                    itemEl.innerHTML = `${highlightedSnippet} <small>${result.title}</small>`;
+                    itemEl.addEventListener('click', () => {
+                        searchInput.value = '';
+                        resultsContainer.classList.add('hidden');
+                        loadInformationContent(result.url, result.title, result.text);
+                    });
+                    resultsContainer.appendChild(itemEl);
+                });
+                resultsContainer.classList.remove('hidden');
+            } else {
+                resultsContainer.classList.add('hidden');
+                showNav(true);
+            }
+        });
+    }
+
+    async function fetchUsefulInformation() {
+        if (usefulInformationLoaded || isFetchingUsefulInfo) return;
+        isFetchingUsefulInfo = true;
+        const navContainer = document.getElementById('useful-information-nav');
+        const GITHUB_API_URL = 'https://api.github.com/repos/dedsec1121fk/dedsec1121fk.github.io/contents/Useful_Information';
+        navContainer.innerHTML = `<p>${currentLanguage === 'gr' ? 'Φόρτωση...' : 'Loading...'}</p>`;
+        
+        try {
+            const response = await fetch(GITHUB_API_URL);
+            if (!response.ok) throw new Error(`GitHub API error: ${response.status}`);
+            const files = await response.json();
+            usefulInfoFiles = files.filter(file => file.type === 'file' && file.name.endsWith('.html'));
+            
+            navContainer.innerHTML = '';
+            if (usefulInfoFiles.length === 0) {
+                 navContainer.innerHTML = `<p>${currentLanguage === 'gr' ? 'Δεν βρέθηκαν πληροφορίες.' : 'No information found.'}</p>`;
+                 return;
+            }
+            
+            usefulInfoFiles.forEach(file => {
+                let titleEN = file.name.replace(/\.html$/, '').replace(/^\d+_/, '').replace(/_/g, ' ');
+                let titleGR = titleEN; 
+    
+                const titleRegex = /(.+?)_\((.+?)\)/;
+                const match = file.name.match(titleRegex);
+    
+                if (match && match[1] && match[2]) {
+                    titleEN = match[1].replace(/_/g, ' ').trim();
+                    titleGR = match[2].replace(/_/g, ' ').trim();
+                }
+    
+                const button = document.createElement('button');
+                button.className = 'app-icon';
+                button.dataset.url = file.download_url;
+                
+                const initialTitle = currentLanguage === 'gr' ? titleGR : titleEN;
+                button.innerHTML = `<i class="fas fa-book-open"></i><span data-en="${titleEN}" data-gr="${titleGR}">${initialTitle}</span>`;
+                
+                button.addEventListener('click', () => {
+                    const span = button.querySelector('span');
+                    const modalTitle = (currentLanguage === 'gr' ? span.getAttribute('data-gr') : span.getAttribute('data-en')) || titleEN;
+                    loadInformationContent(file.download_url, modalTitle);
+                });
+                navContainer.appendChild(button);
+            });
+            usefulInformationLoaded = true;
+        } catch (error) {
+            console.error('Failed to fetch useful information:', error);
+            navContainer.innerHTML = `<p style="color: var(--nm-danger);">${currentLanguage === 'gr' ? 'Αποτυχία φόρτωσης.' : 'Failed to load.'}</p>`;
+        } finally {
+            isFetchingUsefulInfo = false;
+        }
+    }
+
+    function createAndShowArticleModal(title, htmlContent, textToHighlight = null) {
+        document.querySelectorAll('.article-modal-overlay').forEach(modal => modal.remove());
+        const modalOverlay = document.createElement('div');
+        modalOverlay.className = 'modal-overlay article-modal-overlay'; 
+        modalOverlay.innerHTML = `
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>${title}</h2>
+                    <button class="close-modal">&times;</button>
+                </div>
+                <div class="modal-body">${htmlContent}</div>
+            </div>`;
+        document.body.appendChild(modalOverlay);
+
+        // --- FIX STARTS HERE ---
+        // After inserting the new content, find all copy buttons and attach the event listener.
+        let dynamicCodeIdCounter = 0;
+        const codeContainers = modalOverlay.querySelectorAll('.code-container');
+        codeContainers.forEach(container => {
+            const copyBtn = container.querySelector('.copy-btn');
+            const codeEl = container.querySelector('code');
+
+            if (copyBtn && codeEl) {
+                // Ensure the code element has an ID for the copy function to target
+                if (!codeEl.id) {
+                    const uniqueId = `dynamic-code-${Date.now()}-${dynamicCodeIdCounter++}`;
+                    codeEl.id = uniqueId;
+                }
+                
+                // Add the event listener to the button
+                copyBtn.addEventListener('click', () => {
+                    // Call the globally available copyToClipboard function
+                    window.copyToClipboard(copyBtn, codeEl.id);
+                });
+            }
+        });
+        // --- FIX ENDS HERE ---
+        
+        setTimeout(() => modalOverlay.classList.add('visible'), 10);
+        changeLanguage(currentLanguage);
+    
+        if (textToHighlight) {
+            setTimeout(() => {
+                const modalBody = modalOverlay.querySelector('.modal-body');
+                const allElements = modalBody.querySelectorAll('p, li, h3, h4, b, code, .tip, .note');
+                const targetElement = Array.from(allElements).find(el => el.textContent.trim().replace(/\s\s+/g, ' ') === textToHighlight.trim());
+                if (targetElement) {
+                    modalBody.scrollTo({ top: targetElement.offsetTop - 50, behavior: 'smooth' });
+                    targetElement.classList.add('content-highlight');
+                    setTimeout(() => targetElement.classList.remove('content-highlight'), 2500);
+                }
+            }, 150);
+        }
+        
+        const closeModal = () => {
+            modalOverlay.classList.remove('visible');
+            modalOverlay.addEventListener('transitionend', () => modalOverlay.remove(), { once: true });
+            
+            const searchInput = document.getElementById('useful-info-search-input');
+            if (searchInput) searchInput.value = '';
+            
+            const navContainer = document.getElementById('useful-information-nav');
+            if (navContainer) {
+                navContainer.querySelectorAll('.app-icon').forEach(article => {
+                    article.style.display = 'flex';
+                });
+            }
+        };
+
+        modalOverlay.addEventListener('click', (e) => {
+            if (e.target === modalOverlay) closeModal();
+        });
+        modalOverlay.querySelector('.close-modal').addEventListener('click', closeModal);
+    }
+
+    async function loadInformationContent(url, title, textToHighlight = null) {
+        try {
+            const response = await fetch(url);
+            if (!response.ok) throw new Error(`Fetch failed: ${response.status}`);
+            const htmlContent = await response.text();
+            createAndShowArticleModal(title, htmlContent, textToHighlight);
+        } catch (error) {
+            console.error('Failed to load content:', error);
+        }
+    }
+    
+    // --- INITIALIZE ALL FEATURES ---
+    initializePortfolio();
+});

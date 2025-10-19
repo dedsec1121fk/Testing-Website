@@ -5,10 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>DedSec Project - 1 Year Anniversary</title>
     
-    <meta name="description" content="Celebrating 1 Year of DedSec Project! Join our anniversary event from October 20 to October 31 and get your exclusive certificate.">
-    <meta name="keywords" content="DedSec, DedSec Project, 1 Year Anniversary, Cybersecurity, Ethical Hacking, Anniversary Certificate">
+    <meta name="description" content="The DedSec Project is a toolkit for digital self-defense, offering tools and educational resources on cybersecurity and ethical hacking.">
+    <meta name="keywords" content="DedSec, DedSec Project, Termux, Ethical Hacking, Cybersecurity, Digital Self-Defense, Phone Hacking, Termux Tutorial, Android Hacking, Phishing Attacks, Security Scripts, Python, Command Line, URL Masker, Hacking Education, Penetration Testing, Data Privacy, Fox Chat, End-to-End Encrypted Chat, DedSec Database, File Storage Server, Radio Music Player, OSINTDS, Open Source Intelligence, Web Reconnaissance, SQLi, XSS, HTML Inspector, Android App Launcher, Termux Resources, Python Gym Clothing, AdGen, Terminal Customization, bash.bashrc, .bash_profile">
     <meta property="og:title" content="DedSec Project - 1 Year Anniversary">
-    <meta property="og:description" content="Celebrating 1 Year of DedSec Project! Join our anniversary event from October 20 to October 31.">
+    <meta property="og:description" content="DedSec has given you the truth, do what you will.">
     <meta property="og:image" content="https://raw.githubusercontent.com/dedsec1121fk/dedsec1121fk.github.io/5860edb8a7468d955336c9cf1d8b357597d6d645/Assets/Images/Logos/Custom%20Black%2Purple%20Fox%20Logo.png">
     <meta property="og:type" content="website">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -21,7 +21,7 @@
     {
       "@context": "https://schema.org",
       "@type": "WebSite",
-      "name": "DedSec Project - 1 Year Anniversary",
+      "name": "DedSec Project",
       "url": "https://ded-sec.space/",
       "potentialAction": {
         "@type": "SearchAction",
@@ -54,15 +54,16 @@
                 <!-- Anniversary Banner -->
                 <div class="anniversary-banner">
                     <div class="anniversary-content">
-                        <h2 data-en="🎉 1 Year Anniversary! 🎉" data-gr="🎉 1 Χρόνο Επέτειος! 🎉">🎉 1 Year Anniversary! 🎉</h2>
-                        <p data-en="Celebrating 1 year of innovation, security, and community. Join our special event from October 20 to October 31!" data-gr="Γιορτάζουμε 1 χρόνο καινοτομίας, ασφάλειας και κοινότητας. Συμμετέχετε στην ειδική εκδήλωσή μας από 20 Οκτωβρίου έως 31 Οκτωβρίου!">Celebrating 1 year of innovation, security, and community. Join our special event from October 20 to October 31!</p>
+                        <h2>🎉 1 Year Anniversary! 🎉</h2>
+                        <p>Celebrating our first year of digital self-defense</p>
+                        <p class="anniversary-dates">October 20 - October 31, 2025</p>
                     </div>
                 </div>
 
                 <!-- Certificate Button -->
-                <button class="certificate-button" data-modal="certificate">
-                    <i class="fas fa-award"></i>
-                    <span data-en="Get Your Anniversary Certificate" data-gr="Λάβετε το Πιστοποιητικό Επετείου">Get Your Anniversary Certificate</span>
+                <button class="certificate-button" id="certificate-btn">
+                    <i class="fas fa-certificate"></i>
+                    <span data-en="Get Anniversary Certificate" data-gr="Λήψη Πιστοποιητικού Επετείου">Get Anniversary Certificate</span>
                 </button>
 
                 <div class="hero-section">
@@ -141,77 +142,88 @@
     <!-- Certificate Modal -->
     <div id="certificate-modal" class="modal-overlay">
         <div class="modal-content">
-            <div class="modal-header"><h2 data-en="Get Your Anniversary Certificate" data-gr="Λάβετε το Πιστοποιητικό Επετείου">Get Your Anniversary Certificate</h2><button class="close-modal" aria-label="Close">×</button></div>
+            <div class="modal-header">
+                <h2 data-en="1 Year Anniversary Certificate" data-gr="Πιστοποιητικό 1ου Επετείου">1 Year Anniversary Certificate</h2>
+                <button class="close-modal" aria-label="Close">×</button>
+            </div>
             <div class="modal-body">
                 <div class="certificate-form-container">
-                    <p data-lang-section="en" class="certificate-instructions">Fill out the form below to generate your exclusive 1-year anniversary certificate. All fields are required.</p>
-                    <p data-lang-section="gr" class="certificate-instructions hidden-by-default">Συμπληρώστε την παρακάτω φόρμα για να δημιουργήσετε το αποκλειστικό πιστοποιητικό 1ης επετείου. Όλα τα πεδία είναι υποχρεωτικά.</p>
+                    <p data-lang-section="en" style="text-align: center; margin-bottom: 20px;">Fill out the form below to generate your personalized anniversary certificate.</p>
+                    <p data-lang-section="gr" class="hidden-by-default" style="text-align: center; margin-bottom: 20px;">Συμπληρώστε την παρακάτω φόρμα για να δημιουργήσετε το εξατομικευμένο πιστοποιητικό επετείου σας.</p>
                     
                     <form id="certificate-form">
                         <div class="form-group">
                             <label for="first-name" data-en="First Name" data-gr="Όνομα">First Name</label>
-                            <input type="text" id="first-name" required>
+                            <input type="text" id="first-name" name="first-name" required>
                         </div>
                         
                         <div class="form-group">
                             <label for="last-name" data-en="Last Name" data-gr="Επώνυμο">Last Name</label>
-                            <input type="text" id="last-name" required>
+                            <input type="text" id="last-name" name="last-name" required>
                         </div>
                         
                         <div class="form-group">
                             <label for="age" data-en="Age" data-gr="Ηλικία">Age</label>
-                            <input type="number" id="age" min="1" max="120" required>
+                            <input type="number" id="age" name="age" min="1" max="120" required>
                         </div>
                         
                         <div class="form-group">
                             <label for="country" data-en="Country" data-gr="Χώρα">Country</label>
-                            <input type="text" id="country" required>
+                            <input type="text" id="country" name="country" required>
                         </div>
                         
                         <div class="form-group">
                             <label for="city" data-en="City" data-gr="Πόλη">City</label>
-                            <input type="text" id="city" required>
+                            <input type="text" id="city" name="city" required>
                         </div>
                         
-                        <button type="submit" class="generate-certificate-btn" data-en="Download Certificate" data-gr="Λήψη Πιστοποιητικού">Download Certificate</button>
-                    </form>
-                </div>
-                
-                <!-- Hidden certificate template for PDF generation -->
-                <div id="certificate-template" class="hidden">
-                    <div class="certificate-container">
-                        <div class="certificate">
-                            <div class="certificate-header">
-                                <h2 data-en="Certificate of Participation" data-gr="Πιστοποιητικό Συμμετοχής">Certificate of Participation</h2>
-                                <p data-en="DedSec Project 1st Anniversary" data-gr="DedSec Project 1η Επέτειος">DedSec Project 1st Anniversary</p>
-                            </div>
-                            <div class="certificate-body">
-                                <p data-en="This certifies that" data-gr="Το παρόν βεβαιώνει ότι">This certifies that</p>
-                                <h3 id="certificate-name">[Full Name]</h3>
-                                <p data-en="has participated in the 1st Anniversary celebration of the DedSec Project" data-gr="συμμετείχε στην 1η επετειακή γιορτή του DedSec Project">has participated in the 1st Anniversary celebration of the DedSec Project</p>
-                                <p data-en="held from October 20 to October 31, 2025" data-gr="που πραγματοποιήθηκε από 20 Οκτωβρίου έως 31 Οκτωβρίου 2025">held from October 20 to October 31, 2025</p>
-                                <div class="certificate-details">
-                                    <p id="certificate-age">Age: [Age]</p>
-                                    <p id="certificate-location">Location: [City], [Country]</p>
-                                </div>
-                            </div>
-                            <div class="certificate-footer">
-                                <div class="signature">
-                                    <p>dedsec1121fk</p>
-                                    <span data-en="Project Creator" data-gr="Δημιουργός Έργου">Project Creator</span>
-                                </div>
-                                <div class="date">
-                                    <p id="certificate-date">Date: [Date]</p>
-                                </div>
-                            </div>
+                        <div class="form-actions">
+                            <button type="button" id="generate-certificate" class="accept-btn">
+                                <i class="fas fa-download"></i>
+                                <span data-en="Download Certificate" data-gr="Λήψη Πιστοποιητικού">Download Certificate</span>
+                            </button>
                         </div>
-                    </div>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- All other existing modals remain exactly the same -->
+    <!-- Certificate Template (Hidden) -->
+    <div id="certificate-template" style="display: none;">
+        <div class="certificate" id="certificate-content">
+            <div class="certificate-header">
+                <h1>Certificate of Participation</h1>
+                <h2>DedSec Project 1 Year Anniversary</h2>
+                <div class="anniversary-dates">October 20 - October 31, 2025</div>
+            </div>
+            
+            <div class="certificate-body">
+                <p>This certifies that</p>
+                <div class="recipient-name" id="certificate-name">[Full Name]</div>
+                <p>has participated in the celebration of the 1 Year Anniversary</p>
+                <p>of the DedSec Project</p>
+                
+                <div class="certificate-details">
+                    <p>Age: <span id="certificate-age">[Age]</span></p>
+                    <p>Location: <span id="certificate-location">[City], [Country]</span></p>
+                </div>
+                
+                <div class="certificate-date">
+                    <p>Issued on: <span id="certificate-issue-date">[Date]</span></p>
+                </div>
+            </div>
+            
+            <div class="certificate-footer">
+                <div class="signature">
+                    <div class="signature-line"></div>
+                    <p>dedsec1121fk</p>
+                    <p>Founder, DedSec Project</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div id="image-viewer-modal" class="modal-overlay">
         <img id="expanded-img" src="" alt="Expanded Profile Picture">
     </div>
@@ -254,7 +266,7 @@
                 <p><strong>ΠΑΡΑΚΑΛΩ ΔΙΑΒΑΣΤΕ ΠΡΟΣΕΚΤΙΚΑ ΠΡΙΝ ΣΥΝΕΧΙΣΕΤΕ.</strong></p>
                 <p><strong>Αποποίηση Ευθύνης Εμπορικού Σήματος:</strong> Το όνομα και το λογότυπο "DedSec" που χρησιμοποιούνται σε αυτό το έργο είναι μόνο για θεματικούς και εμπνευστικούς σκοπούς. Πρόκειται για ένα ανεξάρτητο, fan-made έργο που δημιουργήθηκε για εκπαιδευτικούς σκοπούς και δεν έχει καμία επίσημη σύνδεση με το franchise "Watch Dogs". Δεν συνδέεται, δεν υποστηρίζεται από, ούτε σχετίζεται με την Ubisoft Entertainment S.A. Όλα τα εμπορικά σήματα και τα πνευματικά δικαιώματα για το "Watch Dogs" και το "DedSec" όπως απεικονίζονται στα παιχνίδια ανήκουν στους αντίστοιχους κατόχους τους, την Ubisoft Entertainment S.A.</p>
                 <p>Αυτό το έργο, συμπεριλαμβανομένων όλων των σχετικών εργαλείων, σεναρίων και τεκμηρίωσης («το Λογισμικό»), παρέχεται αυστηρά για εκπαιδευτικούς, ερευνητικούς και ηθικούς σκοπούς δοκιμών ασφαλείας. Προορίζεται για χρήση αποκλειστικά σε ελεγχόμενα, εξουσιοδοτημένα περιβάλλοντα από χρήστες που έχουν λάβει ρητή, προηγούμενη γραπτή άδεια από τους ιδιοκτήτες οποιωνδήποτε συστημάτων σκοπεύουν να δοκιμάσουν.</p>
-                <p><strong>1. Ανάληψη Κινδύνου και Ευθύνης:</strong> Με την πρόσβαση ή τη χρήση του Λογισμικού, αναγνωρίζετε και συμφωνείτε ότι το κάνετε με δική σας ευθύνη. Είστε αποκλειστικά και εξ ολοκλήρου υπεύθυνοι για τις ενέργειες σας και για τυχόν συνέπειες που μπορεί να προκύψουν από τη χρήση ή κακή χρήση αυτού του Λογισμικού. Αυτό περιλαμβάνει, ενδεικτικά, τη συμμόρφωση με όλους τους ισχύοντες τοπικούς, πολιτειακούς, εθνικούς και διεθνείς νόμους και κανονισμούς που σχετίζονται με την κυβερνοασφάλεια, την προστασία δεδομένων και τις ηλεκτρονικές επικοινωνίες.</p>
+                <p><strong>1. Ανάληψη Κινδύνου και Ευθύνης:</strong> Με την πρόσβαση ή τη χρήση του Λογισμικού, αναγνωρίζετε και συμφωνείτε ότι το κάνετε με δική σας ευθύνη. Είστε αποκλειστικά και εξ ολοκλήρου υπεύθυνοι για τις ενέργειές σας και για τυχόν συνέπειες που μπορεί να προκύψουν από τη χρήση ή κακή χρήση αυτού του Λογισμικού. Αυτό περιλαμβάνει, ενδεικτικά, τη συμμόρφωση με όλους τους ισχύοντες τοπικούς, πολιτειακούς, εθνικούς και διεθνείς νόμους και κανονισμούς που σχετίζονται με την κυβερνοασφάλεια, την προστασία δεδομένων και τις ηλεκτρονικές επικοινωνίες.</p>
                 <p><strong>2. Απαγορευμένες Δραστηριότητες:</strong> Απαγορεύεται αυστηρά οποιαδήποτε χρήση του Λογισμικού για μη εξουσιοδοτημένες ή κακόβουλες δραστηριότητες. Αυτό περιλαμβάνει, χωρίς περιορισμό: πρόσβαση σε συστήματα ή δεδομένα χωρίς εξουσιοδοτημένη πρόσβαση, εκτέλεση επιθέσεων άρνησης υπηρεσίας (denial-of-service), κλοπή δεδομένων, απάτη, διάδοση κακόβουλου λογισμικού ή οποιαδήποτε άλλη δραστηριότητα που παραβιάζει την ισχύουσα νομοθεσία. Η συμμετοχή σε τέτοιες δραστηριότητες μπορεί να οδηγήσει σε σοβαρές αστικές και ποινικές κυρώσεις.</p>
                 <p><strong>3. Καμία Εγγύηση:</strong> Το Λογισμικό παρέχεται "ΩΣ ΕΧΕΙ", χωρίς καμία εγγύηση οποιουδήποτε είδους, ρητή ή σιωπηρή. Αυτό περιλαμβάνει, ενδεικτικά, τις σιωπηρές εγγυήσεις εμπορευσιμότητας, καταλληλότητας για συγκεκριμένο σκοπό και μη παραβίασης. Οι προγραμματιστές και οι συντελεστές δεν παρέχουν καμία εγγύηση ότι το Λογισμικό θα είναι απαλλαγμένο από σφάλματα, ασφαλές ή αδιάλειπτο.</p>
                 <p><strong>4. Περιορισμός Ευθύνης:</strong> Σε καμία περίπτωση οι προγραμματιστές, οι συντελεστές ή οι διανομείς του Λογισμικού δεν φέρουν ευθύνη για οποιαδήποτε αξίμη, ζημιές ή άλλη ευθύνη, είτε πρόκειται για αγωγή σύμβασης, αδικοπραξίας ή άλλως, που προκύπτει από, ή σε σχέση με το Λογισμικό ή τη χρήση ή άλλες συναλλαγές με το Λογισμικό. Αυτό περιλαμβάνει τυχόν άμεσες, έμμεσες, τυχαίες, ειδικές, παραδειγματικές ή επακόλουθες ζημιές (συμπεριλαμβανομένης, αλλά όχι μόνο, της προμήθειας υποκατάστατων αγαθών ή υπηρεσιών, απώλειας χρήσης, δεδομένων ή κερδών ή διακοπής εργασιών).</p>
@@ -262,7 +274,7 @@
             <hr class="modal-divider">
             <h3 class="text-center">Περίληψη Πολιτικής Απορρήτου</h3>
             <div class="privacy-policy-embed">
-                <p>Δεσμευόμαστε να προστατεύουμε το απόρρητό σας. Δεν αποθηκεύουμε ή μεταδίδουμε τα προσωπικά σας δεδομένα. Χρησιμοποιούμε υπηρεσίες τρίτων όπως το Google AdSense, οι οποίες ενδέχεται να χρησιμοποιούν cookies για διαφημίσεις. Παρακαλούμε ελέγξτε τις πολιτικές τους. Με τη χρήση της υπηρεσίας μας, συμφωνείτε με την πλήρη Πολιτική Απορήτου μας.</p>
+                <p>Δεσμευόμαστε να προστατεύουμαι το απόρρητό σας. Δεν αποθηκεύουμε ή μεταδίδουμε τα προσωπικά σας δεδομένα. Χρησιμοποιούμε υπηρεσίες τρίτων όπως το Google AdSense, οι οποίες ενδέχεται να χρησιμοποιούν cookies για διαφημίσεις. Παρακαλούμε ελέγξτε τις πολιτικές τους. Με τη χρήση της υπηρεσίας μας, συμφωνείτε με την πλήρη Πολιτική Απορήτου μας.</p>
             </div>
             <div class="note"><p><strong>Με το κλικ στο "Αποδοχή", επιβεβαιώνετε ότι διαβάσατε, κατανοήσατε και συμφωνείτε να δεσμεύεστε από όλους τους όρους και τις προϋποθέσεις που περιγράφονται σε αυτήν την αποποίηση ευθύνης και την πλήρη Πολιτική Απορήτου μας. Εάν δεν συμφωνείτε με αυτούς τους όρους, πρέπει να κάνετε κλικ στο "Απόρριψη" και να διακόψετε αμέσως κάθε χρήση του Λογισμικού.</strong></p></div>
           </div>
