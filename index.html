@@ -51,11 +51,19 @@
                     </div>
                 </div>
 
+                <div id="anniversary-banner" class="anniversary-banner" 
+                     data-en="🎉 DEDSEC 1 YEAR ANNIVERSARY: Oct 20 - Oct 31! 🎉" 
+                     data-gr="🎉 1η ΕΠΕΤΕΙΟΣ DEDSEC: 20 Οκτ - 31 Οκτ! 🎉">
+                    🎉 DEDSEC 1 YEAR ANNIVERSARY: Oct 20 - Oct 31! 🎉
+                </div>
+
+                <button id="certification-button" class="anniversary-button" 
+                        data-en="Get Your Anniversary Certificate" 
+                        data-gr="Λάβετε το Πιστοποιητικό Επετείου σας">
+                    Get Your Anniversary Certificate
+                </button>
+
                 <div class="hero-section">
-                    <div id="anniversary-banner" class="hidden">
-                        <p data-en="🎉 1 Year Anniversary Celebration! This special theme is active from October 20th to October 31st. 🎉" data-gr="🎉 Γιορτή 1 Χρόνου! Αυτό το ειδικό θέμα είναι ενεργό από τις 20 Οκτωβρίου έως τις 31 Οκτωβρίου. 🎉"></p>
-                    </div>
-                    <button id="get-certificate-btn" class="hero-cta-button hidden" data-en="Get Your Anniversary Certificate" data-gr="Αποκτήστε το Πιστοποιητικό Επετείου σας">Get Your Anniversary Certificate</button>
                     <p class="hero-text" data-en="" data-gr=""></p>
                 </div>
 
@@ -128,6 +136,45 @@
         </div>
     </div>
 
+    <div id="certification-modal" class="modal-overlay">
+        <div class="modal-content modal-content-auto-height">
+            <div class="modal-header">
+                <h2 data-en="1st Anniversary Certification" data-gr="Πιστοποίηση 1ης Επετείου">1st Anniversary Certification</h2>
+                <button class="close-modal" aria-label="Close">×</button>
+            </div>
+            <div class="modal-body">
+                <p data-en="Thank you for being part of our first year! Please fill out the form below to receive your personalized certificate." data-gr="Σας ευχαριστούμε που ήσασταν μέρος της πρώτης μας χρονιάς! Παρακαλούμε συμπληρώστε την παρακάτω φόρμα για να λάβετε το εξατομικευμένο πιστοποιητικό σας.">
+                    Thank you for being part of our first year! Please fill out the form below to receive your personalized certificate.
+                </p>
+                <form id="certification-form">
+                    <div class="form-group">
+                        <label for="first-name" data-en="First Name:" data-gr="Όνομα:">First Name:</label>
+                        <input type="text" id="first-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="last-name" data-en="Last Name:" data-gr="Επώνυμο:">Last Name:</label>
+                        <input type="text" id="last-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="age" data-en="Age:" data-gr="Ηλικία:">Age:</label>
+                        <input type="number" id="age" required min="1" max="150">
+                    </div>
+                    <div class="form-group">
+                        <label for="country" data-en="Country:" data-gr="Χώρα:">Country:</label>
+                        <input type="text" id="country" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="city" data-en="City:" data-gr="Πόλη:">City:</label>
+                        <input type="text" id="city" required>
+                    </div>
+                    <button type="submit" class="download-button" data-en="Download Certificate (PDF)" data-gr="Λήψη Πιστοποιητικού (PDF)">
+                        Download Certificate (PDF)
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+    
     <div id="image-viewer-modal" class="modal-overlay">
         <img id="expanded-img" src="" alt="Expanded Profile Picture">
     </div>
@@ -145,41 +192,6 @@
       </div>
     </div>
 
-    <div id="certificate-modal" class="modal-overlay">
-        <div class="modal-content modal-content-auto-height">
-            <div class="modal-header">
-                <h2 data-en="1st Anniversary Certificate" data-gr="Πιστοποιητικό 1ης Επετείου">1st Anniversary Certificate</h2>
-                <button class="close-modal" aria-label="Close">×</button>
-            </div>
-            <div class="modal-body">
-                <form id="certificate-form" style="display: flex; flex-direction: column; gap: 15px;">
-                    <div>
-                        <label for="first-name" data-en="First Name" data-gr="Όνομα">First Name</label>
-                        <input type="text" id="first-name" required style="width: 100%; padding: 8px; margin-top: 5px; box-sizing: border-box; background-color: var(--nm-darkest); border: 1px solid var(--nm-border); color: var(--nm-text); border-radius: 5px;">
-                    </div>
-                    <div>
-                        <label for="last-name" data-en="Last Name" data-gr="Επώνυμο">Last Name</label>
-                        <input type="text" id="last-name" required style="width: 100%; padding: 8px; margin-top: 5px; box-sizing: border-box; background-color: var(--nm-darkest); border: 1px solid var(--nm-border); color: var(--nm-text); border-radius: 5px;">
-                    </div>
-                    <div>
-                        <label for="age" data-en="Age" data-gr="Ηλικία">Age</label>
-                        <input type="number" id="age" required style="width: 100%; padding: 8px; margin-top: 5px; box-sizing: border-box; background-color: var(--nm-darkest); border: 1px solid var(--nm-border); color: var(--nm-text); border-radius: 5px;">
-                    </div>
-                    <div>
-                        <label for="country" data-en="Country" data-gr="Χώρα">Country</label>
-                        <input type="text" id="country" required style="width: 100%; padding: 8px; margin-top: 5px; box-sizing: border-box; background-color: var(--nm-darkest); border: 1px solid var(--nm-border); color: var(--nm-text); border-radius: 5px;">
-                    </div>
-                    <div>
-                        <label for="city" data-en="City" data-gr="Πόλη">City</label>
-                        <input type="text" id="city" required style="width: 100%; padding: 8px; margin-top: 5px; box-sizing: border-box; background-color: var(--nm-darkest); border: 1px solid var(--nm-border); color: var(--nm-text); border-radius: 5px;">
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button id="download-certificate-btn" class="accept-btn" data-en="Download PDF" data-gr="Λήψη PDF">Download PDF</button>
-            </div>
-        </div>
-    </div>
     <div id="disclaimer-modal" class="modal-overlay">
       <div class="modal-content">
           <div class="modal-header"><h2 data-en="Disclaimer & Terms of Use" data-gr="Αποποίηση Ευθύνης & Όροι Χρήσης">Disclaimer & Terms of Use</h2></div>
@@ -233,7 +245,7 @@
             </div>
             <div class="modal-body hidden-by-default" data-lang-section="gr">
                 <h3>Απαιτήσεις</h3><ul><li><b>Συσκευή:</b> Android με εγκατεστημένο το <a href="https://f-droid.org/" target="_blank">Termux</a>.</li><li><b>Αποθηκευτικός Χώρος:</b> Ελάχιστος <b>8GB</b> ελεύθερος.<span class="sub-item">(Η λειτουργία του Ραδιοφώνου απαιτεί περισσότερο χώρο. Οι εικόνες και οι ηχογραφήσεις καταναλώνουν επίσης χώρο.)</span></li><li><b>RAM:</b> Ελάχ. <b>2GB</b>.</li></ul><h3>Βήμα-Βήμα Εγκατάσταση</h3><ol><li><b>Εγκατάσταση του Termux & Πρόσθετων</b><div class="tip"><p><b>Σημείωση:</b> Για την εγκατάσταση APKs (π.χ. F-Droid), βεβαιωθείτε ότι έχετε:<br/>- Ενεργοποίηση άγνωστων πηγών (Ρυθμίσεις > Ασφάλεια > <b>Εγκατάσταση άγνωστων εφαρμογών</b>).<br/>- Κατεβάστε το F-Droid και, στη συνέχεια, εγκαταστήστε το Termux μέσω του <a href="https://f-droid.org/">F-Droid</a>.<br/>- Επιτρέψτε τη διαδικασία <code>fdroid</code> όταν σας ζητηθεί.</p></div></li><li><b>Ενημέρωση Πακέτων & Εγκατάσταση Git</b><div class="note note-warning"><b>Σημαντικό:</b> Ανοίξτε την εφαρμογή Termux στη συσκευή σας πριν αντιγράψετε και επικολλήσετε την παρακάτω εντολή.</div><div class="code-container"><button class="copy-btn" onclick="copyToClipboard(this, 'pkg_cmd_gr')">Αντιγραφή</button><code id="pkg_cmd_gr">pkg update -y && pkg upgrade -y && pkg install git nano -y && termux-setup-storage</code></div></li><li><b>Κλωνοποιήστε το αποθετήριο</b><div class="code-container"><button class="copy-btn" onclick="copyToClipboard(this, 'clone_cmd_gr')">Αντιγραφή</button><code id="clone_cmd_gr">git clone https://github.com/dedsec1121fk/DedSec</code></div></li><li><b>Εκτελέστε το Script Εγκατάστασης</b><div class="code-container"><button class="copy-btn" onclick="copyToClipboard(this, 'setup_cmd_gr')">Αντιγραφή</button><code id="setup_cmd_gr">cd DedSec && bash Setup.sh</code></div><div class="tip"><p>Το script θα αναλάβει την πλήρη εγκατάσταση. Μετά τη διαδικασία, θα δείτε ένα μενού ρυθμίσεων, πρέπει να επιλέξετε 'Change Menu Style' και στη συνέχεια να επιλέξετε ένα στυλ μενού: list or grid.<br>Μετά από αυτό, κλείστε το Termux από τις ειδοποιήσεις και ανοίξτε το ξανά.</p></div></li></ol><div class="tip" style="margin-top: 20px;"><p><b>Συμβουλή:</b> Μετά την εγκατάσταση, μπορείτε να ανοίξετε γρήγορα το μενού πληκτρολογώντας <code>e</code> (για την Αγγλική έκδοση) ή <code>g</code> (για την Ελληνική έκδοση) στο Termux.</p></div>
-                <div class="modal-disclaimer"><p><strong>Νομική Αποποίηση Ευθύνης:</strong> Όλα τα εργαλεία και οι πληροφορίες που παρουσιάζονται εδώ προορίζονται αποκλειστικά για εκπαιδευτικούς και ηθικούς ερευνητικούς σκοπούς. Χρησιμοποιήστε τα αποκλειστικά σε συστήματα που σας ανήκουν ή για τα οποία έχετε ρητή, γραπτή άδεια να δοκιμάσετε. Η μη εξουσιοδοτημένη χρήση είναι παράνομη. Ο χρήστης είναι αποκλειστικά υπεύθυνος για όλες τις ενέργειες που πραγματοποιεί, και οι δημιουργοί αυτού του έργου δεν αναλαμβάνουν καμία ευθύνη για οποιαδήποτε κακή χρήση ή ζημία.</p><p><strong>Αποποίηση Ευθύνης Εμπορικού Σήματος:</strong> Το όνομα και το λογότυπο "DedSec" που χρησιμοποιούνται σε αυτό το έργο είναι μόνο για θεματικούς και εμπνευστικούς σκοπούς. Αυτό είναι ένα ανεξάρτητο, fan-made έργο που δημιουργήθηκε για εκπαιδευτικούς σκοπούς και δεν έχει καμία επίσημη σχέση με το franchise "Watch Dogs". Δεν συνδέεται, δεν υποστηρίζεται από, ούτε σχετίζεται με την Ubisoft Entertainment S.A. Όλα τα εμπορικά σήματα και τα πνευματικά δικαιώματα για το "Watch Dogs" και το "DedSec" όπως απεικονίζονται στα παιχνίδια ανήκουν στους αντίστοιχους κατόχους τους, την Ubisoft Entertainment S.A.</p></div>
+                <div class="modal-disclaimer"><p><strong>Νομική Αποποίηση Ευθύνης:</strong> Όλα τα εργαλεία και οι πληροφορίες που παρουσιάζονται εδώ προορίζονται αποκλειστικά για εκπαιδευτικούς και ηθικούς ερευνητικούς σκοπούς. Χρησιμοποιήστε τα αποκλειστικά σε συστήματα που σας ανήκουν ή για τα οποία έχετε ρητή, γραπτή άδεια να δοκιμάσετε. Η μη εξουσιοδοτημένη χρήση είναι παράνομη. Ο χρήστης είναι αποκλειστικά υπεύθυνος για όλες τις ενέργειες που πραγματοποιεί, και οι δημιουργοί αυτού του έργου δεν αναλαμβάνουν καμία ευθύνη για οποιαδήποτε κακή χρήση ή ζημία.</p></div>
             </div>
         </div>
     </div>
@@ -278,7 +290,7 @@
                 <li><b>Android App Launcher</b><br>Ένα βοηθητικό πρόγραμμα για τη διαχείριση των εγκατεστημένων εφαρμογών στη συσκευή σας Android. Μπορείτε να εκκινήσετε, να δείτε λεπτομέρειες, να απεγκαταστήσετε ή να εξαγάγετε το αρχείο APK οποιασδήποτε εφαρμογής. Περιλαμβάνει επίσης τη λειτουργία <b>App Perm Inspector</b> που σαρώνει το APK για να εντοπίσει επικίνδυνες άδειες και ενσωματωμένους trackers διαφημίσεων, δημιουργώντας μια αναφορά ασφαλείας για έλεγχο.</li>
                 <li><b>Settings</b><br>Ένας κεντρικός πίνακας ελέγχου για τη διαχείριση του DedSec Project. Χρησιμοποιήστε τον για να δείτε πληροφορίες συστήματος, να ενημερώσετε όλα τα σενάρια του έργου και τα απαιτούμενα πακέτα, να αλλάξετε το στυλ της γραμμής εντολών του Termux και να επιλέξετε μεταξύ διάταξης μενού λίστας ή πλέγματος. Αυτό το σενάριο τροποποιεί το αρχείο σας <b><code>/data/data/com.termux/files/usr/etc/bash.bashrc</code></b> για να εφαρμόσει τις αλλαγές.</li>
                 <li><b>Loading Screen</b><br>Εγκαθιστά μια προσαρμοσμένη οθόνη φόρτωσης με ASCII art που εμφανίζεται κατά την εκκίνηση του Termux. Μπορείτε να χρησιμοποιήσετε την προεπιλεγμένη εικόνα, να δώσετε τη δική σας και να ορίσετε τη διάρκεια εμφάνισης. Αυτό το σενάριο λειτουργεί προσθέτοντας ρυθμίσεις στο αρχείο σας <b><code>~/.bash_profile</code></b>.</li>
-                <li><b>Digital Footprint Finder</b><br>Ένα εργαλείο OSINT (Open Source Intelligence) που βοηθά στην ανακάλυψη δημόσιων πληροφοριών για ένα όνομα χρήστη σε πολλαπλές πλατφόρμες. Σαρώνει κοινωνικά δίκτυα, πλατφόρμες προγραμματισμού και άλλες υπηρεσίες για να βρει δημόσια προφίλ που σχετίζονται με ένα όνομα χρήστη. Το εργαλείο περιλαμβάνει μηχανισμούς προσωρινής αποθήκευσης, λειτουργίες stealth για μείωση της ανίχνευσης και αποθηκεύει τα αποτελέσματα σε μορφή κειμένου και JSON για περαιτέρω ανάλυση.</li>
+                <li><b>Digital Footprint Finder</b><br>Ένα εργαλείο OSINT (Open Source Intelligence) που βοηθά στην ανακάλυψη δημόσιων πληροφοριών για ένα όνομα χρήστη σε πολλαπλές πλατφόρμες. Σαρώνει κοινωνικά δίκτυα, πλατφόρμες προγραμματισμού και άλλες υπηρεσίες για να βρει δημόσια προφίλ που σχετίζονται με ένα όνομα χρήστη. Το εργαλείο περιλαμβάνει μηχανισμούς προσωρινής αποθήκευσης, λειτουργίες stealth για μείωση της ανίχνευσης και αποθηκεύει τα αποτελέσματα σε μορφή κειμώμου και JSON για περαιτέρω ανάλυση.</li>
                 <li><b>Internet Tools</b><br>Ένα ολοκληρωμένο πακέτο εργαλείων ανάλυσης δικτύου και ασφάλειας που παρέχει διάφορα βοηθήματα δικτύου όπως σάρωση Wi-Fi, σάρωση θυρών, ανακάλυψη δικτύου, δοκιμές ταχύτητας και έλεγχο ασφαλείας. Περιλαμβάνει ανάλυση παθητικών δικτύων Wi-Fi, βελτιωμένη σάρωση θυρών με ανίχνευση υπηρεσιών, ανάλυση ασφαλείας κεφαλίδων HTTP, αναζήτηση εγγραφών DNS και διάφορα διαγνωστικά εργαλεία δικτύου. Όλα τα αποτελέσματα αποθηκεύονται σε έναν αφοσιωμένο φάκελο για ανασκόπηση.</li>
                 <li><b>Smart Notes</b><br>Μια ασφαλής εφαρμογή σημειώσεων με προηγμένες λειτουργίες όπως κρυπτογραφημένη αποθήκευση, ενσωμάτωση ημερολογίου και σύστημα υπενθυμίσεων. Παρέχει διεπαφή TUI για εύκολη πλοήγηση, υποστηρίζει επεξεργασία πλούσιου κειμένου και περιλαμβάνει ένα εξελιγμένο σύστημα αναζήτησης. Η λειτουργία υπενθυμίσεων μπορεί να προγραμματίζει ειδοποιήσεις χρησιμοποιώντας τον προγραμματιστή εργασιών του Termux.</li>
                 <li><b>SSH Defender</b><br>Ένα εργαλείο ασφαλείας honeypot που μιμείται διακομιστές SSH για να ανιχνεύει και να καταγράφει μη εξουσιοδοτημένες προσπάθειες πρόσβασης. Κύκλους μέσα από κοινές θύρες SSH, προσομοιώνει πραγματική συμπεριφορά διακομιστή SSH για να εμπλέξει επιτιθέμενους και καταγράφει όλες τις προσπάθειες σύνδεσης με λεπτομερείς πληροφορίες. Το εργαλείο περιλαμβάνει πίνακα ελέγχου πραγματικού χρόνου για παρακολούθηση επιθέσεων και αποθηκεύει λεπτομερή αρχεία καταγραφής για ανάλυση ασφαλείας.</li>

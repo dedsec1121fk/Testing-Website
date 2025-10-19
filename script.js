@@ -169,87 +169,6 @@ document.addEventListener('DOMContentLoaded', () => {
             modal.classList.remove('visible');
         }
 
-        // --- ANNIVERSARY EVENT LOGIC ---
-        function handleAnniversaryEvent() {
-            const banner = document.getElementById('anniversary-banner');
-            const certButton = document.getElementById('get-certificate-btn');
-            const certModal = document.getElementById('certificate-modal');
-            const downloadCertBtn = document.getElementById('download-certificate-btn');
-            const certForm = document.getElementById('certificate-form');
-
-            if (!banner || !certButton || !certModal || !downloadCertBtn || !certForm) return;
-
-            const currentDate = new Date();
-            const currentYear = currentDate.getFullYear();
-            const startDate = new Date(currentYear, 9, 20); // Month is 0-indexed, so 9 is October
-            const endDate = new Date(currentYear, 9, 31, 23, 59, 59); // End of day October 31st
-
-            if (currentDate >= startDate && currentDate <= endDate) {
-                document.body.classList.add('anniversary-theme');
-                banner.classList.remove('hidden');
-                certButton.classList.remove('hidden');
-
-                certButton.addEventListener('click', () => showModal(certModal));
-
-                downloadCertBtn.addEventListener('click', () => {
-                    if (!certForm.checkValidity()) {
-                        certForm.reportValidity();
-                        return;
-                    }
-                    
-                    const firstName = document.getElementById('first-name').value;
-                    const lastName = document.getElementById('last-name').value;
-                    const age = document.getElementById('age').value;
-                    const country = document.getElementById('country').value;
-                    const city = document.getElementById('city').value;
-                    
-                    try {
-                        const { jsPDF } = window.jspdf;
-                        const doc = new jsPDF('landscape', 'mm', 'a4');
-                        
-                        // Simple certificate design
-                        doc.setFont('helvetica', 'bold');
-                        doc.setFontSize(34);
-                        doc.text('Certificate of Participation', 148.5, 30, { align: 'center' });
-
-                        doc.setFont('helvetica', 'normal');
-                        doc.setFontSize(16);
-                        doc.text('This is to certify that', 148.5, 50, { align: 'center' });
-
-                        doc.setFont('helvetica', 'bold');
-                        doc.setFontSize(26);
-                        doc.text(`${firstName} ${lastName}`, 148.5, 70, { align: 'center' });
-                        
-                        doc.setFont('helvetica', 'normal');
-                        doc.setFontSize(14);
-                        doc.text(`Age: ${age}, from ${city}, ${country}`, 148.5, 85, { align: 'center' });
-
-                        doc.setFontSize(16);
-                        doc.text('participated in the', 148.5, 105, { align: 'center' });
-                        
-                        doc.setFont('helvetica', 'bold');
-                        doc.setFontSize(22);
-                        doc.text('DedSec Project 1st Anniversary Celebration', 148.5, 120, { align: 'center' });
-
-                        doc.setFont('helvetica', 'italic');
-                        doc.setFontSize(12);
-                        doc.text(`Event Period: October 20th - 31st, ${currentYear}`, 148.5, 135, { align: 'center' });
-
-                        doc.setFontSize(10);
-                        doc.text(`© ${currentYear} DedSec Project. All Rights Reserved.`, 148.5, 180, { align: 'center' });
-                        
-                        doc.save(`DedSec_Anniversary_Certificate_${firstName}_${lastName}.pdf`);
-
-                        hideModal(certModal);
-                        certForm.reset();
-                    } catch(e) {
-                        console.error("Error generating PDF:", e);
-                        alert("Could not generate PDF. Please try again later.");
-                    }
-                });
-            }
-        }
-        
         const languageModal = document.getElementById('language-selection-modal');
         if (!languageModal) {
             console.error("Fatal: Language modal not found. Site cannot start.");
@@ -265,20 +184,12 @@ document.addEventListener('DOMContentLoaded', () => {
             
             document.querySelectorAll('[data-en]').forEach(el => {
                 const text = el.getAttribute(`data-${lang}`) || el.getAttribute('data-en');
-                const hasElementChild = el.children.length > 0 && !(el.id === 'get-certificate-btn'); // ensure button text is updated
-                 if (!hasElementChild || el.tagName === 'BUTTON' || el.tagName === 'A') {
-                     // Find the deepest text node if it's a complex element like a button
-                    let textNode = Array.from(el.childNodes).find(node => node.nodeType === 3);
-                    if (textNode) {
-                         textNode.textContent = text;
-                    } else if (el.firstChild && el.firstChild.nodeType === 3) {
-                         el.firstChild.textContent = text;
-                    } else if (!hasElementChild) {
-                         el.textContent = text;
-                    }
-                 }
+                const hasElementChild = el.children.length > 0;
+                if (!hasElementChild) {
+                     el.textContent = text;
+                }
             });
-            
+
             document.querySelectorAll('[data-lang-section]').forEach(el => {
                 el.style.display = el.dataset.langSection === lang ? 'block' : 'none';
                 if (el.classList.contains('hidden-by-default')) {
@@ -454,9 +365,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 showImage(0);
             }
         }
-        
-        // --- INITIATE ANNIVERSARY CHECK ---
-        handleAnniversaryEvent();
         
         initializeWebSearchSuggestions(); 
         initializeUsefulInfoSearch();
@@ -779,8 +687,7 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>`;
         document.body.appendChild(modalOverlay);
 
-        // --- FIX STARTS HERE ---
-        // After inserting the new content, find all copy buttons and attach the event listener.
+        // --- FIX STARTS HERE (Ensuring copyToClipboard works for dynamically loaded content) ---
         let dynamicCodeIdCounter = 0;
         const codeContainers = modalOverlay.querySelectorAll('.code-container');
         codeContainers.forEach(container => {
