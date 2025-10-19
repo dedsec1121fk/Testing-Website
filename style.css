@@ -624,6 +624,8 @@ body.light-theme ::-webkit-scrollbar-thumb {
     margin-bottom: 10px;
     padding: 25px 15px 0 15px;
     box-sizing: border-box;
+    /* NEW: Compensate for the 10px scrollbar to visually center content */
+    margin-right: calc(0px - 5px);
 }
 
 /* --- REMOVED: .header-logo container since we are using .screen::after --- */
@@ -818,10 +820,9 @@ body.light-theme ::-webkit-scrollbar-thumb {
     gap: 35px; /* MODIFIED: Set to 35px */
     width: 100%;
     max-width: 500px;
-    margin: 0 auto 15px;
+    /* MODIFIED: Added scrollbar compensation to visually center content (10px scrollbar / 2 = 5px) */
+    margin: 0 auto 15px calc(0px - 5px); 
     align-items: start;
-    /* ADDED: Shift left by 5px to visually center content by compensating for the 10px scrollbar area on the right. */
-    transform: translateX(-5px);
 }
 
 .app-wrapper {
@@ -1582,6 +1583,15 @@ span.sub-item {
 
     .main-header-container h1 {
         font-size: clamp(2.5rem, 4vw, 3.5rem);
+    }
+    
+    /* MODIFIED: Add scrollbar compensation to visually center content */
+    .main-header-container,
+    .search-container,
+    .hero-section,
+    .grid-heading,
+    .app-grid {
+        margin-right: calc(0px - 5px); 
     }
 }
 
