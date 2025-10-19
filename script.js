@@ -157,126 +157,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // --- CERTIFICATE GENERATION FUNCTIONALITY ---
-    function initializeCertificateGeneration() {
-        const certificateBtn = document.getElementById('certificate-btn');
-        const certificateModal = document.getElementById('certificate-modal');
-        const certificatePreviewModal = document.getElementById('certificate-preview-modal');
-        const generateCertificateBtn = document.getElementById('generate-certificate');
-        const downloadCertificateBtn = document.getElementById('download-certificate');
-        const certificateForm = document.getElementById('certificate-form');
-
-        if (certificateBtn) {
-            certificateBtn.addEventListener('click', () => {
-                showModal(certificateModal);
-            });
-        }
-
-        if (generateCertificateBtn) {
-            generateCertificateBtn.addEventListener('click', () => {
-                if (certificateForm.checkValidity()) {
-                    generateCertificatePreview();
-                    hideModal(certificateModal);
-                    showModal(certificatePreviewModal);
-                } else {
-                    certificateForm.reportValidity();
-                }
-            });
-        }
-
-        if (downloadCertificateBtn) {
-            downloadCertificateBtn.addEventListener('click', generateCertificatePDF);
-        }
-    }
-
-    function generateCertificatePreview() {
-        const firstName = document.getElementById('first-name').value;
-        const lastName = document.getElementById('last-name').value;
-        const age = document.getElementById('age').value;
-        const country = document.getElementById('country').value;
-        const city = document.getElementById('city').value;
-
-        const fullName = `${firstName} ${lastName}`;
-        const certificateName = document.getElementById('certificate-name');
-        const certificateDate = document.getElementById('certificate-date');
-
-        if (certificateName) {
-            certificateName.textContent = fullName;
-        }
-
-        if (certificateDate) {
-            const now = new Date();
-            const options = { year: 'numeric', month: 'long' };
-            certificateDate.textContent = now.toLocaleDateString('en-US', options);
-        }
-    }
-
-    function generateCertificatePDF() {
-        const { jsPDF } = window.jspdf;
-        const doc = new jsPDF('landscape', 'mm', 'a4');
-        
-        // Certificate background
-        doc.setFillColor(26, 26, 46);
-        doc.rect(0, 0, 297, 210, 'F');
-        
-        // Gold border
-        doc.setDrawColor(255, 215, 0);
-        doc.setLineWidth(15);
-        doc.rect(7.5, 7.5, 282, 195);
-        
-        // Title
-        doc.setFont('helvetica', 'bold');
-        doc.setFontSize(36);
-        doc.setTextColor(255, 215, 0);
-        doc.text('Certificate of Participation', 148.5, 50, { align: 'center' });
-        
-        // Subtitle
-        doc.setFontSize(20);
-        doc.setTextColor(0, 206, 209);
-        doc.text('DedSec Project 1-Year Anniversary', 148.5, 70, { align: 'center' });
-        
-        // Body text
-        doc.setFont('helvetica', 'normal');
-        doc.setFontSize(16);
-        doc.setTextColor(255, 255, 255);
-        doc.text('This certifies that', 148.5, 100, { align: 'center' });
-        
-        // Name
-        const fullName = document.getElementById('certificate-name').textContent;
-        doc.setFontSize(24);
-        doc.setTextColor(255, 215, 0);
-        doc.text(fullName, 148.5, 120, { align: 'center' });
-        
-        // Additional text
-        doc.setFontSize(16);
-        doc.setTextColor(255, 255, 255);
-        doc.text('has participated in the celebration of the 1-year anniversary', 148.5, 140, { align: 'center' });
-        doc.text('of the DedSec Project', 148.5, 155, { align: 'center' });
-        doc.text('during the event from October 20 to October 31', 148.5, 170, { align: 'center' });
-        
-        // Signature
-        doc.setFontSize(14);
-        doc.text('dedsec1121fk', 80, 190);
-        doc.setFont('helvetica', 'italic');
-        doc.setFontSize(10);
-        doc.text('Founder, DedSec Project', 80, 195);
-        
-        // Date
-        const dateText = document.getElementById('certificate-date').textContent;
-        doc.setFont('helvetica', 'normal');
-        doc.setFontSize(12);
-        doc.text(dateText, 220, 190);
-        
-        // Download the PDF
-        doc.save(`DedSec_Anniversary_Certificate_${fullName.replace(/\s+/g, '_')}.pdf`);
-        
-        // Close the preview modal
-        hideModal(document.getElementById('certificate-preview-modal'));
-        
-        // Reset the form
-        document.getElementById('certificate-form').reset();
-    }
-
     // --- PORTFOLIO INITIALIZATION ---
     function initializePortfolio() {
         function showModal(modal) {
@@ -321,7 +201,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 button.classList.toggle('selected', button.dataset.lang === lang);
             });
 
-            document.title = "DedSec Project - 1 Year Anniversary";
+            document.title = "DedSec Project";
 
             const searchInput = document.getElementById('main-search-input');
             if (searchInput) {
@@ -488,7 +368,6 @@ document.addEventListener('DOMContentLoaded', () => {
         
         initializeWebSearchSuggestions(); 
         initializeUsefulInfoSearch();
-        initializeCertificateGeneration();
         
         if (languageModalCloseBtn) languageModalCloseBtn.style.display = 'none';
         showModal(languageModal);
@@ -564,6 +443,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+
 
     async function buildUsefulInfoSearchIndex(progressBar, progressText) {
         if (isUsefulInfoIndexBuilt || usefulInfoFiles.length === 0) return;
@@ -672,6 +552,7 @@ document.addEventListener('DOMContentLoaded', () => {
         progressBarContainer.appendChild(progressBar);
         progressBarContainer.appendChild(progressText);
         navContainer.parentNode.insertBefore(progressBarContainer, navContainer);
+
 
         const showNav = (shouldShow) => {
             navContainer.querySelectorAll('.app-icon').forEach(article => {
@@ -880,4 +761,81 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // --- INITIALIZE ALL FEATURES ---
     initializePortfolio();
+});
+
+/* === ANNIVERSARY JS ADDED BELOW === */
+/* === Anniversary certificate JS === */
+document.addEventListener('DOMContentLoaded', function() {
+    try {
+        const form = document.getElementById('certificate-form');
+        const downloadBtn = document.getElementById('download-certificate-btn');
+        if (!form || !downloadBtn) return;
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            // validate fields
+            const first = document.getElementById('first-name').value.trim();
+            const last = document.getElementById('last-name').value.trim();
+            const age = document.getElementById('age').value.trim();
+            const country = document.getElementById('country').value.trim();
+            const city = document.getElementById('city').value.trim();
+
+            if (!first || !last || !age || !country || !city) {
+                alert('Please fill all fields to download your certificate.');
+                return;
+            }
+
+            // generate PDF using jsPDF (UMD exposes window.jspdf)
+            try {
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF({unit:'pt', format:'a4'});
+                const width = doc.internal.pageSize.getWidth();
+                const height = doc.internal.pageSize.getHeight();
+
+                // Background
+                doc.setFillColor(18,18,28);
+                doc.rect(0,0,width,height,'F');
+
+                // Title
+                doc.setFontSize(26);
+                doc.setTextColor(255,255,255);
+                doc.setFont('helvetica','bold');
+                doc.text('DedSec Project', width/2, 90, {align:'center'});
+                doc.setFontSize(18);
+                doc.text('1st Anniversary Certificate', width/2, 120, {align:'center'});
+
+                // Separator line
+                doc.setDrawColor(140, 60, 255);
+                doc.setLineWidth(2);
+                doc.line(80, 140, width - 80, 140);
+
+                // Person info block
+                doc.setFontSize(14);
+                doc.setFont('helvetica','normal');
+                const infoYStart = 180;
+                doc.text(`Name: ${first} ${last}`, 100, infoYStart);
+                doc.text(`Age: ${age}`, 100, infoYStart + 26);
+                doc.text(`Country: ${country}`, 100, infoYStart + 52);
+                doc.text(`City: ${city}`, 100, infoYStart + 78);
+
+                // Event dates and note
+                doc.setFontSize(12);
+                doc.setTextColor(200,200,200);
+                doc.text('Event valid: October 20 - October 31', 100, infoYStart + 120);
+                doc.text('This certificate confirms participation in DedSec Project 1st Anniversary event.', 100, infoYStart + 140);
+
+                // Footer / signature
+                doc.setFontSize(12);
+                doc.setTextColor(255,255,255);
+                doc.text('Issued by DedSec Project', width - 100, height - 90, {align: 'right'});
+                const fileNameSafe = `${first}_${last}`.replace(/[^a-zA-Z0-9_\-]/g, '_');
+                doc.save(`dedsec_certificate_${fileNameSafe}.pdf`);
+            } catch (err) {
+                console.error('PDF generation failed', err);
+                alert('Sorry, generating the certificate failed. Please try again.');
+            }
+        });
+    } catch (e) {
+        console.error('Anniversary JS initialization error', e);
+    }
 });

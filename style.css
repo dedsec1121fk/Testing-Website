@@ -1,18 +1,10 @@
 /*
     =================================================================
-    DEDSEC PROJECT - 1 YEAR ANNIVERSARY STYLES
+    
 =================================================================
 */
 
 :root {
-    /* Anniversary Colors */
-    --anniversary-purple: #8A2BE2;
-    --anniversary-blue: #4169E1;
-    --anniversary-red: #DC143C;
-    --anniversary-pink: #FF1493;
-    --anniversary-cyan: #00CED1;
-    --anniversary-gold: #FFD700;
-    
     /* MODIFIED: Digital Lavender Palette */
     --nm-abyss-blue: #01040a; 
     --nm-darkest: #0B121C;    
@@ -67,358 +59,6 @@ body.light-theme {
 body.light-theme .screen::after {
     background-image: url('https://raw.githubusercontent.com/dedsec1121fk/dedsec1121fk.github.io/6f776cd9772a079a6d26370dddab911bf7cde8cd/Assets/Images/Logos/Custom%20White%20Purple%20Fox%20Logo.jpg') !important;
     opacity: 0.3; /* Keep visibility for light theme */
-}
-
-/* =================================================================
-   ANNIVERSARY STYLES
-   ================================================================= */
-
-/* Anniversary Banner */
-.anniversary-banner {
-    width: 100%;
-    max-width: 500px;
-    margin: 15px auto 10px;
-    background: linear-gradient(135deg, var(--anniversary-purple), var(--anniversary-blue), var(--anniversary-red));
-    border-radius: 20px;
-    padding: 15px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-    opacity: 0.85;
-    position: relative;
-    overflow: hidden;
-    border: 2px solid transparent;
-    background-size: 400% 400%;
-    animation: gradientShift 8s ease infinite;
-}
-
-@keyframes gradientShift {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-}
-
-.anniversary-content {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    position: relative;
-    z-index: 2;
-}
-
-.anniversary-icon {
-    font-size: 2.5rem;
-    color: var(--anniversary-gold);
-    margin-right: 15px;
-    animation: bounce 2s infinite;
-}
-
-@keyframes bounce {
-    0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
-    40% {transform: translateY(-10px);}
-    60% {transform: translateY(-5px);}
-}
-
-.anniversary-text {
-    flex: 1;
-    text-align: center;
-}
-
-.anniversary-text h2 {
-    margin: 0 0 5px 0;
-    font-size: 1.4rem;
-    font-family: 'Orbitron', sans-serif;
-    color: white;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-}
-
-.anniversary-text p {
-    margin: 0;
-    font-size: 0.9rem;
-    color: rgba(255, 255, 255, 0.9);
-}
-
-.anniversary-decoration {
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    width: 60px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    align-items: center;
-    opacity: 0.7;
-}
-
-.decoration-ball {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    animation: float 3s ease-in-out infinite;
-}
-
-.ball-1 {
-    background-color: var(--anniversary-gold);
-    animation-delay: 0s;
-}
-
-.ball-2 {
-    background-color: var(--anniversary-cyan);
-    animation-delay: 1s;
-}
-
-.ball-3 {
-    background-color: var(--anniversary-pink);
-    animation-delay: 2s;
-}
-
-@keyframes float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
-}
-
-/* Certificate Button */
-.certificate-button {
-    width: 100%;
-    max-width: 500px;
-    margin: 10px auto 15px;
-    background: linear-gradient(135deg, var(--anniversary-purple), var(--anniversary-blue));
-    border: 2px solid var(--anniversary-gold);
-    color: white;
-    font-family: 'Orbitron', sans-serif;
-    text-transform: uppercase;
-    font-weight: 700;
-    font-size: 0.9rem;
-    padding: 12px 20px;
-    border-radius: 20px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    opacity: 0.85;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-    position: relative;
-    overflow: hidden;
-}
-
-.certificate-button::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-    transition: left 0.5s;
-}
-
-.certificate-button:hover::before {
-    left: 100%;
-}
-
-.certificate-button:hover {
-    opacity: 1;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
-}
-
-.certificate-button i {
-    font-size: 1.2rem;
-    color: var(--anniversary-gold);
-}
-
-/* Certificate Form Styles */
-.certificate-form-container {
-    max-width: 500px;
-    margin: 0 auto;
-}
-
-.form-group {
-    margin-bottom: 20px;
-}
-
-.form-group label {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: bold;
-    color: var(--nm-text);
-}
-
-.form-group input {
-    width: 100%;
-    padding: 12px 15px;
-    background-color: var(--nm-darkest);
-    border: 2px solid var(--nm-accent);
-    color: var(--nm-text);
-    font-family: 'Roboto Mono', monospace;
-    font-size: 0.9rem;
-    border-radius: 10px;
-    box-sizing: border-box;
-    transition: all 0.3s ease;
-}
-
-.form-group input:focus {
-    outline: none;
-    background-color: var(--nm-dark);
-    border-color: var(--nm-accent-hover);
-}
-
-.form-actions {
-    display: flex;
-    justify-content: center;
-    margin-top: 25px;
-}
-
-/* Certificate Template Styles */
-.certificate-preview-content {
-    max-width: 800px;
-    width: 95%;
-}
-
-.certificate-preview-body {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.certificate-template {
-    width: 100%;
-    max-width: 700px;
-    background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
-    border: 15px solid var(--anniversary-gold);
-    border-radius: 10px;
-    padding: 40px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-    position: relative;
-    overflow: hidden;
-    margin-bottom: 20px;
-}
-
-.certificate-template::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100" opacity="0.1"><path fill="%23FFFFFF" d="M50,5 L60,40 L95,40 L65,60 L75,95 L50,75 L25,95 L35,60 L5,40 L40,40 Z"/></svg>');
-    background-size: 100px 100px;
-    z-index: 0;
-}
-
-.certificate-border {
-    position: relative;
-    z-index: 1;
-    text-align: center;
-    color: white;
-}
-
-.certificate-header h1 {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 2.5rem;
-    margin: 0 0 10px 0;
-    color: var(--anniversary-gold);
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-}
-
-.certificate-header h2 {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 1.5rem;
-    margin: 0 0 30px 0;
-    color: var(--anniversary-cyan);
-}
-
-.certificate-body {
-    margin: 30px 0;
-}
-
-.certificate-body p {
-    font-size: 1.1rem;
-    margin: 10px 0;
-    line-height: 1.6;
-}
-
-#certificate-name {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 2rem;
-    margin: 20px 0;
-    color: var(--anniversary-gold);
-    text-transform: uppercase;
-    letter-spacing: 2px;
-}
-
-.certificate-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    margin-top: 40px;
-    padding-top: 20px;
-    border-top: 2px solid var(--anniversary-gold);
-}
-
-.signature p {
-    font-family: 'Noto Serif', serif;
-    font-size: 1.2rem;
-    margin: 0;
-    font-weight: bold;
-}
-
-.signature span {
-    font-size: 0.9rem;
-    font-style: italic;
-    display: block;
-    margin-top: 5px;
-}
-
-.date p {
-    font-size: 1rem;
-    margin: 0;
-}
-
-.certificate-actions {
-    display: flex;
-    justify-content: center;
-    width: 100%;
-}
-
-/* Multi-color icon border animation */
-@keyframes multiColorBorder {
-    0% { border-color: #FF0000; }
-    3.33% { border-color: #FF4000; }
-    6.66% { border-color: #FF8000; }
-    10% { border-color: #FFBF00; }
-    13.33% { border-color: #FFFF00; }
-    16.66% { border-color: #BFFF00; }
-    20% { border-color: #80FF00; }
-    23.33% { border-color: #40FF00; }
-    26.66% { border-color: #00FF00; }
-    30% { border-color: #00FF40; }
-    33.33% { border-color: #00FF80; }
-    36.66% { border-color: #00FFBF; }
-    40% { border-color: #00FFFF; }
-    43.33% { border-color: #00BFFF; }
-    46.66% { border-color: #0080FF; }
-    50% { border-color: #0040FF; }
-    53.33% { border-color: #0000FF; }
-    56.66% { border-color: #4000FF; }
-    60% { border-color: #8000FF; }
-    63.33% { border-color: #BF00FF; }
-    66.66% { border-color: #FF00FF; }
-    70% { border-color: #FF00BF; }
-    73.33% { border-color: #FF0080; }
-    76.66% { border-color: #FF0040; }
-    80% { border-color: #FF0000; }
-    83.33% { border-color: #FF4000; }
-    86.66% { border-color: #FF8000; }
-    90% { border-color: #FFBF00; }
-    93.33% { border-color: #FFFF00; }
-    96.66% { border-color: #BFFF00; }
-    100% { border-color: #80FF00; }
-}
-
-.app-icon {
-    animation: multiColorBorder 30s infinite linear;
 }
 
 /* =================================================================
@@ -871,10 +511,9 @@ body.light-theme ::-webkit-scrollbar-thumb {
 
 .app-grid {
     display: grid;
-    /* MODIFIED: Reduced gap from 35px to 25px to prevent overflow */
     grid-template-columns: repeat(4, max-content);
     justify-content: center;
-    gap: 25px;
+    gap: 35px; /* MODIFIED: Set to 35px */
     width: 100%;
     max-width: 500px;
     margin: 0 auto 15px;
@@ -1629,9 +1268,7 @@ span.sub-item {
     .search-container,
     .hero-section,
     .grid-heading,
-    .app-grid,
-    .anniversary-banner,
-    .certificate-button {
+    .app-grid {
         max-width: 700px;
     }
 
@@ -1651,9 +1288,7 @@ span.sub-item {
     .search-container,
     .hero-section,
     .grid-heading,
-    .app-grid,
-    .anniversary-banner,
-    .certificate-button {
+    .app-grid {
         max-width: 900px;
     }
 
@@ -1661,3 +1296,94 @@ span.sub-item {
         grid-template-columns: repeat(8, max-content);
     }
 }
+
+/* === ADDED ANNIVERSARY CSS === */
+/* Reduce space between icons a little so they don't overflow */
+.app-grid { gap: 28px; }
+.app-wrapper { gap: 6px; }
+
+/* Multi-color slow border animation for icon circles (at least 30 colors) */
+@keyframes multiBorderColors {
+    0% { border-color: #6a0dad; }
+    3% { border-color: #7b1fa2; }
+    6% { border-color: #8e24aa; }
+    9% { border-color: #9c27b0; }
+    12% { border-color: #ab47bc; }
+    15% { border-color: #5e35b1; }
+    18% { border-color: #3949ab; }
+    21% { border-color: #1e88e5; }
+    24% { border-color: #2196f3; }
+    27% { border-color: #03a9f4; }
+    30% { border-color: #00bcd4; }
+    33% { border-color: #00acc1; }
+    36% { border-color: #009688; }
+    39% { border-color: #43a047; }
+    42% { border-color: #7cb342; }
+    45% { border-color: #c0ca33; }
+    48% { border-color: #fdd835; }
+    51% { border-color: #ffc107; }
+    54% { border-color: #ff9800; }
+    57% { border-color: #ff7043; }
+    60% { border-color: #f4511e; }
+    63% { border-color: #e53935; }
+    66% { border-color: #d32f2f; }
+    69% { border-color: #c62828; }
+    72% { border-color: #b71c1c; }
+    75% { border-color: #8e24aa; }
+    78% { border-color: #6a1b9a; }
+    81% { border-color: #4a148c; }
+    84% { border-color: #311b92; }
+    87% { border-color: #283593; }
+    90% { border-color: #1a237e; }
+    93% { border-color: #0d47a1; }
+    96% { border-color: #1565c0; }
+    100% { border-color: #6a0dad; }
+}
+
+/* Apply only to the circular border of app icons */
+.app-icon {
+    border-width: 3px !important;
+    animation: multiBorderColors 90s linear infinite;
+    -webkit-animation: multiBorderColors 90s linear infinite;
+}
+
+/* Subtle purple/blue/red gradient for the whole screen */
+.screen::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(106,13,173,0.15), rgba(59,130,246,0.12), rgba(239,68,68,0.10));
+    z-index: 2;
+    pointer-events: none;
+}
+
+/* Anniversary banner styles */
+.anniv-banner {
+    width: 100%;
+    max-width: 700px;
+    margin: 8px auto;
+    padding: 12px 16px;
+    border-radius: 14px;
+    background: linear-gradient(90deg, rgba(106,13,173,0.9), rgba(59,130,246,0.85), rgba(239,68,68,0.85));
+    box-shadow: none;
+    color: #fff;
+    text-align: center;
+    opacity: 0.85; /* 85% opacity as requested */
+    z-index: 30;
+    border: 2px solid rgba(255,255,255,0.06);
+}
+
+/* Banner inner content */
+.anniv-banner .anniv-banner-content { display:flex; flex-direction:column; align-items:center; gap:6px; }
+.anniv-banner .anniv-dates { font-size: 0.95rem; font-weight:700; }
+.anniv-banner .anniv-note { font-size:0.85rem; opacity:0.95; }
+
+/* Certificate form styling */
+.certificate-section { width:100%; max-width:700px; margin: 6px auto 16px; padding: 12px; box-sizing:border-box; z-index:30; }
+.certificate-form { background: rgba(0,0,0,0.45); padding:12px; border-radius:12px; border: 1px solid rgba(255,255,255,0.04); display:flex; flex-direction:column; gap:8px; }
+.certificate-form .form-row { display:flex; gap:8px; flex-wrap:wrap; align-items:center; justify-content:space-between; }
+.certificate-form .form-row label { flex:0 0 30%; min-width:90px; font-size:0.85rem; color:var(--nm-text); }
+.certificate-form .form-row input { flex:1 1 auto; padding:8px 10px; border-radius:8px; border:1px solid rgba(255,255,255,0.08); background: var(--nm-darkest); color:var(--nm-text); font-family:inherit; }
+.certificate-form .form-actions { display:flex; justify-content:center; padding-top:6px; }
+#download-certificate-btn { opacity: 0.85; }
+

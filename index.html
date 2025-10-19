@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>DedSec Project - 1 Year Anniversary</title>
+    <title>DedSec Project</title>
     
-    <meta name="description" content="Celebrating 1 year of DedSec Project! Join our anniversary event from October 20 to October 31 and get your exclusive certificate.">
-    <meta name="keywords" content="DedSec, DedSec Project, 1 Year Anniversary, Cybersecurity, Ethical Hacking, Anniversary Certificate">
-    <meta property="og:title" content="DedSec Project - 1 Year Anniversary">
-    <meta property="og:description" content="Celebrating 1 year of DedSec Project! Join our anniversary event from October 20 to October 31.">
+    <meta name="description" content="The DedSec Project is a toolkit for digital self-defense, offering tools and educational resources on cybersecurity and ethical hacking.">
+    <meta name="keywords" content="DedSec, DedSec Project, Termux, Ethical Hacking, Cybersecurity, Digital Self-Defense, Phone Hacking, Termux Tutorial, Android Hacking, Phishing Attacks, Security Scripts, Python, Command Line, URL Masker, Hacking Education, Penetration Testing, Data Privacy, Fox Chat, End-to-End Encrypted Chat, DedSec Database, File Storage Server, Radio Music Player, OSINTDS, Open Source Intelligence, Web Reconnaissance, SQLi, XSS, HTML Inspector, Android App Launcher, Termux Resources, Python Gym Clothing, AdGen, Terminal Customization, bash.bashrc, .bash_profile">
+    <meta property="og:title" content="DedSec Project">
+    <meta property="og:description" content="DedSec has given you the truth, do what you will.">
     <meta property="og:image" content="https://raw.githubusercontent.com/dedsec1121fk/dedsec1121fk.github.io/5860edb8a7468d955336c9cf1d8b357597d6d645/Assets/Images/Logos/Custom%20Black%2Purple%20Fox%20Logo.png">
     <meta property="og:type" content="website">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -21,7 +21,7 @@
     {
       "@context": "https://schema.org",
       "@type": "WebSite",
-      "name": "DedSec Project - 1 Year Anniversary",
+      "name": "DedSec Project",
       "url": "https://ded-sec.space/",
       "potentialAction": {
         "@type": "SearchAction",
@@ -51,33 +51,34 @@
                     </div>
                 </div>
 
-                <!-- Anniversary Banner -->
-                <div class="anniversary-banner">
-                    <div class="anniversary-content">
-                        <div class="anniversary-icon">
-                            <i class="fas fa-birthday-cake"></i>
-                        </div>
-                        <div class="anniversary-text">
-                            <h2 data-en="1 Year Anniversary!" data-gr="1 Χρόνος Επέτειος!">1 Year Anniversary!</h2>
-                            <p data-en="Celebrate with us from October 20 to October 31" data-gr="Γιορτάστε μαζί μας από 20 Οκτωβρίου έως 31 Οκτωβρίου">Celebrate with us from October 20 to October 31</p>
-                        </div>
-                        <div class="anniversary-decoration">
-                            <div class="decoration-ball ball-1"></div>
-                            <div class="decoration-ball ball-2"></div>
-                            <div class="decoration-ball ball-3"></div>
-                        </div>
+                
+                <!-- ANNIVERSARY BANNER (inserted directly below the main search bar) -->
+                <div id="anniversary-banner" class="anniv-banner" role="region" aria-label="1 Year Anniversary Announcement">
+                    <div class="anniv-banner-content">
+                        <strong>🎉 DedSec - 1 Year Anniversary! 🎉</strong>
+                        <div class="anniv-dates">Event: October 20 — October 31</div>
+                        <div class="anniv-note">Celebrate with us — get your official 1st-anniversary certificate below!</div>
                     </div>
                 </div>
 
-                <!-- Certificate Button -->
-                <button class="certificate-button" id="certificate-btn">
-                    <i class="fas fa-award"></i>
-                    <span data-en="Get Your Anniversary Certificate" data-gr="Λάβετε το Πιστοποιητικό Επετείου σας">Get Your Anniversary Certificate</span>
-                </button>
+                <!-- CERTIFICATE FORM (below the anniversary banner) -->
+                <div id="certificate-section" class="certificate-section" aria-live="polite">
+                    <form id="certificate-form" class="certificate-form" autocomplete="off">
+                        <div class="form-row"><label for="first-name">First Name</label><input id="first-name" name="firstName" type="text" required></div>
+                        <div class="form-row"><label for="last-name">Last Name</label><input id="last-name" name="lastName" type="text" required></div>
+                        <div class="form-row"><label for="age">Age</label><input id="age" name="age" type="number" min="0" max="130" required></div>
+                        <div class="form-row"><label for="country">Country</label><input id="country" name="country" type="text" required></div>
+                        <div class="form-row"><label for="city">City</label><input id="city" name="city" type="text" required></div>
+                        <div class="form-actions">
+                            <button id="download-certificate-btn" class="hero-cta-button" type="submit" aria-label="Download your anniversary certificate">Download Certificate</button>
+                        </div>
+                    </form>
+                </div>
 
                 <div class="hero-section">
                     <p class="hero-text" data-en="" data-gr=""></p>
                 </div>
+
 
                 <h4 class="grid-heading" data-en="Explore the Toolkit" data-gr="Εξερευνήστε την Εργαλειοθήκη">Explore the Toolkit</h4>
                 <div class="app-grid">
@@ -97,6 +98,7 @@
                     </button>
                 </div>
 
+
                 <h4 class="grid-heading" data-en="About & Community" data-gr="Σχετικά & Κοινότητα">About & Community</h4>
                 <div class="app-grid">
                     <button class="app-wrapper" data-modal="collaborations">
@@ -114,6 +116,7 @@
                         <span class="app-label" data-en="Contact Us & Credits" data-gr="Επικοινωνία & Συντελεστές">Contact Us & Credits</span>
                     </button>
                 </div>
+
 
                 <h4 class="grid-heading" data-en="Settings & Legal" data-gr="Ρυθμίσεις & Νομικά">Settings & Legal</h4>
                 <div class="app-grid">
@@ -133,6 +136,7 @@
                     </button>
                 </div>
 
+
                 <footer class="main-footer">
                     <p data-lang-section="en">© 2025 DedSec Project. All Rights Reserved.</p>
                     <p data-lang-section="gr" class="hidden-by-default">© 2025 DedSec Project. Με επιφύλαξη παντός δικαιώματος.</p>
@@ -144,92 +148,6 @@
         </div>
     </div>
 
-    <!-- Certificate Modal -->
-    <div id="certificate-modal" class="modal-overlay">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 data-en="Anniversary Certificate" data-gr="Πιστοποιητικό Επετείου">Anniversary Certificate</h2>
-                <button class="close-modal" aria-label="Close">×</button>
-            </div>
-            <div class="modal-body">
-                <div class="certificate-form-container">
-                    <p data-en="Fill in your details to receive your exclusive 1-year anniversary certificate:" data-gr="Συμπληρώστε τα στοιχεία σας για να λάβετε το αποκλειστικό πιστοποιητικό 1 έτους επετείου:">Fill in your details to receive your exclusive 1-year anniversary certificate:</p>
-                    
-                    <form id="certificate-form">
-                        <div class="form-group">
-                            <label for="first-name" data-en="First Name" data-gr="Όνομα">First Name</label>
-                            <input type="text" id="first-name" name="first-name" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="last-name" data-en="Last Name" data-gr="Επώνυμο">Last Name</label>
-                            <input type="text" id="last-name" name="last-name" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="age" data-en="Age" data-gr="Ηλικία">Age</label>
-                            <input type="number" id="age" name="age" min="1" max="120" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="country" data-en="Country" data-gr="Χώρα">Country</label>
-                            <input type="text" id="country" name="country" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="city" data-en="City" data-gr="Πόλη">City</label>
-                            <input type="text" id="city" name="city" required>
-                        </div>
-                        
-                        <div class="form-actions">
-                            <button type="button" id="generate-certificate" class="accept-btn" data-en="Download Certificate" data-gr="Λήψη Πιστοποιητικού">Download Certificate</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Certificate Preview Modal -->
-    <div id="certificate-preview-modal" class="modal-overlay">
-        <div class="modal-content certificate-preview-content">
-            <div class="modal-header">
-                <h2 data-en="Certificate Preview" data-gr="Προεπισκόπηση Πιστοποιητικού">Certificate Preview</h2>
-                <button class="close-modal" aria-label="Close">×</button>
-            </div>
-            <div class="modal-body certificate-preview-body">
-                <div id="certificate-template" class="certificate-template">
-                    <div class="certificate-border">
-                        <div class="certificate-header">
-                            <h1>Certificate of Participation</h1>
-                            <h2>DedSec Project 1-Year Anniversary</h2>
-                        </div>
-                        <div class="certificate-body">
-                            <p>This certifies that</p>
-                            <h3 id="certificate-name">[Full Name]</h3>
-                            <p>has participated in the celebration of the 1-year anniversary</p>
-                            <p>of the DedSec Project</p>
-                            <p>during the event from October 20 to October 31</p>
-                        </div>
-                        <div class="certificate-footer">
-                            <div class="signature">
-                                <p>dedsec1121fk</p>
-                                <span>Founder, DedSec Project</span>
-                            </div>
-                            <div class="date">
-                                <p id="certificate-date">October 2025</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="certificate-actions">
-                    <button id="download-certificate" class="accept-btn" data-en="Download PDF" data-gr="Λήψη PDF">Download PDF</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- All other original modals remain unchanged -->
     <div id="image-viewer-modal" class="modal-overlay">
         <img id="expanded-img" src="" alt="Expanded Profile Picture">
     </div>
