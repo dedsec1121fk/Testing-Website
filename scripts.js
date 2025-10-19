@@ -669,13 +669,16 @@ document.addEventListener('DOMContentLoaded', () => {
                     const searchInput = document.getElementById('useful-info-search-input');
                     const resultsContainer = document.getElementById('useful-info-results-container');
                     const navContainer = document.getElementById('useful-information-nav');
-                    if (searchInput) searchInput.value = '';
-                    if (resultsContainer) resultsContainer.classList.add('hidden');
-                     if (navContainer) { // Show nav again
-                        navContainer.querySelectorAll('.app-icon').forEach(article => {
-                           article.style.display = 'flex';
-                       });
-                     }
+                    // --- FIX: Add contentContainer and promptText ---
+                    const contentContainer = document.getElementById('useful-information-content');
+                    const promptText = document.getElementById('useful-info-prompt');
+
+                    if (contentContainer) contentContainer.innerHTML = ''; // Clear article content/loading
+                    if (searchInput) searchInput.value = ''; // Clear search
+                    if (resultsContainer) resultsContainer.classList.add('hidden'); // Hide results
+                    if (navContainer) navContainer.style.display = 'grid'; // Show nav grid
+                    if (promptText) promptText.style.display = 'block'; // Show prompt
+                    // --- END FIX ---
                 }
                  // Remove any lingering highlights
                 modal.querySelectorAll('.content-highlight').forEach(el => el.classList.remove('content-highlight'));
@@ -1276,6 +1279,21 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (modalOverlay.parentNode) {
                     modalOverlay.parentNode.removeChild(modalOverlay);
                 }
+
+                // --- FIX: Restore the main "Useful Information" modal view ---
+                const navContainer = document.getElementById('useful-information-nav');
+                const promptText = document.getElementById('useful-info-prompt');
+                const resultsContainer = document.getElementById('useful-info-results-container');
+                const contentContainer = document.getElementById('useful-information-content');
+                const searchInput = document.getElementById('useful-info-search-input');
+
+                if (navContainer) navContainer.style.display = 'grid'; // Show nav grid
+                if (promptText) promptText.style.display = 'block'; // Show prompt
+                if (resultsContainer) resultsContainer.classList.add('hidden'); // Hide any old results
+                if (contentContainer) contentContainer.innerHTML = ''; // Clear "Loading content..."
+                if (searchInput) searchInput.value = ''; // Clear search bar
+                // --- END FIX ---
+
             }, 300); // Match CSS transition duration
         };
 
@@ -1293,9 +1311,21 @@ document.addEventListener('DOMContentLoaded', () => {
     // Fetches and loads the content of a specific article file
     async function loadInformationContent(fileUrl, title, textToHighlight = null) {
         const contentContainer = document.getElementById('useful-information-content');
-        if (!contentContainer) return;
+        // --- FIX: Get navContainer and promptText ---
+        const navContainer = document.getElementById('useful-information-nav');
+        const promptText = document.getElementById('useful-info-prompt');
+
+        if (!contentContainer || !navContainer || !promptText) {
+            console.error("Missing critical UI elements for loading content.");
+            return;
+        }
         
+        // --- FIX: Hide nav and show loading message in the main modal ---
+        navContainer.style.display = 'none';
+        promptText.style.display = 'none';
         contentContainer.innerHTML = `<p style="text-align: center; color: var(--nm-text-muted);">${currentLanguage === 'gr' ? 'Φόρτωση περιεχομένου...' : 'Loading content...'}</p>`;
+        contentContainer.style.display = 'block'; // Ensure it's visible
+        // --- END FIX ---
         
         try {
             const response = await fetch(fileUrl);
@@ -1318,6 +1348,7 @@ document.addEventListener('DOMContentLoaded', () => {
             
         } catch (error) {
             console.error('Failed to load article content:', error);
+            // --- FIX: Error message will be shown in contentContainer ---
             contentContainer.innerHTML = `<p style="text-align: center; color: var(--nm-danger);">${currentLanguage === 'gr' ? 'Αποτυχία φόρτωσης περιεχομένου.' : 'Failed to load content.'}</p>`;
         }
     }
