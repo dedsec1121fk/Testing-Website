@@ -69,14 +69,15 @@ body.light-theme .screen::after {
     background: linear-gradient(135deg, #8A2BE2, #4169E1, #DC143C);
     border: 2px solid transparent;
     border-radius: 20px;
-    padding: 15px;
+    padding: 20px 15px;
     margin: 15px auto;
-    width: 100%;
+    width: calc(100% - 30px); /* FIX: Prevent covering by scrollbar */
     max-width: 500px;
     text-align: center;
     box-shadow: 0 4px 15px rgba(138, 43, 226, 0.3);
     opacity: 0.85;
     animation: bannerPulse 3s ease-in-out infinite;
+    box-sizing: border-box; /* FIX: Ensure padding doesn't increase width */
 }
 
 @keyframes bannerPulse {
@@ -109,22 +110,23 @@ body.light-theme .screen::after {
     background: linear-gradient(135deg, #8A2BE2, #4169E1, #DC143C);
     border: 2px solid transparent;
     border-radius: 20px;
-    padding: 12px 20px;
+    padding: 16px 25px; /* FIX: Made bigger */
     margin: 10px auto 20px auto;
-    width: 100%;
+    width: calc(100% - 30px); /* FIX: Prevent covering by scrollbar */
     max-width: 500px;
     color: white;
     font-family: 'Orbitron', sans-serif;
     font-weight: 700;
-    font-size: 0.9rem;
+    font-size: 1rem; /* FIX: Increased font size */
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 10px;
+    gap: 12px;
     transition: all 0.3s ease;
     opacity: 0.85;
     box-shadow: 0 4px 15px rgba(138, 43, 226, 0.3);
+    box-sizing: border-box; /* FIX: Ensure padding doesn't increase width */
 }
 
 .certificate-button:hover {
@@ -172,6 +174,27 @@ body.light-theme .screen::after {
 .form-actions {
     text-align: center;
     margin-top: 30px;
+}
+
+/* FIX: Purple download button in certificate modal */
+#generate-certificate {
+    background: linear-gradient(135deg, #8A2BE2, #4169E1, #DC143C) !important;
+    border: 2px solid transparent !important;
+    color: white !important;
+    padding: 14px 30px !important;
+    font-size: 1rem !important;
+    border-radius: 20px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 10px !important;
+    transition: all 0.3s ease !important;
+}
+
+#generate-certificate:hover {
+    opacity: 0.9 !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 20px rgba(138, 43, 226, 0.5) !important;
 }
 
 /* Certificate Template Styles */

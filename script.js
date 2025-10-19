@@ -388,7 +388,7 @@ document.addEventListener('DOMContentLoaded', () => {
         changeLanguage('en'); 
     }
 
-    // Certificate Generation Function
+    // Certificate Generation Function - FIXED VERSION
     function generateCertificate() {
         const firstName = document.getElementById('first-name').value.trim();
         const lastName = document.getElementById('last-name').value.trim();
@@ -416,22 +416,46 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('certificate-location').textContent = location;
         document.getElementById('certificate-issue-date').textContent = issueDate;
 
-        // Generate PDF
+        // Generate PDF - FIXED VERSION
         const { jsPDF } = window.jspdf;
         const certificateElement = document.getElementById('certificate-content');
+
+        // Make certificate visible temporarily for capture
+        const originalDisplay = certificateElement.style.display;
+        certificateElement.style.display = 'block';
+        certificateElement.style.position = 'absolute';
+        certificateElement.style.left = '-9999px';
+        certificateElement.style.width = '800px';
+        certificateElement.style.height = '600px';
 
         html2canvas(certificateElement, {
             scale: 2,
             useCORS: true,
             logging: false,
-            backgroundColor: '#0B121C'
+            backgroundColor: '#0B121C',
+            width: 800,
+            height: 600
         }).then(canvas => {
+            // Restore original display
+            certificateElement.style.display = originalDisplay;
+            certificateElement.style.position = '';
+            certificateElement.style.left = '';
+            certificateElement.style.width = '';
+            certificateElement.style.height = '';
+
             const imgData = canvas.toDataURL('image/png');
             const pdf = new jsPDF('landscape', 'mm', 'a4');
             const pdfWidth = pdf.internal.pageSize.getWidth();
             const pdfHeight = pdf.internal.pageSize.getHeight();
             
-            pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+            // Calculate dimensions to fit the PDF
+            const imgWidth = canvas.width;
+            const imgHeight = canvas.height;
+            const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight);
+            const imgX = (pdfWidth - imgWidth * ratio) / 2;
+            const imgY = (pdfHeight - imgHeight * ratio) / 2;
+            
+            pdf.addImage(imgData, 'PNG', imgX, imgY, imgWidth * ratio, imgHeight * ratio);
             pdf.save(`DedSec_Anniversary_Certificate_${firstName}_${lastName}.pdf`);
             
             // Reset form and close modal
@@ -444,6 +468,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 : 'Certificate downloaded successfully!');
         }).catch(error => {
             console.error('Error generating certificate:', error);
+            // Restore original display in case of error
+            certificateElement.style.display = originalDisplay;
+            certificateElement.style.position = '';
+            certificateElement.style.left = '';
+            certificateElement.style.width = '';
+            certificateElement.style.height = '';
+            
             alert(currentLanguage === 'gr' 
                 ? 'Σφάλμα κατά τη δημιουργία του πιστοποιητικού.' 
                 : 'Error generating certificate.');
