@@ -201,21 +201,33 @@ document.addEventListener('DOMContentLoaded', () => {
         const generateBtn = document.getElementById('generate-certificate');
         const originalHTML = generateBtn.innerHTML;
         
+        // Create success message based on current language
+        const successMessage = currentLanguage === 'gr' 
+            ? 'Το Πιστοποιητικό Λήφθηκε!'
+            : 'Certificate Downloaded!';
+        
+        const successIcon = '<i class="fas fa-check"></i>';
+        
         generateBtn.innerHTML = `
-            <i class="fas fa-check"></i>
-            <span data-en="Certificate Downloaded!" data-gr="Το Πιστοποιητικό Λήφθηκε!">Certificate Downloaded!</span>
+            ${successIcon}
+            <span>${successMessage}</span>
         `;
         generateBtn.style.background = 'linear-gradient(135deg, #00FF00, #00CC00)';
         generateBtn.style.borderColor = '#00FF00';
-        
-        // Update language for success message
-        changeLanguage(currentLanguage);
         
         setTimeout(() => {
             generateBtn.innerHTML = originalHTML;
             generateBtn.style.background = 'linear-gradient(135deg, var(--nm-success), #00CC00)';
             generateBtn.style.borderColor = 'var(--nm-success)';
-            changeLanguage(currentLanguage); // Re-apply language to original text
+            
+            // Re-apply language to restore original button text
+            const span = generateBtn.querySelector('span');
+            if (span) {
+                const text = currentLanguage === 'gr' 
+                    ? 'Λήψη Πιστοποιητικού' 
+                    : 'Download Certificate';
+                span.textContent = text;
+            }
         }, 3000);
     }
 
