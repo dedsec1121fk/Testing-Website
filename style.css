@@ -107,20 +107,20 @@ body.light-theme .note.note-warning {
    ANNIVERSARY STYLES
    ================================================================= */
 
-/* Anniversary Banner */
+/* Anniversary Banner - REVERTED TO GOLD/YELLOW THEME */
 .anniversary-banner {
-    background: linear-gradient(135deg, var(--nm-accent), var(--nm-accent-hover));
-    border: 2px solid var(--nm-accent);
+    background: linear-gradient(135deg, #FFD700, #FFA500); /* Gold to Orange */
+    border: 2px solid #FFD700;
     border-radius: 20px;
     padding: 20px;
     margin: 15px auto;
     max-width: 480px;
     width: 100%;
-    opacity: 0.85;
-    box-shadow: 0 4px 15px rgba(153, 102, 255, 0.3);
+    opacity: 0.95; /* Increased opacity for gold banner */
+    box-shadow: 0 4px 15px rgba(255, 215, 0, 0.5); /* Gold glow */
     position: relative;
     z-index: 5;
-    box-sizing: border-box; /* <-- THIS IS THE FIX FOR THE BANNER */
+    box-sizing: border-box; 
 }
 
 .anniversary-content {
@@ -132,13 +132,13 @@ body.light-theme .note.note-warning {
 
 .anniversary-icon {
     font-size: 2rem;
-    color: var(--nm-text);
+    color: #000000; /* Dark icon for gold contrast */
     flex-shrink: 0;
 }
 
 .anniversary-text h3 {
     margin: 0 0 10px 0;
-    color: var(--nm-text);
+    color: #000000; /* Dark text for gold contrast */
     font-family: 'Orbitron', sans-serif;
     font-size: 1.2rem;
     text-align: center;
@@ -148,7 +148,7 @@ body.light-theme .note.note-warning {
 
 .anniversary-text p {
     margin: 0;
-    color: var(--nm-text);
+    color: #333333; /* Darker text for gold contrast */
     font-size: 0.9rem;
     line-height: 1.4;
     text-align: left;
@@ -156,10 +156,10 @@ body.light-theme .note.note-warning {
 
 .certificate-btn {
     width: 100%;
-    /* MODIFIED: Changed from gold/red gradient to purple/purple-hover */
-    background: linear-gradient(135deg, var(--nm-accent), var(--nm-accent-hover));
-    border: 2px solid var(--nm-accent);
-    color: #FFFFFF; /* Changed text to white for contrast */
+    /* REVERTED: Gold/Orange gradient */
+    background: linear-gradient(135deg, #FFA500, #FFD700); 
+    border: 2px solid #FFD700;
+    color: #000000; /* Reverted text to dark for contrast */
     padding: 12px 20px;
     border-radius: 20px;
     font-family: 'Orbitron', sans-serif;
@@ -171,15 +171,15 @@ body.light-theme .note.note-warning {
     align-items: center;
     justify-content: center;
     gap: 10px;
-    opacity: 0.85;
-    box-shadow: 0 4px 15px rgba(var(--glow-rgb), 0.3); /* Used purple glow */
+    opacity: 0.95;
+    box-shadow: 0 4px 15px rgba(255, 215, 0, 0.5); /* Gold glow */
 }
 
 .certificate-btn:hover {
-    background: linear-gradient(135deg, var(--nm-accent-hover), var(--nm-accent));
-    border-color: var(--nm-accent-hover);
+    background: linear-gradient(135deg, #FFD700, #FFA500);
+    border-color: #FFA500;
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(var(--glow-rgb), 0.5); /* Used purple glow */
+    box-shadow: 0 6px 20px rgba(255, 215, 0, 0.8); /* Stronger Gold glow */
 }
 
 /* Certificate Form Styles */
@@ -225,9 +225,10 @@ body.light-theme .note.note-warning {
 }
 
 #generate-certificate {
-    background: linear-gradient(135deg, var(--nm-accent), var(--nm-accent-hover)); /* MODIFIED: Purple gradient */
+    /* Kept PURPLE/WHITE */
+    background: linear-gradient(135deg, var(--nm-accent), var(--nm-accent-hover)); 
     border: 2px solid var(--nm-accent);
-    color: #FFFFFF; /* MODIFIED: White text */
+    color: #FFFFFF; 
     padding: 15px 30px;
     border-radius: 20px;
     font-family: 'Orbitron', sans-serif;
@@ -243,12 +244,12 @@ body.light-theme .note.note-warning {
 }
 
 #generate-certificate:hover {
-    background: linear-gradient(135deg, var(--nm-accent-hover), var(--nm-accent)); /* MODIFIED: Purple gradient */
+    background: linear-gradient(135deg, var(--nm-accent-hover), var(--nm-accent)); 
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(var(--glow-rgb), 0.3); /* MODIFIED: Purple glow */
+    box-shadow: 0 6px 20px rgba(var(--glow-rgb), 0.3); 
 }
 
-/* Certificate Preview Styles */
+/* Certificate Preview Styles - KEPT WHITE/PURPLE */
 .certificate-preview {
     margin-top: 30px;
     padding: 20px;
@@ -258,13 +259,13 @@ body.light-theme .note.note-warning {
 }
 
 .certificate {
-    /* MODIFIED: White background */
+    /* WHITE BACKGROUND */
     background: #FFFFFF; 
-    /* MODIFIED: Purple border */
+    /* PURPLE BORDER */
     border: 4px solid var(--nm-accent); 
     border-radius: 15px;
     padding: 40px 30px;
-    /* MODIFIED: Black text for white background */
+    /* BLACK TEXT */
     color: #000000; 
     font-family: 'Noto Serif', serif;
     text-align: center;
@@ -278,14 +279,14 @@ body.light-theme .note.note-warning {
 
 .certificate-logo {
     font-size: 3rem;
-    /* MODIFIED: Purple logo */
+    /* PURPLE LOGO */
     color: var(--nm-accent-hover); 
     margin-bottom: 15px;
 }
 
 .certificate-header h1 {
     font-size: 2.2rem;
-    /* MODIFIED: Purple title */
+    /* PURPLE TITLE */
     color: var(--nm-accent); 
     margin: 0 0 10px 0;
     font-weight: bold;
@@ -295,7 +296,7 @@ body.light-theme .note.note-warning {
 
 .certificate-header h2 {
     font-size: 1.5rem;
-    /* MODIFIED: Purple accent */
+    /* PURPLE ACCENT */
     color: var(--nm-accent-hover); 
     margin: 0;
     font-weight: normal;
@@ -310,14 +311,14 @@ body.light-theme .note.note-warning {
     font-size: 1.1rem;
     margin: 15px 0;
     line-height: 1.6;
-    /* MODIFIED: Black text for white background */
+    /* BLACK TEXT */
     color: #000000; 
 }
 
 .recipient-name {
     font-size: 2.5rem;
     font-weight: bold;
-    /* MODIFIED: Purple name and border */
+    /* PURPLE NAME AND BORDER */
     color: var(--nm-accent-hover); 
     margin: 20px 0;
     padding: 10px;
@@ -334,7 +335,7 @@ body.light-theme .note.note-warning {
     align-items: flex-end;
     margin-top: 40px;
     padding-top: 20px;
-    /* MODIFIED: Dark gray/black border */
+    /* Dark gray/black border for line */
     border-top: 1px solid #444444; 
 }
 
@@ -345,13 +346,13 @@ body.light-theme .note.note-warning {
 .detail-item {
     margin: 8px 0;
     font-size: 0.9rem;
-    /* MODIFIED: Black text */
+    /* BLACK TEXT */
     color: #000000; 
 }
 
 .detail-item span:first-child {
     font-weight: bold;
-    /* MODIFIED: Purple detail item title */
+    /* PURPLE DETAIL ITEM TITLE */
     color: var(--nm-accent); 
 }
 
@@ -362,14 +363,14 @@ body.light-theme .note.note-warning {
 .signature-line {
     width: 200px;
     height: 1px;
-    /* MODIFIED: Black line */
+    /* BLACK LINE */
     background: #000000; 
     margin: 0 auto 10px auto;
 }
 
 .signature span {
     font-style: italic;
-    /* MODIFIED: Muted black/dark gray text */
+    /* Muted black/dark gray text */
     color: #555555; 
 }
 
@@ -803,7 +804,7 @@ body.light-theme ::-webkit-scrollbar-thumb {
 .app-grid {
     display: grid;
     grid-template-columns: repeat(4, max-content);
-    /* MODIFIED: Ensure centering is explicit */
+    /* KEPT: Ensures centering */
     justify-content: center; 
     gap: 35px; /* MODIFIED: Set to 35px */
     width: 100%;
