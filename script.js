@@ -256,7 +256,6 @@ document.addEventListener('DOMContentLoaded', () => {
         search(query, index, lang, indexName) {
             const queryTokens = this.tokenize(query, lang);
             if (queryTokens.length === 0) return [];
-            
             const idfMap = this.idfMaps[indexName] || new Map();
 
             const scoredResults = index
@@ -269,23 +268,18 @@ document.addEventListener('DOMContentLoaded', () => {
                         const idf = idfMap.get(qToken) || 0.5;
                         let tokenFound = false;
 
-                        // 1. Exact Title Match (High Score)
                         let exactTitleMatches = item.titleTokens.filter(t => t === qToken).length;
                         if (exactTitleMatches > 0) {
                             score += exactTitleMatches * 10 * idf;
                             tokenFound = true;
                         }
-
-                        // 2. Exact Text Match (Medium Score)
                         let exactTextMatches = item.textTokens.filter(t => t === qToken).length;
                         if (exactTextMatches > 0) {
                             score += exactTextMatches * 2 * idf;
                             tokenFound = true;
                         }
-
                         if(tokenFound) foundTokens.add(qToken);
 
-                        // 3. Fuzzy Match (Similarity Score)
                         if (!tokenFound) {
                             let bestSimilarity = 0;
                             const allItemTokens = [...item.titleTokens, ...item.textTokens];
@@ -295,764 +289,942 @@ document.addEventListener('DOMContentLoaded', () => {
                             });
                             
                             if (bestSimilarity > 0.7) {
-                                score += bestSimilarity * 5 * idf;
-                                foundTokens.add(qToken);
+                               score += bestSimilarity * 5 * idf;
+                               foundTokens.add(qToken);
                             }
                         }
                     });
 
-                    // Boost for all query tokens found
                     if (foundTokens.size === queryTokens.length && queryTokens.length > 1) score *= 1.5;
+                    if (item.text.toLowerCase().includes(query.toLowerCase().trim())) score *= 1.2;
+                    score *= item.weight || 1;
 
-                    // Boost for exact phrase match
-                    if (item.text.toLowerCase().includes(query.toLowerCase().trim())) {
-                        score *= 2;
-                    }
-                    
                     return { ...item, score };
-                })
+                });
+
+            return scoredResults
                 .filter(item => item.score > 0)
                 .sort((a, b) => b.score - a.score);
+        },
+        
+        generateSnippet(text, query, lang) {
+            const queryTokens = this.tokenize(query, lang);
+            if (queryTokens.length === 0) return text.substring(0, 120) + (text.length > 120 ? '...' : '');
+    
+            let bestIndex = -1;
+            const lowerCaseText = text.toLowerCase();
+    
+            for (const token of queryTokens) {
+                const index = lowerCaseText.indexOf(token);
+                if (index !== -1) {
+                    bestIndex = index;
+                    break; 
+                }
+            }
+            
+            if (bestIndex === -1) {
+                 return text.substring(0, 120) + (text.length > 120 ? '...' : '');
+            }
+    
+            const snippetLength = 120;
+            const start = Math.max(0, bestIndex - Math.round(snippetLength / 4));
+            const end = Math.min(text.length, start + snippetLength);
+            
+            let snippet = text.substring(start, end);
+            if (start > 0) snippet = '... ' + snippet;
+            if (end < text.length) snippet = snippet + ' ...';
+    
+            return snippet;
+        },
 
-            return scoredResults;
+        highlight(snippet, query, lang) {
+            const queryTokens = this.tokenize(query, lang);
+            if (queryTokens.length === 0) return snippet;
+            const regex = new RegExp(`(${queryTokens.join('|')})`, 'gi');
+            return snippet.replace(regex, '<strong>$1</strong>');
         }
     };
 
-
-    // --- GLOBAL UTILITIES ---
-
-    // Function to set CSS variables for glowing/highlighting
-    function setGlowHighlight(element, enabled, color = 'var(--glow-color)') {
-        if (element) {
-            element.style.boxShadow = enabled ? `0 0 15px 5px ${color}` : 'none';
-        }
-    }
-
-    // Function to open the target modal and highlight its corresponding grid button
-    function openModalAndHighlight(modalId, itemTitle = null) {
-        // Close all modals first
-        document.querySelectorAll('.modal-overlay').forEach(modal => {
-            modal.classList.remove('visible');
-        });
-
-        // Remove highlight from all app wrappers
-        document.querySelectorAll('.app-wrapper').forEach(wrapper => {
-            wrapper.classList.remove('active');
-            setGlowHighlight(wrapper, false);
-        });
-
-        // Show the target modal
-        const targetModal = document.getElementById(modalId + '-modal');
-        if (targetModal) {
-            targetModal.classList.add('visible');
+    // --- PORTFOLIO INITIALIZATION ---
+    function initializePortfolio() {
+        function showModal(modal) {
+            if (!modal) return;
+            modal.classList.add('visible');
         }
 
-        // Highlight the corresponding button
-        const button = document.querySelector(`.app-wrapper[data-modal="${modalId}"]`);
-        if (button) {
-            button.classList.add('active');
-            // Use different glow for special modals like 'privacy' (disclaimer)
-            const glowColor = (modalId === 'privacy' || modalId === 'disclaimer') ? 'var(--glow-color-danger)' : 'var(--glow-color)';
-            setGlowHighlight(button, true, glowColor);
-        }
-    }
-
-    // Function to close a modal by its ID
-    function closeModalById(modalId) {
-        const modal = document.getElementById(modalId);
-        if (modal) {
+        function hideModal(modal) {
+            if (!modal) return;
             modal.classList.remove('visible');
         }
 
-        // Remove highlight from all app wrappers
-        document.querySelectorAll('.app-wrapper').forEach(wrapper => {
-            wrapper.classList.remove('active');
-            setGlowHighlight(wrapper, false);
-        });
-    }
-
-    // Attach click listeners to all buttons that use the data-modal attribute
-    function initializeModals() {
-        document.querySelectorAll('[data-modal]').forEach(button => {
-            button.addEventListener('click', () => {
-                const modalId = button.getAttribute('data-modal');
-
-                // NEW LOGIC START: Intercept 'installation' click to check for disclaimer first.
-                if (modalId === 'installation') {
-                    if (!localStorage.getItem('disclaimerAccepted')) {
-                        // Disclaimer NOT accepted, open the disclaimer modal instead
-                        openModalAndHighlight('disclaimer');
-                        return; // Stop execution here
-                    }
-                    // Disclaimer accepted, proceed to open the Installation modal and load its content
-                    openModalAndHighlight(modalId);
-                    loadInstallationContent();
-                    return;
-                }
-                // NEW LOGIC END
-                
-                // For all other buttons, open the requested modal and handle its content if needed
-                openModalHandler(modalId);
-            });
-        });
-
-        // Attach close listeners to all close buttons
-        document.querySelectorAll('.close-modal').forEach(button => {
-            button.addEventListener('click', (e) => {
-                const modalOverlay = e.target.closest('.modal-overlay');
-                if (modalOverlay) {
-                    closeModalById(modalOverlay.id);
-                }
-            });
-        });
-
-        // Attach close listeners to all modal overlays (click outside to close)
-        document.querySelectorAll('.modal-overlay').forEach(overlay => {
-            overlay.addEventListener('click', (e) => {
-                if (e.target === overlay) {
-                    closeModalById(overlay.id);
-                }
-            });
-        });
-    }
-
-
-    // --- THEME SWITCHER FUNCTIONALITY ---
-    function initializeThemeSwitcher() {
-        const themeBtn = document.getElementById('theme-switcher-btn');
-        const currentTheme = localStorage.getItem('theme') || 'dark-theme';
-        
-        // Apply stored theme on load
-        document.body.className = currentTheme;
-        
-        if (themeBtn) {
-            const icon = themeBtn.querySelector('.app-icon i');
-            const label = themeBtn.querySelector('.app-label');
-
-            const updateButton = (theme) => {
-                if (theme === 'dark-theme') {
-                    icon.className = 'fas fa-sun';
-                    label.setAttribute('data-en', 'Light Theme');
-                    label.setAttribute('data-gr', 'Φωτεινό Θέμα');
-                    // Re-apply language after changing data- attributes
-                    label.textContent = label.getAttribute(`data-${currentLanguage}`) || 'Light Theme';
-                } else {
-                    icon.className = 'fas fa-moon';
-                    label.setAttribute('data-en', 'Dark Theme');
-                    label.setAttribute('data-gr', 'Σκοτεινό Θέμα');
-                    // Re-apply language after changing data- attributes
-                    label.textContent = label.getAttribute(`data-${currentLanguage}`) || 'Dark Theme';
-                }
-            };
-
-            // Initial button setup
-            updateButton(currentTheme);
-
-            themeBtn.addEventListener('click', () => {
-                let newTheme = document.body.classList.contains('dark-theme') ? 'light-theme' : 'dark-theme';
-                document.body.className = newTheme;
-                localStorage.setItem('theme', newTheme);
-                updateButton(newTheme);
-            });
-        }
-    }
-
-
-    // --- LANGUAGE SWITCHER FUNCTIONALITY ---
-    function changeLanguage(lang) {
-        currentLanguage = lang;
-        localStorage.setItem('language', lang);
-        
-        // 1. Update all data-en/data-gr attributes
-        document.querySelectorAll('[data-en], [data-gr]').forEach(element => {
-            const text = element.getAttribute(`data-${lang}`);
-            if (text !== null) {
-                element.textContent = text;
-            }
-        });
-        
-        // 2. Handle specific language sections (for long text blocks like footer/modals)
-        document.querySelectorAll('[data-lang-section]').forEach(section => {
-            if (section.getAttribute('data-lang-section') === lang) {
-                section.classList.remove('hidden-by-default');
-            } else {
-                section.classList.add('hidden-by-default');
-            }
-        });
-
-        // 3. Handle specific elements that need re-rendering
-        const searchInput = document.getElementById('main-search-input');
-        if (searchInput) {
-            const placeholder = searchInput.getAttribute(`data-${lang}`);
-            if (placeholder) {
-                searchInput.placeholder = placeholder;
-            }
-        }
-
-        const usefulInfoSearchInput = document.getElementById('useful-info-search-input');
-        if (usefulInfoSearchInput) {
-             const placeholder = usefulInfoSearchInput.getAttribute(`data-${lang}`);
-            if (placeholder) {
-                usefulInfoSearchInput.placeholder = placeholder;
-            }
-        }
-    }
-
-    function initializeLanguageSwitcher() {
-        // Set initial language from storage or default to 'en'
-        const storedLanguage = localStorage.getItem('language') || 'en';
-        changeLanguage(storedLanguage);
-        
-        const langSwitcherBtn = document.getElementById('lang-switcher-btn');
-        const langModal = document.getElementById('language-selection-modal');
-
-        if (langSwitcherBtn) {
-            langSwitcherBtn.addEventListener('click', () => {
-                openModalAndHighlight('language-selection');
-            });
-        }
-
-        document.querySelectorAll('.language-button').forEach(button => {
-            if (button.getAttribute('data-lang') === storedLanguage) {
-                button.classList.add('selected');
-            }
-
-            button.addEventListener('click', (e) => {
-                const newLang = e.target.getAttribute('data-lang');
-                if (newLang) {
-                    changeLanguage(newLang);
-                    // Update selected visual state
-                    document.querySelectorAll('.language-button').forEach(btn => {
-                        btn.classList.remove('selected');
-                    });
-                    e.target.classList.add('selected');
-
-                    // Close the modal after selection
-                    // Adding a small delay for visual confirmation
-                    setTimeout(() => closeModalById('language-selection-modal'), 300);
-                }
-            });
-        });
-    }
-
-    // --- HERO TEXT TYPING EFFECT ---
-    function initializeHeroText() {
-        const heroTextElement = document.querySelector('.hero-text');
-        if (!heroTextElement) return;
-
-        const enText = 'We are the digital watchdogs, defending the perimeter. Our code is our weapon. Knowledge is our shield. Join the project. Fight the power.';
-        const grText = 'Είμαστε οι ψηφιακοί φύλακες, υπερασπιζόμενοι την περίμετρο. Ο κώδικάς μας είναι το όπλο μας. Η γνώση είναι η ασπίδα μας. Συμμετέχετε στο έργο. Πολεμήστε την εξουσία.';
-        const textMap = { 'en': enText, 'gr': grText };
-        
-        let i = 0;
-        let isTyping = false;
-        let isDeleting = false;
-        let currentText = '';
-        let currentLanguageText = textMap[currentLanguage];
-        const typingSpeed = 50; // ms
-        const deletionSpeed = 20; // ms
-        const pauseTime = 1500; // ms
-
-        // Function to update the text based on current language
-        const updateTextForLanguage = (lang) => {
-            const newText = textMap[lang];
-            if (newText !== currentLanguageText) {
-                currentLanguageText = newText;
-                i = 0; // Restart typing effect
-                currentText = '';
-                heroTextElement.textContent = '';
-                isTyping = false;
-                isDeleting = false;
-            }
-        };
-
-        // Custom observer to re-run the typing effect when language changes
-        const langObserver = new MutationObserver((mutationsList) => {
-            for(const mutation of mutationsList) {
-                if (mutation.attributeName === `data-${currentLanguage}`) {
-                    updateTextForLanguage(currentLanguage);
-                    break;
-                }
-            }
-        });
-        // Start observing the hero-text element for data attribute changes
-        langObserver.observe(heroTextElement, { attributes: true });
-
-
-        function typeWriter() {
-            const fullText = currentLanguageText;
-            
-            if (isTyping) {
-                currentText = fullText.substring(0, currentText.length + 1);
-                heroTextElement.textContent = currentText;
-                
-                if (currentText.length === fullText.length) {
-                    isTyping = false;
-                    setTimeout(() => { isDeleting = true; typeWriter(); }, pauseTime);
-                } else {
-                    setTimeout(typeWriter, typingSpeed);
-                }
-            } else if (isDeleting) {
-                currentText = fullText.substring(0, currentText.length - 1);
-                heroTextElement.textContent = currentText;
-                
-                if (currentText.length === 0) {
-                    isDeleting = false;
-                    isTyping = true;
-                    // Switch language every time the text is fully deleted
-                    currentLanguage = currentLanguage === 'en' ? 'gr' : 'en';
-                    changeLanguage(currentLanguage); // This also updates currentLanguageText via the observer
-                    
-                    setTimeout(typeWriter, pauseTime);
-                } else {
-                    setTimeout(typeWriter, deletionSpeed);
-                }
-            } else {
-                 // Initial state: Start typing
-                 isTyping = true;
-                 typeWriter();
-            }
-        }
-        
-        // Start the effect
-        typeWriter();
-    }
-
-
-    // --- SEARCH BAR FUNCTIONALITY ---
-    function initializeSearch() {
-        const searchInput = document.getElementById('main-search-input');
-        const searchForm = document.getElementById('main-search-form');
-        const suggestionsContainer = document.getElementById('search-suggestions-container');
-        
-        if (!searchInput || !searchForm || !suggestionsContainer) return;
-
-        // Simple check to ensure the search term is not empty
-        searchForm.addEventListener('submit', (e) => {
-            if (searchInput.value.trim() === '') {
-                e.preventDefault();
-            }
-        });
-
-        // Simple hardcoded suggestions for a better user experience
-        const suggestions = [
-            { en: "How to use the project?", gr: "Πώς χρησιμοποιείται το έργο;" },
-            { en: "What does DedSec mean?", gr: "Τι σημαίνει DedSec;" },
-            { en: "Who is dedsec1121fk?", gr: "Ποιος είναι ο dedsec1121fk;" },
-            { en: "Learn about Ethical Hacking", gr: "Μάθετε για το Ηθικό Hacking" },
-            { en: "Check out the GitHub repository", gr: "Δείτε το GitHub repository" }
-        ];
-
-        // Function to render suggestions
-        const renderSuggestions = (query) => {
-            suggestionsContainer.innerHTML = '';
-            
-            if (query.length < 2) {
-                suggestionsContainer.classList.add('hidden');
-                return;
-            }
-
-            const langSuggestions = suggestions.map(s => s[currentLanguage] || s.en);
-            const filteredSuggestions = langSuggestions.filter(s => 
-                s.toLowerCase().includes(query.toLowerCase())
-            ).slice(0, 5); // Limit to 5 suggestions
-
-            if (filteredSuggestions.length > 0) {
-                filteredSuggestions.forEach(suggestion => {
-                    const div = document.createElement('div');
-                    div.classList.add('suggestion-item');
-                    div.textContent = suggestion;
-                    div.addEventListener('click', () => {
-                        searchInput.value = suggestion;
-                        searchForm.submit();
-                        suggestionsContainer.classList.add('hidden');
-                    });
-                    suggestionsContainer.appendChild(div);
-                });
-                suggestionsContainer.classList.remove('hidden');
-            } else {
-                suggestionsContainer.classList.add('hidden');
-            }
-        };
-
-        // Event listeners for search input
-        let debounceTimeout;
-        searchInput.addEventListener('input', (e) => {
-            clearTimeout(debounceTimeout);
-            const query = e.target.value.trim();
-            debounceTimeout = setTimeout(() => renderSuggestions(query), 200);
-        });
-
-        // Hide suggestions when clicking outside
-        document.addEventListener('click', (e) => {
-            if (!searchForm.contains(e.target) && !suggestionsContainer.classList.contains('hidden')) {
-                suggestionsContainer.classList.add('hidden');
-            }
-        });
-
-        // Show suggestions on focus if there's already some input
-        searchInput.addEventListener('focus', (e) => {
-            const query = e.target.value.trim();
-            if (query.length >= 2) {
-                renderSuggestions(query);
-            }
-        });
-    }
-
-    // --- SCROLL INDICATOR ---
-    function initializeScrollIndicator() {
-        const screen = document.querySelector('.screen');
-        const thumb = document.getElementById('scroll-indicator-thumb');
-        
-        if (!screen || !thumb) return;
-
-        screen.addEventListener('scroll', () => {
-            // Calculate scroll percentage
-            const scrollPercent = (screen.scrollTop / (screen.scrollHeight - screen.clientHeight)) * 100;
-            
-            // Set the width of the thumb
-            thumb.style.width = scrollPercent + '%';
-        });
-    }
-    
-    // --- USEFUL INFORMATION MODAL FUNCTIONALITY ---
-    
-    // Function to build the index once with fetched content (simulating file fetch)
-    // NOTE: This is a placeholder for actual data fetching from files, which is not implemented here.
-    async function fetchAndBuildUsefulInfoIndex() {
-        if (isFetchingUsefulInfo) return;
-        isFetchingUsefulInfo = true;
-
-        try {
-            // Simulate fetching the list of files (from a real server/API call)
-            const fileListResponse = await fetch('data/useful_info_files.json');
-            if (!fileListResponse.ok) throw new Error('Failed to fetch file list');
-            const files = await fileListResponse.json();
-            usefulInfoFiles = files; // Store the list of files
-
-            // Build the initial navigation buttons
-            const navContainer = document.getElementById('useful-information-nav');
-            if (!navContainer) return;
-
-            navContainer.innerHTML = '';
-            files.forEach(file => {
-                const button = document.createElement('button');
-                button.classList.add('app-wrapper', 'search-result-item');
-                // The data-modal is set to 'article' to use the generic article modal
-                button.setAttribute('data-article-url', file.url);
-                button.setAttribute('data-article-title-en', file.title.en);
-                button.setAttribute('data-article-title-gr', file.title.gr);
-                button.setAttribute('data-article-text-en', file.text.en);
-                button.setAttribute('data-article-text-gr', file.text.gr);
-
-                const iconDiv = document.createElement('div');
-                iconDiv.classList.add('app-icon');
-                iconDiv.innerHTML = `<i class="fas ${file.icon}"></i>`;
-                
-                const labelSpan = document.createElement('span');
-                labelSpan.classList.add('app-label');
-                labelSpan.setAttribute('data-en', file.title.en);
-                labelSpan.setAttribute('data-gr', file.title.gr);
-                labelSpan.textContent = file.title[currentLanguage] || file.title.en;
-                
-                button.appendChild(iconDiv);
-                button.appendChild(labelSpan);
-                navContainer.appendChild(button);
-
-                // Add to search index
-                usefulInfoSearchIndex.push({
-                    id: file.id,
-                    title: file.title.en,
-                    text: file.text.en,
-                    url: file.url,
-                    icon: file.icon,
-                    lang: 'en'
-                });
-                usefulInfoSearchIndex.push({
-                    id: file.id,
-                    title: file.title.gr,
-                    text: file.text.gr,
-                    url: file.url,
-                    icon: file.icon,
-                    lang: 'gr'
-                });
-            });
-
-            // Pre-process and calculate IDF for the full index
-            const enIndex = usefulInfoSearchIndex.filter(item => item.lang === 'en').map(SearchEngine.preprocessItem.bind(SearchEngine));
-            const grIndex = usefulInfoSearchIndex.filter(item => item.lang === 'gr').map(SearchEngine.preprocessItem.bind(SearchEngine));
-            usefulInfoSearchIndex = [...enIndex, ...grIndex];
-
-            SearchEngine.calculateIdf('usefulInfo-en', enIndex);
-            SearchEngine.calculateIdf('usefulInfo-gr', grIndex);
-
-            isUsefulInfoIndexBuilt = true;
-            usefulInformationLoaded = true;
-            console.log('Useful Information Index built successfully.');
-
-        } catch (error) {
-            console.error('Error fetching/building Useful Information Index:', error);
-            const navContainer = document.getElementById('useful-information-nav');
-            if(navContainer) {
-                navContainer.innerHTML = `<p style="color: var(--nm-danger);" data-en="Failed to load articles." data-gr="Αποτυχία φόρτωσης άρθρων.">Failed to load articles.</p>`;
-            }
-        } finally {
-            isFetchingUsefulInfo = false;
-        }
-    }
-
-    // Function to handle the actual search in the modal
-    function handleUsefulInfoSearch(query) {
-        const resultsContainer = document.getElementById('useful-info-results-container');
-        const navContainer = document.getElementById('useful-information-nav');
-        const prompt = document.getElementById('useful-info-prompt');
-        
-        if (!resultsContainer || !navContainer || !prompt) return;
-
-        if (query.length < 2) {
-            resultsContainer.classList.add('hidden');
-            navContainer.classList.remove('hidden');
-            prompt.classList.remove('hidden');
+        const languageModal = document.getElementById('language-selection-modal');
+        if (!languageModal) {
+            console.error("Fatal: Language modal not found. Site cannot start.");
             return;
         }
+        const languageModalCloseBtn = languageModal.querySelector('.close-modal');
+        const disclaimerModal = document.getElementById('disclaimer-modal');
+        const installationModal = document.getElementById('installation-modal');
 
-        navContainer.classList.add('hidden');
-        prompt.classList.add('hidden');
-        
-        // Filter the preprocessed index based on current language
-        const langIndex = usefulInfoSearchIndex.filter(item => item.lang === currentLanguage);
-        
-        const results = SearchEngine.search(query, langIndex, currentLanguage, `usefulInfo-${currentLanguage}`);
-
-        resultsContainer.innerHTML = '';
-
-        if (results.length > 0) {
-            results.slice(0, 10).forEach(item => {
-                const resultItem = document.createElement('div');
-                resultItem.classList.add('search-result-item');
-                resultItem.innerHTML = `
-                    <div class="search-result-icon"><i class="fas ${item.icon}"></i></div>
-                    <div class="search-result-text">
-                        <strong>${item.title}</strong>
-                        <small>${item.text.substring(0, 100)}...</small>
-                    </div>
-                `;
-                resultItem.addEventListener('click', () => {
-                    // Load the content of the article
-                    loadInformationContent(item.url, item.title, query);
-                });
-                resultsContainer.appendChild(resultItem);
-            });
-            resultsContainer.classList.remove('hidden');
-        } else {
-            const noResults = document.createElement('div');
-            noResults.classList.add('search-result-item');
-            noResults.textContent = currentLanguage === 'en' ? 'No articles found.' : 'Δεν βρέθηκαν άρθρα.';
-            resultsContainer.appendChild(noResults);
-            resultsContainer.classList.remove('hidden');
-        }
-    }
-
-    // Initialize search listener for the Useful Information modal
-    function initializeUsefulInfoSearch() {
-        const searchInput = document.getElementById('useful-info-search-input');
-        if (!searchInput) return;
-
-        let debounceTimeout;
-        searchInput.addEventListener('input', (e) => {
-            clearTimeout(debounceTimeout);
-            const query = e.target.value.trim();
-            debounceTimeout = setTimeout(() => handleUsefulInfoSearch(query), 200);
-        });
-        
-        // Revert to nav view when search is cleared
-        searchInput.addEventListener('focus', (e) => {
-            if (e.target.value.trim().length < 2) {
-                document.getElementById('useful-info-results-container')?.classList.add('hidden');
-                document.getElementById('useful-information-nav')?.classList.remove('hidden');
-                document.getElementById('useful-info-prompt')?.classList.remove('hidden');
-            }
-        });
-    }
-
-    // Re-initializes the article click listeners for the navigation
-    function initializeArticleClickListeners() {
-        // Attach click listeners to all buttons that open an article
-        document.querySelectorAll('[data-article-url]').forEach(button => {
-            button.addEventListener('click', () => {
-                const url = button.getAttribute('data-article-url');
-                const titleKey = `data-article-title-${currentLanguage}`;
-                const title = button.getAttribute(titleKey) || button.getAttribute('data-article-title-en');
+        window.changeLanguage = (lang) => {
+            currentLanguage = lang;
+            document.documentElement.lang = lang;
+            
+            document.querySelectorAll('[data-en]').forEach(el => {
+                // Check if the element itself has text content directly
+                const hasDirectText = Array.from(el.childNodes).some(node => node.nodeType === Node.TEXT_NODE && node.textContent.trim().length > 0);
                 
-                if (url && title) {
-                    loadInformationContent(url, title);
+                if (hasDirectText) {
+                    const text = el.getAttribute(`data-${lang}`) || el.getAttribute('data-en');
+                    // Find only the direct text nodes and update them
+                    Array.from(el.childNodes).forEach(node => {
+                        if (node.nodeType === Node.TEXT_NODE && node.textContent.trim().length > 0) {
+                            node.textContent = text;
+                        }
+                    });
+                } else if (el.children.length === 0) { 
+                    // Fallback for elements with no children but maybe text set via JS later
+                     const text = el.getAttribute(`data-${lang}`) || el.getAttribute('data-en');
+                     el.textContent = text;
+                }
+                // If it has children with text, assume those children have their own data attributes
+            });
+
+
+            document.querySelectorAll('[data-lang-section]').forEach(el => {
+                el.style.display = el.dataset.langSection === lang ? 'block' : 'none';
+                // Use `hidden` class for better accessibility and consistency
+                el.classList.toggle('hidden', el.dataset.langSection !== lang);
+                 // Remove hidden-by-default after initial language set if it matches
+                if (el.dataset.langSection === lang) {
+                   el.classList.remove('hidden-by-default');
+                }
+            });
+            
+            document.querySelectorAll('.language-button').forEach(button => {
+                button.classList.toggle('selected', button.dataset.lang === lang);
+            });
+
+            document.title = "DedSec Project - 1 Year Anniversary"; // Consider localizing title?
+
+            const searchInput = document.getElementById('main-search-input');
+            if (searchInput) {
+                searchInput.placeholder = lang === 'gr' ? 'Αναζήτηση στο διαδίκτυο...' : 'Search the Web...';
+            }
+            
+            const usefulInfoSearchInput = document.getElementById('useful-info-search-input');
+            if (usefulInfoSearchInput && !isUsefulInfoIndexBuilt) {
+                 usefulInfoSearchInput.placeholder = lang === 'gr' ? 'Πατήστε για φόρτωση αναζήτησης...' : 'Click to load search...';
+            } else if (usefulInfoSearchInput) {
+                usefulInfoSearchInput.placeholder = lang === 'gr' ? 'Αναζήτηση άρθρων...' : 'Search articles...';
+            }
+
+            // Re-translate button texts that might have been changed by success messages
+             const generateCertBtn = document.getElementById('generate-certificate');
+             const certBtnSpan = generateCertBtn?.querySelector('span');
+             if (certBtnSpan && !certBtnSpan.textContent.includes('Downloaded')) { // Avoid re-translating success msg
+                 certBtnSpan.textContent = certBtnSpan.getAttribute(`data-${lang}`) || certBtnSpan.getAttribute('data-en');
+             }
+
+        };
+        
+        languageModal.querySelectorAll('.language-button').forEach(button => {
+            button.addEventListener('click', () => {
+                try {
+                    changeLanguage(button.dataset.lang);
+                } catch (error) {
+                    console.error("Error changing language:", error);
+                } finally {
+                    hideModal(languageModal);
                 }
             });
         });
-    }
-
-    // Create a new modal for the article content
-    function createAndShowArticleModal(title, htmlContent, textToHighlight = null) {
-        let articleModal = document.getElementById('article-modal');
-        if (!articleModal) {
-            // Create the modal element if it doesn't exist
-            articleModal = document.createElement('div');
-            articleModal.id = 'article-modal';
-            articleModal.classList.add('modal-overlay');
-            articleModal.innerHTML = `
-                <div class="modal-content modal-content-article">
-                    <div class="modal-header">
-                        <h2 id="article-modal-title"></h2>
-                        <button class="close-modal" aria-label="Close">×</button>
-                    </div>
-                    <div class="modal-body article-modal-body">
-                        <div id="article-modal-content-wrapper"></div>
-                        <div class="modal-footer">
-                            <button id="article-copy-button" class="copy-btn">
-                                <i class="fas fa-copy"></i>
-                                <span data-en="Copy Content" data-gr="Αντιγραφή Περιεχομένου">Copy Content</span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            `;
-            document.body.appendChild(articleModal);
-            
-            // Re-initialize modal close listeners for the new modal
-            articleModal.addEventListener('click', e => {
-                if (e.target === articleModal) closeModalById('article-modal');
-            });
-            articleModal.querySelector('.close-modal')?.addEventListener('click', () => closeModalById('article-modal'));
-        }
-
-        // Populate the modal content
-        document.getElementById('article-modal-title').textContent = title;
-        const contentWrapper = document.getElementById('article-modal-content-wrapper');
-        contentWrapper.innerHTML = htmlContent;
-
-        // Apply highlighting if a search query was provided
-        if (textToHighlight) {
-            const regex = new RegExp(`(${textToHighlight})`, 'gi');
-            contentWrapper.innerHTML = contentWrapper.innerHTML.replace(regex, '<mark>$1</mark>');
-        }
         
-        // Handle copy button
-        const copyButton = document.getElementById('article-copy-button');
-        const copySpan = copyButton.querySelector('span');
-        const originalText = {
-            en: copySpan.getAttribute('data-en'),
-            gr: copySpan.getAttribute('data-gr')
-        };
+        document.getElementById('lang-switcher-btn')?.addEventListener('click', () => {
+            if (languageModalCloseBtn) languageModalCloseBtn.style.display = ''; 
+            showModal(languageModal);
+        });
 
-        const copyContent = () => {
-            // Get all text content, stripping HTML tags
-            const tempDiv = document.createElement('div');
-            tempDiv.innerHTML = htmlContent;
-            const plainText = tempDiv.textContent || tempDiv.innerText || "";
+        const themeSwitcherBtn = document.getElementById('theme-switcher-btn');
+        if (themeSwitcherBtn) {
+            const themeIcon = themeSwitcherBtn.querySelector('i');
+            const themeSpan = themeSwitcherBtn.querySelector('span');
+
+            const updateThemeButton = (isLightTheme) => {
+                if (isLightTheme) {
+                    themeIcon.classList.remove('fa-moon');
+                    themeIcon.classList.add('fa-sun');
+                    themeSpan.setAttribute('data-en', 'Light Theme');
+                    themeSpan.setAttribute('data-gr', 'Φωτεινό Θέμα');
+                } else {
+                    themeIcon.classList.remove('fa-sun');
+                    themeIcon.classList.add('fa-moon');
+                    themeSpan.setAttribute('data-en', 'Theme');
+                    themeSpan.setAttribute('data-gr', 'Θέμα');
+                }
+                // Update text immediately based on current language
+                 themeSpan.textContent = themeSpan.getAttribute(`data-${currentLanguage}`) || themeSpan.getAttribute('data-en');
+            };
+
+            themeSwitcherBtn.addEventListener('click', () => {
+                document.body.classList.toggle('light-theme');
+                const isLight = document.body.classList.contains('light-theme');
+                localStorage.setItem('theme', isLight ? 'light' : 'dark');
+                updateThemeButton(isLight);
+            });
             
-            navigator.clipboard.writeText(plainText).then(() => {
-                // Success message
-                copySpan.setAttribute('data-en', 'Copied!');
-                copySpan.setAttribute('data-gr', 'Αντιγράφηκε!');
-                copySpan.textContent = copySpan.getAttribute(`data-${currentLanguage}`);
+            // Set initial theme based on localStorage
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'light') {
+                document.body.classList.add('light-theme');
+            } else {
+                 document.body.classList.remove('light-theme'); // Ensure dark if not light
+            }
+            updateThemeButton(document.body.classList.contains('light-theme')); // Update button on load
+        }
+
+
+        document.getElementById('accept-disclaimer')?.addEventListener('click', () => {
+            localStorage.setItem('disclaimerAccepted', 'true');
+            hideModal(disclaimerModal);
+            // Optionally show installation modal if needed
+            // if (installationModal) {
+            //     showModal(installationModal);
+            // }
+        });
+        document.getElementById('decline-disclaimer')?.addEventListener('click', () => {
+             // Maybe redirect or disable functionality instead of just google?
+             window.location.href = 'about:blank'; // A safer redirect
+        });
+        
+        window.openModalAndHighlight = (modalId, highlightText = null) => {
+            // Check disclaimer FIRST if trying to access installation modal
+             if (modalId === 'installation' && !localStorage.getItem('disclaimerAccepted') && disclaimerModal) {
+                 showModal(disclaimerModal);
+                 // Add an alert or visual cue that disclaimer must be accepted
+                 // Optionally, store the intended modal to open after acceptance
+                 return; 
+             }
+
+            const modal = document.getElementById(`${modalId}-modal`);
+            if (modal) {
+                 // Ensure language modal close button is visible if opened via switcher
+                if (modalId === 'language-selection' && languageModalCloseBtn) {
+                     languageModalCloseBtn.style.display = '';
+                }
+                showModal(modal);
                 
-                setTimeout(() => {
-                    // Revert to original text
-                    copySpan.setAttribute('data-en', originalText.en);
-                    copySpan.setAttribute('data-gr', originalText.gr);
-                    copySpan.textContent = copySpan.getAttribute(`data-${currentLanguage}`);
-                }, 1500);
-            }).catch(err => {
-                console.error('Could not copy text: ', err);
-                alert('Failed to copy content.');
-            });
+                // Fetch useful info only when that modal is opened
+                if (modalId === 'useful-information' && !usefulInformationLoaded) {
+                    fetchUsefulInformation();
+                }
+                
+                // Highlight content after modal is visible
+                if (highlightText) {
+                    setTimeout(() => highlightModalContent(modal, highlightText), 100); // Small delay for transition
+                }
+            } else {
+                console.warn(`Modal with ID "${modalId}-modal" not found.`);
+            }
         };
 
-        // Remove old listener if it exists and attach new one
-        const newCopyButton = copyButton.cloneNode(true);
-        copyButton.parentNode.replaceChild(newCopyButton, copyButton);
-        newCopyButton.addEventListener('click', copyContent);
+
+        const highlightModalContent = (modal, text) => {
+            const modalBody = modal.querySelector('.modal-body');
+            if (!modalBody) return;
+            
+            // More robust selector to find text potentially split across nodes
+             const treeWalker = document.createTreeWalker(modalBody, NodeFilter.SHOW_TEXT);
+             let targetNode = null;
+             while (treeWalker.nextNode()) {
+                 if (treeWalker.currentNode.textContent.includes(text)) {
+                     targetNode = treeWalker.currentNode.parentElement; // Get parent element for scrolling/highlighting
+                     break;
+                 }
+             }
+
+            // Fallback to previous method if walker fails
+            if (!targetNode) {
+                const allElements = modalBody.querySelectorAll('h3, h4, p, li, b, code, span, .note, .tip, .modal-disclaimer');
+                 targetNode = Array.from(allElements).find(el => el.textContent.trim().replace(/\s\s+/g, ' ') === text.trim());
+            }
 
 
-        // Show the article modal
-        articleModal.classList.add('visible');
-    }
+            if (targetNode) {
+                 // Scroll element into view smoothly
+                 targetNode.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
-    // Function to handle opening the Useful Information Modal
-    function openUsefulInformationModal() {
-        if (!usefulInformationLoaded) {
-            fetchAndBuildUsefulInfoIndex().then(() => {
-                // If fetching was successful, re-initialize the article listeners
-                // and open the modal, which the calling function will handle
-                initializeArticleClickListeners();
-            });
-        }
-        // Even if loading, we open the modal now to show the loading state
-        openModalAndHighlight('useful-information');
-        // Initialize or re-initialize article click listeners for the static content
-        initializeArticleClickListeners();
-    }
-
-
-    // Handle the generic modal content update for installation modal
-    function loadInstallationContent() {
-        const modal = document.getElementById('installation-modal');
-        const contentContainer = modal?.querySelector('.modal-body');
-        if (!contentContainer) return;
-
-        // The installation content is often a simple block of commands or text
-        // For this example, we'll fetch a pre-defined content file, similar to useful info
+                // Apply highlight class and remove after timeout
+                targetNode.classList.add('content-highlight');
+                setTimeout(() => {
+                     targetNode.classList.remove('content-highlight');
+                 }, 2500); // Duration of highlight
+            } else {
+                console.warn(`Highlight text "${text}" not found in modal.`);
+            }
+        };
         
-        // Placeholder implementation (should fetch from a dedicated file/API)
-        const enContent = `
-            <h3>Installation Steps (Linux/macOS)</h3>
-            <ol>
-                <li><strong>Clone the Repository:</strong><br>
-                    <code>git clone https://github.com/dedsec1121fk/dedsec-project.git</code>
-                </li>
-                <li><strong>Navigate to the Directory:</strong><br>
-                    <code>cd dedsec-project</code>
-                </li>
-                <li><strong>Install Dependencies (Optional, for Python-based tools):</strong><br>
-                    <code>pip install -r requirements.txt</code>
-                </li>
-                <li><strong>Run the Setup Script:</strong><br>
-                    <code>./setup.sh</code>
-                </li>
-                <li><strong>Execute the Main Tool:</strong><br>
-                    <code>python3 main.py</code>
-                </li>
-            </ol>
-            <div class="note note-warning" data-lang-section="en">
-                <p><strong>Warning:</strong> The DedSec Project is for educational and ethical hacking purposes only. Do not use this tool on systems you do not own or have explicit written permission to test.</p>
-            </div>
-        `;
-        const grContent = `
-            <h3>Βήματα Εγκατάστασης (Linux/macOS)</h3>
-            <ol>
-                <li><strong>Κλωνοποίηση του Αποθετηρίου (Repository):</strong><br>
-                    <code>git clone https://github.com/dedsec1121fk/dedsec-project.git</code>
-                </li>
-                <li><strong>Μετάβαση στον Κατάλογο:</strong><br>
-                    <code>cd dedsec-project</code>
-                </li>
-                <li><strong>Εγκατάσταση Εξαρτήσεων (Προαιρετικά, για εργαλεία Python):</strong><br>
-                    <code>pip install -r requirements.txt</code>
-                </li>
-                <li><strong>Εκτέλεση του Setup Script:</strong><br>
-                    <code>./setup.sh</code>
-                </li>
-                <li><strong>Εκτέλεση του Κύριου Εργαλείου:</strong><br>
-                    <code>python3 main.py</code>
-                </li>
-            </ol>
-            <div class="note note-warning" data-lang-section="gr">
-                <p><strong>Προειδοποίηση:</strong> Το DedSec Project προορίζεται μόνο για εκπαιδευτικούς σκοπούς και ηθικό hacking. Μην χρησιμοποιείτε αυτό το εργαλείο σε συστήματα που δεν σας ανήκουν ή για τα οποία δεν έχετε ρητή γραπτή άδεια δοκιμής.</p>
-            </div>
-        `;
 
-        contentContainer.innerHTML = currentLanguage === 'en' ? enContent : grContent;
-        changeLanguage(currentLanguage); // Ensure any nested multi-language content is updated
+        // Attach modal openers
+        document.querySelectorAll('button.app-wrapper[data-modal]').forEach(wrapper => {
+            wrapper.addEventListener('click', () => openModalAndHighlight(wrapper.dataset.modal));
+        });
+
+        // Setup modal close behavior
+        document.querySelectorAll('.modal-overlay').forEach(modal => {
+            const closeModalBtn = modal.querySelector('.close-modal');
+
+            const closeModal = () => {
+                hideModal(modal);
+                
+                // Reset search in useful info modal when closed
+                if (modal.id === 'useful-information-modal') {
+                    const searchInput = document.getElementById('useful-info-search-input');
+                    const resultsContainer = document.getElementById('useful-info-results-container');
+                    const navContainer = document.getElementById('useful-information-nav');
+                    if (searchInput) searchInput.value = '';
+                    if (resultsContainer) resultsContainer.classList.add('hidden');
+                     if (navContainer) { // Show nav again
+                        navContainer.querySelectorAll('.app-icon').forEach(article => {
+                           article.style.display = 'flex';
+                       });
+                     }
+                }
+                 // Remove any lingering highlights
+                modal.querySelectorAll('.content-highlight').forEach(el => el.classList.remove('content-highlight'));
+            };
+            
+            // Close on overlay click (except for language modal)
+            modal.addEventListener('click', e => {
+                if (e.target === modal && modal.id !== 'language-selection-modal') {
+                     closeModal();
+                }
+            });
+            
+            // Close on button click
+            if (closeModalBtn) {
+                 closeModalBtn.addEventListener('click', closeModal);
+            }
+        });
+        
+
+        // Make copy function globally accessible IF NEEDED, but better to attach listeners dynamically
+         window.copyToClipboard = (button, targetId) => {
+             const codeElement = document.getElementById(targetId);
+             if (!codeElement || !navigator.clipboard) {
+                 console.warn('Clipboard API not available or element not found.');
+                 button.textContent = 'Error'; // Give feedback
+                 setTimeout(() => { button.textContent = (currentLanguage === 'gr') ? 'Αντιγραφή' : 'Copy'; }, 1500); // Restore original text based on lang
+                 return;
+             }
+             
+             const originalText = button.textContent; // Store text before changing
+             navigator.clipboard.writeText(codeElement.innerText).then(() => {
+                 button.textContent = (currentLanguage === 'gr') ? 'Αντιγράφηκε!' : 'Copied!';
+                 setTimeout(() => { button.textContent = originalText; }, 1500); // Restore original
+             }).catch(err => {
+                 console.error('Failed to copy text: ', err);
+                 button.textContent = 'Failed!';
+                  setTimeout(() => { button.textContent = originalText; }, 1500); // Restore original
+             });
+         };
+        
+
+        // Initialize Gym Carousel if present
+        const carousel = document.querySelector('.gym-carousel');
+        if (carousel) {
+            const images = carousel.querySelectorAll('.gym-clothing-images img');
+            const prevBtn = carousel.querySelector('.carousel-btn.prev');
+            const nextBtn = carousel.querySelector('.carousel-btn.next');
+            if (images.length > 0 && prevBtn && nextBtn) { // Check buttons exist too
+                let currentIndex = 0;
+                const showImage = (index) => {
+                     images.forEach((img, i) => img.classList.toggle('active', i === index));
+                };
+                
+                prevBtn.addEventListener('click', () => {
+                    currentIndex = (currentIndex > 0) ? currentIndex - 1 : images.length - 1;
+                    showImage(currentIndex);
+                });
+                nextBtn.addEventListener('click', () => {
+                    currentIndex = (currentIndex < images.length - 1) ? currentIndex + 1 : 0;
+                    showImage(currentIndex);
+                });
+                showImage(0); // Show first image initially
+            }
+        }
+        
+
+        // --- Initialize Core Features ---
+        initializeWebSearchSuggestions(); 
+        initializeUsefulInfoSearch();
+        initializeCertificateFeature(); 
+        
+        // --- Initial Setup ---
+        // Hide language modal close button initially
+        if (languageModalCloseBtn) languageModalCloseBtn.style.display = 'none';
+        
+        // Check if disclaimer was already accepted
+        if (!localStorage.getItem('disclaimerAccepted') && disclaimerModal) {
+            showModal(disclaimerModal);
+        } else {
+             // If disclaimer accepted, show language modal if it hasn't been set?
+             // Or just default to English? Let's default and let user change.
+        }
+
+        // Set initial language (e.g., from localStorage or default to 'en')
+         const savedLang = localStorage.getItem('language') || 'en';
+         changeLanguage(savedLang); // Apply the language
+         // Make sure the correct language button is selected
+          document.querySelectorAll('.language-button').forEach(button => {
+                button.classList.toggle('selected', button.dataset.lang === savedLang);
+            });
+         
+         // Only show language modal if no language is saved? Or always show initially?
+          // Let's show it only if no language preference is found.
+         if (!localStorage.getItem('language')) {
+             showModal(languageModal);
+         }
+
+
+    } // --- End of initializePortfolio ---
+
+
+    function initializeWebSearchSuggestions() {
+        const searchInput = document.getElementById('main-search-input');
+        const suggestionsContainer = document.getElementById('search-suggestions-container');
+        const searchForm = document.getElementById('main-search-form');
+        if (!searchInput || !suggestionsContainer || !searchForm) return;
+
+        // Debounce function to limit API calls
+         const debounce = (func, delay) => {
+             let timeoutId;
+             return (...args) => {
+                 clearTimeout(timeoutId);
+                 timeoutId = setTimeout(() => {
+                     func.apply(this, args);
+                 }, delay);
+             };
+         };
+
+        // Function to fetch and display suggestions
+        const fetchSuggestions = (query) => {
+            // Remove any existing script tag to prevent multiple callbacks
+            const oldScript = document.getElementById('jsonp-script');
+            if (oldScript) {
+                oldScript.remove();
+            }
+
+            // Create new script tag for JSONP request
+            const script = document.createElement('script');
+            script.id = 'jsonp-script';
+             // Include language parameter if Google supports it (hl=...)
+            script.src = `https://suggestqueries.google.com/complete/search?client=chrome&q=${encodeURIComponent(query)}&hl=${currentLanguage}&callback=handleGoogleSuggestions`;
+            
+            script.onerror = () => {
+                console.error("Error loading Google suggestions. Network issue or ad-blocker likely.");
+                suggestionsContainer.classList.add('hidden');
+                suggestionsContainer.innerHTML = ''; // Clear stale suggestions on error
+            };
+            
+            document.head.appendChild(script);
+        };
+
+        // Debounced version of the fetch function
+         const debouncedFetchSuggestions = debounce(fetchSuggestions, 250); // 250ms delay
+
+
+        // Global callback function for JSONP
+        window.handleGoogleSuggestions = (data) => {
+            suggestionsContainer.innerHTML = ''; // Clear previous suggestions
+            const suggestions = data[1]; // Suggestions are usually in the second element
+
+            if (suggestions && Array.isArray(suggestions) && suggestions.length > 0) {
+                suggestions.slice(0, 5).forEach(suggestion => { // Limit to 5 suggestions
+                    const itemEl = document.createElement('div');
+                    itemEl.classList.add('search-result-item');
+                    itemEl.textContent = suggestion;
+                    
+                    // Event listener for clicking a suggestion
+                    itemEl.addEventListener('click', () => {
+                        searchInput.value = suggestion; // Fill input with suggestion
+                        suggestionsContainer.classList.add('hidden'); // Hide container
+                        searchForm.submit(); // Submit the form
+                        
+                        // Clear input slightly after submission allows form data to be sent
+                        setTimeout(() => { searchInput.value = ''; }, 100); 
+                    });
+                    suggestionsContainer.appendChild(itemEl);
+                });
+                suggestionsContainer.classList.remove('hidden'); // Show container
+            } else {
+                suggestionsContainer.classList.add('hidden'); // Hide if no suggestions
+            }
+        };
+
+
+        // Input event listener
+        searchInput.addEventListener('input', () => {
+            const query = searchInput.value.trim();
+
+            if (query.length < 1) { // Hide suggestions if input is empty
+                suggestionsContainer.classList.add('hidden');
+                suggestionsContainer.innerHTML = ''; // Clear content
+                return;
+            }
+            
+            debouncedFetchSuggestions(query); // Call the debounced fetch function
+        });
+
+        // Click outside listener to hide suggestions
+        document.addEventListener('click', (e) => {
+            if (!searchForm.contains(e.target)) { // If click is outside the search form
+                suggestionsContainer.classList.add('hidden');
+            }
+        });
+
+         // Optional: Hide on Escape key press
+         searchInput.addEventListener('keydown', (e) => {
+             if (e.key === 'Escape') {
+                 suggestionsContainer.classList.add('hidden');
+             }
+         });
+    }
+
+
+    async function buildUsefulInfoSearchIndex(progressBar, progressText) {
+        if (isUsefulInfoIndexBuilt || usefulInfoFiles.length === 0) return;
+
+        let filesLoaded = 0;
+        const totalFiles = usefulInfoFiles.length;
+        usefulInfoSearchIndex = []; // Clear previous index if rebuilding
+
+        const indexPromises = usefulInfoFiles.map(async (file) => {
+            try {
+                const response = await fetch(file.download_url);
+                if (!response.ok) {
+                    console.error(`Failed to fetch ${file.name}: ${response.status}`);
+                    return; // Skip this file
+                }
+                const htmlContent = await response.text();
+                const tempDiv = document.createElement('div');
+                tempDiv.innerHTML = htmlContent;
+
+                // Extract titles (more robustly)
+                 let fallbackTitleEN = file.name.replace(/\.html$/, '').replace(/^\d+_/,'').replace(/_/g, ' ');
+                 let fallbackTitleGR = fallbackTitleEN; // Default GR to EN
+
+                 // Try extracting titles from specific elements if they exist
+                 const titleElementEN = tempDiv.querySelector('#article-titles [data-lang="en"]');
+                 const titleElementGR = tempDiv.querySelector('#article-titles [data-lang="gr"]');
+                 
+                 const titleEN = titleElementEN ? titleElementEN.textContent.trim() : fallbackTitleEN;
+                 const titleGR = titleElementGR ? titleElementGR.textContent.trim() : fallbackTitleGR; // Use EN fallback if GR element missing
+
+
+                // Index content sections
+                tempDiv.querySelectorAll('[data-lang-section]').forEach(section => {
+                    const lang = section.dataset.langSection;
+                    const articleTitle = lang === 'gr' ? titleGR : titleEN; // Use correct title for language
+
+                    // Select relevant content elements
+                    section.querySelectorAll('h3, h4, p, li, b, code, .tip, .note').forEach(el => {
+                         // Basic cleaning: remove extra whitespace
+                        const text = el.textContent.trim().replace(/\s+/g, ' '); 
+                        
+                        if (text.length > 5) { // Only index meaningful text snippets
+                            const item = {
+                                lang,
+                                title: articleTitle,
+                                text,
+                                url: file.download_url, // Store URL to load content later
+                                weight: (el.tagName === 'H3' ? 5 : (el.tagName === 'H4' ? 3 : 1)) // Weight headings higher
+                            };
+                            usefulInfoSearchIndex.push(SearchEngine.preprocessItem(item));
+                        }
+                    });
+                });
+            } catch (e) {
+                console.error(`Failed to index file: ${file.name}`, e);
+            } finally {
+                filesLoaded++;
+                const progress = Math.min(100, (filesLoaded / totalFiles) * 100); // Ensure progress doesn't exceed 100
+                if (progressBar) progressBar.style.width = `${progress}%`;
+                if (progressText) progressText.textContent = `${Math.round(progress)}%`;
+            }
+        });
+
+        await Promise.all(indexPromises);
+        SearchEngine.calculateIdf('usefulInfo', usefulInfoSearchIndex); // Calculate IDF after all docs processed
+        isUsefulInfoIndexBuilt = true;
+        console.log(`Useful Info Index built with ${usefulInfoSearchIndex.length} items.`);
+    }
+
+    // Function to update button titles AFTER index is built
+    function updateUsefulInfoButtonTitles() {
+         if (!isUsefulInfoIndexBuilt) return; // Only run if index is ready
+
+         // Create a map of URL -> {en: title, gr: title} from the index
+         const titleMap = new Map();
+         usefulInfoSearchIndex.forEach(item => {
+             if (!titleMap.has(item.url)) {
+                 titleMap.set(item.url, {});
+             }
+             const langTitles = titleMap.get(item.url);
+             // Only set the title if it's not already set for that language (first occurrence wins)
+             if (!langTitles[item.lang]) { 
+                 langTitles[item.lang] = item.title;
+             }
+         });
+
+         // Update the buttons in the DOM
+         document.querySelectorAll('#useful-information-nav .app-icon[data-url]').forEach(button => {
+             const url = button.dataset.url;
+             const titles = titleMap.get(url);
+             if (titles) {
+                 const buttonSpan = button.querySelector('span');
+                 if (buttonSpan) {
+                     const titleEN = titles.en || buttonSpan.getAttribute('data-en') || 'Untitled'; // Fallbacks
+                     const titleGR = titles.gr || titleEN; // Fallback GR to EN if missing
+
+                     buttonSpan.setAttribute('data-en', titleEN);
+                     buttonSpan.setAttribute('data-gr', titleGR);
+                     // Update current text based on selected language
+                     buttonSpan.textContent = (currentLanguage === 'gr' ? titleGR : titleEN);
+                 }
+             }
+         });
+          // Re-apply current language to ensure all static text is correct too
+          changeLanguage(currentLanguage);
+    }
+
+
+    function initializeUsefulInfoSearch() {
+        const searchInput = document.getElementById('useful-info-search-input');
+        const resultsContainer = document.getElementById('useful-info-results-container');
+        const navContainer = document.getElementById('useful-information-nav');
+        const promptText = document.getElementById('useful-info-prompt');
+
+        if (!searchInput || !resultsContainer || !navContainer || !promptText) {
+             console.error("Useful Info Search elements not found.");
+             return; // Stop initialization if elements are missing
+        }
+
+        // Create Progress Bar elements dynamically
+        const progressBarContainer = document.createElement('div');
+        progressBarContainer.className = 'progress-bar-container';
+        
+        const progressBar = document.createElement('div');
+        progressBar.className = 'progress-bar';
+
+        const progressText = document.createElement('span');
+        progressText.className = 'progress-bar-text';
+        progressText.textContent = '0%';
+
+        progressBarContainer.appendChild(progressBar);
+        progressBarContainer.appendChild(progressText);
+        // Insert progress bar before the navigation container
+        navContainer.parentNode.insertBefore(progressBarContainer, navContainer);
+
+
+        // Helper to show/hide the main navigation list
+        const showNav = (shouldShow) => {
+            navContainer.style.display = shouldShow ? 'grid' : 'none'; // Use grid display
+            promptText.style.display = shouldShow ? 'block' : 'none'; // Toggle prompt text
+        };
+
+        // Trigger index building on first focus
+        searchInput.addEventListener('focus', async () => {
+            if (isUsefulInfoIndexBuilt || isFetchingUsefulInfo) return; // Don't rebuild if already done or in progress
+
+            isFetchingUsefulInfo = true; // Prevent multiple fetches if focus happens quickly
+            searchInput.placeholder = currentLanguage === 'gr' ? 'Ευρετηρίαση άρθρων...' : 'Indexing articles...';
+            searchInput.disabled = true;
+            progressBarContainer.style.display = 'block'; // Show progress bar
+            progressBar.style.width = '0%';
+            progressText.textContent = '0%';
+
+            // Assuming fetchUsefulInformation populates usefulInfoFiles first
+             if (!usefulInformationLoaded) {
+                 await fetchUsefulInformation(); // Ensure file list is loaded
+             }
+
+             if (usefulInfoFiles.length > 0) {
+                 await buildUsefulInfoSearchIndex(progressBar, progressText);
+                 updateUsefulInfoButtonTitles(); // Update titles after indexing
+             } else {
+                  console.warn("No useful info files found to index.");
+             }
+
+            // Hide progress bar after a short delay
+            setTimeout(() => {
+                progressBarContainer.style.display = 'none';
+            }, 500);
+
+            searchInput.disabled = false;
+            searchInput.placeholder = currentLanguage === 'gr' ? 'Αναζήτηση άρθρων...' : 'Search articles...';
+            searchInput.focus(); // Re-focus after enabling
+            isFetchingUsefulInfo = false;
+
+        }, { once: true }); // Only run this focus listener once
+
+
+        // Handle search input changes
+        searchInput.addEventListener('input', () => {
+            const query = searchInput.value.trim();
+            resultsContainer.innerHTML = ''; // Clear previous results
+
+            if (!isUsefulInfoIndexBuilt) {
+                 resultsContainer.classList.add('hidden');
+                 showNav(true); // Show nav if index isn't ready
+                 return;
+            }
+
+            if (query.length < 2) { // Minimum query length
+                resultsContainer.classList.add('hidden');
+                showNav(true); // Show nav if query is too short
+                return;
+            }
+            
+            showNav(false); // Hide nav when showing results
+
+            // Perform search using the engine
+            const results = SearchEngine.search(query, usefulInfoSearchIndex, currentLanguage, 'usefulInfo');
+
+            if (results.length > 0) {
+                results.slice(0, 7).forEach(result => { // Limit results displayed
+                    const itemEl = document.createElement('div');
+                    itemEl.classList.add('search-result-item');
+                    
+                    // Generate and highlight snippet
+                    const snippet = SearchEngine.generateSnippet(result.text, query, currentLanguage);
+                    const highlightedSnippet = SearchEngine.highlight(snippet, query, currentLanguage);
+
+                    // Display snippet and title
+                    itemEl.innerHTML = `${highlightedSnippet} <small>${result.title}</small>`;
+                    
+                    // Click listener to load the full article and highlight
+                    itemEl.addEventListener('click', () => {
+                        searchInput.value = ''; // Clear search input
+                        resultsContainer.classList.add('hidden'); // Hide results
+                        // Load content and pass text for highlighting
+                        loadInformationContent(result.url, result.title, result.text); 
+                    });
+                    resultsContainer.appendChild(itemEl);
+                });
+                resultsContainer.classList.remove('hidden'); // Show results container
+            } else {
+                 // No results found - show message instead of nav? Or show nav? Show nav is simpler.
+                 resultsContainer.classList.add('hidden'); 
+                 resultsContainer.innerHTML = `<div class="search-result-item" style="text-align: center; color: var(--nm-text-muted);">${currentLanguage === 'gr' ? 'Δεν βρέθηκαν αποτελέσματα' : 'No results found'}</div>`; // Show no results message
+                 resultsContainer.classList.remove('hidden');
+                // showNav(true); // Option: show nav again if no results
+            }
+        });
+         // Clear results when input is cleared
+         searchInput.addEventListener('keyup', (e) => {
+             if (searchInput.value.trim().length === 0) {
+                 resultsContainer.innerHTML = '';
+                 resultsContainer.classList.add('hidden');
+                 showNav(true);
+             }
+         });
+    }
+
+    // Fetches the list of HTML files from GitHub
+    async function fetchUsefulInformation() {
+        if (usefulInformationLoaded || isFetchingUsefulInfo) return; // Prevent multiple fetches
+        isFetchingUsefulInfo = true; // Set flag
+
+        const navContainer = document.getElementById('useful-information-nav');
+        const GITHUB_API_URL = 'https://api.github.com/repos/dedsec1121fk/dedsec1121fk.github.io/contents/Useful_Information';
+        
+        if (!navContainer) {
+            console.error("Useful Information nav container not found.");
+             isFetchingUsefulInfo = false;
+             return;
+        }
+
+        navContainer.innerHTML = `<p style="text-align: center; color: var(--nm-text-muted);">${currentLanguage === 'gr' ? 'Φόρτωση λίστας άρθρων...' : 'Loading article list...'}</p>`; // Loading message
+        
+        try {
+            const response = await fetch(GITHUB_API_URL);
+            if (!response.ok) throw new Error(`GitHub API error: ${response.status} ${response.statusText}`);
+            const files = await response.json();
+
+            // Filter for HTML files only
+            usefulInfoFiles = files.filter(file => file.type === 'file' && file.name.endsWith('.html'));
+            
+            navContainer.innerHTML = ''; // Clear loading message
+
+            if (usefulInfoFiles.length === 0) {
+                 navContainer.innerHTML = `<p style="text-align: center; color: var(--nm-text-muted);">${currentLanguage === 'gr' ? 'Δεν βρέθηκαν άρθρα.' : 'No articles found.'}</p>`;
+                 usefulInformationLoaded = true; // Mark as loaded even if empty
+                 isFetchingUsefulInfo = false;
+                 return;
+            }
+            
+            // Sort files, perhaps alphabetically or by a number prefix?
+            usefulInfoFiles.sort((a, b) => a.name.localeCompare(b.name)); // Simple alpha sort
+
+            // Create buttons for each file
+            usefulInfoFiles.forEach(file => {
+                 // Extract initial titles from filename (will be updated after indexing)
+                 let titleEN = file.name.replace(/\.html$/, '').replace(/^\d+_/,'').replace(/_/g, ' ');
+                 let titleGR = titleEN; 
+                 const titleRegex = /(.+?)_\((.+?)\)/; // Check for pattern like "English_(Greek)"
+                 const match = file.name.match(titleRegex);
+                 if (match && match[1] && match[2]) {
+                     titleEN = match[1].replace(/_/g, ' ').trim();
+                     titleGR = match[2].replace(/_/g, ' ').trim();
+                 }
+    
+                const button = document.createElement('button');
+                button.className = 'app-icon'; // Use app-icon style for consistency
+                button.dataset.url = file.download_url; // Store download URL
+                
+                const initialTitle = currentLanguage === 'gr' ? titleGR : titleEN;
+                 // Set data attributes for later update and initial display
+                button.innerHTML = `<i class="fas fa-book-open"></i><span data-en="${titleEN}" data-gr="${titleGR}">${initialTitle}</span>`;
+                
+                button.addEventListener('click', () => {
+                    const span = button.querySelector('span');
+                    // Get the correct title based on current language for the modal header
+                    const modalTitle = span.getAttribute(`data-${currentLanguage}`) || span.getAttribute('data-en') || 'Article';
+                    loadInformationContent(file.download_url, modalTitle);
+                });
+                navContainer.appendChild(button);
+            });
+
+            usefulInformationLoaded = true; // Mark list as loaded
+
+        } catch (error) {
+            console.error('Failed to fetch useful information list:', error);
+            navContainer.innerHTML = `<p style="text-align: center; color: var(--nm-danger);">${currentLanguage === 'gr' ? 'Αποτυχία φόρτωσης λίστας άρθρων.' : 'Failed to load article list.'}</p>`;
+        } finally {
+            isFetchingUsefulInfo = false; // Reset flag
+        }
+    }
+
+
+    // Creates and displays a modal specifically for article content
+    function createAndShowArticleModal(title, htmlContent, textToHighlight = null) {
+        // Remove any existing article modals first
+        document.querySelectorAll('.article-modal-overlay').forEach(modal => modal.remove());
+
+        const modalOverlay = document.createElement('div');
+        modalOverlay.className = 'modal-overlay article-modal-overlay'; // Unique class
+        modalOverlay.style.opacity = '0'; // Start hidden for transition
+        
+        modalOverlay.innerHTML = `
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>${title}</h2>
+                    <button class="close-modal" aria-label="Close">&times;</button>
+                </div>
+                <div class="modal-body">
+                     <div id="article-content-wrapper"> ${htmlContent}
+                     </div>
+                 </div>
+            </div>`;
+        document.body.appendChild(modalOverlay);
+
+        const modalContent = modalOverlay.querySelector('.modal-content');
+        const modalBody = modalOverlay.querySelector('.modal-body');
+        const closeModalBtn = modalOverlay.querySelector('.close-modal');
+
+        // Dynamically attach copy button listeners within the new modal
+        const codeContainers = modalOverlay.querySelectorAll('.code-container');
+        let dynamicCodeIdCounter = 0; // Ensure unique IDs if needed
+        codeContainers.forEach(container => {
+            const copyBtn = container.querySelector('.copy-btn');
+            const codeEl = container.querySelector('code');
+
+            if (copyBtn && codeEl) {
+                // Ensure code element has an ID
+                if (!codeEl.id) {
+                    codeEl.id = `dynamic-code-${Date.now()}-${dynamicCodeIdCounter++}`;
+                }
+                
+                // Add listener to *this specific* button
+                copyBtn.addEventListener('click', (e) => {
+                     e.stopPropagation(); // Prevent modal close if clicking button
+                    window.copyToClipboard(copyBtn, codeEl.id);
+                });
+
+                 // Update button text language
+                 const copyText = (currentLanguage === 'gr') ? 'Αντιγραφή' : 'Copy';
+                 copyBtn.textContent = copyText; // Set initial text
+            }
+        });
+        
+        // Apply current language translations to the dynamically loaded content
+         // This assumes the loaded HTML also uses data-en/data-gr attributes
+         const contentWrapper = modalOverlay.querySelector('#article-content-wrapper');
+         if (contentWrapper) {
+             contentWrapper.querySelectorAll('[data-en]').forEach(el => {
+                 const text = el.getAttribute(`data-${currentLanguage}`) || el.getAttribute('data-en');
+                  // Similar logic as changeLanguage, handle direct text vs children
+                  const hasDirectText = Array.from(el.childNodes).some(node => node.nodeType === Node.TEXT_NODE && node.textContent.trim().length > 0);
+                   if (hasDirectText) {
+                        Array.from(el.childNodes).forEach(node => {
+                            if (node.nodeType === Node.TEXT_NODE && node.textContent.trim().length > 0) {
+                                node.textContent = text;
+                            }
+                        });
+                   } else if (el.children.length === 0) {
+                       el.textContent = text;
+                   }
+             });
+             contentWrapper.querySelectorAll('[data-lang-section]').forEach(el => {
+                el.style.display = el.dataset.langSection === currentLanguage ? 'block' : 'none';
+                el.classList.toggle('hidden', el.dataset.langSection !== currentLanguage);
+             });
+         }
+
+    
+        // Highlight text if requested, after content is translated and modal visible
+        const showAndHighlight = () => {
+             modalOverlay.classList.add('visible'); // Trigger CSS transition
+             modalOverlay.style.opacity = '1';
+
+             if (textToHighlight) {
+                 setTimeout(() => { // Delay highlight slightly for rendering
+                     highlightModalContent(modalOverlay, textToHighlight);
+                 }, 150);
+             }
+         };
+
+        // Use requestAnimationFrame to ensure modal is in DOM before starting transition
+         requestAnimationFrame(showAndHighlight);
+
+        
+        // Close modal function specific to this instance
+        const closeModal = () => {
+            modalOverlay.style.opacity = '0'; // Start fade out
+            modalOverlay.classList.remove('visible');
+            
+             // Remove from DOM after transition
+            modalOverlay.addEventListener('transitionend', () => {
+                 if (modalOverlay.parentNode) {
+                    modalOverlay.parentNode.removeChild(modalOverlay);
+                 }
+            }, { once: true });
+            
+            // Optionally, clear search and show nav in the main "Useful Info" modal
+             const searchInput = document.getElementById('useful-info-search-input');
+             const resultsContainer = document.getElementById('useful-info-results-container');
+             const navContainer = document.getElementById('useful-information-nav');
+             if(searchInput) searchInput.value = '';
+             if(resultsContainer) resultsContainer.classList.add('hidden');
+             if(navContainer) showNav(true); // Show the nav list again
+        };
+
+        // Attach close listeners
+        modalOverlay.addEventListener('click', (e) => {
+            if (e.target === modalOverlay) closeModal(); // Click on overlay
+        });
+        closeModalBtn.addEventListener('click', closeModal); // Click on close button
     }
 
 
@@ -1077,79 +1249,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
     
-    // --- GENERIC MODAL HANDLING & INITIALIZATION ---
-
-    // The function that handles accepting the disclaimer.
-    document.getElementById('accept-disclaimer')?.addEventListener('click', () => {
-        localStorage.setItem('disclaimerAccepted', 'true');
-        closeModalById('disclaimer-modal');
-        // IMPORTANT: After accepting, immediately open the installation modal
-        openModalAndHighlight('installation');
-        loadInstallationContent();
-    });
-    
-    // The function that handles declining the disclaimer.
-    document.getElementById('decline-disclaimer')?.addEventListener('click', () => {
-        // Implement a function to show a message and prevent page use (e.g., redirect or lock all buttons)
-        showDeclineMessage(); 
-    });
-
-    // Simple function to display an error or warning when declining
-    function showDeclineMessage() {
-        const modal = document.getElementById('disclaimer-modal');
-        if (!modal) return;
-
-        const body = modal.querySelector('.modal-body');
-        if (!body) return;
-
-        // Clear existing content and display a prominent message
-        body.innerHTML = `
-            <div class="note note-danger" style="text-align: center; padding: 20px;">
-                <p data-en="<strong>Access Denied.</strong> You must accept the Disclaimer and Terms of Use to proceed with the DedSec Project installation and use its tools."
-                   data-gr="<strong>Άρνηση Πρόσβασης.</strong> Πρέπει να αποδεχτείτε την Αποποίηση Ευθύνης και τους Όρους Χρήσης για να προχωρήσετε στην εγκατάσταση του DedSec Project και τη χρήση των εργαλείων του.">
-                   <strong>Access Denied.</strong> You must accept the Disclaimer and Terms of Use to proceed with the DedSec Project installation and use its tools.
-                </p>
-                <p data-en="Please reload the page to reconsider." data-gr="Παρακαλώ φορτώστε ξανά τη σελίδα για να επανεξετάσετε την απόφασή σας.">
-                    Please reload the page to reconsider.
-                </p>
-            </div>
-        `;
-        changeLanguage(currentLanguage); // Apply correct language text
-        
-        // Optionally, disable further closing except by reloading/full-screen exit
-        modal.querySelector('.close-modal').style.display = 'none';
-        modal.style.pointerEvents = 'auto'; // Ensure the overlay still captures clicks
-    }
-
-
-    // This function is for opening a modal that needs specific content loaded.
-    function openModalHandler(modalId) {
-         if (modalId === 'useful-information') {
-            openUsefulInformationModal();
-        } else if (modalId === 'installation') {
-            // This path should ideally not be hit directly anymore due to the check in initializeModals
-            openModalAndHighlight(modalId);
-            loadInstallationContent(); // Load the specific installation text
-        } else {
-             openModalAndHighlight(modalId);
-        }
-    }
-
     // --- INITIALIZE ALL FEATURES ---
-    function initializePortfolio() {
-        // Must be called first to attach listeners
-        initializeModals(); 
-        
-        // Specific feature initializations
-        initializeCertificateFeature();
-        initializeThemeSwitcher();
-        initializeLanguageSwitcher(); // <-- CORRECTED: This was missing in the previous version
-        initializeHeroText();
-        initializeSearch();
-        initializeScrollIndicator();
-        initializeUsefulInfoSearch();
-    }
-
     initializePortfolio();
 
 }); // End DOMContentLoaded
