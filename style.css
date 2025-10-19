@@ -120,12 +120,12 @@ body.light-theme .note.note-warning {
     box-shadow: 0 4px 15px rgba(153, 102, 255, 0.3);
     position: relative;
     z-index: 5;
-    box-sizing: border-box; /* <-- THIS IS THE FIX FOR THE BANNER */
+    box-sizing: border-box; 
 }
 
 .anniversary-content {
     display: flex;
-    /* MODIFIED: Center icon and text vertically and reduce gap */
+    /* Center icon and text vertically and reduce gap */
     align-items: center;
     gap: 10px; 
     margin-bottom: 15px;
@@ -134,13 +134,13 @@ body.light-theme .note.note-warning {
 .anniversary-icon {
     font-size: 2rem;
     color: var(--nm-text);
-    /* ADDED: Center icon horizontally */
+    /* Center icon horizontally */
     margin: 0 auto; 
     flex-shrink: 0;
 }
 
 .anniversary-text {
-    /* ADDED: Allow text to take up available space */
+    /* Allow text to take up available space */
     flex-grow: 1; 
 }
 
@@ -148,7 +148,7 @@ body.light-theme .note.note-warning {
     margin: 0 0 10px 0;
     color: var(--nm-text);
     font-family: 'Orbitron', sans-serif;
-    /* MODIFIED: Slightly reduced font size to help prevent wrapping */
+    /* Slightly reduced font size to help prevent wrapping */
     font-size: 1.1rem; 
     text-align: center;
 }
@@ -631,6 +631,8 @@ body.light-theme ::-webkit-scrollbar-thumb {
     margin-bottom: 10px;
     padding: 25px 15px 0 15px;
     box-sizing: border-box;
+    /* ADDED: Max-width to align with search bar and grid */
+    max-width: 500px;
 }
 
 /* --- REMOVED: .header-logo container since we are using .screen::after --- */
@@ -762,7 +764,7 @@ body.light-theme ::-webkit-scrollbar-thumb {
     width: 100%;
     max-width: 500px;
     /* FIX: Reduced top margin from 15px and bottom margin from 35px */
-    margin: 5px 0 5px 0;
+    margin: 5px auto 5px auto;
     padding: 10px;
     box-sizing: border-box;
 }
@@ -820,12 +822,13 @@ body.light-theme ::-webkit-scrollbar-thumb {
 
 .app-grid {
     display: grid;
+    /* MODIFIED: Keep the items grouped tightly */
     grid-template-columns: repeat(4, max-content);
-    justify-content: center;
+    /* REMOVED: justify-content: center; to let auto margins handle centering */
     gap: 35px; /* MODIFIED: Set to 35px */
     width: 100%;
     max-width: 500px;
-    margin: 0 auto 15px;
+    margin: 0 auto 15px; /* Use auto margin to center the grid element itself */
     align-items: start;
 }
 
@@ -833,7 +836,8 @@ body.light-theme ::-webkit-scrollbar-thumb {
     width: 70px;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    /* This ensures vertical children (icon & label) are horizontally centered */
+    align-items: center; 
     gap: 8px;
     text-decoration: none;
     color: var(--nm-text);
