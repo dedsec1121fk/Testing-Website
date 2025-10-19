@@ -62,13 +62,14 @@ body.light-theme .screen::after {
     background: linear-gradient(135deg, var(--nm-accent), #3366ff, #ff3366);
     border: 2px solid transparent;
     border-radius: 20px;
-    padding: 15px;
+    padding: 12px;
     margin: 15px auto;
     width: 100%;
-    max-width: 500px;
+    max-width: 400px; /* Reduced from 500px */
     text-align: center;
     box-shadow: 0 4px 15px rgba(138, 43, 226, 0.4);
     animation: banner-pulse 3s ease-in-out infinite;
+    opacity: 0.7; /* Added 70% transparency */
 }
 
 @keyframes banner-pulse {
@@ -77,16 +78,16 @@ body.light-theme .screen::after {
 }
 
 .anniversary-content h2 {
-    margin: 0 0 10px 0;
+    margin: 0 0 8px 0;
     font-family: 'Orbitron', sans-serif;
-    font-size: 1.4rem;
+    font-size: 1.2rem; /* Slightly smaller */
     color: white;
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 .anniversary-content p {
     margin: 0;
-    font-size: 0.9rem;
+    font-size: 0.8rem; /* Slightly smaller */
     color: white;
     line-height: 1.4;
 }
@@ -108,7 +109,7 @@ body.light-theme .screen::after {
     justify-content: center;
     gap: 10px;
     width: 100%;
-    max-width: 500px;
+    max-width: 400px; /* Match banner width */
     transition: all 0.3s ease;
     box-shadow: 0 4px 10px rgba(138, 43, 226, 0.4);
 }
@@ -179,84 +180,145 @@ body.light-theme .screen::after {
     box-shadow: 0 4px 10px rgba(138, 43, 226, 0.4);
 }
 
-/* Certificate Preview */
+/* Professional Certificate Preview */
 .certificate-container {
-    background: linear-gradient(135deg, #1a0f2e, #2d1b4e);
-    border: 3px solid;
+    background: linear-gradient(135deg, #0f0820, #1d1138);
+    border: 4px solid;
     border-image: linear-gradient(45deg, var(--nm-accent), #3366ff, #ff3366) 1;
-    border-radius: 15px;
-    padding: 30px;
-    margin: 20px 0;
+    border-radius: 12px;
+    padding: 35px;
+    margin: 25px 0;
     text-align: center;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.7);
+    position: relative;
+    overflow: hidden;
+}
+
+.certificate-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="1" fill="%23ffffff" opacity="0.05"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+    pointer-events: none;
+}
+
+.certificate-header {
+    position: relative;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid rgba(138, 43, 226, 0.3);
 }
 
 .certificate-header h2 {
-    color: var(--nm-accent);
+    color: #ffcc00;
     font-family: 'Orbitron', sans-serif;
-    margin-bottom: 5px;
-    font-size: 1.8rem;
+    margin-bottom: 8px;
+    font-size: 2.2rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 .certificate-header p {
     color: var(--nm-text-muted);
-    margin-bottom: 20px;
-    font-size: 1.1rem;
+    margin-bottom: 0;
+    font-size: 1.3rem;
+    font-weight: 600;
 }
 
 .certificate-body {
-    margin: 25px 0;
+    margin: 30px 0;
+    position: relative;
+}
+
+.certificate-body::before {
+    content: '★';
+    position: absolute;
+    top: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #ffcc00;
+    font-size: 2rem;
 }
 
 .certificate-body h3 {
-    color: #ffcc00;
-    font-size: 2rem;
-    margin: 15px 0;
+    color: #ffffff;
+    font-size: 2.4rem;
+    margin: 20px 0;
     font-family: 'Orbitron', sans-serif;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    background: linear-gradient(135deg, #ffffff, #a899e6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
 .certificate-body p {
-    margin: 10px 0;
-    font-size: 1rem;
-    line-height: 1.5;
+    margin: 12px 0;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: #e6e1ff;
 }
 
 .certificate-details {
-    margin-top: 20px;
+    margin-top: 25px;
     display: flex;
     justify-content: space-around;
     flex-wrap: wrap;
+    background: rgba(138, 43, 226, 0.1);
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid rgba(138, 43, 226, 0.3);
 }
 
 .certificate-details p {
-    margin: 5px 10px;
+    margin: 8px 15px;
     font-weight: bold;
+    font-size: 1rem;
+    color: #ffcc00;
 }
 
 .certificate-footer {
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
-    margin-top: 30px;
+    margin-top: 35px;
     padding-top: 20px;
-    border-top: 1px solid var(--nm-border);
+    border-top: 2px solid rgba(138, 43, 226, 0.3);
+    position: relative;
+}
+
+.signature {
+    text-align: left;
 }
 
 .signature p {
     font-family: 'Orbitron', sans-serif;
-    font-size: 1.2rem;
+    font-size: 1.4rem;
     margin: 0;
     color: var(--nm-accent);
+    font-weight: bold;
 }
 
 .signature span {
-    font-size: 0.8rem;
+    font-size: 0.9rem;
     color: var(--nm-text-muted);
+    display: block;
+    margin-top: 5px;
+}
+
+.date {
+    text-align: right;
 }
 
 .date p {
     margin: 0;
     font-weight: bold;
+    font-size: 1rem;
+    color: #ffcc00;
 }
 
 .download-certificate-btn {
@@ -270,15 +332,39 @@ body.light-theme .screen::after {
     cursor: pointer;
     width: 100%;
     max-width: 300px;
-    margin: 20px auto 0;
+    margin: 25px auto 0;
     display: block;
     transition: all 0.3s ease;
+    font-size: 1rem;
 }
 
 .download-certificate-btn:hover {
     background: linear-gradient(135deg, #00cc66, #33ff99);
     transform: translateY(-2px);
-    box-shadow: 0 4px 10px rgba(51, 255, 153, 0.4);
+    box-shadow: 0 6px 15px rgba(51, 255, 153, 0.5);
+}
+
+/* Success message for download */
+.download-success {
+    background: linear-gradient(135deg, #33ff99, #00cc66);
+    color: #000;
+    border-radius: 10px;
+    padding: 10px 15px;
+    margin: 15px auto;
+    text-align: center;
+    font-weight: bold;
+    max-width: 300px;
+    display: none;
+}
+
+.download-success.show {
+    display: block;
+    animation: fadeInOut 3s ease-in-out;
+}
+
+@keyframes fadeInOut {
+    0%, 100% { opacity: 0; transform: translateY(-10px); }
+    20%, 80% { opacity: 1; transform: translateY(0); }
 }
 
 /* =================================================================
