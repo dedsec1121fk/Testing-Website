@@ -794,7 +794,7 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>`;
         document.body.appendChild(modalOverlay);
 
-        // --- FIX STARTS HERE ---
+        // --- FIX STARTS HERE (Ensuring copy buttons work on dynamically loaded content) ---
         // After inserting the new content, find all copy buttons and attach the event listener.
         let dynamicCodeIdCounter = 0;
         const codeContainers = modalOverlay.querySelectorAll('.code-container');
