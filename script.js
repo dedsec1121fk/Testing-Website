@@ -384,11 +384,15 @@ document.addEventListener('DOMContentLoaded', () => {
                         openModalAndHighlight('disclaimer');
                         return; // Stop execution here
                     }
+                    // Disclaimer accepted, proceed to open the Installation modal and load its content
+                    openModalAndHighlight(modalId);
+                    loadInstallationContent();
+                    return;
                 }
                 // NEW LOGIC END
                 
-                // For all other buttons (including 'installation' if accepted), open the requested modal
-                openModalAndHighlight(modalId);
+                // For all other buttons, open the requested modal and handle its content if needed
+                openModalHandler(modalId);
             });
         });
 
@@ -1048,6 +1052,7 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
 
         contentContainer.innerHTML = currentLanguage === 'en' ? enContent : grContent;
+        changeLanguage(currentLanguage); // Ensure any nested multi-language content is updated
     }
 
 
@@ -1078,6 +1083,9 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('accept-disclaimer')?.addEventListener('click', () => {
         localStorage.setItem('disclaimerAccepted', 'true');
         closeModalById('disclaimer-modal');
+        // IMPORTANT: After accepting, immediately open the installation modal
+        openModalAndHighlight('installation');
+        loadInstallationContent();
     });
     
     // The function that handles declining the disclaimer.
@@ -1115,11 +1123,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     // This function is for opening a modal that needs specific content loaded.
-    // It's called by initializeModals().
     function openModalHandler(modalId) {
          if (modalId === 'useful-information') {
             openUsefulInformationModal();
         } else if (modalId === 'installation') {
+            // This path should ideally not be hit directly anymore due to the check in initializeModals
             openModalAndHighlight(modalId);
             loadInstallationContent(); // Load the specific installation text
         } else {
@@ -1134,21 +1142,12 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // Specific feature initializations
         initializeCertificateFeature();
-        // checkDisclaimer(); // <-- REMOVED: This is what caused the automatic pop-up on load.
         initializeThemeSwitcher();
-        initializeLanguageSwitcher();
+        initializeLanguageSwitcher(); // <-- CORRECTED: This was missing in the previous version
         initializeHeroText();
         initializeSearch();
         initializeScrollIndicator();
         initializeUsefulInfoSearch();
-        
-        // Check for specific modals that need initial content loaded (e.g., installation)
-        document.querySelectorAll('[data-modal="installation"]').forEach(button => {
-            button.addEventListener('click', () => {
-                // The openModalHandler is now responsible for content loading after the check
-            });
-        });
-
     }
 
     initializePortfolio();
