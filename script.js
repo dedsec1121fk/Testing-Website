@@ -123,25 +123,30 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // 2. Title (Purple Text) - TRANSLATED
             doc.setFontSize(28);
-            doc.setFont('helvetica', 'bold');
+            doc.setFont('times', 'bold');
             doc.setTextColor(purpleColor);
-            doc.text(translations.title, 148.5, 40, { align: 'center' });
+            
+            // Use the actual translation text directly
+            const titleText = translations.title;
+            doc.text(titleText, 148.5, 40, { align: 'center' });
 
             // 3. Subtitle (Purple Text) - TRANSLATED
             doc.setFontSize(18);
-            doc.setFont('helvetica', 'italic');
+            doc.setFont('times', 'italic');
             doc.setTextColor(purpleColor);
-            doc.text(translations.subtitle, 148.5, 55, { align: 'center' });
+            const subtitleText = translations.subtitle;
+            doc.text(subtitleText, 148.5, 55, { align: 'center' });
 
             // 4. Main Body Text (Black Text) - TRANSLATED
             doc.setFontSize(14);
-            doc.setFont('helvetica', 'normal');
+            doc.setFont('times', 'normal');
             doc.setTextColor(blackColor);
-            doc.text(translations.certifies, 148.5, 80, { align: 'center' });
+            const certifiesText = translations.certifies;
+            doc.text(certifiesText, 148.5, 80, { align: 'center' });
 
             // 5. Recipient Name (Purple Text, Bold)
             doc.setFontSize(30);
-            doc.setFont('helvetica', 'bold');
+            doc.setFont('times', 'bold');
             doc.setTextColor(purpleColor);
             const nameWidth = doc.getTextWidth(fullName);
             const nameX = 148.5 - (nameWidth / 2);
@@ -152,18 +157,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // 6. Participation Text (Black Text) - TRANSLATED
             doc.setFontSize(14);
-            doc.setFont('helvetica', 'normal');
+            doc.setFont('times', 'normal');
             doc.setTextColor(blackColor);
-            doc.text(translations.participated, 148.5, 125, { align: 'center' });
-            doc.text(translations.event, 148.5, 135, { align: 'center' });
+            const participatedText = translations.participated;
+            doc.text(participatedText, 148.5, 125, { align: 'center' });
+            const eventText = translations.event;
+            doc.text(eventText, 148.5, 135, { align: 'center' });
 
             // 7. Details (Smaller Grey Text) - TRANSLATED
             doc.setFontSize(10);
             doc.setTextColor(greyColor);
             const detailY = 170;
-            doc.text(`${translations.issuedTo}: ${fullName}`, 20, detailY);
-            doc.text(`${translations.age}: ${age}`, 20, detailY + 7);
-            doc.text(`${translations.location}: ${city}, ${country}`, 20, detailY + 14);
+            const issuedToText = `${translations.issuedTo}: ${fullName}`;
+            doc.text(issuedToText, 20, detailY);
+            const ageText = `${translations.age}: ${age}`;
+            doc.text(ageText, 20, detailY + 7);
+            const locationText = `${translations.location}: ${city}, ${country}`;
+            doc.text(locationText, 20, detailY + 14);
 
             // 8. Date (Smaller Grey Text - Right side) - TRANSLATED
             const today = new Date().toLocaleDateString(currentLanguage === 'gr' ? 'el-GR' : 'en-US', { 
@@ -171,12 +181,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 month: 'long', 
                 day: 'numeric' 
             });
-            doc.text(`${translations.dateIssued}: ${today}`, 277, detailY, { align: 'right' });
+            const dateText = `${translations.dateIssued}: ${today}`;
+            doc.text(dateText, 277, detailY, { align: 'right' });
 
             // 9. Signature Area (Grey Text/Purple Line - Right side) - TRANSLATED
             doc.setFontSize(10);
             doc.setTextColor(greyColor);
-            doc.text(translations.team, 277, detailY + 14, { align: 'right'});
+            const teamText = translations.team;
+            doc.text(teamText, 277, detailY + 14, { align: 'right'});
             doc.setDrawColor(153, 102, 255);
             doc.setLineWidth(0.5);
             doc.line(220, detailY + 10, 277, detailY + 10);
