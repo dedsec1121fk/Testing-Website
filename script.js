@@ -94,6 +94,24 @@ document.addEventListener('DOMContentLoaded', () => {
         const formData = new FormData(form);
         const firstName = formData.get('firstName');
         const lastName = formData.get('lastName');
+        
+        // --- ADDED VALIDATION ---
+        const forbiddenWords = ['dedsec', 'admin', 'root', 'anonymous', 'administrator'];
+        const lowerFirstName = firstName.toLowerCase();
+        const lowerLastName = lastName.toLowerCase();
+
+        const isNameForbidden = forbiddenWords.some(word => lowerFirstName.includes(word) || lowerLastName.includes(word));
+
+        if (isNameForbidden) {
+            const alertMessages = {
+                en: "Please use your real name. Using project-related or system names is not allowed.",
+                gr: "Παρακαλώ χρησιμοποιήστε το πραγματικό σας όνομα. Η χρήση ονομάτων που σχετίζονται με το project ή το σύστημα δεν επιτρέπεται."
+            };
+            alert(alertMessages[currentLanguage]);
+            return; // Stop execution
+        }
+        // --- END OF ADDED VALIDATION ---
+        
         const age = formData.get('age');
         const country = formData.get('country');
         const city = formData.get('city');
