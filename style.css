@@ -257,19 +257,15 @@ body.light-theme .note.note-warning {
 }
 
 .certificate {
-    /* MODIFIED: White background - CONFIRMED */
-    background: #FFFFFF; 
-    /* MODIFIED: Purple border - CONFIRMED */
-    border: 4px solid var(--nm-accent);
+    background: linear-gradient(135deg, #1a1a2e, #16213e);
+    border: 4px solid #FFD700;
     border-radius: 15px;
     padding: 40px 30px;
-    /* CRITICAL FIX: Ensures ONLY PURPLE color is used for ALL text */
-    color: var(--nm-accent); 
+    color: #ffffff;
     font-family: 'Noto Serif', serif;
     text-align: center;
     position: relative;
-    /* MODIFIED: Changed from black shadow to PURPLE glow shadow - CONFIRMED */
-    box-shadow: 0 0 20px rgba(153, 102, 255, 0.5); 
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
 }
 
 .certificate-header {
@@ -278,15 +274,13 @@ body.light-theme .note.note-warning {
 
 .certificate-logo {
     font-size: 3rem;
-    /* CRITICAL FIX: Ensures ONLY PURPLE color is used - CONFIRMED */
-    color: var(--nm-accent); 
+    color: #FFD700;
     margin-bottom: 15px;
 }
 
 .certificate-header h1 {
     font-size: 2.2rem;
-    /* CRITICAL FIX: Ensures ONLY PURPLE color is used - CONFIRMED */
-    color: var(--nm-accent); 
+    color: #FFD700;
     margin: 0 0 10px 0;
     font-weight: bold;
     text-transform: uppercase;
@@ -295,7 +289,6 @@ body.light-theme .note.note-warning {
 
 .certificate-header h2 {
     font-size: 1.5rem;
-    /* ENSURE PURPLE - CONFIRMED */
     color: var(--nm-accent);
     margin: 0;
     font-weight: normal;
@@ -307,24 +300,19 @@ body.light-theme .note.note-warning {
 }
 
 .certificate-body p {
-    /* Set body text to purple since .certificate color is purple - CONFIRMED */
     font-size: 1.1rem;
     margin: 15px 0;
     line-height: 1.6;
-    /* ENSURE PURPLE: Inherited from .certificate, but explicitly set for clarity */
-    color: var(--nm-accent);
 }
 
 .recipient-name {
     font-size: 2.5rem;
     font-weight: bold;
-    /* ENSURE PURPLE - CONFIRMED */
-    color: var(--nm-accent); 
+    color: #FFD700;
     margin: 20px 0;
     padding: 10px;
-    /* ENSURE PURPLE - CONFIRMED */
-    border-bottom: 2px solid var(--nm-accent); 
-    border-top: 2px solid var(--nm-accent); 
+    border-bottom: 2px solid #FFD700;
+    border-top: 2px solid #FFD700;
     font-family: 'Orbitron', sans-serif;
     text-transform: uppercase;
     letter-spacing: 1px;
@@ -336,8 +324,7 @@ body.light-theme .note.note-warning {
     align-items: flex-end;
     margin-top: 40px;
     padding-top: 20px;
-    /* MODIFIED: Changed footer border from dark to purple accent - CONFIRMED */
-    border-top: 1px solid var(--nm-accent); 
+    border-top: 1px solid var(--nm-border);
 }
 
 .certificate-details {
@@ -347,13 +334,11 @@ body.light-theme .note.note-warning {
 .detail-item {
     margin: 8px 0;
     font-size: 0.9rem;
-    /* Detail item text inherits purple color from .certificate */
 }
 
 .detail-item span:first-child {
     font-weight: bold;
-    /* ENSURE PURPLE - CONFIRMED */
-    color: var(--nm-accent); 
+    color: #FFD700;
 }
 
 .signature {
@@ -363,15 +348,13 @@ body.light-theme .note.note-warning {
 .signature-line {
     width: 200px;
     height: 1px;
-    /* CRITICAL FIX: Changed from dark gray to PURPLE - CONFIRMED */
-    background: var(--nm-accent); 
+    background: #ffffff;
     margin: 0 auto 10px auto;
 }
 
 .signature span {
     font-style: italic;
-    /* MODIFIED: Changed signature text from muted to purple accent - CONFIRMED */
-    color: var(--nm-accent); 
+    color: var(--nm-text-muted);
 }
 
 /* Multi-color Border Animation for App Icons */
@@ -539,7 +522,7 @@ button.hero-cta-button {
 }
 
 /* --- MODIFIED: Uses new Dark Theme Logo as background --- */
-body:not(.light-theme) .screen::after { /* ADDED selector for dark theme specifically */
+.screen::after {
     content: '';
     position: absolute;
     top: 0;
@@ -830,23 +813,17 @@ body.light-theme ::-webkit-scrollbar-thumb {
 
 .app-grid {
     display: grid;
-    /* CRITICAL FIX: Use 1fr for symmetrical columns */
-    grid-template-columns: repeat(4, 1fr); 
+    grid-template-columns: repeat(4, max-content);
     justify-content: center;
-    /* Adjusted gap for 1fr columns */
-    gap: 35px 0px; 
+    gap: 35px; /* MODIFIED: Set to 35px */
     width: 100%;
     max-width: 500px;
-    /* MODIFIED: Added 15px side margins to ensure equal space from the screen sides */
-    margin: 0 15px 15px;
+    margin: 0 auto 15px;
     align-items: start;
-    /* CRITICAL FIX: Ensures the grid container doesn't exceed the parent width */
-    box-sizing: border-box;
 }
 
 .app-wrapper {
-    /* CRITICAL FIX: Removed fixed width so it can fill the 1fr column */
-    /* width: 70px; */
+    width: 70px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -894,8 +871,6 @@ body.light-theme ::-webkit-scrollbar-thumb {
     font-weight: 400;
     color: var(--nm-text); /* Enforce White text */
     text-align: center;
-    /* ADDED: Max-width to prevent labels from spanning the full 1fr column width */
-    max-width: 70px;
     /* MODIFIED: Use normal word-break to ensure words wrap to the next line 
        instead of being broken mid-word */
     word-break: normal; 
@@ -1594,17 +1569,13 @@ span.sub-item {
 
     .search-container,
     .hero-section,
-    .grid-heading {
+    .grid-heading,
+    .app-grid {
         max-width: 700px;
     }
 
     .app-grid {
-        max-width: 700px; 
-        grid-template-columns: repeat(6, 1fr); /* Also use 1fr for symmetry on wider screens */
-        /* Adjusted gap for 1fr columns */
-        gap: 35px 0px;
-        /* Use auto margins for centering on wider screens */
-        margin: 0 auto 15px; 
+        grid-template-columns: repeat(6, max-content);
     }
 
     .main-header-container h1 {
@@ -1618,16 +1589,12 @@ span.sub-item {
 @media (min-width: 1200px) {
     .search-container,
     .hero-section,
-    .grid-heading {
+    .grid-heading,
+    .app-grid {
         max-width: 900px;
     }
 
     .app-grid {
-        max-width: 900px; 
-        grid-template-columns: repeat(8, 1fr); /* Also use 1fr for symmetry on wider screens */
-        /* Adjusted gap for 1fr columns */
-        gap: 35px 0px;
-        /* Use auto margins for centering on wider screens */
-        margin: 0 auto 15px; 
+        grid-template-columns: repeat(8, max-content);
     }
 }
