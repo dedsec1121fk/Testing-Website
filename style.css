@@ -64,7 +64,7 @@ body.light-theme .screen::after {
     border-radius: 20px;
     padding: 12px;
     margin: 15px auto;
-    width: 100%;
+    width: calc(100% - 30px); /* Account for scrollbar space */
     max-width: 440px; /* Changed from 400px to 440px (10% bigger than 400px) */
     text-align: center;
     box-shadow: 0 4px 15px rgba(138, 43, 226, 0.4);
@@ -108,7 +108,7 @@ body.light-theme .screen::after {
     align-items: center;
     justify-content: center;
     gap: 10px;
-    width: 100%;
+    width: calc(100% - 30px); /* Account for scrollbar space */
     max-width: 400px; /* Match banner width */
     transition: all 0.3s ease;
     box-shadow: 0 4px 10px rgba(138, 43, 226, 0.4);
@@ -617,14 +617,16 @@ body.light-theme .phone-container::after {
     display: flex;
     flex-direction: column;
     align-items: center;
+    width: 100%; /* Ensure full width */
 }
 
-/* MODIFIED: Universal Custom Scrollbar */
+/* FIXED: Custom Scrollbar that doesn't cover content */
 ::-webkit-scrollbar {
-    width: 10px;
+    width: 8px; /* Reduced from 10px */
 }
 ::-webkit-scrollbar-track {
     background: var(--nm-dark);
+    margin: 5px 0; /* Add margin to prevent covering content */
 }
 ::-webkit-scrollbar-thumb {
     background-color: var(--nm-accent);
@@ -636,19 +638,27 @@ body.light-theme .phone-container::after {
     background-color: var(--nm-accent-hover);
 }
 body.light-theme ::-webkit-scrollbar-thumb {
-    /* Ensure scrollbar thumb is visible in light theme */
     background-color: #555555; 
     border-color: var(--nm-dark);
 }
 
+/* Ensure content doesn't get covered by scrollbar */
+.main-header-container,
+.hero-section,
+.grid-heading,
+.app-grid,
+.main-footer {
+    width: calc(100% - 15px); /* Account for scrollbar */
+    padding-right: 8px; /* Extra padding for scrollbar */
+    box-sizing: border-box;
+}
 
 .main-header-container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 100%;
+    width: calc(100% - 15px);
     gap: 15px;
-    /* FIX: Reduced margin-bottom from 20px to 10px */
     margin-bottom: 10px;
     padding: 25px 15px 0 15px;
     box-sizing: border-box;
@@ -780,9 +790,8 @@ body.light-theme ::-webkit-scrollbar-thumb {
     flex-direction: column;
     align-items: center;
     text-align: center;
-    width: 100%;
+    width: calc(100% - 15px);
     max-width: 500px;
-    /* FIX: Reduced top margin from 15px and bottom margin from 35px */
     margin: 5px 0 5px 0;
     padding: 10px;
     box-sizing: border-box;
@@ -824,14 +833,13 @@ body.light-theme ::-webkit-scrollbar-thumb {
 
 /* --- NEW GRID HEADING STYLES --- */
 .grid-heading {
-    width: 100%;
+    width: calc(100% - 15px);
     max-width: 500px;
     text-align: center;
     font-family: 'Orbitron', sans-serif;
     color: var(--nm-text);
     text-transform: uppercase;
     font-size: 1rem;
-    /* FIX: Reduced top margin from 25px to 10px */
     margin: 10px auto 15px;
     padding-bottom: 5px;
     border-bottom: 1px solid var(--nm-border);
@@ -844,7 +852,7 @@ body.light-theme ::-webkit-scrollbar-thumb {
     grid-template-columns: repeat(4, max-content);
     justify-content: center;
     gap: 20px; /* MODIFIED: Reduced from 35px to 20px */
-    width: 100%;
+    width: calc(100% - 15px);
     max-width: 500px;
     margin: 0 auto 15px;
     align-items: start;
@@ -991,6 +999,7 @@ body.light-theme .app-icon:hover {
     font-size: 0.7rem;
     color: var(--nm-text-muted);
     margin-top: 25px; /* Added margin to push it down */
+    width: calc(100% - 15px);
 }
 
 .modal-overlay {
@@ -1626,4 +1635,3 @@ span.sub-item {
         grid-template-columns: repeat(8, max-content);
     }
 }
-
