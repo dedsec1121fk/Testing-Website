@@ -539,7 +539,7 @@ button.hero-cta-button {
 }
 
 /* --- MODIFIED: Uses new Dark Theme Logo as background --- */
-.screen::after {
+body:not(.light-theme) .screen::after { /* ADDED selector for dark theme specifically */
     content: '';
     position: absolute;
     top: 0;
