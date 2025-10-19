@@ -18,7 +18,7 @@
     /* DANGER/FAIL: Red */
     --nm-danger: #FF0000;      
     --nm-danger-hover: #FF0000; 
-    /* SUCCESS: Green - MODIFIED to use PURPLE for certificate but kept for other elements */
+    /* SUCCESS: Green */
     --nm-success: #00FF00;     
     /* WARNING/HIGHLIGHT: Yellow */
     --nm-warning: #FFFF00;     
@@ -107,17 +107,17 @@ body.light-theme .note.note-warning {
    ANNIVERSARY STYLES
    ================================================================= */
 
-/* Anniversary Banner - REVERTED TO GOLD/YELLOW THEME */
+/* Anniversary Banner - REVERTED TO PURPLE THEME */
 .anniversary-banner {
-    background: linear-gradient(135deg, #FFD700, #FFA500); /* Gold to Orange */
-    border: 2px solid #FFD700;
+    background: linear-gradient(135deg, var(--nm-accent), var(--nm-accent-hover));
+    border: 2px solid var(--nm-accent);
     border-radius: 20px;
     padding: 20px;
     margin: 15px auto;
     max-width: 480px;
     width: 100%;
-    opacity: 0.95; /* Increased opacity for gold banner */
-    box-shadow: 0 4px 15px rgba(255, 215, 0, 0.5); /* Gold glow */
+    opacity: 0.85;
+    box-shadow: 0 4px 15px rgba(var(--glow-rgb), 0.5); /* PURPLE glow */
     position: relative;
     z-index: 5;
     box-sizing: border-box; 
@@ -132,13 +132,13 @@ body.light-theme .note.note-warning {
 
 .anniversary-icon {
     font-size: 2rem;
-    color: #000000; /* Dark icon for gold contrast */
+    color: var(--nm-text);
     flex-shrink: 0;
 }
 
 .anniversary-text h3 {
     margin: 0 0 10px 0;
-    color: #000000; /* Dark text for gold contrast */
+    color: var(--nm-text);
     font-family: 'Orbitron', sans-serif;
     font-size: 1.2rem;
     text-align: center;
@@ -148,18 +148,19 @@ body.light-theme .note.note-warning {
 
 .anniversary-text p {
     margin: 0;
-    color: #333333; /* Darker text for gold contrast */
+    color: var(--nm-text);
     font-size: 0.9rem;
     line-height: 1.4;
     text-align: left;
 }
 
+/* Certificate Button - REVERTED TO PURPLE/WHITE TEXT */
 .certificate-btn {
     width: 100%;
-    /* REVERTED: Gold/Orange gradient */
-    background: linear-gradient(135deg, #FFA500, #FFD700); 
-    border: 2px solid #FFD700;
-    color: #000000; /* Reverted text to dark for contrast */
+    /* PURPLE Gradient */
+    background: linear-gradient(135deg, var(--nm-accent), var(--nm-accent-hover));
+    border: 2px solid var(--nm-accent);
+    color: #FFFFFF; /* White text for contrast on purple */
     padding: 12px 20px;
     border-radius: 20px;
     font-family: 'Orbitron', sans-serif;
@@ -172,14 +173,14 @@ body.light-theme .note.note-warning {
     justify-content: center;
     gap: 10px;
     opacity: 0.95;
-    box-shadow: 0 4px 15px rgba(255, 215, 0, 0.5); /* Gold glow */
+    box-shadow: 0 4px 15px rgba(var(--glow-rgb), 0.3); /* Purple glow */
 }
 
 .certificate-btn:hover {
-    background: linear-gradient(135deg, #FFD700, #FFA500);
-    border-color: #FFA500;
+    background: linear-gradient(135deg, var(--nm-accent-hover), var(--nm-accent));
+    border-color: var(--nm-accent-hover);
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(255, 215, 0, 0.8); /* Stronger Gold glow */
+    box-shadow: 0 6px 20px rgba(var(--glow-rgb), 0.8); /* Stronger Purple glow */
 }
 
 /* Certificate Form Styles */
@@ -225,7 +226,7 @@ body.light-theme .note.note-warning {
 }
 
 #generate-certificate {
-    /* Kept PURPLE/WHITE */
+    /* Kept PURPLE/WHITE, adjusted gradient for better contrast */
     background: linear-gradient(135deg, var(--nm-accent), var(--nm-accent-hover)); 
     border: 2px solid var(--nm-accent);
     color: #FFFFFF; 
@@ -249,7 +250,7 @@ body.light-theme .note.note-warning {
     box-shadow: 0 6px 20px rgba(var(--glow-rgb), 0.3); 
 }
 
-/* Certificate Preview Styles - KEPT WHITE/PURPLE */
+/* Certificate Preview Styles - CORRECTED to WHITE BACKGROUND, PURPLE ACCENTS */
 .certificate-preview {
     margin-top: 30px;
     padding: 20px;
@@ -374,17 +375,44 @@ body.light-theme .note.note-warning {
     color: #555555; 
 }
 
-/* Multi-color Border Animation for App Icons */
+/* Multi-color Border Animation for App Icons - KEPT ORIGINAL RAINBOW ANIMATION */
 @keyframes multiColorBorder {
-    /* MODIFIED: Simplified to pulse between purple and a darker purple */
-    0% { border-color: var(--nm-accent); }
-    50% { border-color: var(--nm-accent-hover); }
-    100% { border-color: var(--nm-accent); }
+    0% { border-color: #FF0000; }
+    3.33% { border-color: #FF3300; }
+    6.66% { border-color: #FF6600; }
+    10% { border-color: #FF9900; }
+    13.33% { border-color: #FFCC00; }
+    16.66% { border-color: #FFFF00; }
+    20% { border-color: #CCFF00; }
+    23.33% { border-color: #99FF00; }
+    26.66% { border-color: #66FF00; }
+    30% { border-color: #33FF00; }
+    33.33% { border-color: #00FF00; }
+    36.66% { border-color: #00FF33; }
+    40% { border-color: #00FF66; }
+    43.33% { border-color: #00FF99; }
+    46.66% { border-color: #00FFCC; }
+    50% { border-color: #00FFFF; }
+    53.33% { border-color: #00CCFF; }
+    56.66% { border-color: #0099FF; }
+    60% { border-color: #0066FF; }
+    63.33% { border-color: #0033FF; }
+    66.66% { border-color: #0000FF; }
+    70% { border-color: #3300FF; }
+    73.33% { border-color: #6600FF; }
+    76.66% { border-color: #9900FF; }
+    80% { border-color: #CC00FF; }
+    83.33% { border-color: #FF00FF; }
+    86.66% { border-color: #FF00CC; }
+    90% { border-color: #FF0099; }
+    93.33% { border-color: #FF0066; }
+    96.66% { border-color: #FF0033; }
+    100% { border-color: #FF0000; }
 }
 
 /* Apply animation to app icons */
 .app-wrapper .app-icon {
-    animation: multiColorBorder 3s infinite alternate; /* MODIFIED: Slower, simpler pulse */
+    animation: multiColorBorder 15s infinite linear;
     border-width: 2px;
     border-style: solid;
 }
@@ -804,13 +832,25 @@ body.light-theme ::-webkit-scrollbar-thumb {
 .app-grid {
     display: grid;
     grid-template-columns: repeat(4, max-content);
-    /* KEPT: Ensures centering */
-    justify-content: center; 
-    gap: 35px; /* MODIFIED: Set to 35px */
+    /* MODIFIED: Changed justify-content from center to flex-start and 
+       added margin-left to push the grid more to the right */
+    justify-content: flex-start; 
+    margin-left: 20px; /* Adjust this value to control the right shift */
+    gap: 35px; 
     width: 100%;
     max-width: 500px;
-    margin: 0 auto 15px;
+    margin-right: auto;
+    margin-bottom: 15px;
     align-items: start;
+}
+
+@media (min-width: 768px) {
+    .app-grid {
+        grid-template-columns: repeat(6, max-content);
+        /* Revert to center on larger screens for better layout */
+        justify-content: center;
+        margin-left: auto;
+    }
 }
 
 .app-wrapper {
