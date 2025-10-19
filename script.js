@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // --- ANNIVERSARY CERTIFICATE FUNCTIONALITY ---
+    // --- ANNIVERSARY CERTIFICATE FUNCTIONALITY (FROM NEW SCRIPT) ---
     function initializeCertificateFeature() {
         const certificateBtn = document.querySelector('.certificate-btn');
         const generateCertificateBtn = document.getElementById('generate-certificate');
@@ -49,6 +49,26 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         if (generateCertificateBtn && certificateForm) {
+            // --- FIX: Set initial button color to purple to override CSS ---
+            generateCertificateBtn.style.background = 'linear-gradient(135deg, var(--nm-accent), var(--nm-accent-hover))';
+            generateCertificateBtn.style.borderColor = 'var(--nm-accent)';
+            generateCertificateBtn.style.color = '#000000'; // Ensure text color is black like the green button
+
+            // --- FIX: Add mouse listeners to control purple hover state ---
+            generateCertificateBtn.addEventListener('mouseenter', () => {
+                // Only apply hover if not in success state (which is handled by showCertificateSuccess)
+                if (!generateCertificateBtn.querySelector('.fa-check')) {
+                    generateCertificateBtn.style.background = 'linear-gradient(135deg, var(--nm-accent-hover), var(--nm-accent))';
+                }
+            });
+            generateCertificateBtn.addEventListener('mouseleave', () => {
+                // Only apply non-hover if not in success state
+                if (!generateCertificateBtn.querySelector('.fa-check')) {
+                    generateCertificateBtn.style.background = 'linear-gradient(135deg, var(--nm-accent), var(--nm-accent-hover))';
+                }
+            });
+            // --- END FIX ---
+
             generateCertificateBtn.addEventListener('click', generateCertificate);
         }
 
@@ -265,6 +285,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 3000);
     }
 
+    // --- START: USEFUL INFORMATION FUNCTIONS FROM OLD SCRIPT.JS ---
+    
     // --- EVEN MORE ADVANCED SEARCH UTILITY (Used for 'Useful Information' modal) ---
     const SearchEngine = {
         idfMaps: {},
@@ -415,7 +437,324 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // --- PORTFOLIO INITIALIZATION ---
+    async function buildUsefulInfoSearchIndex(progressBar, progressText) {
+        if (isUsefulInfoIndexBuilt || usefulInfoFiles.length === 0) return;
+
+        let filesLoaded = 0;
+        const totalFiles = usefulInfoFiles.length;
+
+        const indexPromises = usefulInfoFiles.map(async (file) => {
+            try {
+                const response = await fetch(file.download_url);
+                if (!response.ok) return;
+                const htmlContent = await response.text();
+                const tempDiv = document.createElement('div');
+                tempDiv.innerHTML = htmlContent;
+
+                let fallbackTitleEN = file.name.replace(/\.html$/, '').replace(/^\d+_/, '').replace(/_/g, ' ');
+                let fallbackTitleGR = fallbackTitleEN;
+
+                const titleRegex = /(.+?)_\((.+?)\)/;
+                const match = file.name.match(titleRegex);
+
+                if (match && match[1] && match[2]) {
+                    fallbackTitleEN = match[1].replace(/_/g, ' ').trim();
+                    fallbackTitleGR = match[2].replace(/_/g, ' ').trim();
+                }
+
+                const titlesContainer = tempDiv.querySelector('#article-titles');
+                const titleEN = titlesContainer?.querySelector('[data-lang="en"]')?.textContent.trim() || fallbackTitleEN;
+                const titleGR = titlesContainer?.querySelector('[data-lang="gr"]')?.textContent.trim() || fallbackTitleGR;
+
+                tempDiv.querySelectorAll('[data-lang-section]').forEach(section => {
+                    const lang = section.dataset.langSection;
+                    const articleTitle = lang === 'gr' ? titleGR : titleEN;
+                    section.querySelectorAll('h3, h4, p, li, b, code').forEach(el => {
+                        const text = el.textContent.trim().replace(/\s\s+/g, ' ');
+                        if (text.length > 5) {
+                            const item = {
+                                lang,
+                                title: articleTitle,
+                                text,
+                                url: file.download_url,
+                                weight: (el.tagName === 'H3' ? 5 : 1)
+                            };
+                            usefulInfoSearchIndex.push(SearchEngine.preprocessItem(item));
+                        }
+                    });
+                });
+            } catch (e) {
+                console.error(`Failed to index file: ${file.name}`, e);
+            } finally {
+                filesLoaded++;
+                const progress = (filesLoaded / totalFiles) * 100;
+                progressBar.style.width = `${progress}%`;
+                progressText.textContent = `${Math.round(progress)}%`;
+            }
+        });
+
+        await Promise.all(indexPromises);
+        SearchEngine.calculateIdf('usefulInfo', usefulInfoSearchIndex);
+        isUsefulInfoIndexBuilt = true;
+    }
+
+    function updateUsefulInfoButtonTitles() {
+        const titleMap = new Map();
+
+        usefulInfoSearchIndex.forEach(item => {
+            if (!titleMap.has(item.url)) {
+                titleMap.set(item.url, {});
+            }
+            const langTitles = titleMap.get(item.url);
+            if (!langTitles[item.lang]) {
+                langTitles[item.lang] = item.title;
+            }
+        });
+
+        document.querySelectorAll('#useful-information-nav .app-icon[data-url]').forEach(button => {
+            const url = button.dataset.url;
+            const titles = titleMap.get(url);
+            if (titles) {
+                const buttonSpan = button.querySelector('span');
+                if(buttonSpan) {
+                   buttonSpan.setAttribute('data-en', titles.en || '');
+                   buttonSpan.setAttribute('data-gr', titles.gr || titles.en || '');
+                   buttonSpan.textContent = (currentLanguage === 'gr' ? titles.gr : titles.en) || titles.en || buttonSpan.textContent;
+                }
+            }
+        });
+    }
+
+    function initializeUsefulInfoSearch() {
+        const searchInput = document.getElementById('useful-info-search-input');
+        const resultsContainer = document.getElementById('useful-info-results-container');
+        const navContainer = document.getElementById('useful-information-nav');
+        if (!searchInput || !resultsContainer || !navContainer) return;
+
+        const progressBarContainer = document.createElement('div');
+        progressBarContainer.className = 'progress-bar-container';
+        
+        const progressBar = document.createElement('div');
+        progressBar.className = 'progress-bar';
+
+        const progressText = document.createElement('span');
+        progressText.className = 'progress-bar-text';
+        progressText.textContent = '0%';
+
+        progressBarContainer.appendChild(progressBar);
+        progressBarContainer.appendChild(progressText);
+        navContainer.parentNode.insertBefore(progressBarContainer, navContainer);
+
+
+        const showNav = (shouldShow) => {
+            navContainer.querySelectorAll('.app-icon').forEach(article => {
+                article.style.display = shouldShow ? 'flex' : 'none';
+            });
+        };
+
+        searchInput.addEventListener('focus', async () => {
+            if (isUsefulInfoIndexBuilt) return;
+
+            searchInput.placeholder = currentLanguage === 'gr' ? 'Ευρετηρίαση άρθρων...' : 'Indexing articles...';
+            searchInput.disabled = true;
+
+            progressBarContainer.style.display = 'block';
+            progressBar.style.width = '0%';
+
+            await buildUsefulInfoSearchIndex(progressBar, progressText);
+            
+            updateUsefulInfoButtonTitles();
+
+            setTimeout(() => {
+                progressBarContainer.style.display = 'none';
+            }, 500);
+
+            searchInput.disabled = false;
+            searchInput.placeholder = currentLanguage === 'gr' ? 'Αναζήτηση άρθρων...' : 'Search articles...';
+            searchInput.focus();
+        }, { once: true });
+
+        searchInput.addEventListener('input', () => {
+            const query = searchInput.value.trim();
+            resultsContainer.innerHTML = '';
+
+            if (!isUsefulInfoIndexBuilt || query.length < 2) {
+                resultsContainer.classList.add('hidden');
+                showNav(true);
+                return;
+            }
+            
+            showNav(false);
+
+            const results = SearchEngine.search(query, usefulInfoSearchIndex, currentLanguage, 'usefulInfo');
+
+            if (results.length > 0) {
+                results.slice(0, 7).forEach(result => {
+                    const itemEl = document.createElement('div');
+                    itemEl.classList.add('search-result-item');
+                    const snippet = SearchEngine.generateSnippet(result.text, query, currentLanguage);
+                    const highlightedSnippet = SearchEngine.highlight(snippet, query, currentLanguage);
+
+                    itemEl.innerHTML = `${highlightedSnippet} <small>${result.title}</small>`;
+                    itemEl.addEventListener('click', () => {
+                        searchInput.value = '';
+                        resultsContainer.classList.add('hidden');
+                        loadInformationContent(result.url, result.title, result.text);
+                    });
+                    resultsContainer.appendChild(itemEl);
+                });
+                resultsContainer.classList.remove('hidden');
+            } else {
+                resultsContainer.classList.add('hidden');
+                showNav(true);
+            }
+        });
+    }
+
+    async function fetchUsefulInformation() {
+        if (usefulInformationLoaded || isFetchingUsefulInfo) return;
+        isFetchingUsefulInfo = true;
+        const navContainer = document.getElementById('useful-information-nav');
+        const GITHUB_API_URL = 'https://api.github.com/repos/dedsec1121fk/dedsec1121fk.github.io/contents/Useful_Information';
+        navContainer.innerHTML = `<p>${currentLanguage === 'gr' ? 'Φόρτωση...' : 'Loading...'}</p>`;
+        
+        try {
+            const response = await fetch(GITHUB_API_URL);
+            if (!response.ok) throw new Error(`GitHub API error: ${response.status}`);
+            const files = await response.json();
+            usefulInfoFiles = files.filter(file => file.type === 'file' && file.name.endsWith('.html'));
+            
+            navContainer.innerHTML = '';
+            if (usefulInfoFiles.length === 0) {
+                 navContainer.innerHTML = `<p>${currentLanguage === 'gr' ? 'Δεν βρέθηκαν πληροφορίες.' : 'No information found.'}</p>`;
+                 return;
+            }
+            
+            usefulInfoFiles.forEach(file => {
+                let titleEN = file.name.replace(/\.html$/, '').replace(/^\d+_/, '').replace(/_/g, ' ');
+                let titleGR = titleEN; 
+    
+                const titleRegex = /(.+?)_\((.+?)\)/;
+                const match = file.name.match(titleRegex);
+    
+                if (match && match[1] && match[2]) {
+                    titleEN = match[1].replace(/_/g, ' ').trim();
+                    titleGR = match[2].replace(/_/g, ' ').trim();
+                }
+    
+                const button = document.createElement('button');
+                button.className = 'app-icon';
+                button.dataset.url = file.download_url;
+                
+                const initialTitle = currentLanguage === 'gr' ? titleGR : titleEN;
+                button.innerHTML = `<i class="fas fa-book-open"></i><span data-en="${titleEN}" data-gr="${titleGR}">${initialTitle}</span>`;
+                
+                button.addEventListener('click', () => {
+                    const span = button.querySelector('span');
+                    const modalTitle = (currentLanguage === 'gr' ? span.getAttribute('data-gr') : span.getAttribute('data-en')) || titleEN;
+                    loadInformationContent(file.download_url, modalTitle);
+                });
+                navContainer.appendChild(button);
+            });
+            usefulInformationLoaded = true;
+        } catch (error) {
+            console.error('Failed to fetch useful information:', error);
+            navContainer.innerHTML = `<p style="color: var(--nm-danger);">${currentLanguage === 'gr' ? 'Αποτυχία φόρτωσης.' : 'Failed to load.'}</p>`;
+        } finally {
+            isFetchingUsefulInfo = false;
+        }
+    }
+
+    function createAndShowArticleModal(title, htmlContent, textToHighlight = null) {
+        document.querySelectorAll('.article-modal-overlay').forEach(modal => modal.remove());
+        const modalOverlay = document.createElement('div');
+        modalOverlay.className = 'modal-overlay article-modal-overlay'; 
+        modalOverlay.innerHTML = `
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>${title}</h2>
+                    <button class="close-modal">&times;</button>
+                </div>
+                <div class="modal-body">${htmlContent}</div>
+            </div>`;
+        document.body.appendChild(modalOverlay);
+
+        // --- FIX STARTS HERE ---
+        // After inserting the new content, find all copy buttons and attach the event listener.
+        let dynamicCodeIdCounter = 0;
+        const codeContainers = modalOverlay.querySelectorAll('.code-container');
+        codeContainers.forEach(container => {
+            const copyBtn = container.querySelector('.copy-btn');
+            const codeEl = container.querySelector('code');
+
+            if (copyBtn && codeEl) {
+                // Ensure the code element has an ID for the copy function to target
+                if (!codeEl.id) {
+                    const uniqueId = `dynamic-code-${Date.now()}-${dynamicCodeIdCounter++}`;
+                    codeEl.id = uniqueId;
+                }
+                
+                // Add the event listener to the button
+                copyBtn.addEventListener('click', () => {
+                    // Call the globally available copyToClipboard function
+                    window.copyToClipboard(copyBtn, codeEl.id);
+                });
+            }
+        });
+        // --- FIX ENDS HERE ---
+        
+        setTimeout(() => modalOverlay.classList.add('visible'), 10);
+        changeLanguage(currentLanguage);
+    
+        if (textToHighlight) {
+            setTimeout(() => {
+                const modalBody = modalOverlay.querySelector('.modal-body');
+                const allElements = modalBody.querySelectorAll('p, li, h3, h4, b, code, .tip, .note');
+                const targetElement = Array.from(allElements).find(el => el.textContent.trim().replace(/\s\s+/g, ' ') === textToHighlight.trim());
+                if (targetElement) {
+                    modalBody.scrollTo({ top: targetElement.offsetTop - 50, behavior: 'smooth' });
+                    targetElement.classList.add('content-highlight');
+                    setTimeout(() => targetElement.classList.remove('content-highlight'), 2500);
+                }
+            }, 150);
+        }
+        
+        const closeModal = () => {
+            modalOverlay.classList.remove('visible');
+            modalOverlay.addEventListener('transitionend', () => modalOverlay.remove(), { once: true });
+            
+            const searchInput = document.getElementById('useful-info-search-input');
+            if (searchInput) searchInput.value = '';
+            
+            const navContainer = document.getElementById('useful-information-nav');
+            if (navContainer) {
+                navContainer.querySelectorAll('.app-icon').forEach(article => {
+                    article.style.display = 'flex';
+                });
+            }
+        };
+
+        modalOverlay.addEventListener('click', (e) => {
+            if (e.target === modalOverlay) closeModal();
+        });
+        modalOverlay.querySelector('.close-modal').addEventListener('click', closeModal);
+    }
+
+    async function loadInformationContent(url, title, textToHighlight = null) {
+        try {
+            const response = await fetch(url);
+            if (!response.ok) throw new Error(`Fetch failed: ${response.status}`);
+            const htmlContent = await response.text();
+            createAndShowArticleModal(title, htmlContent, textToHighlight);
+        } catch (error) {
+            console.error('Failed to load content:', error);
+        }
+    }
+
+    // --- END: USEFUL INFORMATION FUNCTIONS FROM OLD SCRIPT.JS ---
+
+
+    // --- PORTFOLIO INITIALIZATION (FROM NEW SCRIPT, MODIFIED) ---
     function initializePortfolio() {
         function showModal(modal) {
             if (!modal) return;
@@ -583,7 +922,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 // Fetch useful info only when that modal is opened
                 if (modalId === 'useful-information' && !usefulInformationLoaded) {
-                    fetchUsefulInformation();
+                    fetchUsefulInformation(); // This call now points to the old function
                 }
                 
                 // Highlight content after modal is visible
@@ -644,19 +983,16 @@ document.addEventListener('DOMContentLoaded', () => {
             const closeModal = () => {
                 hideModal(modal);
                 
-                // Reset search in useful info modal when closed
+                // --- THIS BLOCK IS FROM THE OLD SCRIPT.JS ---
                 if (modal.id === 'useful-information-modal') {
-                    const searchInput = document.getElementById('useful-info-search-input');
-                    const resultsContainer = document.getElementById('useful-info-results-container');
-                    const navContainer = document.getElementById('useful-information-nav');
-                    if (searchInput) searchInput.value = '';
-                    if (resultsContainer) resultsContainer.classList.add('hidden');
-                     if (navContainer) { // Show nav again
-                        navContainer.querySelectorAll('.app-icon').forEach(article => {
-                           article.style.display = 'flex';
-                       });
-                     }
+                    document.getElementById('useful-info-search-input').value = '';
+                    document.getElementById('useful-info-results-container').classList.add('hidden');
+                    document.getElementById('useful-information-nav').querySelectorAll('.app-icon').forEach(article => {
+                        article.style.display = 'flex';
+                    });
                 }
+                 // --- END OLD SCRIPT BLOCK ---
+
                  // Remove any lingering highlights
                 modal.querySelectorAll('.content-highlight').forEach(el => el.classList.remove('content-highlight'));
             };
@@ -724,7 +1060,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // --- Initialize Core Features ---
         initializeWebSearchSuggestions(); 
-        initializeUsefulInfoSearch();
+        initializeUsefulInfoSearch(); // This call now points to the old function
         initializeCertificateFeature(); 
         
         // --- Initial Setup ---
@@ -837,470 +1173,6 @@ document.addEventListener('DOMContentLoaded', () => {
                  suggestionsContainer.classList.add('hidden');
              }
          });
-    }
-
-
-    async function buildUsefulInfoSearchIndex(progressBar, progressText) {
-        if (isUsefulInfoIndexBuilt || usefulInfoFiles.length === 0) return;
-
-        let filesLoaded = 0;
-        const totalFiles = usefulInfoFiles.length;
-        usefulInfoSearchIndex = []; // Clear previous index if rebuilding
-
-        const indexPromises = usefulInfoFiles.map(async (file) => {
-            try {
-                const response = await fetch(file.download_url);
-                if (!response.ok) {
-                    console.error(`Failed to fetch ${file.name}: ${response.status}`);
-                    return; // Skip this file
-                }
-                const htmlContent = await response.text();
-                const tempDiv = document.createElement('div');
-                tempDiv.innerHTML = htmlContent;
-
-                // Extract titles (more robustly)
-                 let fallbackTitleEN = file.name.replace(/\.html$/, '').replace(/^\d+_/,'').replace(/_/g, ' ');
-                 let fallbackTitleGR = fallbackTitleEN; // Default GR to EN
-
-                 // Try extracting titles from specific elements if they exist
-                 const titleElementEN = tempDiv.querySelector('#article-titles [data-lang="en"]');
-                 const titleElementGR = tempDiv.querySelector('#article-titles [data-lang="gr"]');
-                 
-                 const titleEN = titleElementEN ? titleElementEN.textContent.trim() : fallbackTitleEN;
-                 const titleGR = titleElementGR ? titleElementGR.textContent.trim() : fallbackTitleGR; // Use EN fallback if GR element missing
-
-
-                // Index content sections
-                tempDiv.querySelectorAll('[data-lang-section]').forEach(section => {
-                    const lang = section.dataset.langSection;
-                    const articleTitle = lang === 'gr' ? titleGR : titleEN; // Use correct title for language
-
-                    // Select relevant content elements
-                    section.querySelectorAll('h3, h4, p, li, b, code, .tip, .note').forEach(el => {
-                         // Basic cleaning: remove extra whitespace
-                        const text = el.textContent.trim().replace(/\s+/g, ' '); 
-                        
-                        if (text.length > 5) { // Only index meaningful text snippets
-                            const item = {
-                                lang,
-                                title: articleTitle,
-                                text,
-                                url: file.download_url, // Store URL to load content later
-                                weight: (el.tagName === 'H3' ? 5 : (el.tagName === 'H4' ? 3 : 1)) // Weight headings higher
-                            };
-                            usefulInfoSearchIndex.push(SearchEngine.preprocessItem(item));
-                        }
-                    });
-                });
-            } catch (e) {
-                console.error(`Failed to index file: ${file.name}`, e);
-            } finally {
-                filesLoaded++;
-                const progress = Math.min(100, (filesLoaded / totalFiles) * 100); // Ensure progress doesn't exceed 100
-                if (progressBar) progressBar.style.width = `${progress}%`;
-                if (progressText) progressText.textContent = `${Math.round(progress)}%`;
-            }
-        });
-
-        await Promise.all(indexPromises);
-        SearchEngine.calculateIdf('usefulInfo', usefulInfoSearchIndex); // Calculate IDF after all docs processed
-        isUsefulInfoIndexBuilt = true;
-        console.log(`Useful Info Index built with ${usefulInfoSearchIndex.length} items.`);
-    }
-
-    // Function to update button titles AFTER index is built
-    function updateUsefulInfoButtonTitles() {
-         if (!isUsefulInfoIndexBuilt) return; // Only run if index is ready
-
-         // Create a map of URL -> {en: title, gr: title} from the index
-         const titleMap = new Map();
-         usefulInfoSearchIndex.forEach(item => {
-             if (!titleMap.has(item.url)) {
-                 titleMap.set(item.url, {});
-             }
-             const langTitles = titleMap.get(item.url);
-             // Only set the title if it's not already set for that language (first occurrence wins)
-             if (!langTitles[item.lang]) { 
-                 langTitles[item.lang] = item.title;
-             }
-         });
-
-         // Update the buttons in the DOM
-         document.querySelectorAll('#useful-information-nav .app-icon[data-url]').forEach(button => {
-             const url = button.dataset.url;
-             const titles = titleMap.get(url);
-             if (titles) {
-                 const buttonSpan = button.querySelector('span');
-                 if (buttonSpan) {
-                     const titleEN = titles.en || buttonSpan.getAttribute('data-en') || 'Untitled'; // Fallbacks
-                     const titleGR = titles.gr || titleEN; // Fallback GR to EN if missing
-
-                     buttonSpan.setAttribute('data-en', titleEN);
-                     buttonSpan.setAttribute('data-gr', titleGR);
-                     // Update current text based on selected language
-                     buttonSpan.textContent = (currentLanguage === 'gr' ? titleGR : titleEN);
-                 }
-             }
-         });
-          // Re-apply current language to ensure all static text is correct too
-          changeLanguage(currentLanguage);
-    }
-
-
-    function initializeUsefulInfoSearch() {
-        const searchInput = document.getElementById('useful-info-search-input');
-        const resultsContainer = document.getElementById('useful-info-results-container');
-        const navContainer = document.getElementById('useful-information-nav');
-        const promptText = document.getElementById('useful-info-prompt');
-
-        if (!searchInput || !resultsContainer || !navContainer || !promptText) {
-             console.error("Useful Info Search elements not found.");
-             return; // Stop initialization if elements are missing
-        }
-
-        // Create Progress Bar elements dynamically
-        const progressBarContainer = document.createElement('div');
-        progressBarContainer.className = 'progress-bar-container';
-        
-        const progressBar = document.createElement('div');
-        progressBar.className = 'progress-bar';
-
-        const progressText = document.createElement('span');
-        progressText.className = 'progress-bar-text';
-        progressText.textContent = '0%';
-
-        progressBarContainer.appendChild(progressBar);
-        progressBarContainer.appendChild(progressText);
-        // Insert progress bar before the navigation container
-        navContainer.parentNode.insertBefore(progressBarContainer, navContainer);
-
-
-        // Helper to show/hide the main navigation list
-        const showNav = (shouldShow) => {
-            navContainer.style.display = shouldShow ? 'grid' : 'none'; // Use grid display
-            promptText.style.display = shouldShow ? 'block' : 'none'; // Toggle prompt text
-        };
-
-        // Trigger index building on first focus
-        searchInput.addEventListener('focus', async () => {
-            if (isUsefulInfoIndexBuilt || isFetchingUsefulInfo) return; // Don't rebuild if already done or in progress
-
-            isFetchingUsefulInfo = true; // Prevent multiple fetches if focus happens quickly
-            searchInput.placeholder = currentLanguage === 'gr' ? 'Ευρετηρίαση άρθρων...' : 'Indexing articles...';
-            searchInput.disabled = true;
-            progressBarContainer.style.display = 'block'; // Show progress bar
-            progressBar.style.width = '0%';
-            progressText.textContent = '0%';
-
-            // Assuming fetchUsefulInformation populates usefulInfoFiles first
-             if (!usefulInformationLoaded) {
-                 await fetchUsefulInformation(); // Ensure file list is loaded
-             }
-
-             if (usefulInfoFiles.length > 0) {
-                 await buildUsefulInfoSearchIndex(progressBar, progressText);
-                 updateUsefulInfoButtonTitles(); // Update titles after indexing
-             } else {
-                  console.warn("No useful info files found to index.");
-             }
-
-            // Hide progress bar after a short delay
-            setTimeout(() => {
-                progressBarContainer.style.display = 'none';
-            }, 500);
-
-            searchInput.disabled = false;
-            searchInput.placeholder = currentLanguage === 'gr' ? 'Αναζήτηση άρθρων...' : 'Search articles...';
-            searchInput.focus(); // Re-focus after enabling
-            isFetchingUsefulInfo = false;
-
-        }, { once: true }); // Only run this focus listener once
-
-
-        // Handle search input changes
-        searchInput.addEventListener('input', () => {
-            const query = searchInput.value.trim();
-            resultsContainer.innerHTML = ''; // Clear previous results
-
-            if (!isUsefulInfoIndexBuilt) {
-                 resultsContainer.classList.add('hidden');
-                 showNav(true); // Show nav if index isn't ready
-                 return;
-            }
-
-            if (query.length < 2) { // Minimum query length
-                resultsContainer.classList.add('hidden');
-                showNav(true); // Show nav if query is too short
-                return;
-            }
-            
-            showNav(false); // Hide nav when showing results
-
-            // Perform search using the engine
-            const results = SearchEngine.search(query, usefulInfoSearchIndex, currentLanguage, 'usefulInfo');
-
-            if (results.length > 0) {
-                results.slice(0, 7).forEach(result => { // Limit results displayed
-                    const itemEl = document.createElement('div');
-                    itemEl.classList.add('search-result-item');
-                    
-                    // Generate and highlight snippet
-                    const snippet = SearchEngine.generateSnippet(result.text, query, currentLanguage);
-                    const highlightedSnippet = SearchEngine.highlight(snippet, query, currentLanguage);
-
-                    // Display snippet and title
-                    itemEl.innerHTML = `${highlightedSnippet} <small>${result.title}</small>`;
-                    
-                    // Click listener to load the full article and highlight
-                    itemEl.addEventListener('click', () => {
-                        searchInput.value = ''; // Clear search input
-                        resultsContainer.classList.add('hidden'); // Hide results
-                        // Load content and pass text for highlighting
-                        loadInformationContent(result.url, result.title, result.text); 
-                    });
-                    resultsContainer.appendChild(itemEl);
-                });
-                resultsContainer.classList.remove('hidden'); // Show results container
-            } else {
-                 // No results found - show message instead of nav? Or show nav? Show nav is simpler.
-                 resultsContainer.classList.add('hidden'); 
-                 resultsContainer.innerHTML = `<div class="search-result-item" style="text-align: center; color: var(--nm-text-muted);">${currentLanguage === 'gr' ? 'Δεν βρέθηκαν αποτελέσματα' : 'No results found'}</div>`; // Show no results message
-                 resultsContainer.classList.remove('hidden');
-                // showNav(true); // Option: show nav again if no results
-            }
-        });
-         // Clear results when input is cleared
-         searchInput.addEventListener('keyup', (e) => {
-             if (searchInput.value.trim().length === 0) {
-                 resultsContainer.innerHTML = '';
-                 resultsContainer.classList.add('hidden');
-                 showNav(true);
-             }
-         });
-    }
-
-    // Fetches the list of HTML files from GitHub
-    async function fetchUsefulInformation() {
-        if (usefulInformationLoaded || isFetchingUsefulInfo) return; // Prevent multiple fetches
-        isFetchingUsefulInfo = true; // Set flag
-
-        const navContainer = document.getElementById('useful-information-nav');
-        const GITHUB_API_URL = 'https://api.github.com/repos/dedsec1121fk/dedsec1121fk.github.io/contents/Useful_Information';
-        
-        if (!navContainer) {
-            console.error("Useful Information nav container not found.");
-             isFetchingUsefulInfo = false;
-             return;
-        }
-
-        navContainer.innerHTML = `<p style="text-align: center; color: var(--nm-text-muted);">${currentLanguage === 'gr' ? 'Φόρτωση λίστας άρθρων...' : 'Loading article list...'}</p>`; // Loading message
-        
-        try {
-            const response = await fetch(GITHUB_API_URL);
-            if (!response.ok) throw new Error(`GitHub API error: ${response.status} ${response.statusText}`);
-            const files = await response.json();
-
-            // Filter for HTML files only
-            usefulInfoFiles = files.filter(file => file.type === 'file' && file.name.endsWith('.html'));
-            
-            navContainer.innerHTML = ''; // Clear loading message
-
-            if (usefulInfoFiles.length === 0) {
-                 navContainer.innerHTML = `<p style="text-align: center; color: var(--nm-text-muted);">${currentLanguage === 'gr' ? 'Δεν βρέθηκαν άρθρα.' : 'No articles found.'}</p>`;
-                 usefulInformationLoaded = true; // Mark as loaded even if empty
-                 isFetchingUsefulInfo = false;
-                 return;
-            }
-            
-            // Sort files, perhaps alphabetically or by a number prefix?
-            usefulInfoFiles.sort((a, b) => a.name.localeCompare(b.name)); // Simple alpha sort
-
-            // Create buttons for each file
-            usefulInfoFiles.forEach(file => {
-                 // Extract initial titles from filename (will be updated after indexing)
-                 let titleEN = file.name.replace(/\.html$/, '').replace(/^\d+_/,'').replace(/_/g, ' ');
-                 let titleGR = titleEN; 
-                 const titleRegex = /(.+?)_\((.+?)\)/; // Check for pattern like "English_(Greek)"
-                 const match = file.name.match(titleRegex);
-                 if (match && match[1] && match[2]) {
-                     titleEN = match[1].replace(/_/g, ' ').trim();
-                     titleGR = match[2].replace(/_/g, ' ').trim();
-                 }
-    
-                const button = document.createElement('button');
-                button.className = 'app-icon'; // Use app-icon style for consistency
-                button.dataset.url = file.download_url; // Store download URL
-                
-                const initialTitle = currentLanguage === 'gr' ? titleGR : titleEN;
-                 // Set data attributes for later update and initial display
-                button.innerHTML = `<i class="fas fa-book-open"></i><span data-en="${titleEN}" data-gr="${titleGR}">${initialTitle}</span>`;
-                
-                button.addEventListener('click', () => {
-                    const span = button.querySelector('span');
-                    // Get the correct title based on current language for the modal header
-                    const modalTitle = span.getAttribute(`data-${currentLanguage}`) || span.getAttribute('data-en') || 'Article';
-                    loadInformationContent(file.download_url, modalTitle);
-                });
-                navContainer.appendChild(button);
-            });
-
-            usefulInformationLoaded = true; // Mark list as loaded
-
-        } catch (error) {
-            console.error('Failed to fetch useful information list:', error);
-            navContainer.innerHTML = `<p style="text-align: center; color: var(--nm-danger);">${currentLanguage === 'gr' ? 'Αποτυχία φόρτωσης λίστας άρθρων.' : 'Failed to load article list.'}</p>`;
-        } finally {
-            isFetchingUsefulInfo = false; // Reset flag
-        }
-    }
-
-
-    // Creates and displays a modal specifically for article content
-    function createAndShowArticleModal(title, htmlContent, textToHighlight = null) {
-        // Remove any existing article modals first
-        document.querySelectorAll('.article-modal-overlay').forEach(modal => modal.remove());
-
-        const modalOverlay = document.createElement('div');
-        modalOverlay.className = 'modal-overlay article-modal-overlay'; // Unique class
-        modalOverlay.style.opacity = '0'; // Start hidden for transition
-        
-        modalOverlay.innerHTML = `
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h2>${title}</h2>
-                    <button class="close-modal" aria-label="Close">&times;</button>
-                </div>
-                <div class="modal-body">
-                     <div id="article-content-wrapper"> ${htmlContent}
-                     </div>
-                 </div>
-            </div>`;
-        document.body.appendChild(modalOverlay);
-
-        const modalContent = modalOverlay.querySelector('.modal-content');
-        const modalBody = modalOverlay.querySelector('.modal-body');
-        const closeModalBtn = modalOverlay.querySelector('.close-modal');
-
-        // Dynamically attach copy button listeners within the new modal
-        const codeContainers = modalOverlay.querySelectorAll('.code-container');
-        let dynamicCodeIdCounter = 0; // Ensure unique IDs if needed
-        codeContainers.forEach(container => {
-            const copyBtn = container.querySelector('.copy-btn');
-            const codeEl = container.querySelector('code');
-
-            if (copyBtn && codeEl) {
-                // Ensure code element has an ID
-                if (!codeEl.id) {
-                    codeEl.id = `dynamic-code-${Date.now()}-${dynamicCodeIdCounter++}`;
-                }
-                
-                // Add listener to *this specific* button
-                copyBtn.addEventListener('click', (e) => {
-                     e.stopPropagation(); // Prevent modal close if clicking button
-                    window.copyToClipboard(copyBtn, codeEl.id);
-                });
-
-                 // Update button text language
-                 const copyText = (currentLanguage === 'gr') ? 'Αντιγραφή' : 'Copy';
-                 copyBtn.textContent = copyText; // Set initial text
-            }
-        });
-        
-        // Apply current language translations to the dynamically loaded content
-         // This assumes the loaded HTML also uses data-en/data-gr attributes
-         const contentWrapper = modalOverlay.querySelector('#article-content-wrapper');
-         if (contentWrapper) {
-             contentWrapper.querySelectorAll('[data-en]').forEach(el => {
-                 const text = el.getAttribute(`data-${currentLanguage}`) || el.getAttribute('data-en');
-                  // Similar logic as changeLanguage, handle direct text vs children
-                  const hasDirectText = Array.from(el.childNodes).some(node => node.nodeType === Node.TEXT_NODE && node.textContent.trim().length > 0);
-                   if (hasDirectText) {
-                        Array.from(el.childNodes).forEach(node => {
-                            if (node.nodeType === Node.TEXT_NODE && node.textContent.trim().length > 0) {
-                                node.textContent = text;
-                            }
-                        });
-                   } else if (el.children.length === 0) { 
-                         el.textContent = text;
-                   }
-             });
-             
-             contentWrapper.querySelectorAll('[data-lang-section]').forEach(el => {
-                 el.style.display = el.dataset.langSection === currentLanguage ? 'block' : 'none';
-                 el.classList.toggle('hidden', el.dataset.langSection !== currentLanguage);
-             });
-         }
-
-        // Highlight specific text if provided (after content is in DOM)
-        if (textToHighlight) {
-            setTimeout(() => {
-                 const treeWalker = document.createTreeWalker(modalBody, NodeFilter.SHOW_TEXT);
-                 let targetNode = null;
-                 while (treeWalker.nextNode()) {
-                     if (treeWalker.currentNode.textContent.includes(textToHighlight)) {
-                         targetNode = treeWalker.currentNode.parentElement;
-                         break;
-                     }
-                 }
-                 if (targetNode) {
-                     targetNode.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                     targetNode.classList.add('content-highlight');
-                     setTimeout(() => { targetNode.classList.remove('content-highlight'); }, 2500);
-                 }
-            }, 100);
-        }
-
-        // Modal close logic
-        const closeModal = () => {
-            modalOverlay.style.opacity = '0';
-            setTimeout(() => {
-                if (modalOverlay.parentNode) {
-                    modalOverlay.parentNode.removeChild(modalOverlay);
-                }
-            }, 300); // Match CSS transition duration
-        };
-
-        modalOverlay.addEventListener('click', e => {
-            if (e.target === modalOverlay) closeModal();
-        });
-        closeModalBtn.addEventListener('click', closeModal);
-
-        // Show modal with transition
-        setTimeout(() => {
-            modalOverlay.style.opacity = '1';
-        }, 10);
-    }
-
-    // Fetches and loads the content of a specific article file
-    async function loadInformationContent(fileUrl, title, textToHighlight = null) {
-        const contentContainer = document.getElementById('useful-information-content');
-        if (!contentContainer) return;
-        
-        contentContainer.innerHTML = `<p style="text-align: center; color: var(--nm-text-muted);">${currentLanguage === 'gr' ? 'Φόρτωση περιεχομένου...' : 'Loading content...'}</p>`;
-        
-        try {
-            const response = await fetch(fileUrl);
-            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-            const htmlContent = await response.text();
-            
-            // Use DOMParser to extract the main content
-            const parser = new DOMParser();
-            const doc = parser.parseFromString(htmlContent, 'text/html');
-            
-            // Find the main content container (adjust selector as needed)
-            const mainContent = doc.querySelector('#article-content'); 
-            if (mainContent) {
-                createAndShowArticleModal(title, mainContent.innerHTML, textToHighlight);
-            } else {
-                 // Fallback: use body content
-                 const bodyContent = doc.body.innerHTML;
-                 createAndShowArticleModal(title, bodyContent, textToHighlight);
-            }
-            
-        } catch (error) {
-            console.error('Failed to load article content:', error);
-            contentContainer.innerHTML = `<p style="text-align: center; color: var(--nm-danger);">${currentLanguage === 'gr' ? 'Αποτυχία φόρτωσης περιεχομένου.' : 'Failed to load content.'}</p>`;
-        }
     }
 
     // --- Initialize the entire portfolio ---
