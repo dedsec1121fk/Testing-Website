@@ -1197,6 +1197,13 @@ body.light-theme .modal-content {
 
 .text-green-600 { color: var(--nm-success) !important; }
 
+.content-highlight {
+    /* Set to Yellow and removed glow */
+    background-color: rgba(255, 255, 0, 0.3); 
+    box-shadow: none; 
+    transition: background-color 1s ease;
+}
+
 .content-section-modal {
     text-align: center;
 }
@@ -1525,4 +1532,45 @@ span.sub-item {
     .app-grid {
         grid-template-columns: repeat(8, max-content);
     }
+}
+
+
+/* =================================================================
+   CERTIFICATE FIX STYLES (REQUIRED FOR html2canvas/jsPDF)
+   ================================================================= */
+
+/* This section ensures the certificate is rendered by the browser (display: block) 
+   but hidden from the user (visibility: hidden) so that the script can 
+   successfully capture it with html2canvas. */
+#certificate-content {
+    /* 1. Hide it with visibility/opacity for compatibility with html2canvas */
+    visibility: hidden;
+    opacity: 0;
+    
+    /* 2. Must be display: block for rendering, even when hidden */
+    display: block !important; 
+    
+    /* 3. Set a fixed size matching the script's capture size for predictable rendering 
+       (Prevents layout shift when script applies position/left attributes) */
+    width: 800px; 
+    height: 600px;
+    
+    /* 4. Position it so the script can easily move it off-screen, if needed */
+    z-index: -10; 
+    position: fixed; 
+    top: 0;
+    left: 0;
+    
+    /* Inherit core certificate background/color */
+    background-color: var(--nm-abyss-blue); 
+    color: var(--nm-text);
+}
+
+/* When the certificate modal is visible, reset to static position 
+   so the user can preview the certificate template. */
+#certificate-modal.visible #certificate-content {
+    visibility: visible;
+    opacity: 1;
+    position: static; 
+    z-index: 1000;
 }
