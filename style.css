@@ -1,7 +1,7 @@
 /*
     =================================================================
-    
-=================================================================
+    MODIFIED: Digital Lavender Theme with Flat/No-Glow Aesthetic
+    =================================================================
 */
 
 :root {
@@ -1611,4 +1611,14 @@ span.sub-item {
     .app-grid {
         grid-template-columns: repeat(8, max-content);
     }
+}
+/* This selector ensures the entire content is centered on the screen, 
+   regardless of scrollbars, by using 'display: flex' on the body. */
+html, body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* Ensure the body takes full viewport size */
+    width: 100%;
+    min-height: 100vh;
 }
