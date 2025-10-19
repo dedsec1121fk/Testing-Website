@@ -483,18 +483,15 @@ document.addEventListener('DOMContentLoaded', () => {
             updateThemeButton(document.body.classList.contains('light-theme')); // Update button on load
         }
 
-
         document.getElementById('accept-disclaimer')?.addEventListener('click', () => {
             localStorage.setItem('disclaimerAccepted', 'true');
             hideModal(disclaimerModal);
-            // Optionally show installation modal if needed
-            // if (installationModal) {
-            //     showModal(installationModal);
-            // }
+            if (installationModal) {
+                showModal(installationModal);
+            }
         });
         document.getElementById('decline-disclaimer')?.addEventListener('click', () => {
-             // Maybe redirect or disable functionality instead of just google?
-             window.location.href = 'about:blank'; // A safer redirect
+             window.location.href = 'https://www.google.com';
         });
         
         window.openModalAndHighlight = (modalId, highlightText = null) => {
@@ -664,28 +661,9 @@ document.addEventListener('DOMContentLoaded', () => {
         // Hide language modal close button initially
         if (languageModalCloseBtn) languageModalCloseBtn.style.display = 'none';
         
-        // Check if disclaimer was already accepted
-        if (!localStorage.getItem('disclaimerAccepted') && disclaimerModal) {
-            showModal(disclaimerModal);
-        } else {
-             // If disclaimer accepted, show language modal if it hasn't been set?
-             // Or just default to English? Let's default and let user change.
-        }
-
-        // Set initial language (e.g., from localStorage or default to 'en')
-         const savedLang = localStorage.getItem('language') || 'en';
-         changeLanguage(savedLang); // Apply the language
-         // Make sure the correct language button is selected
-          document.querySelectorAll('.language-button').forEach(button => {
-                button.classList.toggle('selected', button.dataset.lang === savedLang);
-            });
-         
-         // Only show language modal if no language is saved? Or always show initially?
-          // Let's show it only if no language preference is found.
-         if (!localStorage.getItem('language')) {
-             showModal(languageModal);
-         }
-
+        // Show language modal on site visit (like old behavior)
+        showModal(languageModal);
+        changeLanguage('en'); 
 
     } // --- End of initializePortfolio ---
 
