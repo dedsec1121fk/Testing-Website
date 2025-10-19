@@ -82,10 +82,15 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // Check if the jsPDF library is loaded before proceeding
+        // Check if the jsPDF and html2canvas libraries are loaded before proceeding
         if (typeof window.jspdf === 'undefined' || typeof window.jspdf.jsPDF === 'undefined') {
-            // The library failed to load. This is a critical error.
-            console.error("CRITICAL: jsPDF library (window.jspdf.jsPDF) not found. Cannot generate certificate.");
+            console.error("CRITICAL: jsPDF library (window.jspdf.jsPDF) not found.");
+            alert('Error: Certificate generator failed to load. Please check your internet connection, disable ad-blockers, and try again.');
+            return;
+        }
+
+        if (typeof html2canvas === 'undefined') {
+            console.error("CRITICAL: html2canvas library not found.");
             alert('Error: Certificate generator failed to load. Please check your internet connection, disable ad-blockers, and try again.');
             return;
         }
@@ -98,115 +103,144 @@ document.addEventListener('DOMContentLoaded', () => {
         const country = formData.get('country');
         const city = formData.get('city');
 
-        // Generate PDF directly
-        generateCertificatePDF(firstName, lastName, age, country, city);
+        // Generate PDF using html2canvas approach
+        generateCertificateWithCanvas(firstName, lastName, age, country, city);
     }
 
-    // --- MODIFIED PDF GENERATION FUNCTION ---
-    function generateCertificatePDF(firstName, lastName, age, country, city) {
+    // --- NEW FUNCTION: Generate certificate using html2canvas for Greek support ---
+    function generateCertificateWithCanvas(firstName, lastName, age, country, city) {
         try {
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF('landscape', 'mm', 'a4');
-            
-            // Get translations for current language
-            const translations = certificateTranslations[currentLanguage];
-            const fullName = `${firstName} ${lastName}`;
+            // Create a temporary certificate element
+            const tempCertificate = createCertificateHTML(firstName, lastName, age, country, city);
+            document.body.appendChild(tempCertificate);
 
-            // ---- Design Changes ----
-            const purpleColor = '#9966FF';
-            const blackColor = '#000000';
-            const greyColor = '#555555';
+            // Use html2canvas to capture the certificate as an image
+            html2canvas(tempCertificate, {
+                scale: 2, // Higher quality
+                useCORS: true,
+                backgroundColor: '#ffffff'
+            }).then(canvas => {
+                // Remove temporary element
+                document.body.removeChild(tempCertificate);
 
-            // 1. White Background
-            doc.setFillColor(255, 255, 255);
-            doc.rect(0, 0, 297, 210, 'F');
+                // Convert canvas to image data
+                const imgData = canvas.toDataURL('image/png');
+                
+                // Create PDF
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF('landscape', 'mm', 'a4');
+                
+                // Calculate dimensions to fit the image in A4 landscape
+                const pageWidth = doc.internal.pageSize.getWidth();
+                const pageHeight = doc.internal.pageSize.getHeight();
+                
+                // Add image to PDF (fit to page)
+                doc.addImage(imgData, 'PNG', 0, 0, pageWidth, pageHeight);
+                
+                // Save the PDF
+                const fileName = currentLanguage === 'gr' 
+                    ? `Πιστοποιητικό_Επετείου_DedSec_${firstName}_${lastName}.pdf`
+                    : `DedSec_Anniversary_Certificate_${firstName}_${lastName}.pdf`;
+                
+                doc.save(fileName);
 
-            // 2. Title (Purple Text) - TRANSLATED
-            doc.setFontSize(28);
-            doc.setFont('times', 'bold');
-            doc.setTextColor(purpleColor);
-            
-            // Use the actual translation text directly
-            const titleText = translations.title;
-            doc.text(titleText, 148.5, 40, { align: 'center' });
-
-            // 3. Subtitle (Purple Text) - TRANSLATED
-            doc.setFontSize(18);
-            doc.setFont('times', 'italic');
-            doc.setTextColor(purpleColor);
-            const subtitleText = translations.subtitle;
-            doc.text(subtitleText, 148.5, 55, { align: 'center' });
-
-            // 4. Main Body Text (Black Text) - TRANSLATED
-            doc.setFontSize(14);
-            doc.setFont('times', 'normal');
-            doc.setTextColor(blackColor);
-            const certifiesText = translations.certifies;
-            doc.text(certifiesText, 148.5, 80, { align: 'center' });
-
-            // 5. Recipient Name (Purple Text, Bold)
-            doc.setFontSize(30);
-            doc.setFont('times', 'bold');
-            doc.setTextColor(purpleColor);
-            const nameWidth = doc.getTextWidth(fullName);
-            const nameX = 148.5 - (nameWidth / 2);
-            doc.text(fullName, 148.5, 100, { align: 'center' });
-            doc.setDrawColor(153, 102, 255);
-            doc.setLineWidth(0.5);
-            doc.line(nameX - 5, 105, nameX + nameWidth + 5, 105);
-
-            // 6. Participation Text (Black Text) - TRANSLATED
-            doc.setFontSize(14);
-            doc.setFont('times', 'normal');
-            doc.setTextColor(blackColor);
-            const participatedText = translations.participated;
-            doc.text(participatedText, 148.5, 125, { align: 'center' });
-            const eventText = translations.event;
-            doc.text(eventText, 148.5, 135, { align: 'center' });
-
-            // 7. Details (Smaller Grey Text) - TRANSLATED
-            doc.setFontSize(10);
-            doc.setTextColor(greyColor);
-            const detailY = 170;
-            const issuedToText = `${translations.issuedTo}: ${fullName}`;
-            doc.text(issuedToText, 20, detailY);
-            const ageText = `${translations.age}: ${age}`;
-            doc.text(ageText, 20, detailY + 7);
-            const locationText = `${translations.location}: ${city}, ${country}`;
-            doc.text(locationText, 20, detailY + 14);
-
-            // 8. Date (Smaller Grey Text - Right side) - TRANSLATED
-            const today = new Date().toLocaleDateString(currentLanguage === 'gr' ? 'el-GR' : 'en-US', { 
-                year: 'numeric', 
-                month: 'long', 
-                day: 'numeric' 
+                // Show success message
+                showCertificateSuccess(firstName);
+            }).catch(error => {
+                console.error("Error generating certificate with html2canvas:", error);
+                document.body.removeChild(tempCertificate);
+                alert("An error occurred while generating the certificate. Please try again.");
             });
-            const dateText = `${translations.dateIssued}: ${today}`;
-            doc.text(dateText, 277, detailY, { align: 'right' });
-
-            // 9. Signature Area (Grey Text/Purple Line - Right side) - TRANSLATED
-            doc.setFontSize(10);
-            doc.setTextColor(greyColor);
-            const teamText = translations.team;
-            doc.text(teamText, 277, detailY + 14, { align: 'right'});
-            doc.setDrawColor(153, 102, 255);
-            doc.setLineWidth(0.5);
-            doc.line(220, detailY + 10, 277, detailY + 10);
-
-            // Save the PDF
-            const fileName = currentLanguage === 'gr' 
-                ? `Πιστοποιητικό_Επετείου_DedSec_${firstName}_${lastName}.pdf`
-                : `DedSec_Anniversary_Certificate_${firstName}_${lastName}.pdf`;
-            
-            doc.save(fileName);
-
-            // Show success message
-            showCertificateSuccess(firstName);
 
         } catch (error) {
-            console.error("Error generating PDF:", error);
-            alert("An error occurred while generating the certificate PDF. Please try again.");
+            console.error("Error in certificate generation:", error);
+            alert("An error occurred while generating the certificate. Please try again.");
         }
+    }
+
+    // --- NEW FUNCTION: Create certificate HTML for canvas capture ---
+    function createCertificateHTML(firstName, lastName, age, country, city) {
+        const translations = certificateTranslations[currentLanguage];
+        const fullName = `${firstName} ${lastName}`;
+        const today = new Date().toLocaleDateString(currentLanguage === 'gr' ? 'el-GR' : 'en-US', { 
+            year: 'numeric', 
+            month: 'long', 
+            day: 'numeric' 
+        });
+
+        const certificateDiv = document.createElement('div');
+        certificateDiv.style.cssText = `
+            position: fixed;
+            top: -10000px;
+            left: -10000px;
+            width: 1123px;
+            height: 794px;
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            border: 4px solid #FFD700;
+            border-radius: 15px;
+            padding: 40px 30px;
+            color: #ffffff;
+            font-family: 'Times New Roman', serif;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            box-sizing: border-box;
+        `;
+
+        certificateDiv.innerHTML = `
+            <div style="margin-bottom: 30px;">
+                <div style="font-size: 3rem; color: #FFD700; margin-bottom: 15px;">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h1 style="font-size: 2.2rem; color: #FFD700; margin: 0 0 10px 0; font-weight: bold; text-transform: uppercase; letter-spacing: 2px; font-family: 'Times New Roman', serif;">
+                    ${translations.title}
+                </h1>
+                <h2 style="font-size: 1.5rem; color: #9966FF; margin: 0; font-weight: normal; font-style: italic; font-family: 'Times New Roman', serif;">
+                    ${translations.subtitle}
+                </h2>
+            </div>
+            
+            <div style="margin: 30px 0;">
+                <p style="font-size: 1.1rem; margin: 15px 0; line-height: 1.6; font-family: 'Times New Roman', serif;">
+                    ${translations.certifies}
+                </p>
+                <div style="font-size: 2.5rem; font-weight: bold; color: #FFD700; margin: 20px 0; padding: 10px; border-bottom: 2px solid #FFD700; border-top: 2px solid #FFD700; font-family: 'Times New Roman', serif; text-transform: uppercase; letter-spacing: 1px;">
+                    ${fullName}
+                </div>
+                <p style="font-size: 1.1rem; margin: 15px 0; line-height: 1.6; font-family: 'Times New Roman', serif;">
+                    ${translations.participated}
+                </p>
+                <p style="font-size: 1.1rem; margin: 15px 0; line-height: 1.6; font-family: 'Times New Roman', serif;">
+                    ${translations.event}
+                </p>
+            </div>
+            
+            <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-top: 40px; padding-top: 20px; border-top: 1px solid #3A4A5E;">
+                <div style="text-align: left;">
+                    <div style="margin: 8px 0; font-size: 0.9rem;">
+                        <span style="font-weight: bold; color: #FFD700;">${translations.issuedTo}:</span> ${fullName}
+                    </div>
+                    <div style="margin: 8px 0; font-size: 0.9rem;">
+                        <span style="font-weight: bold; color: #FFD700;">${translations.age}:</span> ${age}
+                    </div>
+                    <div style="margin: 8px 0; font-size: 0.9rem;">
+                        <span style="font-weight: bold; color: #FFD700;">${translations.location}:</span> ${city}, ${country}
+                    </div>
+                </div>
+                <div style="text-align: right;">
+                    <div style="margin: 8px 0; font-size: 0.9rem;">
+                        <span style="font-weight: bold; color: #FFD700;">${translations.dateIssued}:</span> ${today}
+                    </div>
+                    <div style="text-align: center; margin-top: 10px;">
+                        <div style="width: 200px; height: 1px; background: #ffffff; margin: 0 auto 10px auto;"></div>
+                        <span style="font-style: italic; color: #7A8899; font-family: 'Times New Roman', serif;">
+                            ${translations.team}
+                        </span>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        return certificateDiv;
     }
 
     function showCertificateSuccess(firstName) {
