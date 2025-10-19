@@ -142,6 +142,8 @@ body.light-theme .note.note-warning {
     font-family: 'Orbitron', sans-serif;
     font-size: 1.2rem;
     text-align: center;
+    /* FIX: Prevent the text/emojis in the banner title from wrapping */
+    white-space: nowrap; 
 }
 
 .anniversary-text p {
@@ -811,17 +813,13 @@ body.light-theme ::-webkit-scrollbar-thumb {
 
 .app-grid {
     display: grid;
-    /* MODIFIED: Change to 3 fractional units to ensure items fill the width 
-       and centers the overall group of 3 icons on the screen by distributing space evenly. */
-    grid-template-columns: repeat(3, 1fr);
-    /* REMOVED: justify-content: center; */
+    grid-template-columns: repeat(4, max-content);
+    justify-content: center;
     gap: 35px; /* MODIFIED: Set to 35px */
     width: 100%;
     max-width: 500px;
-    margin: 0 auto 15px; /* Use auto margin to center the grid element itself */
+    margin: 0 auto 15px;
     align-items: start;
-    /* ADDED: Centers the content within each 1fr column */
-    justify-items: center; 
 }
 
 .app-wrapper {
@@ -1577,7 +1575,6 @@ span.sub-item {
     }
 
     .app-grid {
-        /* On wider screens, return to the original 6 columns for desktop layout */
         grid-template-columns: repeat(6, max-content);
     }
 
@@ -1598,7 +1595,6 @@ span.sub-item {
     }
 
     .app-grid {
-        /* On very wide screens, return to the original 8 columns for desktop layout */
         grid-template-columns: repeat(8, max-content);
     }
 }
