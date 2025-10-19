@@ -7,6 +7,116 @@ document.addEventListener('DOMContentLoaded', () => {
     let usefulInformationLoaded = false;
     let isFetchingUsefulInfo = false;
 
+    // --- CERTIFICATE FUNCTIONALITY ---
+    function initializeCertificateFeature() {
+        const certificateButton = document.querySelector('.certificate-button');
+        const certificateModal = document.getElementById('certificate-modal');
+        const certificateForm = document.getElementById('certificate-form');
+        const certificatePreview = document.getElementById('certificate-preview');
+        const downloadCertificateBtn = document.getElementById('download-certificate');
+
+        // Open certificate modal when certificate button is clicked
+        certificateButton.addEventListener('click', () => {
+            certificateModal.classList.add('visible');
+        });
+
+        // Handle certificate form submission
+        certificateForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            // Get form values
+            const firstName = document.getElementById('first-name').value.trim();
+            const lastName = document.getElementById('last-name').value.trim();
+            const age = document.getElementById('age').value;
+            const country = document.getElementById('country').value.trim();
+            const city = document.getElementById('city').value.trim();
+
+            // Validate all fields are filled
+            if (!firstName || !lastName || !age || !country || !city) {
+                alert(currentLanguage === 'gr' ? 'Παρακαλώ συμπληρώστε όλα τα πεδία.' : 'Please fill in all fields.');
+                return;
+            }
+
+            // Update certificate content
+            document.getElementById('certificate-name').textContent = `${firstName} ${lastName}`;
+            document.getElementById('certificate-age').textContent = currentLanguage === 'gr' ? `Ηλικία: ${age}` : `Age: ${age}`;
+            document.getElementById('certificate-location').textContent = currentLanguage === 'gr' ? `Τοποθεσία: ${city}, ${country}` : `Location: ${city}, ${country}`;
+            
+            // Update date
+            const currentDate = new Date().toLocaleDateString(currentLanguage === 'gr' ? 'el-GR' : 'en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+            document.getElementById('certificate-date').textContent = currentLanguage === 'gr' ? `Ημερομηνία: ${currentDate}` : `Date: ${currentDate}`;
+
+            // Show preview and scroll to it
+            certificatePreview.classList.remove('hidden');
+            certificatePreview.scrollIntoView({ behavior: 'smooth' });
+        });
+
+        // Handle certificate download
+        downloadCertificateBtn.addEventListener('click', async () => {
+            try {
+                const certificateElement = document.querySelector('.certificate');
+                
+                // Use html2canvas to capture the certificate as an image
+                const canvas = await html2canvas(certificateElement, {
+                    scale: 2, // Higher quality
+                    useCORS: true,
+                    allowTaint: true,
+                    backgroundColor: null
+                });
+
+                // Convert canvas to image data
+                const imgData = canvas.toDataURL('image/png');
+
+                // Create PDF
+                const { jsPDF } = window.jspdf;
+                const pdf = new jsPDF('landscape', 'mm', 'a4');
+                
+                // Calculate dimensions to fit certificate in PDF
+                const pdfWidth = pdf.internal.pageSize.getWidth();
+                const pdfHeight = pdf.internal.pageSize.getHeight();
+                const imgWidth = canvas.width;
+                const imgHeight = canvas.height;
+                const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight);
+                const imgX = (pdfWidth - imgWidth * ratio) / 2;
+                const imgY = (pdfHeight - imgHeight * ratio) / 2;
+
+                // Add image to PDF
+                pdf.addImage(imgData, 'PNG', imgX, imgY, imgWidth * ratio, imgHeight * ratio);
+                
+                // Download PDF
+                const fullName = document.getElementById('certificate-name').textContent;
+                pdf.save(`DedSec_Anniversary_Certificate_${fullName.replace(/\s+/g, '_')}.pdf`);
+                
+            } catch (error) {
+                console.error('Error generating certificate PDF:', error);
+                alert(currentLanguage === 'gr' ? 
+                    'Σφάλμα δημιουργίας πιστοποιητικού. Παρακαλώ δοκιμάστε ξανά.' : 
+                    'Error generating certificate. Please try again.');
+            }
+        });
+
+        // Close certificate modal
+        certificateModal.querySelector('.close-modal').addEventListener('click', () => {
+            certificateModal.classList.remove('visible');
+            // Reset form and hide preview
+            certificateForm.reset();
+            certificatePreview.classList.add('hidden');
+        });
+
+        certificateModal.addEventListener('click', (e) => {
+            if (e.target === certificateModal) {
+                certificateModal.classList.remove('visible');
+                // Reset form and hide preview
+                certificateForm.reset();
+                certificatePreview.classList.add('hidden');
+            }
+        });
+    }
+
     // --- EVEN MORE ADVANCED SEARCH UTILITY (Used for 'Useful Information' modal) ---
     const SearchEngine = {
         idfMaps: {},
@@ -201,7 +311,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 button.classList.toggle('selected', button.dataset.lang === lang);
             });
 
-            document.title = "DedSec Project";
+            document.title = "DedSec Project - 1 Year Anniversary";
 
             const searchInput = document.getElementById('main-search-input');
             if (searchInput) {
@@ -368,6 +478,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         initializeWebSearchSuggestions(); 
         initializeUsefulInfoSearch();
+        initializeCertificateFeature();
         
         if (languageModalCloseBtn) languageModalCloseBtn.style.display = 'none';
         showModal(languageModal);

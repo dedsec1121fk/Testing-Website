@@ -1,110 +1,379 @@
 /*
     =================================================================
-    
-=================================================================
+    DEDSEC PROJECT - 1 YEAR ANNIVERSARY THEME
+    =================================================================
 */
 
 :root {
-    /* MODIFIED: Digital Lavender Palette */
-    --nm-abyss-blue: #01040a; 
-    --nm-darkest: #0B121C;    
-    --nm-dark: #151E2A;       
-    --nm-container: #1F2A38;  
-    --nm-border: #3A4A5E;      
-    --nm-accent: #9966FF;      /* Digital Lavender (Used for borders/success/title) */
-    --nm-accent-hover: #9933FF; /* Brighter, more distinct PURPLE for Main Title */
-    --nm-text: #FFFFFF;        /* All text/titles default to PURE WHITE */
-    --nm-text-muted: #7A8899;  
+    /* Anniversary Color Palette - Purple/Blue/Red Theme */
+    --nm-abyss-blue: #0a0414; 
+    --nm-darkest: #120827;    
+    --nm-dark: #1a1238;       
+    --nm-container: #241a4a;  
+    --nm-border: #3a2a6e;      
+    --nm-accent: #8a2be2;      /* BlueViolet - Primary accent */
+    --nm-accent-hover: #9932cc; /* DarkOrchid */
+    --nm-text: #FFFFFF;        
+    --nm-text-muted: #a899e6;  
     /* DANGER/FAIL: Red */
-    --nm-danger: #FF0000;      
-    --nm-danger-hover: #FF0000; 
+    --nm-danger: #ff3366;      
+    --nm-danger-hover: #ff0044; 
     /* SUCCESS: Green */
-    --nm-success: #00FF00;     
+    --nm-success: #33ff99;     
     /* WARNING/HIGHLIGHT: Yellow */
-    --nm-warning: #FFFF00;     
+    --nm-warning: #ffcc00;     
     
-    --glow-rgb: 153, 102, 255; /* RGB components for the accent color */
-    --glow-color: rgba(var(--glow-rgb), 0.0); 
-    /* Search Bar Color: MODIFIED to use main accent color */
-    --nm-search-green: var(--nm-accent); 
-    /* Search Bar Glow: MODIFIED to remove glow */
-    --glow-color-search: rgba(var(--glow-rgb), 0.0); 
-    /* Highlight Red Glow (kept for compatibility, though red is not requested) */
-    --glow-color-danger: rgba(255, 0, 0, 0.0); 
-    /* Highlighter Yellow Glow */
-    --glow-color-warning: rgba(255, 255, 0, 0.8); 
-
-    --warning-bg: rgba(255, 255, 0, 0.1); /* Yellow background for warning notes */
-    --danger-bg: rgba(255, 0, 0, 0.1);
-
+    /* Anniversary Glow Colors */
+    --glow-purple: rgba(138, 43, 226, 0.7);
+    --glow-blue: rgba(51, 153, 255, 0.7);
+    --glow-red: rgba(255, 51, 102, 0.7);
+    
     --safe-area-inset-bottom: env(safe-area-inset-bottom, 10px);
     --shape-cut: 20px;
-    /* REMOVED: Remove custom clip path variable */
     --clip-path-shape: none; 
 }
 
 body.light-theme {
-    --nm-abyss-blue: #ffffff;
-    --nm-darkest: #f0f0f0;
-    --nm-dark: #e9e9e9;
+    --nm-abyss-blue: #f5f0ff;
+    --nm-darkest: #e6e1f5;
+    --nm-dark: #d8d0eb;
     --nm-container: #ffffff;
-    --nm-border: #cccccc;
-    --nm-text: #000000;        /* Light theme text is BLACK */
-    --nm-text-muted: #555555;  /* Light theme muted text is darker gray */
-    --nm-warning: #9966FF; 
-    --glow-color: rgba(var(--glow-rgb), 0.3);
+    --nm-border: #c4b5e6;
+    --nm-text: #2a004e;
+    --nm-text-muted: #5a4a8c;
+    --nm-warning: #8a2be2;
+    --glow-purple: rgba(138, 43, 226, 0.3);
+    --glow-blue: rgba(51, 153, 255, 0.3);
+    --glow-red: rgba(255, 51, 102, 0.3);
 }
 
 /* --- ADDED/MODIFIED FOR LIGHT THEME BACKGROUND LOGO SWAP --- */
 body.light-theme .screen::after {
     background-image: url('https://raw.githubusercontent.com/dedsec1121fk/dedsec1121fk.github.io/6f776cd9772a079a6d26370dddab911bf7cde8cd/Assets/Images/Logos/Custom%20White%20Purple%20Fox%20Logo.jpg') !important;
-    opacity: 0.3; /* Keep visibility for light theme */
+    opacity: 0.3;
+}
+
+/* =================================================================
+   ANNIVERSARY SPECIFIC STYLES
+   ================================================================= */
+
+/* Anniversary Banner */
+.anniversary-banner {
+    background: linear-gradient(135deg, var(--nm-accent), #3366ff, #ff3366);
+    border: 2px solid transparent;
+    border-radius: 20px;
+    padding: 15px;
+    margin: 15px auto;
+    width: 100%;
+    max-width: 500px;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(138, 43, 226, 0.4);
+    animation: banner-pulse 3s ease-in-out infinite;
+}
+
+@keyframes banner-pulse {
+    0%, 100% { transform: scale(1); box-shadow: 0 4px 15px rgba(138, 43, 226, 0.4); }
+    50% { transform: scale(1.02); box-shadow: 0 6px 20px rgba(138, 43, 226, 0.6); }
+}
+
+.anniversary-content h2 {
+    margin: 0 0 10px 0;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.4rem;
+    color: white;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.anniversary-content p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: white;
+    line-height: 1.4;
+}
+
+/* Certificate Button */
+.certificate-button {
+    background: linear-gradient(135deg, var(--nm-accent), #3366ff);
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 12px 20px;
+    margin: 10px auto 20px;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    max-width: 500px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(138, 43, 226, 0.4);
+}
+
+.certificate-button:hover {
+    background: linear-gradient(135deg, #3366ff, var(--nm-accent));
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(138, 43, 226, 0.6);
+}
+
+/* Certificate Form */
+.certificate-form-container {
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.certificate-instructions {
+    text-align: center;
+    margin-bottom: 20px;
+    color: var(--nm-text-muted);
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: var(--nm-text);
+}
+
+.form-group input {
+    width: 100%;
+    padding: 10px 15px;
+    background-color: var(--nm-darkest);
+    border: 2px solid var(--nm-border);
+    color: var(--nm-text);
+    border-radius: 10px;
+    font-family: 'Roboto Mono', monospace;
+    box-sizing: border-box;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: var(--nm-accent);
+    box-shadow: 0 0 0 2px rgba(138, 43, 226, 0.3);
+}
+
+.generate-certificate-btn {
+    background: linear-gradient(135deg, var(--nm-accent), #3366ff);
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 12px 25px;
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 700;
+    cursor: pointer;
+    width: 100%;
+    transition: all 0.3s ease;
+    margin-top: 10px;
+}
+
+.generate-certificate-btn:hover {
+    background: linear-gradient(135deg, #3366ff, var(--nm-accent));
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(138, 43, 226, 0.4);
+}
+
+/* Certificate Preview */
+.certificate-container {
+    background: linear-gradient(135deg, #1a0f2e, #2d1b4e);
+    border: 3px solid;
+    border-image: linear-gradient(45deg, var(--nm-accent), #3366ff, #ff3366) 1;
+    border-radius: 15px;
+    padding: 30px;
+    margin: 20px 0;
+    text-align: center;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+}
+
+.certificate-header h2 {
+    color: var(--nm-accent);
+    font-family: 'Orbitron', sans-serif;
+    margin-bottom: 5px;
+    font-size: 1.8rem;
+}
+
+.certificate-header p {
+    color: var(--nm-text-muted);
+    margin-bottom: 20px;
+    font-size: 1.1rem;
+}
+
+.certificate-body {
+    margin: 25px 0;
+}
+
+.certificate-body h3 {
+    color: #ffcc00;
+    font-size: 2rem;
+    margin: 15px 0;
+    font-family: 'Orbitron', sans-serif;
+}
+
+.certificate-body p {
+    margin: 10px 0;
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+.certificate-details {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+.certificate-details p {
+    margin: 5px 10px;
+    font-weight: bold;
+}
+
+.certificate-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid var(--nm-border);
+}
+
+.signature p {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.2rem;
+    margin: 0;
+    color: var(--nm-accent);
+}
+
+.signature span {
+    font-size: 0.8rem;
+    color: var(--nm-text-muted);
+}
+
+.date p {
+    margin: 0;
+    font-weight: bold;
+}
+
+.download-certificate-btn {
+    background: linear-gradient(135deg, #33ff99, #00cc66);
+    color: #000;
+    border: none;
+    border-radius: 20px;
+    padding: 12px 25px;
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 700;
+    cursor: pointer;
+    width: 100%;
+    max-width: 300px;
+    margin: 20px auto 0;
+    display: block;
+    transition: all 0.3s ease;
+}
+
+.download-certificate-btn:hover {
+    background: linear-gradient(135deg, #00cc66, #33ff99);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(51, 255, 153, 0.4);
+}
+
+/* =================================================================
+   ANIMATED ICON BORDERS
+   ================================================================= */
+
+.app-icon {
+    background: #000000;
+    border: 2px solid transparent;
+    color: var(--nm-text);
+    cursor: pointer;
+    font-family: 'Roboto Mono', monospace;
+    transition: all 0.2s ease;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    text-decoration: none;
+    padding: 10px 15px;
+    box-sizing: border-box;
+    position: relative;
+    border-radius: 50%;
+    gap: 12px;
+    box-shadow: none;
+    height: 56px;
+    animation: border-glow 4s ease-in-out infinite;
+}
+
+@keyframes border-glow {
+    0% {
+        border-color: var(--nm-accent);
+        box-shadow: 0 0 5px var(--glow-purple);
+    }
+    33% {
+        border-color: #3366ff;
+        box-shadow: 0 0 10px var(--glow-blue);
+    }
+    66% {
+        border-color: #ff3366;
+        box-shadow: 0 0 5px var(--glow-red);
+    }
+    100% {
+        border-color: var(--nm-accent);
+        box-shadow: 0 0 5px var(--glow-purple);
+    }
+}
+
+.app-wrapper .app-icon {
+    justify-content: center;
+    width: 64px;
+    height: 64px;
+    padding: 0;
+    gap: 0;
+    border-radius: 50%;
 }
 
 /* =================================================================
    LIGHT THEME FIXES
    ================================================================= */
 
-/* Fix low-contrast text on accent-colored backgrounds (hover states, etc.) */
-body.light-theme .app-icon:hover,
-body.light-theme .app-wrapper:hover .app-icon i,
-body.light-theme .search-result-item:hover,
-body.light-theme .copy-btn:hover,
-body.light-theme .modal-footer button:hover,
-body.light-theme .language-button:hover,
-body.light-theme .language-button.selected,
-body.light-theme .store-link a:hover {
-    color: #FFFFFF; /* Use pure white for high contrast on purple backgrounds */
+body.light-theme .anniversary-banner {
+    color: white; /* Keep text white for readability on gradient */
 }
 
-/* Fix muted text in search results on hover */
-body.light-theme #search-results-container .search-result-item:hover small,
-body.light-theme #useful-info-results-container .search-result-item:hover small {
-    color: rgba(255, 255, 255, 0.85);
+body.light-theme .certificate-button,
+body.light-theme .generate-certificate-btn {
+    color: white; /* Keep text white for readability on gradient */
 }
 
-/* Fix hardcoded dark backgrounds */
-body.light-theme .modal-header {
-    background: rgba(0,0,0,0.03); /* A very light, almost white background */
-}
-body.light-theme .modal-body code {
-    background: rgba(0,0,0,0.08); /* A light gray background for code snippets */
+body.light-theme .certificate-container {
+    background: linear-gradient(135deg, #f5f0ff, #e6e1f5);
+    color: var(--nm-text);
 }
 
-/* Fix accept/decline button text color */
-body.light-theme .decline-btn,
-body.light-theme .accept-btn {
-    color: #FFFFFF !important; /* Use white text for high contrast on bright red/green */
-}
-
-/* Fix inconsistent warning note styling */
-body.light-theme .note.note-warning {
-    color: #000000; /* Use black text for readability on yellow background */
-    border-left-color: #FBC02D; /* A darker yellow to match the theme */
+body.light-theme .app-icon {
+    background: var(--nm-container);
 }
 
 /* =================================================================
-   END OF LIGHT THEME FIXES
+   REDUCED GRID GAP
+   ================================================================= */
+
+.app-grid {
+    display: grid;
+    grid-template-columns: repeat(4, max-content);
+    justify-content: center;
+    gap: 20px; /* Reduced from 35px to 20px */
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto 15px;
+    align-items: start;
+}
+
+/* =================================================================
+   REST OF THE ORIGINAL STYLES (UNCHANGED)
    ================================================================= */
 
 @keyframes scanline-scroll {
@@ -112,22 +381,17 @@ body.light-theme .note.note-warning {
     100% { transform: translateY(-50%); }
 }
 
-/* MODIFIED: Remove text glitch animation entirely */
 @keyframes text-glitch {
     0% { transform: translate(0, 0) skew(0); }
     100% { transform: translate(0, 0) skew(0); }
 }
 
-/* MODIFIED: Remove flickering effect and associated text-shadows (glowing) */
 @keyframes flicker {
   0%, 100% {
     opacity: 1;
     text-shadow: none;
   }
 }
-
-/* REMOVED: Pulsing glow animation for the main title */
-
 
 html, body {
     height: 100%;
@@ -147,7 +411,6 @@ body {
     align-items: center;
 }
 
-/* --- ADDED: Reset for button elements used as app icons --- */
 .app-grid button.app-wrapper {
     background: none;
     border: none;
@@ -182,7 +445,6 @@ button.hero-cta-button {
     top: 0;
     width: 8px;
     height: 100%;
-    /* REMOVED GLOW */
     background: linear-gradient(to bottom, var(--nm-danger), var(--nm-danger-hover), var(--nm-danger));
     box-shadow: none;
     z-index: 10;
@@ -208,7 +470,6 @@ button.hero-cta-button {
     height: 100%;
     background-color: var(--nm-abyss-blue);
     background-image:
-        /* MODIFIED: Removed hexagon background image/pattern */
         url("data:image/svg+xml,%3Csvg viewBox='0 0 800 800' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3E/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
     background-size: cover, cover; 
     position: relative;
@@ -513,7 +774,7 @@ body.light-theme ::-webkit-scrollbar-thumb {
     display: grid;
     grid-template-columns: repeat(4, max-content);
     justify-content: center;
-    gap: 35px; /* MODIFIED: Set to 35px */
+    gap: 20px; /* MODIFIED: Reduced from 35px to 20px */
     width: 100%;
     max-width: 500px;
     margin: 0 auto 15px;
