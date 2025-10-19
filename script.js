@@ -271,16 +271,20 @@ document.addEventListener('DOMContentLoaded', () => {
             <i class="fas fa-check"></i>
             <span data-en="Certificate Downloaded!" data-gr="Το Πιστοποιητικό Λήφθηκε!">Certificate Downloaded!</span>
         `;
-        generateBtn.style.background = 'linear-gradient(135deg, #9966FF, #9933FF)'; // CHANGED: Purple gradient
-        generateBtn.style.borderColor = '#9966FF'; // CHANGED: Purple border
+        // --- MODIFIED: Changed success state colors as requested ---
+        generateBtn.style.background = '#FFFFFF'; // White background
+        generateBtn.style.borderColor = 'var(--nm-accent)'; // Purple border
+        generateBtn.style.color = 'var(--nm-accent)'; // Purple text/icon
         
         // Update language for success message
         changeLanguage(currentLanguage);
         
         setTimeout(() => {
             generateBtn.innerHTML = originalHTML;
-            generateBtn.style.background = 'linear-gradient(135deg, var(--nm-accent), var(--nm-accent-hover))'; // CHANGED: Purple gradient
-            generateBtn.style.borderColor = 'var(--nm-accent)'; // CHANGED: Purple border
+            // Restore original purple button state
+            generateBtn.style.background = 'linear-gradient(135deg, var(--nm-accent), var(--nm-accent-hover))';
+            generateBtn.style.borderColor = 'var(--nm-accent)';
+            generateBtn.style.color = '#000000'; // Restore original text color
             changeLanguage(currentLanguage); // Re-apply language to original text
         }, 3000);
     }
