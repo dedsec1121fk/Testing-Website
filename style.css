@@ -624,9 +624,9 @@ body.light-theme ::-webkit-scrollbar-thumb {
     margin-bottom: 10px;
     padding: 25px 15px 0 15px;
     box-sizing: border-box;
-    /* MODIFIED: Replaced negative right margin with 10px left margin */
-    margin-left: 10px;
-    margin-right: 0;
+    /* FIX: Center the container */
+    margin-left: auto;
+    margin-right: auto;
 }
 
 /* --- REMOVED: .header-logo container since we are using .screen::after --- */
@@ -655,9 +655,7 @@ body.light-theme ::-webkit-scrollbar-thumb {
     position: relative;
     width: 100%;
     max-width: 500px; 
-    /* MODIFIED: Replaced margin-right compensation with 10px left margin */
     margin: 0 auto; 
-    margin-left: 10px; 
 }
 
 /* MODIFIED: Removed all box-shadow for no glow effect */
@@ -761,12 +759,9 @@ body.light-theme ::-webkit-scrollbar-thumb {
     width: 100%;
     max-width: 500px;
     /* FIX: Reduced top margin from 15px and bottom margin from 35px */
-    margin: 5px auto 5px 0;
+    margin: 5px auto;
     padding: 10px;
     box-sizing: border-box;
-    /* MODIFIED: Replaced margin-right compensation with 10px left margin */
-    margin-right: 0; 
-    margin-left: 10px; 
 }
 
 .hero-text {
@@ -816,8 +811,6 @@ body.light-theme ::-webkit-scrollbar-thumb {
     margin: 10px auto 15px;
     padding-bottom: 5px;
     border-bottom: 1px solid var(--nm-border);
-    /* MODIFIED: Replaced margin-right compensation with 10px left margin */
-    margin-left: 10px;
 }
 /* --- END GRID HEADING STYLES --- */
 
@@ -829,9 +822,7 @@ body.light-theme ::-webkit-scrollbar-thumb {
     gap: 35px; /* MODIFIED: Set to 35px */
     width: 100%;
     max-width: 500px;
-    /* MODIFIED: Replaced margin-right compensation with 10px left margin */
     margin: 0 auto 15px;
-    margin-left: 10px; 
     align-items: start;
 }
 
@@ -1595,15 +1586,7 @@ span.sub-item {
         font-size: clamp(2.5rem, 4vw, 3.5rem);
     }
     
-    /* MODIFIED: Replaced negative right margin with 10px left margin for all centered content */
-    .main-header-container,
-    .search-container,
-    .hero-section,
-    .grid-heading,
-    .app-grid {
-        margin-right: auto;
-        margin-left: 10px; 
-    }
+    /* FIX: Removed incorrect margin override that caused left-alignment */
 }
 
 /* =================================================================
