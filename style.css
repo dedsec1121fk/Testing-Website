@@ -126,6 +126,41 @@ body.light-theme .note.note-warning {
   }
 }
 
+/* --- NEW: Rainbow border animation for app icons --- */
+@keyframes rainbow-border {
+    0% { border-color: #FF00FF; }   /* Purple */
+    3.33% { border-color: #E600FF; }
+    6.66% { border-color: #CC00FF; }
+    10% { border-color: #B300FF; }
+    13.33% { border-color: #9900FF; }
+    16.66% { border-color: #8000FF; }
+    20% { border-color: #6600FF; }
+    23.33% { border-color: #4D00FF; }
+    26.66% { border-color: #3300FF; }
+    30% { border-color: #1A00FF; }
+    33.33% { border-color: #0000FF; } /* Blue */
+    36.66% { border-color: #001AFF; }
+    40% { border-color: #0033FF; }
+    43.33% { border-color: #004DFF; }
+    46.66% { border-color: #0066FF; }
+    50% { border-color: #0080FF; }
+    53.33% { border-color: #0099FF; }
+    56.66% { border-color: #00B3FF; }
+    60% { border-color: #00CCFF; }
+    63.33% { border-color: #00E6FF; }
+    66.66% { border-color: #00FFFF; }
+    70% { border-color: #00FFE6; }
+    73.33% { border-color: #00FFCC; }
+    76.66% { border-color: #00FFB3; }
+    80% { border-color: #00FF99; }
+    83.33% { border-color: #00FF80; }
+    86.66% { border-color: #00FF66; }
+    90% { border-color: #00FF4D; }
+    93.33% { border-color: #00FF33; }
+    96.66% { border-color: #00FF1A; }
+    100% { border-color: #FF00FF; } /* Back to purple */
+}
+
 /* REMOVED: Pulsing glow animation for the main title */
 
 
@@ -444,6 +479,149 @@ body.light-theme ::-webkit-scrollbar-thumb {
     transition: background-color 1s ease;
 }
 
+/* --- NEW ANNIVERSARY BANNER STYLES --- */
+.anniversary-banner {
+    width: 100%;
+    max-width: 500px;
+    background: linear-gradient(135deg, #8A2BE2, #4B0082, #FF1493, #00BFFF);
+    border: 2px solid #8A2BE2;
+    border-radius: 20px;
+    padding: 15px;
+    margin: 15px 0;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(138, 43, 226, 0.3);
+    opacity: 0.85;
+    transition: all 0.3s ease;
+}
+
+.anniversary-banner:hover {
+    opacity: 0.95;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(138, 43, 226, 0.4);
+}
+
+.anniversary-content h2 {
+    margin: 0 0 10px 0;
+    color: white;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.3rem;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.anniversary-content p {
+    margin: 5px 0;
+    color: white;
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+.anniversary-content strong {
+    color: #FFFF00;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+/* --- NEW CERTIFICATE BUTTON STYLES --- */
+.certificate-button {
+    width: 100%;
+    max-width: 500px;
+    background: linear-gradient(135deg, #8A2BE2, #4B0082);
+    border: 2px solid #8A2BE2;
+    border-radius: 20px;
+    padding: 12px 20px;
+    margin: 10px 0 20px 0;
+    color: white;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: all 0.3s ease;
+    opacity: 0.85;
+    box-shadow: 0 4px 15px rgba(138, 43, 226, 0.3);
+}
+
+.certificate-button:hover {
+    opacity: 0.95;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(138, 43, 226, 0.4);
+    background: linear-gradient(135deg, #9932CC, #8A2BE2);
+}
+
+.certificate-button i {
+    font-size: 1.2rem;
+}
+
+/* --- NEW CERTIFICATE FORM STYLES --- */
+.certificate-form {
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--nm-text);
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px 15px;
+    background-color: var(--nm-darkest);
+    border: 2px solid var(--nm-accent);
+    color: var(--nm-text);
+    font-family: 'Roboto Mono', monospace;
+    font-size: 0.9rem;
+    border-radius: 10px;
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+}
+
+.form-group input:focus {
+    outline: none;
+    background-color: var(--nm-dark);
+    border-color: var(--nm-accent-hover);
+}
+
+.form-actions {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-top: 25px;
+}
+
+.form-actions button {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 10px;
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 700;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.form-actions button[type="submit"] {
+    background: linear-gradient(135deg, #00FF00, #00CC00);
+    color: #000;
+}
+
+.form-actions button[type="submit"]:hover {
+    background: linear-gradient(135deg, #00CC00, #00AA00);
+    transform: translateY(-2px);
+}
+
+/* --- END NEW ANNIVERSARY STYLES --- */
+
 /* --- NEW HERO SECTION STYLES --- */
 .hero-section {
     display: flex;
@@ -511,9 +689,10 @@ body.light-theme ::-webkit-scrollbar-thumb {
 
 .app-grid {
     display: grid;
+    /* MODIFIED: Reduced gap from 35px to 25px to prevent icons from going outside */
     grid-template-columns: repeat(4, max-content);
     justify-content: center;
-    gap: 35px; /* MODIFIED: Set to 35px */
+    gap: 25px;
     width: 100%;
     max-width: 500px;
     margin: 0 auto 15px;
@@ -533,7 +712,9 @@ body.light-theme ::-webkit-scrollbar-thumb {
 .app-icon {
     /* Pitch Black Background */
     background: #000000; 
+    /* MODIFIED: Added rainbow border animation */
     border: 1px solid var(--nm-accent);
+    animation: rainbow-border 15s infinite linear;
     color: var(--nm-text); /* Enforce White text/icon */
     cursor: pointer;
     font-family: 'Roboto Mono', monospace;
@@ -583,6 +764,8 @@ body.light-theme ::-webkit-scrollbar-thumb {
     border-color: var(--nm-accent-hover);
     color: var(--nm-darkest);
     box-shadow: none; 
+    /* Stop animation on hover for better UX */
+    animation: none;
 }
 
 .app-wrapper:hover .app-icon,
@@ -591,6 +774,8 @@ body.light-theme ::-webkit-scrollbar-thumb {
     border-color: var(--nm-accent-hover);
     box-shadow: none; 
     outline: none;
+    /* Stop animation on hover for better UX */
+    animation: none;
 }
 
 .app-wrapper:hover .app-label,
@@ -1110,280 +1295,152 @@ body.light-theme .modal-content {
     font-size: 0.7rem;
     font-weight: bold;
     text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
+    white-space: nowrap;
+    pointer-events: none; /* Prevent text from blocking clicks */
 }
 
+/* --- Note Styles --- */
+.note {
+    background: var(--nm-darkest);
+    border-left: 4px solid var(--nm-accent);
+    padding: 15px;
+    margin: 1em 0;
+    border-radius: 0 20px 20px 0;
+    transition: all 0.3s ease;
+}
+.note.note-warning {
+    border-left-color: var(--nm-warning);
+    background: var(--warning-bg);
+}
+.note.note-danger {
+    border-left-color: var(--nm-danger);
+    background: var(--danger-bg);
+}
+.note p:first-child { margin-top: 0; }
+.note p:last-child { margin-bottom: 0; }
+
+.sub-item {
+    font-size: 0.8em;
+    color: var(--nm-text-muted);
+    margin-left: 1em;
+    display: block;
+}
+
+.modal-divider {
+    border: none;
+    height: 1px;
+    background-color: var(--nm-border);
+    margin: 1.5rem 0;
+}
 
 .modal-search-container {
-    margin-bottom: 20px;
-    position: relative;
-    width: 100%;
-    max-width: 500px;
-    margin-left: auto;
-    margin-right: auto;
+    margin-bottom: 1.5rem;
 }
-
-.modal-search-container input {
+#useful-info-search-input {
     width: 100%;
-    padding: 10px 15px 10px 45px;
+    padding: 10px 15px;
     background-color: var(--nm-darkest);
-    border: 2px solid var(--nm-search-green); /* Set to nm-accent */
+    border: 1px solid var(--nm-accent);
     color: var(--nm-text);
     font-family: 'Roboto Mono', monospace;
     font-size: 0.9rem;
-    transition: background-color 0.3s ease;
-    /* Large border-radius for pill shape */
+    /* Added uniform border-radius */
     clip-path: none;
-    border-radius: 50px;
+    border-radius: 20px;
     box-sizing: border-box;
-    animation: none; /* Removed pulse animation for no glow */
+    transition: background-color 0.3s ease;
 }
-
-.modal-search-container input:focus {
+#useful-info-search-input:focus {
     outline: none;
     background-color: var(--nm-dark);
 }
 
-/* --- ADDED: Search Bar Icons --- */
-.search-container::before,
-.search-container::after,
-.modal-search-container::before {
-    /* This assumes Font Awesome is linked in the HTML */
-    font-family: 'Font Awesome 5 Free', 'FontAwesome';
-    font-weight: 900; /* Use solid icons */
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    color: var(--nm-text-muted);
-    z-index: 2;
-    pointer-events: none; /* Allows clicking through the icon to the input */
-}
-
-/* Magnifying Glass Icon (Left) for Main Search */
-.search-container::before {
-    content: '\f002'; /* fa-search */
-    left: 20px;
-}
-
-/* Globe Icon (Right) for Main Search */
-.search-container::after {
-    content: '\f0ac'; /* fa-globe */
-    right: 20px;
-}
-
-/* Magnifying Glass Icon (Left) for Modal Search */
-.modal-search-container::before {
-    content: '\f002'; /* fa-search */
-    left: 20px;
-}
-/* --- END: Search Bar Icons --- */
-
-/* --- Styles from removed inline attributes --- */
-#expanded-img {
-    max-width: 90vw;
-    max-height: 90vh;
-    border: 3px solid var(--nm-accent);
-    box-shadow: none; 
-    /* Added uniform border-radius */
-    border-radius: 20px;
-}
-.modal-divider {
-    margin: 2rem 0;
-    border-color: var(--nm-border);
-}
-.text-center {
-    text-align: center;
-}
-.note.note-warning {
-    background-color: var(--warning-bg);
-    color: white;
-    font-weight: bold;
-    border-left: 4px solid var(--nm-warning);
-    padding: 1rem;
-    /* Added uniform border-radius */
-    border-radius: 20px;
-}
-.note.note-danger {
-    border-left: 4px solid var(--nm-danger);
-    background: var(--danger-bg);
-    padding: 1rem;
-    /* Added uniform border-radius */
-    border-radius: 20px;
-}
-.certificate-footer .signature span {
-    font-style: italic;
-}
-.ad-image {
-    width: 100%;
-    max-width: 400px;
-    margin: 1rem auto;
-    display: block;
-    border-radius: 20px; /* Uniform border-radius */
-    border: 1px solid var(--nm-border);
-}
 #useful-info-prompt {
     text-align: center;
     color: var(--nm-text-muted);
-    margin-bottom: 1rem;
-}
-#useful-information-nav {
-    grid-template-columns: 1fr;
-    max-width: 100%;
-    gap: 15px; 
-    justify-content: initial; /* Override centering for this specific grid */
-}
-/* Apply pill shape to the list of articles inside the Useful Information modal */
-#useful-information-nav .app-icon {
-    width: 100%; /* Make them full width of container */
-    height: auto; /* Allow height to adjust */
-    padding: 12px 15px; /* Add padding for content */
-    /* Enforce pill shape on list items */
-    clip-path: none;
-    border-radius: 20px;
-}
-/* Ensure the text is white */
-#useful-information-nav .app-icon span {
-    color: var(--nm-text);
-}
-span.sub-item {
-    display: block;
-    font-size: 0.85em;
-    line-height: 1.3;
+    font-style: italic;
+    margin-bottom: 1.5rem;
 }
 
+/* --- Image Viewer --- */
+#expanded-img {
+    max-width: 90%;
+    max-height: 90%;
+    object-fit: contain;
+    border-radius: 10px;
+    box-shadow: 0 0 30px rgba(0,0,0,0.7);
+    cursor: zoom-out;
+}
 
-/* =================================================================
-   TABLET & WIDER SCREEN STYLES
-   ================================================================= */
-@media (min-width: 768px) {
-    .phone-container {
-        width: 95%;
-        max-width: 1400px;
-        height: 90vh;
-        border-radius: 40px;
-        overflow: hidden;
-        box-shadow: 0 10px 40px rgba(0,0,0,0.5);
-        border: 4px solid var(--nm-darkest);
-    }
-
-    .search-container,
-    .hero-section,
-    .grid-heading,
+/* --- Responsive Adjustments --- */
+@media (max-width: 600px) {
     .app-grid {
-        max-width: 700px;
+        grid-template-columns: repeat(3, max-content);
+        gap: 20px;
     }
+    .github-stats {
+        gap: 10px;
+    }
+    .github-stats img {
+        width: 100%;
+    }
+    .modal-body {
+        padding: 15px;
+    }
+    .modal-content {
+        width: 98%;
+        height: 90%;
+    }
+    .modal-footer {
+        flex-direction: column;
+        align-items: center;
+    }
+    .modal-footer button {
+        width: 80%;
+        max-width: 250px;
+    }
+    .contact-grid .app-icon {
+        max-width: 100%;
+    }
+    .gym-carousel {
+        max-width: 100%;
+    }
+    .anniversary-banner {
+        padding: 10px;
+        margin: 10px 0;
+    }
+    .anniversary-content h2 {
+        font-size: 1.1rem;
+    }
+    .certificate-button {
+        padding: 10px 15px;
+        font-size: 0.8rem;
+    }
+    .form-actions {
+        flex-direction: column;
+        align-items: center;
+    }
+    .form-actions button {
+        width: 80%;
+        max-width: 250px;
+    }
+}
 
+@media (max-width: 400px) {
     .app-grid {
-        grid-template-columns: repeat(6, max-content);
+        grid-template-columns: repeat(2, max-content);
+        gap: 15px;
     }
-
     .main-header-container h1 {
-        font-size: clamp(2.5rem, 4vw, 3.5rem);
+        font-size: 1.8rem;
+    }
+    .anniversary-content h2 {
+        font-size: 1rem;
+    }
+    .anniversary-content p {
+        font-size: 0.8rem;
+    }
+    .certificate-button {
+        font-size: 0.75rem;
     }
 }
-
-/* =================================================================
-   LARGE DESKTOP STYLES
-   ================================================================= */
-@media (min-width: 1200px) {
-    .search-container,
-    .hero-section,
-    .grid-heading,
-    .app-grid {
-        max-width: 900px;
-    }
-
-    .app-grid {
-        grid-template-columns: repeat(8, max-content);
-    }
-}
-
-/* === ADDED ANNIVERSARY CSS === */
-/* Reduce space between icons a little so they don't overflow */
-.app-grid { gap: 28px; }
-.app-wrapper { gap: 6px; }
-
-/* Multi-color slow border animation for icon circles (at least 30 colors) */
-@keyframes multiBorderColors {
-    0% { border-color: #6a0dad; }
-    3% { border-color: #7b1fa2; }
-    6% { border-color: #8e24aa; }
-    9% { border-color: #9c27b0; }
-    12% { border-color: #ab47bc; }
-    15% { border-color: #5e35b1; }
-    18% { border-color: #3949ab; }
-    21% { border-color: #1e88e5; }
-    24% { border-color: #2196f3; }
-    27% { border-color: #03a9f4; }
-    30% { border-color: #00bcd4; }
-    33% { border-color: #00acc1; }
-    36% { border-color: #009688; }
-    39% { border-color: #43a047; }
-    42% { border-color: #7cb342; }
-    45% { border-color: #c0ca33; }
-    48% { border-color: #fdd835; }
-    51% { border-color: #ffc107; }
-    54% { border-color: #ff9800; }
-    57% { border-color: #ff7043; }
-    60% { border-color: #f4511e; }
-    63% { border-color: #e53935; }
-    66% { border-color: #d32f2f; }
-    69% { border-color: #c62828; }
-    72% { border-color: #b71c1c; }
-    75% { border-color: #8e24aa; }
-    78% { border-color: #6a1b9a; }
-    81% { border-color: #4a148c; }
-    84% { border-color: #311b92; }
-    87% { border-color: #283593; }
-    90% { border-color: #1a237e; }
-    93% { border-color: #0d47a1; }
-    96% { border-color: #1565c0; }
-    100% { border-color: #6a0dad; }
-}
-
-/* Apply only to the circular border of app icons */
-.app-icon {
-    border-width: 3px !important;
-    animation: multiBorderColors 90s linear infinite;
-    -webkit-animation: multiBorderColors 90s linear infinite;
-}
-
-/* Subtle purple/blue/red gradient for the whole screen */
-.screen::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg, rgba(106,13,173,0.15), rgba(59,130,246,0.12), rgba(239,68,68,0.10));
-    z-index: 2;
-    pointer-events: none;
-}
-
-/* Anniversary banner styles */
-.anniv-banner {
-    width: 100%;
-    max-width: 700px;
-    margin: 8px auto;
-    padding: 12px 16px;
-    border-radius: 14px;
-    background: linear-gradient(90deg, rgba(106,13,173,0.9), rgba(59,130,246,0.85), rgba(239,68,68,0.85));
-    box-shadow: none;
-    color: #fff;
-    text-align: center;
-    opacity: 0.85; /* 85% opacity as requested */
-    z-index: 30;
-    border: 2px solid rgba(255,255,255,0.06);
-}
-
-/* Banner inner content */
-.anniv-banner .anniv-banner-content { display:flex; flex-direction:column; align-items:center; gap:6px; }
-.anniv-banner .anniv-dates { font-size: 0.95rem; font-weight:700; }
-.anniv-banner .anniv-note { font-size:0.85rem; opacity:0.95; }
-
-/* Certificate form styling */
-.certificate-section { width:100%; max-width:700px; margin: 6px auto 16px; padding: 12px; box-sizing:border-box; z-index:30; }
-.certificate-form { background: rgba(0,0,0,0.45); padding:12px; border-radius:12px; border: 1px solid rgba(255,255,255,0.04); display:flex; flex-direction:column; gap:8px; }
-.certificate-form .form-row { display:flex; gap:8px; flex-wrap:wrap; align-items:center; justify-content:space-between; }
-.certificate-form .form-row label { flex:0 0 30%; min-width:90px; font-size:0.85rem; color:var(--nm-text); }
-.certificate-form .form-row input { flex:1 1 auto; padding:8px 10px; border-radius:8px; border:1px solid rgba(255,255,255,0.08); background: var(--nm-darkest); color:var(--nm-text); font-family:inherit; }
-.certificate-form .form-actions { display:flex; justify-content:center; padding-top:6px; }
-#download-certificate-btn { opacity: 0.85; }
-
