@@ -82,10 +82,15 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // Check if the jsPDF library is loaded before proceeding
+        // Check if the jsPDF and html2canvas libraries are loaded before proceeding
         if (typeof window.jspdf === 'undefined' || typeof window.jspdf.jsPDF === 'undefined') {
-            // The library failed to load. This is a critical error.
-            console.error("CRITICAL: jsPDF library (window.jspdf.jsPDF) not found. Cannot generate certificate.");
+            console.error("CRITICAL: jsPDF library (window.jspdf.jsPDF) not found.");
+            alert('Error: Certificate generator failed to load. Please check your internet connection, disable ad-blockers, and try again.');
+            return;
+        }
+
+        if (typeof html2canvas === 'undefined') {
+            console.error("CRITICAL: html2canvas library not found.");
             alert('Error: Certificate generator failed to load. Please check your internet connection, disable ad-blockers, and try again.');
             return;
         }
@@ -94,153 +99,148 @@ document.addEventListener('DOMContentLoaded', () => {
         const formData = new FormData(form);
         const firstName = formData.get('firstName');
         const lastName = formData.get('lastName');
-        
-        // --- ADDED VALIDATION ---
-        const forbiddenWords = ['dedsec', 'admin', 'root', 'anonymous', 'administrator'];
-        const lowerFirstName = firstName.toLowerCase();
-        const lowerLastName = lastName.toLowerCase();
-
-        const isNameForbidden = forbiddenWords.some(word => lowerFirstName.includes(word) || lowerLastName.includes(word));
-
-        if (isNameForbidden) {
-            const alertMessages = {
-                en: "Please use your real name. Using project-related or system names is not allowed.",
-                gr: "Παρακαλώ χρησιμοποιήστε το πραγματικό σας όνομα. Η χρήση ονομάτων που σχετίζονται με το project ή το σύστημα δεν επιτρέπεται."
-            };
-            alert(alertMessages[currentLanguage]);
-            return; // Stop execution
-        }
-        // --- END OF ADDED VALIDATION ---
-        
         const age = formData.get('age');
         const country = formData.get('country');
         const city = formData.get('city');
 
-        // Generate PDF directly
-        generateCertificatePDF(firstName, lastName, age, country, city);
+        // Generate PDF using html2canvas approach
+        generateCertificateWithCanvas(firstName, lastName, age, country, city);
     }
 
-    // --- MODIFIED PDF GENERATION FUNCTION ---
-    function generateCertificatePDF(firstName, lastName, age, country, city) {
+    // --- NEW FUNCTION: Generate certificate using html2canvas for Greek support ---
+    function generateCertificateWithCanvas(firstName, lastName, age, country, city) {
         try {
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF('landscape', 'mm', 'a4');
-            
-            // Get translations for current language
-            const translations = certificateTranslations[currentLanguage];
-            const fullName = `${firstName} ${lastName}`;
+            // Create a temporary certificate element
+            const tempCertificate = createCertificateHTML(firstName, lastName, age, country, city);
+            document.body.appendChild(tempCertificate);
 
-            // ---- Design Changes ----
-            const purpleColor = '#9966FF';
-            const purpleDarkColor = '#6633CC';
-            const purpleLightColor = '#CC99FF';
+            // Use html2canvas to capture the certificate as an image
+            html2canvas(tempCertificate, {
+                scale: 2, // Higher quality
+                useCORS: true,
+                backgroundColor: '#ffffff'
+            }).then(canvas => {
+                // Remove temporary element
+                document.body.removeChild(tempCertificate);
 
-            // 1. White Background
-            doc.setFillColor(255, 255, 255);
-            doc.rect(0, 0, 297, 210, 'F');
+                // Convert canvas to image data
+                const imgData = canvas.toDataURL('image/png');
+                
+                // Create PDF
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF('landscape', 'mm', 'a4');
+                
+                // Calculate dimensions to fit the image in A4 landscape
+                const pageWidth = doc.internal.pageSize.getWidth();
+                const pageHeight = doc.internal.pageSize.getHeight();
+                
+                // Add image to PDF (fit to page)
+                doc.addImage(imgData, 'PNG', 0, 0, pageWidth, pageHeight);
+                
+                // Save the PDF
+                const fileName = currentLanguage === 'gr' 
+                    ? `Πιστοποιητικό_Επετείου_DedSec_${firstName}_${lastName}.pdf`
+                    : `DedSec_Anniversary_Certificate_${firstName}_${lastName}.pdf`;
+                
+                doc.save(fileName);
 
-            // 2. Title (Purple Text) - TRANSLATED
-            doc.setFontSize(28);
-            doc.setFont('times', 'bold');
-            doc.setTextColor(purpleColor);
-            
-            // Use the actual translation text directly
-            const titleText = translations.title;
-            doc.text(titleText, 148.5, 40, { align: 'center' });
-
-            // 3. Subtitle (Purple Text) - TRANSLATED
-            doc.setFontSize(18);
-            doc.setFont('times', 'italic');
-            doc.setTextColor(purpleColor);
-            const subtitleText = translations.subtitle;
-            doc.text(subtitleText, 148.5, 55, { align: 'center' });
-
-            // 4. Main Body Text (Purple Text) - TRANSLATED
-            doc.setFontSize(14);
-            doc.setFont('times', 'normal');
-            doc.setTextColor(purpleDarkColor);
-            const certifiesText = translations.certifies;
-            doc.text(certifiesText, 148.5, 80, { align: 'center' });
-
-            // 5. Recipient Name (Purple Text, Bold)
-            doc.setFontSize(30);
-            doc.setFont('times', 'bold');
-            doc.setTextColor(purpleColor);
-            const nameWidth = doc.getTextWidth(fullName);
-            const nameX = 148.5 - (nameWidth / 2);
-            doc.text(fullName, 148.5, 100, { align: 'center' });
-            doc.setDrawColor(153, 102, 255);
-            doc.setLineWidth(0.5);
-            doc.line(nameX - 5, 105, nameX + nameWidth + 5, 105);
-
-            // 6. Participation Text (Purple Text) - TRANSLATED
-            doc.setFontSize(14);
-            doc.setFont('times', 'normal');
-            doc.setTextColor(purpleDarkColor);
-            const participatedText = translations.participated;
-            doc.text(participatedText, 148.5, 125, { align: 'center' });
-            const eventText = translations.event;
-            doc.text(eventText, 148.5, 135, { align: 'center' });
-
-            // 7. Details (Smaller Purple Text) - TRANSLATED
-            doc.setFontSize(10);
-            doc.setTextColor(purpleDarkColor);
-            const detailY = 170;
-            const issuedToText = `${translations.issuedTo}: ${fullName}`;
-            doc.text(issuedToText, 20, detailY);
-            const ageText = `${translations.age}: ${age}`;
-            doc.text(ageText, 20, detailY + 7);
-            const locationText = `${translations.location}: ${city}, ${country}`;
-            doc.text(locationText, 20, detailY + 14);
-
-            // 8. Date (Smaller Purple Text - Right side) - TRANSLATED
-            const today = new Date().toLocaleDateString(currentLanguage === 'gr' ? 'el-GR' : 'en-US', { 
-                year: 'numeric', 
-                month: 'long', 
-                day: 'numeric' 
+                // Show success message
+                showCertificateSuccess(firstName);
+            }).catch(error => {
+                console.error("Error generating certificate with html2canvas:", error);
+                document.body.removeChild(tempCertificate);
+                alert("An error occurred while generating the certificate. Please try again.");
             });
-            const dateText = `${translations.dateIssued}: ${today}`;
-            doc.text(dateText, 277, detailY, { align: 'right' });
-
-            // 9. Signature Area (Purple Text/Purple Line - Right side) - TRANSLATED
-            doc.setFontSize(10);
-            doc.setTextColor(purpleDarkColor);
-            const teamText = translations.team;
-            doc.text(teamText, 277, detailY + 14, { align: 'right'});
-            doc.setDrawColor(153, 102, 255);
-            doc.setLineWidth(0.5);
-            doc.line(220, detailY + 10, 277, detailY + 10);
-
-            // Add decorative purple border
-            doc.setDrawColor(153, 102, 255);
-            doc.setLineWidth(2);
-            doc.rect(10, 10, 277, 190); // Outer border
-
-            // Add decorative corner elements
-            doc.setLineWidth(1);
-            doc.line(15, 15, 25, 15); // Top-left corner
-            doc.line(15, 15, 15, 25);
-            doc.line(272, 15, 282, 15); // Top-right corner
-            doc.line(282, 15, 282, 25);
-            doc.line(15, 195, 25, 195); // Bottom-left corner
-            doc.line(15, 185, 15, 195);
-            doc.line(272, 195, 282, 195); // Bottom-right corner
-            doc.line(282, 185, 282, 195);
-
-            // Save the PDF
-            const fileName = currentLanguage === 'gr' 
-                ? `Πιστοποιητικό_Επετείου_DedSec_${firstName}_${lastName}.pdf`
-                : `DedSec_Anniversary_Certificate_${firstName}_${lastName}.pdf`;
-            
-            doc.save(fileName);
-
-            // Show success message
-            showCertificateSuccess(firstName);
 
         } catch (error) {
-            console.error("Error generating PDF:", error);
-            alert("An error occurred while generating the certificate PDF. Please try again.");
+            console.error("Error in certificate generation:", error);
+            alert("An error occurred while generating the certificate. Please try again.");
         }
+    }
+
+    // --- NEW FUNCTION: Create certificate HTML for canvas capture ---
+    function createCertificateHTML(firstName, lastName, age, country, city) {
+        const translations = certificateTranslations[currentLanguage];
+        const fullName = `${firstName} ${lastName}`;
+        const today = new Date().toLocaleDateString(currentLanguage === 'gr' ? 'el-GR' : 'en-US', { 
+            year: 'numeric', 
+            month: 'long', 
+            day: 'numeric' 
+        });
+
+        const certificateDiv = document.createElement('div');
+        certificateDiv.style.cssText = `
+            position: fixed;
+            top: -10000px;
+            left: -10000px;
+            width: 1123px;
+            height: 794px;
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            border: 4px solid #FFD700;
+            border-radius: 15px;
+            padding: 40px 30px;
+            color: #ffffff;
+            font-family: 'Noto Serif', serif; /* CHANGED: Use Noto Serif for Greek support */
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            box-sizing: border-box;
+        `;
+
+        certificateDiv.innerHTML = `
+            <div style="margin-bottom: 30px;">
+                <div style="font-size: 3rem; color: #FFD700; margin-bottom: 15px;">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h1 style="font-size: 2.2rem; color: #FFD700; margin: 0 0 10px 0; font-weight: bold; text-transform: uppercase; letter-spacing: 2px; font-family: 'Noto Serif', serif;">
+                    ${translations.title}
+                </h1>
+                <h2 style="font-size: 1.5rem; color: #9966FF; margin: 0; font-weight: normal; font-style: italic; font-family: 'Noto Serif', serif;">
+                    ${translations.subtitle}
+                </h2>
+            </div>
+            
+            <div style="margin: 30px 0;">
+                <p style="font-size: 1.1rem; margin: 15px 0; line-height: 1.6; font-family: 'Noto Serif', serif;">
+                    ${translations.certifies}
+                </p>
+                <div style="font-size: 2.5rem; font-weight: bold; color: #FFD700; margin: 20px 0; padding: 10px; border-bottom: 2px solid #FFD700; border-top: 2px solid #FFD700; font-family: 'Noto Serif', serif; text-transform: uppercase; letter-spacing: 1px;">
+                    ${fullName}
+                </div>
+                <p style="font-size: 1.1rem; margin: 15px 0; line-height: 1.6; font-family: 'Noto Serif', serif;">
+                    ${translations.participated}
+                </p>
+                <p style="font-size: 1.1rem; margin: 15px 0; line-height: 1.6; font-family: 'Noto Serif', serif;">
+                    ${translations.event}
+                </p>
+            </div>
+            
+            <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-top: 40px; padding-top: 20px; border-top: 1px solid #3A4A5E;">
+                <div style="text-align: left;">
+                    <div style="margin: 8px 0; font-size: 0.9rem;">
+                        <span style="font-weight: bold; color: #FFD700;">${translations.issuedTo}:</span> ${fullName}
+                    </div>
+                    <div style="margin: 8px 0; font-size: 0.9rem;">
+                        <span style="font-weight: bold; color: #FFD700;">${translations.age}:</span> ${age}
+                    </div>
+                    <div style="margin: 8px 0; font-size: 0.9rem;">
+                        <span style="font-weight: bold; color: #FFD700;">${translations.location}:</span> ${city}, ${country}
+                    </div>
+                </div>
+                <div style="text-align: right;">
+                    <div style="margin: 8px 0; font-size: 0.9rem;">
+                        <span style="font-weight: bold; color: #FFD700;">${translations.dateIssued}:</span> ${today}
+                    </div>
+                    <div style="text-align: center; margin-top: 10px;">
+                        <div style="width: 200px; height: 1px; background: #ffffff; margin: 0 auto 10px auto;"></div>
+                        <span style="font-style: italic; color: #7A8899; font-family: 'Noto Serif', serif;">
+                            ${translations.team}
+                        </span>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        return certificateDiv;
     }
 
     function showCertificateSuccess(firstName) {
@@ -251,16 +251,16 @@ document.addEventListener('DOMContentLoaded', () => {
             <i class="fas fa-check"></i>
             <span data-en="Certificate Downloaded!" data-gr="Το Πιστοποιητικό Λήφθηκε!">Certificate Downloaded!</span>
         `;
-        generateBtn.style.background = 'linear-gradient(135deg, #00FF00, #00CC00)';
-        generateBtn.style.borderColor = '#00FF00';
+        generateBtn.style.background = 'linear-gradient(135deg, #9966FF, #9933FF)'; // CHANGED: Purple gradient
+        generateBtn.style.borderColor = '#9966FF'; // CHANGED: Purple border
         
         // Update language for success message
         changeLanguage(currentLanguage);
         
         setTimeout(() => {
             generateBtn.innerHTML = originalHTML;
-            generateBtn.style.background = 'linear-gradient(135deg, var(--nm-success), #00CC00)';
-            generateBtn.style.borderColor = 'var(--nm-success)';
+            generateBtn.style.background = 'linear-gradient(135deg, var(--nm-accent), var(--nm-accent-hover))'; // CHANGED: Purple gradient
+            generateBtn.style.borderColor = 'var(--nm-accent)'; // CHANGED: Purple border
             changeLanguage(currentLanguage); // Re-apply language to original text
         }, 3000);
     }
@@ -1220,84 +1220,89 @@ document.addEventListener('DOMContentLoaded', () => {
                                 node.textContent = text;
                             }
                         });
-                   } else if (el.children.length === 0) {
-                       el.textContent = text;
+                   } else if (el.children.length === 0) { 
+                         el.textContent = text;
                    }
              });
+             
              contentWrapper.querySelectorAll('[data-lang-section]').forEach(el => {
-                el.style.display = el.dataset.langSection === currentLanguage ? 'block' : 'none';
-                el.classList.toggle('hidden', el.dataset.langSection !== currentLanguage);
+                 el.style.display = el.dataset.langSection === currentLanguage ? 'block' : 'none';
+                 el.classList.toggle('hidden', el.dataset.langSection !== currentLanguage);
              });
          }
 
-    
-        // Highlight text if requested, after content is translated and modal visible
-        const showAndHighlight = () => {
-             modalOverlay.classList.add('visible'); // Trigger CSS transition
-             modalOverlay.style.opacity = '1';
-
-             if (textToHighlight) {
-                 setTimeout(() => { // Delay highlight slightly for rendering
-                     highlightModalContent(modalOverlay, textToHighlight);
-                 }, 150);
-             }
-         };
-
-        // Use requestAnimationFrame to ensure modal is in DOM before starting transition
-         requestAnimationFrame(showAndHighlight);
-
-        
-        // Close modal function specific to this instance
-        const closeModal = () => {
-            modalOverlay.style.opacity = '0'; // Start fade out
-            modalOverlay.classList.remove('visible');
-            
-             // Remove from DOM after transition
-            modalOverlay.addEventListener('transitionend', () => {
-                 if (modalOverlay.parentNode) {
-                    modalOverlay.parentNode.removeChild(modalOverlay);
+        // Highlight specific text if provided (after content is in DOM)
+        if (textToHighlight) {
+            setTimeout(() => {
+                 const treeWalker = document.createTreeWalker(modalBody, NodeFilter.SHOW_TEXT);
+                 let targetNode = null;
+                 while (treeWalker.nextNode()) {
+                     if (treeWalker.currentNode.textContent.includes(textToHighlight)) {
+                         targetNode = treeWalker.currentNode.parentElement;
+                         break;
+                     }
                  }
-            }, { once: true });
-            
-            // Optionally, clear search and show nav in the main "Useful Info" modal
-             const searchInput = document.getElementById('useful-info-search-input');
-             const resultsContainer = document.getElementById('useful-info-results-container');
-             const navContainer = document.getElementById('useful-information-nav');
-             if(searchInput) searchInput.value = '';
-             if(resultsContainer) resultsContainer.classList.add('hidden');
-             if(navContainer) showNav(true); // Show the nav list again
+                 if (targetNode) {
+                     targetNode.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                     targetNode.classList.add('content-highlight');
+                     setTimeout(() => { targetNode.classList.remove('content-highlight'); }, 2500);
+                 }
+            }, 100);
+        }
+
+        // Modal close logic
+        const closeModal = () => {
+            modalOverlay.style.opacity = '0';
+            setTimeout(() => {
+                if (modalOverlay.parentNode) {
+                    modalOverlay.parentNode.removeChild(modalOverlay);
+                }
+            }, 300); // Match CSS transition duration
         };
 
-        // Attach close listeners
-        modalOverlay.addEventListener('click', (e) => {
-            if (e.target === modalOverlay) closeModal(); // Click on overlay
+        modalOverlay.addEventListener('click', e => {
+            if (e.target === modalOverlay) closeModal();
         });
-        closeModalBtn.addEventListener('click', closeModal); // Click on close button
+        closeModalBtn.addEventListener('click', closeModal);
+
+        // Show modal with transition
+        setTimeout(() => {
+            modalOverlay.style.opacity = '1';
+        }, 10);
     }
 
-
-    // Loads content from a URL and displays it in the article modal
-    async function loadInformationContent(url, title, textToHighlight = null) {
-         // Add a loading indicator?
-         console.log(`Loading content for: ${title} from ${url}`);
+    // Fetches and loads the content of a specific article file
+    async function loadInformationContent(fileUrl, title, textToHighlight = null) {
+        const contentContainer = document.getElementById('useful-information-content');
+        if (!contentContainer) return;
+        
+        contentContainer.innerHTML = `<p style="text-align: center; color: var(--nm-text-muted);">${currentLanguage === 'gr' ? 'Φόρτωση περιεχομένου...' : 'Loading content...'}</p>`;
+        
         try {
-            const response = await fetch(url);
-            if (!response.ok) throw new Error(`Fetch failed: ${response.status} ${response.statusText}`);
+            const response = await fetch(fileUrl);
+            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
             const htmlContent = await response.text();
             
-            // Create the modal with the fetched content
-            createAndShowArticleModal(title, htmlContent, textToHighlight);
-
+            // Use DOMParser to extract the main content
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(htmlContent, 'text/html');
+            
+            // Find the main content container (adjust selector as needed)
+            const mainContent = doc.querySelector('#article-content'); 
+            if (mainContent) {
+                createAndShowArticleModal(title, mainContent.innerHTML, textToHighlight);
+            } else {
+                 // Fallback: use body content
+                 const bodyContent = doc.body.innerHTML;
+                 createAndShowArticleModal(title, bodyContent, textToHighlight);
+            }
+            
         } catch (error) {
             console.error('Failed to load article content:', error);
-             // Show an error message to the user in the modal area or as an alert
-             createAndShowArticleModal(title, `<p style="color: var(--nm-danger);">Failed to load content. Please check the console for details.</p>`);
-        } finally {
-            // Remove loading indicator if added
+            contentContainer.innerHTML = `<p style="text-align: center; color: var(--nm-danger);">${currentLanguage === 'gr' ? 'Αποτυχία φόρτωσης περιεχομένου.' : 'Failed to load content.'}</p>`;
         }
     }
-    
-    // --- INITIALIZE ALL FEATURES ---
-    initializePortfolio();
 
-}); // End DOMContentLoaded
+    // --- Initialize the entire portfolio ---
+    initializePortfolio();
+});
