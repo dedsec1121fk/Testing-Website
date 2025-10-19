@@ -52,14 +52,13 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // <-- THIS IS THE FIX FOR THE DOWNLOAD -->
         // Check if the jsPDF library is loaded before proceeding
         if (typeof window.jspdf === 'undefined' || typeof window.jspdf.jsPDF === 'undefined') {
-            alert('Certificate library is still loading. Please try again in a moment.');
-            console.error("jsPDF library (window.jspdf.jsPDF) not found.");
+            // The library failed to load. This is a critical error.
+            console.error("CRITICAL: jsPDF library (window.jspdf.jsPDF) not found. Cannot generate certificate.");
+            alert('Error: Certificate generator failed to load. Please check your internet connection and try again.');
             return;
         }
-        // <-- END OF FIX -->
 
         // Get form data
         const formData = new FormData(form);
