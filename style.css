@@ -257,11 +257,14 @@ body.light-theme .note.note-warning {
 }
 
 .certificate {
-    background: linear-gradient(135deg, #1a1a2e, #16213e);
-    border: 4px solid #FFD700;
+    /* MODIFIED: Changed background to White */
+    background: #ffffff; 
+    /* MODIFIED: Changed border to Digital Lavender variable */
+    border: 4px solid var(--nm-accent);
     border-radius: 15px;
     padding: 40px 30px;
-    color: #ffffff;
+    /* MODIFIED: Changed text color to Black for readability on white background */
+    color: #000000;
     font-family: 'Noto Serif', serif;
     text-align: center;
     position: relative;
@@ -274,13 +277,15 @@ body.light-theme .note.note-warning {
 
 .certificate-logo {
     font-size: 3rem;
-    color: #FFD700;
+    /* MODIFIED: Changed color to Digital Lavender variable */
+    color: var(--nm-accent);
     margin-bottom: 15px;
 }
 
 .certificate-header h1 {
     font-size: 2.2rem;
-    color: #FFD700;
+    /* MODIFIED: Changed color to Brighter Digital Lavender variable */
+    color: var(--nm-accent-hover);
     margin: 0 0 10px 0;
     font-weight: bold;
     text-transform: uppercase;
@@ -289,6 +294,7 @@ body.light-theme .note.note-warning {
 
 .certificate-header h2 {
     font-size: 1.5rem;
+    /* KEPT: Already using Digital Lavender variable */
     color: var(--nm-accent);
     margin: 0;
     font-weight: normal;
@@ -308,11 +314,13 @@ body.light-theme .note.note-warning {
 .recipient-name {
     font-size: 2.5rem;
     font-weight: bold;
-    color: #FFD700;
+    /* MODIFIED: Changed color to Digital Lavender variable */
+    color: var(--nm-accent);
     margin: 20px 0;
     padding: 10px;
-    border-bottom: 2px solid #FFD700;
-    border-top: 2px solid #FFD700;
+    /* MODIFIED: Changed border colors to Digital Lavender variable */
+    border-bottom: 2px solid var(--nm-accent);
+    border-top: 2px solid var(--nm-accent);
     font-family: 'Orbitron', sans-serif;
     text-transform: uppercase;
     letter-spacing: 1px;
@@ -329,6 +337,8 @@ body.light-theme .note.note-warning {
 
 .certificate-details {
     text-align: left;
+    /* MODIFIED: Ensure details text is black */
+    color: #000000;
 }
 
 .detail-item {
@@ -338,7 +348,8 @@ body.light-theme .note.note-warning {
 
 .detail-item span:first-child {
     font-weight: bold;
-    color: #FFD700;
+    /* MODIFIED: Changed color to Digital Lavender variable */
+    color: var(--nm-accent);
 }
 
 .signature {
@@ -348,13 +359,15 @@ body.light-theme .note.note-warning {
 .signature-line {
     width: 200px;
     height: 1px;
-    background: #ffffff;
+    /* MODIFIED: Changed signature line to black for white background */
+    background: #000000; 
     margin: 0 auto 10px auto;
 }
 
 .signature span {
     font-style: italic;
-    color: var(--nm-text-muted);
+    /* MODIFIED: Used a lighter gray for muted text on white background */
+    color: #555555;
 }
 
 /* Multi-color Border Animation for App Icons */
@@ -817,7 +830,7 @@ body.light-theme ::-webkit-scrollbar-thumb {
 
 .app-grid {
     display: grid;
-    grid-template-columns: repeat(3, max-content); /* <-- THIS IS THE FIX */
+    grid-template-columns: repeat(4, max-content);
     justify-content: center;
     gap: 35px; /* MODIFIED: Set to 35px */
     width: 100%;
