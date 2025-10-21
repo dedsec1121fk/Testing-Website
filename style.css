@@ -820,7 +820,7 @@ body.light-theme ::-webkit-scrollbar-thumb {
     grid-template-columns: repeat(4, max-content);
     justify-content: center;
     gap: 35px; /* MODIFIED: Set to 35px */
-    width: 100%;
+    width: max-content; /* <-- THIS IS THE FIX */
     max-width: 500px;
     margin: 0 auto 15px;
     align-items: start;
