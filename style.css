@@ -817,10 +817,10 @@ body.light-theme ::-webkit-scrollbar-thumb {
 
 .app-grid {
     display: grid;
-    grid-template-columns: repeat(4, max-content);
+    grid-template-columns: repeat(3, max-content); /* <-- THIS IS THE FIX */
     justify-content: center;
     gap: 35px; /* MODIFIED: Set to 35px */
-    width: max-content; /* <-- THIS IS THE FIX */
+    width: 100%;
     max-width: 500px;
     margin: 0 auto 15px;
     align-items: start;
