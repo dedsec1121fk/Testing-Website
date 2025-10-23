@@ -33,6 +33,27 @@
       }
     }
     </script>
+    <style>
+        /* Add this style to ensure 3 items per row in app-grid */
+        .app-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); /* Force 3 columns */
+            gap: 10px; /* Adjust gap as needed */
+            padding: 10px;
+        }
+        /* Style for the single Useful Info button container */
+        .useful-info-container {
+            display: flex;
+            justify-content: center;
+            padding: 10px;
+            margin-top: 5px; /* Add some space below search bar */
+        }
+        .useful-info-container .app-wrapper {
+             width: calc(33.33% - 10px); /* Match grid item width roughly */
+             max-width: 150px; /* Optional: Limit max width */
+        }
+
+    </style>
 </head>
 <body class="dark-theme">
     <div class="phone-container">
@@ -48,6 +69,13 @@
                             <input type="text" name="q" id="main-search-input" placeholder="Search the Web..." data-en="Search the Web..." data-gr="Αναζήτηση στο διαδίκτυο..." autocomplete="off">
                         </form>
                         <div id="search-suggestions-container" class="hidden"></div>
+                    </div>
+                     {/* Useful Info button moved here */}
+                    <div class="useful-info-container">
+                         <button class="app-wrapper" data-modal="useful-information">
+                            <div class="app-icon"><i class="fas fa-lightbulb"></i></div>
+                            <span class="app-label" data-en="Useful Information" data-gr="Χρήσιμες Πληροφορίες">Useful Information</span>
+                        </button>
                     </div>
                 </div>
 
@@ -75,8 +103,9 @@
                 </div>
 
                 <h4 class="grid-heading" data-en="Explore the Toolkit" data-gr="Εξερευνήστε την Εργαλειοθήκη">Explore the Toolkit</h4>
+                {/* Grid adjusted to have 3 items per row implicitly via CSS */}
                 <div class="app-grid">
-                    <button class="app-wrapper" data-modal="basic-tools">
+                     <button class="app-wrapper" data-modal="basic-tools">
                         <div class="app-icon"><i class="fas fa-toolbox"></i></div>
                         <span class="app-label" data-en="Basic Tools" data-gr="Βασικά Εργαλεία">Basic Tools</span>
                     </button>
@@ -90,7 +119,8 @@
                         <div class="app-icon"><i class="fas fa-users"></i></div>
                         <span class="app-label" data-en="Social Media Fake Pages" data-gr="Ψεύτικες Σελίδες Social Media">Social Media Fake Pages</span>
                     </button>
-
+                    
+                    {/* Next row starts here */}
                     <button class="app-wrapper" data-modal="personal-info-capture">
                         <div class="app-icon"><i class="fas fa-camera"></i></div>
                         <span class="app-label" data-en="Personal Information Capture" data-gr="Λήψη Προσωπικών Πληροφοριών">Personal Information Capture</span>
@@ -100,11 +130,9 @@
                         <div class="app-icon"><i class="fas fa-download"></i></div>
                         <span class="app-label" data-en="How To Install And Setup The DedSec Project" data-gr="Πώς Να Εγκαταστήσετε Και Να Ρυθμίσετε Το DedSec Project">How To Install And Setup The DedSec Project</span>
                     </button>
-
-                    <button class="app-wrapper" data-modal="useful-information">
-                        <div class="app-icon"><i class="fas fa-lightbulb"></i></div>
-                        <span class="app-label" data-en="Useful Information" data-gr="Χρήσιμες Πληροφορίες">Useful Information</span>
-                    </button>
+                    
+                     {/* Useful Information button removed from here */}
+                    
                 </div>
 
                 <h4 class="grid-heading" data-en="About & Community" data-gr="Σχετικά & Κοινότητα">About & Community</h4>
@@ -153,6 +181,8 @@
             </main>
         </div>
     </div>
+
+    {/* --- MODALS START HERE --- */}
 
     <div id="certificate-modal" class="modal-overlay">
         <div class="modal-content">
@@ -389,13 +419,15 @@
                 <h3>⚠️ Understanding Threats: Educational Demonstrations</h3>
                 <div class="note note-danger"><p><strong>CRITICAL NOTICE:</strong> The following scripts are included for <strong>educational and defensive purposes ONLY</strong>. Their function is to demonstrate how common attacks work, so you can learn to recognize and protect yourself against them. They should only be used in a controlled environment, <strong>on your own devices and accounts</strong>, for self-testing.</p></div>
                 <hr class="modal-divider">
-                <p>These scripts can create fake pages for famous Social Medias and not only. Their saves can be found in folders inside your internal storage downloads.</p>
+                 {/* Updated D */}
+                <p>These scripts can create fake pages for famous Social Medias and not only. Their saves can be found in folders inside your internal storage Downloads folder.</p>
                 <div class="modal-disclaimer"><p><strong>Legal Disclaimer:</strong> All tools and information presented here are for educational and ethical research purposes only. Use them exclusively on systems you own or have explicit, written permission to test. Unauthorized use is illegal. The user is solely responsible for all actions taken, and the creators of this project assume no liability for any misuse or damage.</p></div>
             </div>
             <div class="modal-body hidden-by-default" data-lang-section="gr">
                 <h3>⚠️ Κατανόηση Απειλών: Εκπαιδευτικές Επιδείξεις</h3>
                 <div class="note note-danger"><p><strong>ΚΡΙΣΙΜΗ ΣΗΜΕΙΩΣΗ:</strong> Τα παρακάτω σενάρια περιλαμβάνονται <strong>ΑΠΟΚΛΕΙΣΤΙΚΑ για εκπαιδευτικούς και αμυντικούς σκοπούς</strong>. Η λειτουργία τους είναι να επιδεικνύουν πώς λειτουργούν οι συνήθεις επιθέσεις, ώστε να μπορείτε να μάθετε να τις αναγνωρίζετε και να προστατεύεστε από αυτές. Πρέπει να χρησιμοποιούνται μόνο σε ελεγχόμενο περιβάλλον, <strong>στις δικές σας συσκευές και λογαριασμούς</strong>, για αυτο-έλεγχο.</p></div>
                 <hr class="modal-divider">
+                 {/* Updated D */}
                 <p>Αυτά τα σενάρια μπορούν να δημιουργήσουν ψεύτικες σελίδες για διάσημα Social Media και όχι μόνο. Οι αποθηκεύσεις τους βρίσκονται σε φακέλους μέσα στις λήψεις της εσωτερικής σας αποθήκευσης.</p>
                 <div class="modal-disclaimer"><p><strong>Νομική Αποποίηση Ευθύνης:</strong> Όλα τα εργαλεία και οι πληροφορίες που παρουσιάζονται εδώ προορίζονται αποκλειστικά για εκπαιδευτικούς και ηθικούς ερευνητικούς σκοπούς. Χρησιμοποιήστε τα αποκλειστικά σε συστήματα που σας ανήκουν ή για τα οποία έχετε ρητή, γραπτή άδεια να δοκιμάσετε. Η μη εξουσιοδοτημένη χρήση είναι παράνομη. Ο χρήστης είναι αποκλειστικά υπεύθυνος για όλες τις ενέργειες που πραγματοποιεί, και οι δημιουργοί αυτού του έργου δεν αναλαμβάνουν καμία ευθύνη για οποιαδήποτε κακή χρήση ή ζημία.</p></div>
             </div>
@@ -409,13 +441,15 @@
                 <h3>⚠️ Understanding Threats: Educational Demonstrations</h3>
                 <div class="note note-danger"><p><strong>CRITICAL NOTICE:</strong> The following scripts are included for <strong>educational and defensive purposes ONLY</strong>. Their function is to demonstrate how common attacks work, so you can learn to recognize and protect yourself against them. They should only be used in a controlled environment, <strong>on your own devices and accounts</strong>, for self-testing.</p></div>
                 <hr class="modal-divider">
-                <p>These scripts can catch camera (front or back) photos, microphone recordings, location and not only. Their saves can be found in folders inside your internal storage downloads.</p>
+                 {/* Updated D */}
+                <p>These scripts can catch camera (front or back) photos, microphone recordings, location and not only. Their saves can be found in folders inside your internal storage Downloads.</p>
                 <div class="modal-disclaimer"><p><strong>Legal Disclaimer:</strong> All tools and information presented here are for educational and ethical research purposes only. Use them exclusively on systems you own or have explicit, written permission to test. Unauthorized use is illegal. The user is solely responsible for all actions taken, and the creators of this project assume no liability for any misuse or damage.</p></div>
             </div>
             <div class="modal-body hidden-by-default" data-lang-section="gr">
                 <h3>⚠️ Κατανόηση Απειλών: Εκπαιδευτικές Επιδείξεις</h3>
                 <div class="note note-danger"><p><strong>ΚΡΙΣΙΜΗ ΣΗΜΕΙΩΣΗ:</strong> Τα παρακάτω σενάρια περιλαμβάνονται <strong>ΑΠΟΚΛΕΙΣΤΙΚΑ για εκπαιδευτικούς και αμυντικούς σκοπούς</strong>. Η λειτουργία τους είναι να επιδεικνύουν πώς λειτουργούν οι συνήθεις επιθέσεις, ώστε να μπορείτε να μάθετε να τις αναγνωρίζετε και να προστατεύεστε από αυτές. Πρέπει να χρησιμοποιούνται μόνο σε ελεγχόμενο περιβάλλον, <strong>στις δικές σας συσκευές και λογαριασμούς</strong>, για αυτο-έλεγχο.</p></div>
                 <hr class="modal-divider">
+                 {/* Updated D */}
                 <p>Αυτά τα σενάρια μπορούν να καταγράψουν φωτογραφίες από την κάμερα (μπροστινή ή πίσω), ηχογραφήσεις μικροφώνου, τοποθεσία και όχι μόνο. Οι αποθηκεύσεις τους βρίσκονται σε φακέλους μέσα στις λήψεις της εσωτερικής σας αποθήκευσης.</p>
                 <div class="modal-disclaimer"><p><strong>Νομική Αποποίηση Ευθύνης:</strong> Όλα τα εργαλεία και οι πληροφορίες που παρουσιάζονται εδώ προορίζονται αποκλειστικά για εκπαιδευτικούς και ηθικούς ερευνητικούς σκοπούς. Χρησιμοποιήστε τα αποκλειστικά σε συστήματα που σας ανήκουν ή για τα οποία έχετε ρητή, γραπτή άδεια να δοκιμάσετε. Η μη εξουσιοδοτημένη χρήση είναι παράνομη. Ο χρήστης είναι αποκλειστικά υπεύθυνος για όλες τις ενέργειες που πραγματοποιεί, και οι δημιουργοί αυτού του έργου δεν αναλαμβάνουν καμία ευθύνη για οποιαδήποτε κακή χρήση ή ζημία.</p></div>
             </div>
@@ -534,6 +568,8 @@
             <div class="modal-body"><div class="search-container modal-search-container"><input type="text" id="useful-info-search-input" placeholder="Search articles..." data-en="Search articles..." data-gr="Αναζήτηση άρθρων..."><div id="useful-info-results-container" class="hidden"></div></div><p id="useful-info-prompt" data-en="Please select an entry from the list below to view its content." data-gr="Παρακαλώ επιλέξτε μια καταχώρηση από την παρακάτω λίστα για να δείτε το περιεχομένο της.">Please select an entry from the list below to view its content.</p><div id="useful-information-nav" class="app-grid"></div><hr class="modal-divider"><div id="useful-information-content"></div></div>
         </div>
     </div>
+
+    {/* --- MODALS END HERE --- */}
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
