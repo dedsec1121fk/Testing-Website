@@ -53,6 +53,13 @@
             <a href="portfolio.html" class="nav-item" data-en="Portfolio" data-gr="Portfolio">Portfolio</a>
             <a href="contact.html" class="nav-item" data-en="Contact" data-gr="Επικοινωνία">Contact</a>
             <a href="privacy.html" class="nav-item" data-en="Privacy" data-gr="Απόρρητο">Privacy</a>
+            
+            <a href="#" class="nav-item" id="theme-switcher-btn">
+                <i class="fas fa-moon"></i> <span data-en="Theme" data-gr="Θέμα">Theme</span>
+            </a>
+            <a href="#" class="nav-item" id="lang-switcher-btn">
+                <i class="fas fa-globe"></i> <span data-en="Language" data-gr="Γλώσσα">Language</span>
+            </a>
         </div>
     </div>
 
@@ -66,7 +73,7 @@
                     <h1 data-en="DedSec Project" data-gr="DedSec Project">DedSec Project</h1>
                     <div class="search-container">
                         <form action="https://www.google.com/search" method="get" target="_blank" style="width: 100%;" id="main-search-form">
-                            <input type="text" name="q" id="main-search-input" placeholder="Search the Web..." data-en="Search the Web..." data-gr="Αναζήτηση στο διαδίκτυο..." autocomplete="off">
+                            <input type="text" name="q" id="main-search-input" placeholder="Search the Web..." data-en="Search the Web..." data-gr="Αναζήτηση στο διαδίκω..." autocomplete="off">
                         </form>
                         <div id="search-suggestions-container" class="hidden"></div>
                     </div>
@@ -97,44 +104,6 @@
                        data-gr="Το DedSec Project είναι ένα ολοκληρωμένο εργαλείο κυβερνοασφάλειας σχεδιασμένο για ηθικό hacking, έρευνα ασφαλείας και εκπαιδευτικούς σκοπούς. Η αποστολή μας είναι να παρέχουμε σε επαγγελματίες ασφαλείας και λάτρεις ισχυρά εργαλεία για να κατανοήσουν και να αμυνθούν ενάντια σε σύγχρονες απειλές κυβερνοασφάλειας.">
                        DedSec Project is a comprehensive cybersecurity toolkit designed for ethical hacking, security research, and educational purposes. Our mission is to provide security professionals and enthusiasts with powerful tools to understand and defend against modern cyber threats.
                     </p>
-                    
-                    <div class="project-features">
-                        <div class="feature-item">
-                            <i class="fas fa-shield-alt"></i>
-                            <h3 data-en="Educational Purpose" data-gr="Εκπαιδευτικός Σκοπός">Educational Purpose</h3>
-                            <p data-en="All tools are designed for learning about cybersecurity threats and defenses in controlled environments." 
-                               data-gr="Όλα τα εργαλεία σχεδιάστηκαν για εκμάθηση απειλών και άμυνας κυβερνοασφάλειας σε ελεγχόμενα περιβάλλοντα.">
-                               All tools are designed for learning about cybersecurity threats and defenses in controlled environments.
-                            </p>
-                        </div>
-                        
-                        <div class="feature-item">
-                            <i class="fas fa-tools"></i>
-                            <h3 data-en="Comprehensive Toolkit" data-gr="Ολοκληρωμένη Εργαλειοθήκη">Comprehensive Toolkit</h3>
-                            <p data-en="Includes tools for OSINT gathering, network analysis, secure communication, and security testing." 
-                               data-gr="Περιλαμβάνει εργαλεία για συλλογή OSINT, ανάλυση δικτύου, ασφαλή επικοινωνία και δοκιμές ασφαλείας.">
-                               Includes tools for OSINT gathering, network analysis, secure communication, and security testing.
-                            </p>
-                        </div>
-                        
-                        <div class="feature-item">
-                            <i class="fas fa-graduation-cap"></i>
-                            <h3 data-en="Ethical Research" data-gr="Ηθική Έρευνα">Ethical Research</h3>
-                            <p data-en="Designed exclusively for authorized security testing and educational demonstrations on systems you own." 
-                               data-gr="Σχεδιασμένο αποκλειστικά για εξουσιοδοτημένες δοκιμές ασφαλείας και εκπαιδευτικές επιδείξεις σε συστήματα που σας ανήκουν.">
-                               Designed exclusively for authorized security testing and educational demonstrations on systems you own.
-                            </p>
-                        </div>
-                    </div>
-                    
-                    <div class="legal-notice">
-                        <div class="note note-warning">
-                            <p data-en="⚠️ IMPORTANT: All tools are for educational and authorized testing purposes only. Use them exclusively on systems you own or have explicit, written permission to test. Unauthorized use is illegal." 
-                               data-gr="⚠️ ΣΗΜΑΝΤΙΚΟ: Όλα τα εργαλεία προορίζονται αποκλειστικά για εκπαιδευτικούς και εξουσιοδοτημένους σκοπούς δοκιμών. Χρησιμοποιήστε τα αποκλειστικά σε συστήματα που σας ανήκουν ή έχετε ρητή, γραπτή άδεια να δοκιμάσετε. Η μη εξουσιοδοτημένη χρήση είναι παράνομη.">
-                               ⚠️ IMPORTANT: All tools are for educational and authorized testing purposes only. Use them exclusively on systems you own or have explicit, written permission to test. Unauthorized use is illegal.
-                            </p>
-                        </div>
-                    </div>
                 </div>
 
                 <footer class="main-footer">
@@ -148,123 +117,9 @@
         </div>
     </div>
 
-    <div id="certificate-modal" class="modal-overlay">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 data-en="1 Year Anniversary Certificate" data-gr="Πιστοποιητικό 1 Χρόνου Επετείου">1 Year Anniversary Certificate</h2>
-                <button class="close-modal" aria-label="Close">×</button>
-            </div>
-            <div class="modal-body">
-                <div class="certificate-form-container">
-                    <p data-en="Fill out the form below to generate your exclusive 1-year anniversary certificate!" 
-                       data-gr="Συμπληρώστε την παρακάτω φόρμα για να δημιουργήσετε το αποκλειστικό σας πιστοποιητικό 1 χρόνου επετείου!">
-                       Fill out the form below to generate your exclusive 1-year anniversary certificate!
-                    </p>
-                    
-                    <form id="certificate-form">
-                        <div class="form-group">
-                            <label for="firstName" data-en="First Name" data-gr="Όνομα">First Name</label>
-                            <input type="text" id="firstName" name="firstName" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="lastName" data-en="Last Name" data-gr="Επώνυμο">Last Name</label>
-                            <input type="text" id="lastName" name="lastName" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="age" data-en="Age" data-gr="Ηλικία">Age</label>
-                            <input type="number" id="age" name="age" min="1" max="120" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="country" data-en="Country" data-gr="Χώρα">Country</label>
-                            <input type="text" id="country" name="country" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="city" data-en="City" data-gr="Πόλη">City</label>
-                            <input type="text" id="city" name="city" required>
-                        </div>
-                        
-                        <div class="form-actions">
-                            <button type="button" id="generate-certificate" class="accept-btn">
-                                <i class="fas fa-download"></i>
-                                <span data-en="Download Certificate" data-gr="Λήψη Πιστοποιητικού">Download Certificate</span>
-                            </button>
-                        </div>
-                    </form>
-                </div>
-                
-                <div id="certificate-preview" class="certificate-preview hidden">
-                    <div class="certificate">
-                        <div class="certificate-header">
-                            <div class="certificate-logo">
-                                <i class="fas fa-shield-alt"></i>
-                            </div>
-                            <h1 data-en="Certificate of Participation" data-gr="Πιστοποιητικό Συμμετοχής">Certificate of Participation</h1>
-                            <h2 data-en="1 Year Anniversary" data-gr="1 Χρόνος Επέτειος">1 Year Anniversary</h2>
-                        </div>
-                        
-                        <div class="certificate-body">
-                            <p data-en="This certifies that" data-gr="Το παρόν πιστοποιεί ότι">This certifies that</p>
-                            <div class="recipient-name" id="preview-name"></div>
-                            <p data-en="has participated in the DedSec Project 1-Year Anniversary Celebration" 
-                               data-gr="συμμετείχε στη γιορτή 1ης επετείου του DedSec Project">
-                               has participated in the DedSec Project 1-Year Anniversary Celebration
-                            </p>
-                            <p data-en="held from October 20 to October 31, 2025" 
-                               data-gr="που πραγματοποιήθηκε από 20 Οκτωβρίου έως 31 Οκτωβρίου 2025">
-                               held from October 20 to October 31, 2025
-                            </p>
-                        </div>
-                        
-                        <div class="certificate-footer">
-                            <div class="certificate-details">
-                                <div class="detail-item">
-                                    <span data-en="Age" data-gr="Ηλικία">Age:</span>
-                                    <span id="preview-age"></span>
-                                </div>
-                                <div class="detail-item">
-                                    <span data-en="Location" data-gr="Τοποθεσία">Location:</span>
-                                    <span id="preview-location"></span>
-                                </div>
-                                <div class="detail-item">
-                                    <span data-en="Date" data-gr="Ημερομηνία">Date:</span>
-                                    <span id="preview-date"></span>
-                                </div>
-                            </div>
-                            <div class="signature">
-                                <div class="signature-line"></div>
-                                <span data-en="DedSec Project Team" data-gr="Ομάδα DedSec Project">DedSec Project Team</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div id="image-viewer-modal" class="modal-overlay">
-        <img id="expanded-img" src="" alt="Expanded Profile Picture">
-    </div>
-
-    <div id="language-selection-modal" class="modal-overlay">
-      <div class="modal-content modal-content-auto-height">
-          <div class="modal-header">
-            <h2 data-en="Choose Language" data-gr="Επιλογή Γλώσσας">Choose Language / Επιλογή Γλώσσας</h2>
-            <button class="close-modal" aria-label="Close">×</button>
-          </div>
-          <div class="modal-body modal-body-centered">
-              <button class="language-button" data-lang="en" aria-label="Change language to English">English</button>
-              <button class="language-button" data-lang="gr" aria-label="Change language to Greek">Ελληνικά</button>
-          </div>
-      </div>
-    </div>
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <script src="script.js" defer></script>
     <script src="common.js"></script>
+    <script src="script.js" defer></script>
 </body>
 </html>
