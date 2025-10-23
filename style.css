@@ -358,43 +358,11 @@ body.light-theme .note.note-warning {
 }
 
 /* Multi-color Border Animation for App Icons */
-@keyframes multiColorBorder {
-    0% { border-color: #FF0000; }
-    3.33% { border-color: #FF3300; }
-    6.66% { border-color: #FF6600; }
-    10% { border-color: #FF9900; }
-    13.33% { border-color: #FFCC00; }
-    16.66% { border-color: #FFFF00; }
-    20% { border-color: #CCFF00; }
-    23.33% { border-color: #99FF00; }
-    26.66% { border-color: #66FF00; }
-    30% { border-color: #33FF00; }
-    33.33% { border-color: #00FF00; }
-    36.66% { border-color: #00FF33; }
-    40% { border-color: #00FF66; }
-    43.33% { border-color: #00FF99; }
-    46.66% { border-color: #00FFCC; }
-    50% { border-color: #00FFFF; }
-    53.33% { border-color: #00CCFF; }
-    56.66% { border-color: #0099FF; }
-    60% { border-color: #0066FF; }
-    63.33% { border-color: #0033FF; }
-    66.66% { border-color: #0000FF; }
-    70% { border-color: #3300FF; }
-    73.33% { border-color: #6600FF; }
-    76.66% { border-color: #9900FF; }
-    80% { border-color: #CC00FF; }
-    83.33% { border-color: #FF00FF; }
-    86.66% { border-color: #FF00CC; }
-    90% { border-color: #FF0099; }
-    93.33% { border-color: #FF0066; }
-    96.66% { border-color: #FF0033; }
-    100% { border-color: #FF0000; }
-}
+/* --- REMOVED: @keyframes multiColorBorder --- */
 
 /* Apply animation to app icons */
 .app-wrapper .app-icon {
-    animation: multiColorBorder 15s infinite linear;
+    /* REMOVED: animation: multiColorBorder 15s infinite linear; */
     border-width: 2px;
     border-style: solid;
 }
@@ -477,33 +445,17 @@ button.hero-cta-button {
     transition: background-color 0.3s ease, width 0.3s ease, height 0.3s ease, border-radius 0.3s ease;
 }
 
+/* --- REMOVED: Scroll indicator elements causing visual glitches --- */
 .phone-container::after {
-    content: '';
-    position: absolute;
-    right: 0;
-    top: 0;
-    width: 8px;
-    height: 100%;
-    /* REMOVED GLOW */
-    background: linear-gradient(to bottom, var(--nm-danger), var(--nm-danger-hover), var(--nm-danger));
-    box-shadow: none;
-    z-index: 10;
-    display: none; 
+    /* FIX: Removed the red vertical line */
+    display: none !important;
 }
 
 #scroll-indicator-thumb {
-    position: absolute;
-    right: 0;
-    top: 0; 
-    width: 8px;
-    height: 40px;
-    background: var(--nm-accent); 
-    box-shadow: none;
-    z-index: 11;
-    transition: opacity 0.3s ease, background-color 0.3s ease;
-    opacity: 0; 
-    pointer-events: none;
+    /* FIX: Removed the always-visible purple thumb */
+    display: none !important;
 }
+/* --- END OF SCROLL INDICATOR FIXES --- */
 
 .screen {
     width: 100%;
