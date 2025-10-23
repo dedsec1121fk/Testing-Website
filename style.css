@@ -751,7 +751,7 @@ body.light-theme ::-webkit-scrollbar-thumb {
     display: grid;
     /* FIX: Changed to 1fr columns to spread icons evenly and ensure true centering */
     grid-template-columns: repeat(3, 1fr); 
-    justify-content: center;
+    justify-content: center; /* FIX: Added to center incomplete rows of icons */
     gap: 35px;
     width: 100%;
     max-width: 500px;
