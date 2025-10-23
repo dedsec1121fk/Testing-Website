@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Installation Guide - DedSec Project</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&family=Roboto+Mono:wght@400;700&family=Inter:wght@400;700&family=Noto+Serif:ital,wght@0,400;0,700;1,400&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="common.css">
+</head>
+<body class="dark-theme">
+    <!-- Burger Menu -->
+    <div class="burger-menu">
+        <div class="burger-icon" id="burger-icon">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <div class="nav-menu" id="nav-menu">
+            <a href="index.html" class="nav-item" data-en="Home" data-gr="Αρχική">Home</a>
+            <a href="understand.html" class="nav-item" data-en="Understand" data-gr="Κατανόηση">Understand</a>
+            <a href="installation.html" class="nav-item active" data-en="Installation" data-gr="Εγκατάσταση">Installation</a>
+            <a href="portfolio.html" class="nav-item" data-en="Portfolio" data-gr="Portfolio">Portfolio</a>
+            <a href="contact.html" class="nav-item" data-en="Contact" data-gr="Επικοινωνία">Contact</a>
+            <a href="privacy.html" class="nav-item" data-en="Privacy" data-gr="Απόρρητο">Privacy</a>
+        </div>
+    </div>
+
+    <div class="phone-container">
+        <div class="screen">
+            <div class="screen-overlay"></div>
+            
+            <main class="home-screen">
+                <div class="page-content">
+                    <div class="page-header">
+                        <h1 data-en="Installation Guide" data-gr="Οδηγός Εγκατάστασης">Installation Guide</h1>
+                        <p data-en="Step-by-step instructions to install and setup the DedSec Project" data-gr="Βήμα-βήμα οδηγίες για την εγκατάσταση και ρύθμιση του DedSec Project">Step-by-step instructions to install and setup the DedSec Project</p>
+                    </div>
+
+                    <div class="content-section">
+                        <h2 data-en="Requirements" data-gr="Απαιτήσεις">Requirements</h2>
+                        <ul>
+                            <li data-en="Device: Android with Termux installed." data-gr="Συσκευή: Android με εγκατεστημένο το Termux.">Device: Android with Termux installed.</li>
+                            <li data-en="Storage: Min 8GB free. (Images and recordings also consume space.)" data-gr="Αποθηκευτικός Χώρος: Ελάχιστος 8GB ελεύθερος. (Οι εικόνες και οι ηχογραφήσεις καταναλώνουν επίσης χώρο.)">Storage: Min 8GB free.</li>
+                            <li data-en="RAM: Min 2GB." data-gr="RAM: Ελάχ. 2GB.">RAM: Min 2GB.</li>
+                        </ul>
+                    </div>
+
+                    <div class="content-section">
+                        <h2 data-en="Step-by-Step Installation" data-gr="Βήμα-Βήμα Εγκατάσταση">Step-by-Step Installation</h2>
+                        
+                        <h3 data-en="1. Install Termux & Add-Ons" data-gr="1. Εγκατάσταση του Termux & Πρόσθετων">1. Install Termux & Add-Ons</h3>
+                        <div class="tip">
+                            <p data-en="Note: To install APKs (e.g., F-Droid), ensure you enable unknown sources and download F-Droid, then get Termux from F-Droid. Install add-ons: Termux:API, Termux:Styling." data-gr="Σημείωση: Για την εγκατάσταση APKs (π.χ. F-Droid), βεβαιωθείτε ότι έχετε ενεργοποιήσει άγνωστες πηγές και κατεβάστε το F-Droid, μετά εγκαταστήστε το Termux μέσω του F-Droid. Εγκαταστήστε πρόσθετα: Termux:API, Termux:Styling.">Note: To install APKs (e.g., F-Droid), ensure you enable unknown sources and download F-Droid.</p>
+                        </div>
+
+                        <h3 data-en="2. Update Packages & Install Git" data-gr="2. Ενημέρωση Πακέτων & Εγκατάσταση Git">2. Update Packages & Install Git</h3>
+                        <div class="note note-warning">
+                            <p data-en="Important: Open the Termux application on your device before copying and pasting the command below." data-gr="Σημαντικό: Ανοίξτε την εφαρμογή Termux στη συσκευή σας πριν αντιγράψετε και επικολλήσετε την παρακάτω εντολή.">Important: Open the Termux application on your device before copying and pasting the command below.</p>
+                        </div>
+                        <div class="code-container">
+                            <button class="copy-btn" onclick="copyToClipboard(this, 'pkg_cmd')">Copy</button>
+                            <code id="pkg_cmd">pkg update -y && pkg upgrade -y && pkg install git nano -y && termux-setup-storage</code>
+                        </div>
+
+                        <h3 data-en="3. Clone the Repository" data-gr="3. Κλωνοποιήστε το αποθετήριο">3. Clone the Repository</h3>
+                        <div class="code-container">
+                            <button class="copy-btn" onclick="copyToClipboard(this, 'clone_cmd')">Copy</button>
+                            <code id="clone_cmd">git clone https://github.com/dedsec1121fk/DedSec</code>
+                        </div>
+
+                        <h3 data-en="4. Run the Setup Script" data-gr="4. Εκτελέστε το Script Εγκατάστασης">4. Run the Setup Script</h3>
+                        <div class="code-container">
+                            <button class="copy-btn" onclick="copyToClipboard(this, 'setup_cmd')">Copy</button>
+                            <code id="setup_cmd">cd DedSec && bash Setup.sh</code>
+                        </div>
+                        <div class="tip">
+                            <p data-en="The script will handle the complete installation. After the process, you will see a settings menu where you must choose Change Menu Style and select a menu style: list or grid. After that close Termux from notifications and reopen it." data-gr="Το script θα αναλάβει την πλήρη εγκατάσταση. Μετά τη διαδικασία, θα δείτε ένα μενού ρυθμίσεων, πρέπει να επιλέξετε 'Change Menu Style' και στη συνέχεια να επιλέξετε ένα στυλ μενού: list or grid. Μετά από αυτό, κλείστε το Termux από τις ειδοποιήσεις και ανοίξτε το ξανά.">The script will handle the complete installation.</p>
+                        </div>
+                    </div>
+
+                    <div class="content-section">
+                        <div class="tip">
+                            <p data-en="Tip: After setup, you can quickly open the menu by typing e (for the English version) or g (for the Greek version) in Termux." data-gr="Συμβουλή: Μετά την εγκατάσταση, μπορείτε να ανοίξετε γρήγορα το μενού πληκτρολογώντας e (για την Αγγλική έκδοση) ή g (για την Ελληνική έκδοση) στο Termux.">Tip: After setup, you can quickly open the menu by typing commands in Termux.</p>
+                        </div>
+                    </div>
+
+                    <div class="content-section">
+                        <div class="modal-disclaimer">
+                            <p data-en="Legal Disclaimer: All tools and information presented here are for educational and ethical research purposes only. Use them exclusively on systems you own or have explicit, written permission to test. Unauthorized use is illegal." data-gr="Νομική Αποποίηση Ευθύνης: Όλα τα εργαλεία και οι πληροφορίες που παρουσιάζονται εδώ προορίζονται αποκλειστικά για εκπαιδευτικούς και ηθικούς ερευνητικούς σκοπούς. Χρησιμοποιήστε τα αποκλειστικά σε συστήματα που σας ανήκουν ή για τα οποία έχετε ρητή, γραπτή άδεια να δοκιμάσετε. Η μη εξουσιοδοτημένη χρήση είναι παράνομη.">Legal Disclaimer: All tools and information presented here are for educational purposes only.</p>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script src="common.js"></script>
+</body>
+</html>

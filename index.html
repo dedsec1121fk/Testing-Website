@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>DedSec Project - 1 Year Anniversary</title>
-
+    
     <meta name="description" content="Celebrating 1 Year of DedSec Project! Join our anniversary event from October 20 to October 31 and get your exclusive certificate.">
     <meta name="keywords" content="DedSec, DedSec Project, 1 Year Anniversary, Cybersecurity, Ethical Hacking, Anniversary Certificate">
     <meta property="og:title" content="DedSec Project - 1 Year Anniversary">
@@ -16,6 +16,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&family=Roboto+Mono:wght@400;700&family=Inter:wght@400;700&family=Noto+Serif:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="common.css">
 
     <script type="application/ld+json">
     {
@@ -35,11 +36,28 @@
     </script>
 </head>
 <body class="dark-theme">
+    <!-- Burger Menu -->
+    <div class="burger-menu">
+        <div class="burger-icon" id="burger-icon">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <div class="nav-menu" id="nav-menu">
+            <a href="index.html" class="nav-item active" data-en="Home" data-gr="Αρχική">Home</a>
+            <a href="understand.html" class="nav-item" data-en="Understand" data-gr="Κατανόηση">Understand</a>
+            <a href="installation.html" class="nav-item" data-en="Installation" data-gr="Εγκατάσταση">Installation</a>
+            <a href="portfolio.html" class="nav-item" data-en="Portfolio" data-gr="Portfolio">Portfolio</a>
+            <a href="contact.html" class="nav-item" data-en="Contact" data-gr="Επικοινωνία">Contact</a>
+            <a href="privacy.html" class="nav-item" data-en="Privacy" data-gr="Απόρρητο">Privacy</a>
+        </div>
+    </div>
+
     <div class="phone-container">
         <div id="scroll-indicator-thumb"></div>
         <div class="screen">
             <div class="screen-overlay"></div>
-
+            
             <main class="home-screen">
                 <div class="main-header-container">
                     <h1 data-en="DedSec Project" data-gr="DedSec Project">DedSec Project</h1>
@@ -58,7 +76,7 @@
                         </div>
                         <div class="anniversary-text">
                             <h3 data-en="🎉 1 Year Anniversary! 🎉" data-gr="🎉 1 Χρόνο Επέτειος! 🎉">🎉 1 Year Anniversary! 🎉</h3>
-                            <p data-en="Celebrating 1 year of DedSec Project! Event runs from October 20 to October 31. Get your exclusive anniversary certificate below!"
+                            <p data-en="Celebrating 1 year of DedSec Project! Event runs from October 20 to October 31. Get your exclusive anniversary certificate below!" 
                                data-gr="Γιορτάζουμε 1 χρόνο DedSec Project! Η εκδήλωση διαρκεί από 20 Οκτωβρίου έως 31 Οκτωβρίου. Λάβετε το αποκλειστικό πιστοποιητικό επετείου παρακάτω!">
                                Celebrating 1 year of DedSec Project! Event runs from October 20 to October 31. Get your exclusive anniversary certificate below!
                             </p>
@@ -71,38 +89,39 @@
                 </div>
 
                 <div class="hero-section">
-                    <p class="hero-text" data-en="" data-gr=""></p>
+                    <p class="hero-text" data-en="Welcome to DedSec Project - Your comprehensive cybersecurity toolkit for ethical hacking and security research." data-gr="Καλώς ήρθατε στο DedSec Project - Το ολοκληρωμένο εργαλείο κυβερνοασφάλειας για ηθικό hacking και έρευνα ασφαλείας.">Welcome to DedSec Project - Your comprehensive cybersecurity toolkit for ethical hacking and security research.</p>
                 </div>
 
+                <h4 class="grid-heading" data-en="Quick Access" data-gr="Γρήγορη Πρόσβαση">Quick Access</h4>
                 <div class="app-grid">
-                    <button class="app-wrapper" data-modal="scripts">
+                    <a href="understand.html" class="app-wrapper">
                         <div class="app-icon"><i class="fas fa-shield-alt"></i></div>
-                        <span class="app-label" data-en="Learn The Tools" data-gr="Μάθετε Τα Εργαλεία">Learn The Tools</span>
-                    </button>
-
-                    <button class="app-wrapper" data-modal="installation">
+                        <span class="app-label" data-en="Understand The Project" data-gr="Κατανόηση Έργου">Understand The Project</span>
+                    </a>
+                    
+                    <a href="installation.html" class="app-wrapper">
                         <div class="app-icon"><i class="fas fa-download"></i></div>
-                        <span class="app-label" data-en="How To Install And Setup The DedSec Project" data-gr="Πώς Να Εγκαταστήσετε Και Να Ρυθμίσετε Το DedSec Project">How To Install And Setup The DedSec Project</span>
-                    </button>
+                        <span class="app-label" data-en="Installation Guide" data-gr="Οδηγός Εγκατάστασης">Installation Guide</span>
+                    </a>
 
-                    <button class="app-wrapper" data-modal="useful-information">
-                        <div class="app-icon"><i class="fas fa-lightbulb"></i></div>
-                        <span class="app-label" data-en="Useful Information" data-gr="Χρήσιμες Πληροφορίες">Useful Information</span>
-                    </button>
+                    <a href="portfolio.html" class="app-wrapper">
+                        <div class="app-icon"><i class="fas fa-briefcase"></i></div>
+                        <span class="app-label" data-en="Portfolio & GitHub" data-gr="Portfolio & GitHub">Portfolio & GitHub</span>
+                    </a>
 
-                    <button class="app-wrapper" data-modal="contact-credits">
+                    <a href="contact.html" class="app-wrapper">
                         <div class="app-icon"><i class="fas fa-id-card-alt"></i></div>
-                        <span class="app-label" data-en="Contact Us & Credits" data-gr="Επικοινωνία & Συντελεστές">Contact Us & Credits</span>
-                    </button>
+                        <span class="app-label" data-en="Contact & Credits" data-gr="Επικοινωνία & Συντελεστές">Contact & Credits</span>
+                    </a>
+
+                    <a href="privacy.html" class="app-wrapper">
+                        <div class="app-icon"><i class="fas fa-user-shield"></i></div>
+                        <span class="app-label" data-en="Privacy Policy" data-gr="Πολιτική Απορρήτου">Privacy Policy</span>
+                    </a>
 
                     <button id="theme-switcher-btn" class="app-wrapper">
                         <div class="app-icon"><i class="fas fa-moon"></i></div>
                         <span class="app-label" data-en="Theme" data-gr="Θέμα">Theme</span>
-                    </button>
-
-                    <button id="lang-switcher-btn" class="app-wrapper">
-                        <div class="app-icon"><i class="fas fa-globe"></i></div>
-                        <span class="app-label">Language / Γλώσσα</span>
                     </button>
                 </div>
 
@@ -117,6 +136,7 @@
         </div>
     </div>
 
+    <!-- Certificate Modal -->
     <div id="certificate-modal" class="modal-overlay">
         <div class="modal-content">
             <div class="modal-header">
@@ -125,37 +145,37 @@
             </div>
             <div class="modal-body">
                 <div class="certificate-form-container">
-                    <p data-en="Fill out the form below to generate your exclusive 1-year anniversary certificate!"
+                    <p data-en="Fill out the form below to generate your exclusive 1-year anniversary certificate!" 
                        data-gr="Συμπληρώστε την παρακάτω φόρμα για να δημιουργήσετε το αποκλειστικό σας πιστοποιητικό 1 χρόνου επετείου!">
                        Fill out the form below to generate your exclusive 1-year anniversary certificate!
                     </p>
-
+                    
                     <form id="certificate-form">
                         <div class="form-group">
                             <label for="firstName" data-en="First Name" data-gr="Όνομα">First Name</label>
                             <input type="text" id="firstName" name="firstName" required>
                         </div>
-
+                        
                         <div class="form-group">
                             <label for="lastName" data-en="Last Name" data-gr="Επώνυμο">Last Name</label>
                             <input type="text" id="lastName" name="lastName" required>
                         </div>
-
+                        
                         <div class="form-group">
                             <label for="age" data-en="Age" data-gr="Ηλικία">Age</label>
                             <input type="number" id="age" name="age" min="1" max="120" required>
                         </div>
-
+                        
                         <div class="form-group">
                             <label for="country" data-en="Country" data-gr="Χώρα">Country</label>
                             <input type="text" id="country" name="country" required>
                         </div>
-
+                        
                         <div class="form-group">
                             <label for="city" data-en="City" data-gr="Πόλη">City</label>
                             <input type="text" id="city" name="city" required>
                         </div>
-
+                        
                         <div class="form-actions">
                             <button type="button" id="generate-certificate" class="accept-btn">
                                 <i class="fas fa-download"></i>
@@ -164,214 +184,13 @@
                         </div>
                     </form>
                 </div>
-
-                <div id="certificate-preview" class="certificate-preview hidden">
-                    <div class="certificate">
-                        <div class="certificate-header">
-                            <div class="certificate-logo">
-                                <i class="fas fa-shield-alt"></i>
-                            </div>
-                            <h1 data-en="Certificate of Participation" data-gr="Πιστοποιητικό Συμμετοχής">Certificate of Participation</h1>
-                            <h2 data-en="1 Year Anniversary" data-gr="1 Χρόνος Επέτειος">1 Year Anniversary</h2>
-                        </div>
-
-                        <div class="certificate-body">
-                            <p data-en="This certifies that" data-gr="Το παρόν πιστοποιεί ότι">This certifies that</p>
-                            <div class="recipient-name" id="preview-name"></div>
-                            <p data-en="has participated in the DedSec Project 1-Year Anniversary Celebration"
-                               data-gr="συμμετείχε στη γιορτή 1ης επετείου του DedSec Project">
-                               has participated in the DedSec Project 1-Year Anniversary Celebration
-                            </p>
-                            <p data-en="held from October 20 to October 31, 2025"
-                               data-gr="που πραγματοποιήθηκε από 20 Οκτωβρίου έως 31 Οκτωβρίου 2025">
-                               held from October 20 to October 31, 2025
-                            </p>
-                        </div>
-
-                        <div class="certificate-footer">
-                            <div class="certificate-details">
-                                <div class="detail-item">
-                                    <span data-en="Age" data-gr="Ηλικία">Age:</span>
-                                    <span id="preview-age"></span>
-                                </div>
-                                <div class="detail-item">
-                                    <span data-en="Location" data-gr="Τοποθεσία">Location:</span>
-                                    <span id="preview-location"></span>
-                                </div>
-                                <div class="detail-item">
-                                    <span data-en="Date" data-gr="Ημερομηνία">Date:</span>
-                                    <span id="preview-date"></span>
-                                </div>
-                            </div>
-                            <div class="signature">
-                                <div class="signature-line"></div>
-                                <span data-en="DedSec Project Team" data-gr="Ομάδα DedSec Project">DedSec Project Team</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
-        </div>
-    </div>
-
-    <div id="image-viewer-modal" class="modal-overlay">
-        <img id="expanded-img" src="" alt="Expanded Profile Picture">
-    </div>
-
-    <div id="language-selection-modal" class="modal-overlay">
-      <div class="modal-content modal-content-auto-height">
-          <div class="modal-header">
-            <h2 data-en="Choose Language" data-gr="Επιλογή Γλώσσας">Choose Language / Επιλογή Γλώσσας</h2>
-            <button class="close-modal" aria-label="Close">×</button>
-          </div>
-          <div class="modal-body modal-body-centered">
-              <button class="language-button" data-lang="en" aria-label="Change language to English">English</button>
-              <button class="language-button" data-lang="gr" aria-label="Change language to Greek">Ελληνικά</button>
-          </div>
-      </div>
-    </div>
-
-    <div id="disclaimer-modal" class="modal-overlay">
-      <div class="modal-content">
-          <div class="modal-header"><h2 data-en="Disclaimer & Terms of Use" data-gr="Αποποίηση Ευθύνης & Όροι Χρήσης">Disclaimer & Terms of Use</h2></div>
-          <div class="modal-body" data-lang-section="en">
-            <div class="note">
-                <p><strong>PLEASE READ CAREFULLY BEFORE PROCEEDING.</strong></p>
-                <p><strong>Trademark Disclaimer:</strong> The "DedSec" name and logo used in this project are for thematic and inspirational purposes only. This is an independent, fan-made project created for educational purposes and has no official connection to the "Watch Dogs" franchise. It is not associated with, endorsed by, or affiliated with Ubisoft Entertainment S.A. All trademarks and copyrights for "Watch Dogs" and "DedSec" as depicted in the games belong to their respective owners, Ubisoft Entertainment S.A.</p>
-                <p>This project, including all associated tools, scripts, and documentation ("the Software"), is provided strictly for educational, research, and ethical security testing purposes. It is intended for use exclusively in controlled, authorized environments by users who have obtained explicit, prior written permission from the owners of any systems they intend to test.</p>
-                <p><strong>1. Assumption of Risk and Responsibility:</strong> By accessing or using the Software, you acknowledge and agree that you are doing so at your own risk. You are solely and entirely responsible for your actions and for any consequences that may arise from the use or misuse of this Software. This includes, but is not limited to, compliance with all applicable local, state, national, and international laws and regulations related to cybersecurity, data privacy, and electronic communications.</p>
-                <p><strong>2. Prohibited Activities:</strong> Any use of the Software for unauthorized or malicious activities is strictly prohibited. This includes, without limitation: accessing systems, systems, or data without authorization; performing denial-of-service attacks; data theft; fraud; spreading malware; or any other activity that violates applicable laws. Engaging in such activities may result in severe civil and criminal penalties.</p>
-                <p><strong>3. No Warranty:</strong> The Software is provided "AS IS," without any warranty of any kind, express or implied. This includes, but is not to, the implied warranties of merchantability, fitness for a particular purpose, and non-infringement. The developers and contributors make no guarantee that the Software will be error-free, secure, or uninterrupted.</p>
-                <p><strong>4. Limitation of Liability:</strong> In no event shall the developers, contributors, or distributors of the Software be liable for any claim, damages, or other liability, whether in an action of contract, tort, or otherwise, arising from, out of, or in connection with the Software or the use or other dealings in the Software. This includes any direct, indirect, incidental, special, exemplary, or consequential damages (including, but not to, procurement of substitute goods or services; loss of use, data, or profits; or business interruption).</p>
-            </div>
-            <div class="note"><p><strong>By clicking "Accept," you confirm that you have read, understood, and agree to be bound by all the terms and conditions outlined in this disclaimer. If you do not agree with these terms, you must click "Decline" and cease all use of the Software immediately.</strong></p></div>
-          </div>
-          <div class="modal-body hidden-by-default" data-lang-section="gr">
-            <div class="note">
-                <p><strong>ΠΑΡΑΚΑΛΩ ΔΙΑΒΑΣΤΕ ΠΡΟΣΕΚΤΙΚΑ ΠΡΙΝ ΣΥΝΕΧΙΣΕΤΕ.</strong></p>
-                <p><strong>Αποποίηση Ευθύνης Εμπορικού Σήματος:</strong> Το όνομα και το λογότυπο "DedSec" που χρησιμοποιούνται σε αυτό το έργο είναι μόνο για θεματικούς και εμπνευστικούς σκοπούς. Πρόκειται για ένα ανεξάρτητο, fan-made έργο που δημιουργήθηκε για εκπαιδευτικούς σκοπούς και δεν έχει καμία επίσημη σύνδεση με το franchise "Watch Dogs". Δεν συνδέεται, δεν υποστηρίζεται από, ούτε σχετίζεται με την Ubisoft Entertainment S.A. Όλα τα εμπορικά σήματα και τα πνευματικά δικαιώματα για το "Watch Dogs" και το "DedSec" όπως απεικονίζονται στα παιχνίδια ανήκουν στους αντίστοιχους κατόχους τους, την Ubisoft Entertainment S.A.</p>
-                <p>Αυτό το έργο, συμπεριλαμβανομένων όλων των σχετικών εργαλείων, σεναρίων και τεκμηρίωσης («το Λογισμικό»), παρέχεται αυστηρά για εκπαιδευτικούς, ερευνητικούς και ηθικούς σκοπούς δοκιμών ασφαλείας. Προορίζεται για χρήση αποκλειστικά σε ελεγχόμενα, εξουσιοδοτημένα περιβάλλοντα από χρήστες που έχουν λάβει ρητή, προηγούμενη γραπτή άδεια από τους ιδιοκτήτες οποιωνδήποτε συστημάτων σκοπεύουν να δοκιμάσουν.</p>
-                <p><strong>1. Ανάληψη Κινδύνου και Ευθύνης:</strong> Με την πρόσβαση ή τη χρήση του Λογισμικού, αναγνωρίζετε και συμφωνείτε ότι το κάνετε με δική σας ευθύνη. Είστε αποκλειστικά και εξ ολοκλήρου υπεύθυνοι για τις ενέργειές σας και για τυχόν συνέπειες που μπορεί να προκύψουν από τη χρήση ή κακή χρήση αυτού του Λογισμικού. Αυτό περιλαμβάνει, ενδεικτικά, τη συμμόρφωση με όλους τους ισχύοντες τοπικούς, πολιτειακούς, εθνικούς και διεθνείς νόμους και κανονισμούς που σχετίζονται με την κυβερνοασφάλεια, την προστασία δεδομένων και τις ηλεκτρονικές επικοινωνίες.</p>
-                <p><strong>2. Απαγορευμένες Δραστηριότητες:</strong> Απαγορεύεται αυστηρά οποιαδήποτε χρήση του Λογισμικού για μη εξουσιοδοτημένες ή κακόβουλες δραστηριότητες. Αυτό περιλαμβάνει, χωρίς περιορισμό: πρόσβαση σε συστήματα ή δεδομένα χωρίς εξουσιοδοτημένη πρόσβαση, εκτέλεση επιθέσεων άρνησης υπηρεσίας (denial-of-service), κλοπή δεδομένων, απάτη, διάδοση κακόβουλου λογισμικού ή οποιαδήποτε άλλη δραστηριότητα που παραβιάζει την ισχύουσα νομοθεσία. Η συμμετοχή σε τέτοιες δραστηριότητες μπορεί να οδηγήσει σε σοβαρές αστικές και ποινικές κυρώσεις.</p>
-                <p><strong>3. Καμία Εγγύηση:</strong> Το Λογισμικό παρέχεται "ΩΣ ΕΧΕΙ", χωρίς καμία εγγύηση οποιουδήποτε είδους, ρητή ή σιωπηρή. Αυτό περιλαμβάνει, ενδεικτικά, τις σιωπηρές εγγυήσεις εμπορευσιμότητας, καταλληλότητας για συγκεκριμένο σκοπό και μη παραβίασης. Οι προγραμματιστές και οι συντελεστές δεν παρέχουν καμία εγγύηση ότι το Λογισμικό θα είναι απαλλαγμένο από σφάλματα, ασφαλές ή αδιάλειπτο.</p>
-                <p><strong>4. Περιορισμός Ευθύνης:</strong> Σε καμία περίπτωση οι προγραμματιστές, οι συντελεστές ή οι διανομείς του Λογισμικού δεν φέρουν ευθύνη για οποιαδήποτε αξίμη, ζημιές ή άλλη ευθύνη, είτε πρόκειται για αγωγή σύμβασης, αδικοπραξίας ή άλλως, που προκύπτει από, ή σε σχέση με το Λογισμικό ή τη χρήση ή άλλες συναλλαγές με το Λογισμικό. Αυτό περιλαμβάνει τυχόν άμεσες, έμμεσες, τυχαίες, ειδικές, παραδειγματικές ή επακόλουθες ζημιές (συμπεριλαμβανομένης, αλλά όχι μόνο, της προμήθειας υποκατάστατων αγαθών ή υπηρεσιών, απώλειας χρήσης, δεδομένων ή κερδών ή διακοπής εργασιών).</p>
-            </div>
-            <div class="note"><p><strong>Με το κλικ στο "Αποδοχή", επιβεβαιώνετε ότι διαβάσατε, κατανοήσατε και συμφωνείτε να δεσμεύεστε από όλους τους όρους και τις προϋποθέσεις που περιγράφονται σε αυτήν την αποποίηση ευθύνης. Εάν δεν συμφωνείτε με αυτούς τους όρους, πρέπει να κάνετε κλικ στο "Απόρριψη" και να διακόψετε αμέσως κάθε χρήση του Λογισμικού.</strong></p></div>
-          </div>
-          <div class="modal-footer">
-            <button id="decline-disclaimer" class="decline-btn" data-en="Decline" data-gr="Απόρριψη">Decline</button>
-            <button id="accept-disclaimer" class="accept-btn" data-en="Accept" data-gr="Αποδοχή">Accept</button>
-          </div>
-      </div>
-    </div>
-
-    <div id="installation-modal" class="modal-overlay">
-        <div class="modal-content">
-            <div class="modal-header"><h2 data-en="How To Install And Setup The DedSec Project" data-gr="Πώς Να Εγκαταστήσετε Και Να Ρυθμίσετε Το DedSec Project">How To Install And Setup The DedSec Project</h2><button class="close-modal" aria-label="Close">×</button></div>
-            <div class="modal-body" data-lang-section="en">
-                <h3>Requirements</h3><ul><li><b>Device:</b> Android with <a href="https://f-droid.org/" target="_blank">Termux</a> installed.</li><li><b>Storage:</b> Min <b>8GB</b> free. <span class="sub-item">(Images and recordings also consume space.)</span></li><li><b>RAM:</b> Min <b>2GB</b>.</li></ul><h3>Step-by-Step Installation</h3><ol><li><b>Install Termux & Add-Ons</b><div class="tip"><p><b>Note:</b> To install APKs (e.g., F-Droid), ensure you:<br>- Enable unknown sources (Settings > Security > <b>Install Unknown Apps</b>).<br>- Download F-Droid, then get Termux from <a href="https://f-droid.org/">F-Droid</a>.<br>- Install add-ons: Termux:API, Termux:Styling.<br>- Allow the <code>fdroid</code> process when prompted.</p></div></li><li><b>Update Packages & Install Git</b><div class="note note-warning"><b>Important:</b> Open the Termux application on your device before copying and pasting the command below.</div><div class="code-container"><button class="copy-btn" onclick="copyToClipboard(this, 'pkg_cmd_en')">Copy</button><code id="pkg_cmd_en">pkg update -y && pkg upgrade -y && pkg install git nano -y && termux-setup-storage</code></div></li><li><b>Clone the Repository</b><div class="code-container"><button class="copy-btn" onclick="copyToClipboard(this, 'clone_cmd_en')">Copy</button><code id="clone_cmd_en">git clone https://github.com/dedsec1121fk/DedSec</code></div></li><li><b>Run the Setup Script</b><div class="code-container"><button class="copy-btn" onclick="copyToClipboard(this, 'setup_cmd_en')">Copy</button><code id="setup_cmd_en">cd DedSec && bash Setup.sh</code></div><div class="tip"><p>The script will handle the complete installation. After the process, you will see a settings menu, you must choose Change Menu Style and then choose a menu style: list or grid.<br>After that close Termux from notifications and reopen it.</p></div></li></ol><div class="tip" style="margin-top: 20px;"><p><b>Tip:</b> After setup, you can quickly open the menu by typing <code>e</code> (for the English version) or <code>g</code> (for the Greek version) in Termux.</p></div>
-                <div class="modal-disclaimer"><p><strong>Legal Disclaimer:</strong> All tools and information presented here are for educational and ethical research purposes only. Use them exclusively on systems you own or have explicit, written permission to test. Unauthorized use is illegal. The user is solely responsible for all actions taken, and the creators of this project assume no liability for any misuse or damage.</p><p><strong>Trademark Disclaimer:</strong> The "DedSec" name and logo used in this project are for thematic and inspirational purposes only. This is an independent, fan-made project created for educational purposes and has no official connection to the "Watch Dogs" franchise. It is not associated with, endorsed by, or affiliated with Ubisoft Entertainment S.A. All trademarks and copyrights for "Watch Dogs" and "DedSec" as depicted in the games belong to their respective owners, Ubisoft Entertainment S.A.</p></div>
-            </div>
-            <div class="modal-body hidden-by-default" data-lang-section="gr">
-                <h3>Απαιτήσεις</h3><ul><li><b>Συσκευή:</b> Android με εγκατεστημένο το <a href="https://f-droid.org/" target="_blank">Termux</a>.</li><li><b>Αποθηκευτικός Χώρος:</b> Ελάχιστος <b>8GB</b> ελεύθερος.<span class="sub-item">(Οι εικόνες και οι ηχογραφήσεις καταναλώνουν επίσης χώρο.)</span></li><li><b>RAM:</b> Ελάχ. <b>2GB</b>.</li></ul><h3>Βήμα-Βήμα Εγκατάσταση</h3><ol><li><b>Εγκατάσταση του Termux & Πρόσθετων</b><div class="tip"><p><b>Σημείωση:</b> Για την εγκατάσταση APKs (π.χ. F-Droid), βεβαιωθείτε ότι έχετε:<br/>- Ενεργοποίηση άγνωστων πηγών (Ρυθμίσεις > Ασφάλεια > <b>Εγκατάσταση άγνωστων εφαρμογών</b>).<br/>- Κατεβάστε το F-Droid και, στη συνέχεια, εγκαταστήστε το Termux μέσω του <a href="https://f-droid.org/">F-Droid</a>.<br/>- Επιτρέψτε τη διαδικασία <code>fdroid</code> όταν σας ζητηθεί.</p></div></li><li><b>Ενημέρωση Πακέτων & Εγκατάσταση Git</b><div class="note note-warning"><b>Σημαντικό:</b> Ανοίξτε την εφαρμογή Termux στη συσκευή σας πριν αντιγράψετε και επικολλήσετε την παρακάτω εντολή.</div><div class="code-container"><button class="copy-btn" onclick="copyToClipboard(this, 'pkg_cmd_gr')">Αντιγραφή</button><code id="pkg_cmd_gr">pkg update -y && pkg upgrade -y && pkg install git nano -y && termux-setup-storage</code></div></li><li><b>Κλωνοποιήστε το αποθετήριο</b><div class="code-container"><button class="copy-btn" onclick="copyToClipboard(this, 'clone_cmd_gr')">Αντιγραφή</button><code id="clone_cmd_gr">git clone https://github.com/dedsec1121fk/DedSec</code></div></li><li><b>Εκτελέστε το Script Εγκατάστασης</b><div class="code-container"><button class="copy-btn" onclick="copyToClipboard(this, 'setup_cmd_gr')">Αντιγραφή</button><code id="setup_cmd_gr">cd DedSec && bash Setup.sh</code></div><div class="tip"><p>Το script θα αναλάβει την πλήρη εγκατάσταση. Μετά τη διαδικασία, θα δείτε ένα μενού ρυθμίσεων, πρέπει να επιλέξετε 'Change Menu Style' και στη συνέχεια να επιλέξετε ένα στυλ μενού: list or grid.<br>Μετά από αυτό, κλείστε το Termux από τις ειδοποιήσεις και ανοίξτε το ξανά.</p></div></li></ol><div class="tip" style="margin-top: 20px;"><p><b>Συμβουλή:</b> Μετά την εγκατάσταση, μπορείτε να ανοίξετε γρήγορα το μενού πληκτρολογώντας <code>e</code> (για την Αγγλική έκδοση) ή <code>g</code> (για την Ελληνική έκδοση) στο Termux.</p></div>
-                <div class="modal-disclaimer"><p><strong>Νομική Αποποίηση Ευθύνης:</strong> Όλα τα εργαλεία και οι πληροφορίες που παρουσιάζονται εδώ προορίζονται αποκλειστικά για εκπαιδευτικούς και ηθικούς ερευνητικούς σκοπούς. Χρησιμοποιήστε τα αποκλειστικά σε συστήματα που σας ανήκουν ή για τα οποία έχετε ρητή, γραπτή άδεια να δοκιμάσετε. Η μη εξουσιοδοτημένη χρήση είναι παράνομη. Ο χρήστης είναι αποκλειστικά υπεύθυνος για όλες τις ενέργειες που πραγματοποιεί, και οι δημιουργοί αυτού του έργου δεν αναλαμβάνουν καμία ευθύνη για οποιαδήποτε κακή χρήση ή ζημία.</p><p><strong>Αποποίηση Ευθύνης Εμπορικού Σήματος:</strong> Το όνομα και το λογότυπο "DedSec" που χρησιμοποιούνται σε αυτό το έργο είναι μόνο για θεματικούς και εμπνευστικούς σκοπούς. Αυτό είναι ένα ανεξάρτητο, fan-made έργο που δημιουργήθηκε για εκπαιδευτικούς σκοπούς και δεν έχει καμία επίσημη σύνδεση με το franchise "Watch Dogs". Δεν συνδέεται, δεν υποστηρίζεται από, ούτε σχετίζεται με την Ubisoft Entertainment S.A. Όλα τα εμπορικά σήματα και τα πνευματικά δικαιώματα για το "Watch Dogs" και το "DedSec" όπως απεικονίζονται στα παιχνίδια ανήκουν στους αντίστοιχους κατόχους τους, την Ubisoft Entertainment S.A.</p></div>
-            </div>
-        </div>
-    </div>
-
-    <div id="scripts-modal" class="modal-overlay">
-    <div class="modal-content">
-        <div class="modal-header"><h2 data-en="Learn The Tools" data-gr="Μάθετε Τα Εργαλεία">Learn The Tools</h2><button class="close-modal" aria-label="Close">×</button></div>
-        <div class="modal-body" data-lang-section="en">
-            <div class="search-container modal-search-container">
-                <input type="text" 
-                       id="scripts-search-input-en" 
-                       class="scripts-search-input" 
-                       placeholder="Search tools..." 
-                       data-en="Search tools..." 
-                       data-gr="Αναζήτηση εργαλείων..."
-                       autocomplete="off">
-                <div id="scripts-results-container-en" class="hidden"></div>
-            </div>
-            <h3>⚠️ Understanding Threats: Educational Demonstrations</h3>
-            <div class="note note-danger"><p><strong>CRITICAL NOTICE:</strong> The following scripts are included for <strong>educational and defensive purposes ONLY</strong>. Their function is to demonstrate how common attacks work, so you can learn to recognize and protect yourself against them. They should only be used in a controlled environment, <strong>on your own devices and accounts</strong>, for self-testing.</p></div>
-            <hr class="modal-divider"><h3>Toolkit Summary</h3>
-            <ol>
-                 <li><b>Fox's Connections</b><br>Provides a secure, end-to-end encrypted chat application (Fox Chat) with messaging, voice notes, large file sharing (up to 10GB), and video calls. It also includes a self-hosted file storage server (DedSec's Database) accessible via web interface for uploading, downloading, and managing files organized into categories. Both run from a single server process with one secret key.</li>
-                 <li><b>DedSec's Network</b><br>A comprehensive network analysis and security toolkit. Includes Wi-Fi scanning (no root), Nmap wrapper, enhanced Python-based port scanning, network discovery, OSINTDS web reconnaissance (WHOIS, DNS, vuln checks, HTML Inspector), SSH Defender honeypot, internet speed test, IP info, and network diagnostics (Ping/Traceroute). Results and configurations are saved in the 'DedSec's Network' folder.</li>
-                 <li><b>Phishing Demonstrations</b><br>Modules that demonstrate how a malicious webpage can trick a user into giving away access to their device's camera, microphone, and location, <strong>or into entering personal details and card information</strong>. These scripts are for testing on your own devices to understand the importance of verifying links before clicking them.
-                 <div class="tip" style="margin-top: 10px;"><p>For your self-tests, any demonstration credentials or data you enter are saved locally into appropriately named folders inside your phone's main <b>Downloads</b> folder for you to review.</p></div></li>
-                 <li><b>Social Media Fake Pages</b><br>Scripts that can create fake pages for famous Social Medias and not only. Their saves can be found in folders inside your internal storage Downloads folder.</li>
-                 <li><b>Personal Information Capture</b><br>Scripts that can catch camera (front or back) photos, microphone recordings, location and not only. Their saves can be found in folders inside your internal storage Downloads folder.</li>
-                 <li><b>URL Masker</b><br>An educational tool demonstrating how links can be disguised using shortening services like is.gd (with custom alias) or cleanuri.com (as fallback). Helps users learn to identify potentially malicious URLs.</li>
-                 <li><b>Android App Launcher</b><br>A utility to manage installed Android applications. Allows launching, viewing details, uninstalling, or extracting APK files. Features an 'App Perm Inspector' to scan APKs for dangerous permissions and advertising trackers, generating a security report saved to the Downloads/App_Security_Reports folder.</li>
-                 <li><b>Settings</b><br>A central control panel to manage the DedSec Project. Use it to view system information, update all project scripts and required packages (Termux & Python), change the Termux prompt style, and switch between list or grid menu layouts. It modifies bash configuration files (bash.bashrc) to apply changes and manage startup behavior.</li>
-                 <li><b>Loading Screen</b><br>Installs a custom ASCII art loading screen that appears when you start Termux, using either default or user-provided art. Allows setting the display duration in seconds. Modifies the <b><code>~/.bash_profile</code></b> file to implement the screen.</li>
-                 <li><b>Digital Footprint Finder</b><br>An OSINT tool to discover public profiles associated with a username across various online platforms (social media, coding sites, etc.). Features caching (24-hour default), stealth modes (less aggressive scanning), and saves results in text and JSON formats to a 'Digital Footprint Finder' folder in Downloads.</li>
-                 <li><b>Smart Notes</b><br>A secure, terminal-based (TUI) note-taking application using curses. Features encrypted storage (in ~/.smart_notes.json), calendar integration, reminders (using Termux job scheduler via dateutil parsing and optional command execution), rich text support, and advanced search capabilities.</li>
-                 <li><b>QR Code Generator</b><br>A simple tool to generate QR code images from text (typically URLs). Saves the generated PNG image to a 'QR Codes' folder within the main Downloads directory, using a sanitized version of the input data as the filename.</li>
-                 <li><b>File Converter</b><br>An interactive, terminal-based (TUI) file converter supporting various formats across documents, images (including SVG/PSD via cairosvg/psd-tools), audio/video (requires ffmpeg), archives (ZIP, RAR via unrar, 7Z, TAR, GZ), and data (CSV/JSON). Organizes converted files into 40 categorized sub-folders within a main 'File Converter' directory in Downloads.</li>
-                 <li><b>Extra Content</b><br>A utility script that copies the 'Extra Content' folder (and all its contents) from the DedSec project directory (`~/DedSec/Extra Content`) to the main Downloads folder (`~/storage/downloads/Extra Content`) on the device storage.</li>
-            </ol>
-            <div class="modal-disclaimer"><p><strong>Legal Disclaimer:</strong> All tools and information presented here are for educational and ethical research purposes only. Use them exclusively on systems you own or have explicit, written permission to test. Unauthorized use is illegal. The user is solely responsible for all actions taken, and the creators of this project assume no liability for any misuse or damage.</p></div>
-        </div>
-        <div class="modal-body hidden-by-default" data-lang-section="gr">
-            <div class="search-container modal-search-container">
-                <input type="text" 
-                       id="scripts-search-input-gr" 
-                       class="scripts-search-input" 
-                       placeholder="Αναζήτηση εργαλείων..." 
-                       data-en="Search tools..." 
-                       data-gr="Αναζήτηση εργαλείων..."
-                       autocomplete="off">
-                <div id="scripts-results-container-gr" class="hidden"></div>
-            </div>
-            <h3>⚠️ Κατανόηση Απειλών: Εκπαιδευτικές Επιδείξεις</h3>
-            <div class="note note-danger"><p><strong>ΚΡΙΣΙΜΗ ΣΗΜΕΙΩΣΗ:</strong> Τα παρακάτω σενάρια περιλαμβάνονται <strong>ΑΠΟΚΛΕΙΣΤΙΚΑ για εκπαιδευτικούς και αμυντικούς σκοπούς</strong>. Η λειτουργία τους είναι να επιδεικνύουν πώς λειτουργούν οι συνήθεις επιθέσεις, ώστε να μπορείτε να μάθετε να τις αναγνωρίζετε και να προστατεύεστε από αυτές. Πρέπει να χρησιμοποιούνται μόνο σε ελεγχόμενο περιβάλλον, <strong>στις δικές σας συσκευές και λογαριασμούς</strong>, για αυτο-έλεγχο.</p></div>
-            <hr class="modal-divider"><h3>Περίληψης Εργαλείων (Απαιτείται Μετάφραση)</h3>
-            <ol>
-                 <li><b>Fox's Connections</b><br>Παρέχει μια ασφαλή, end-to-end κρυπτογραφημένη εφαρμογή συνομιλίας (Fox Chat) με μηνύματα, φωνητικές σημειώσεις, κοινή χρήση μεγάλων αρχείων (έως 10GB) και βιντεοκλήσεις. Περιλαμβάνει επίσης έναν αυτο-φιλοξενούμενο διακομιστή αποθήκευσης αρχείων (DedSec's Database) προσβάσιμο μέσω web interface για ανέβασμα, κατέβασμα και διαχείριση αρχείων οργανωμένων σε κατηγορίες. Και τα δύο εκτελούνται από μια ενιαία διαδικασία διακομιστή με ένα μυστικό κλειδί.</li>
-                 <li><b>DedSec's Network</b><br>Ένα ολοκληρωμένο πακέτο εργαλείων ανάλυσης δικτύου και ασφάλειας. Περιλαμβάνει σάρωση Wi-Fi (χωρίς root), περιτύλιγμα Nmap, βελτιωμένη σάρωση θυρών βασισμένη σε Python, ανακάλυψη δικτύου, αναγνώριση ιστού OSINTDS (WHOIS, DNS, έλεγχοι ευπαθειών, HTML Inspector), honeypot SSH Defender, τεστ ταχύτητας internet, πληροφορίες IP και διαγνωστικά δικτύου (Ping/Traceroute). Τα αποτελέσματα και οι ρυθμίσεις αποθηκεύονται στον φάκελο 'DedSec's Network'.</li>
-                 <li><b>Phishing Demonstrations</b><br>Modules που επιδεικνύουν πώς μια κακόβουλη ιστοσελίδα μπορεί να εξαπατήσει έναν χρήστη για να δώσει πρόσβαση στην κάμερα, το μικρόφωνο και την τοποθεσία της συσκευής του, <strong>ή για να εισάγει προσωπικά στοιχεία και στοιχεία κάρτας</strong>. Αυτά τα σενάρια προορίζονται για δοκιμή στις δικές σας συσκευές για να κατανοήσετε τη σημασία της επαλήθευσης των συνδέσμων πριν κάνετε κλικ.
-                 <div class="tip" style="margin-top: 10px;"><p>Για τις δικές σας δοκιμές, τυχόν διαπιστευτήρια ή δεδομένα επίδειξης που εισάγετε αποθηκεύονται τοπικά σε φακέλους με κατάλληλα ονόματα μέσα στον κεντρικό φάκελο <b>Λήψεις</b> του τηλεφώνου σας για να τα ελέγξετε.</p></div></li>
-                 <li><b>Social Media Fake Pages</b><br>Scripts που μπορούν να δημιουργήσουν ψεύτικες σελίδες για διάσημα Κοινωνικά Δίκτυα και όχι μόνο. Οι αποθηκεύσεις τους βρίσκονται σε φακέλους μέσα στον φάκελο Λήψεις της εσωτερικής σας αποθήκευσης.</li>
-                 <li><b>Personal Information Capture</b><br>Scripts που μπορούν να καταγράψουν φωτογραφίες από κάμερα (μπροστινή ή πίσω), ηχογραφήσεις μικροφώνου, τοποθεσία και όχι μόνο. Οι αποθηκεύσεις τους βρίσκονται σε φακέλους μέσα στον φάκελο Λήψεις της εσωτερικής σας αποθήκευσης.</li>
-                 <li><b>URL Masker</b><br>Ένα εκπαιδευτικό εργαλείο που επιδεικνύει πώς μπορούν να μεταμφιεστούν οι σύνδεσμοι χρησιμοποιώντας υπηρεσίες συντόμευσης όπως το is.gd (με προσαρμοσμένο ψευδώνυμο) ή το cleanuri.com (ως εναλλακτική). Βοηθά τους χρήστες να μάθουν να αναγνωρίζουν πιθανώς κακόβουλα URL.</li>
-                 <li><b>Android App Launcher</b><br>Ένα βοηθητικό πρόγραμμα για τη διαχείριση των εγκατεστημένων εφαρμογών Android. Επιτρέπει την εκκίνηση, την προβολή λεπτομερειών, την απεγκατάσταση ή την εξαγωγή αρχείων APK. Διαθέτει έναν 'App Perm Inspector' για τη σάρωση APK για επικίνδυνες άδειες και trackers διαφημίσεων, δημιουργώντας μια αναφορά ασφαλείας που αποθηκεύεται στον φάκελο Downloads/App_Security_Reports.</li>
-                 <li><b>Settings</b><br>Ένας κεντρικός πίνακας ελέγχου για τη διαχείριση του DedSec Project. Χρησιμοποιήστε τον για να δείτε πληροφορίες συστήματος, να ενημερώσετε όλα τα σενάρια του έργου και τα απαιτούμενα πακέτα (Termux & Python), να αλλάξετε το στυλ της γραμμής εντολών του Termux και να επιλέξετε μεταξύ διάταξης μενού λίστας ή πλέγματος. Τροποποιεί αρχεία διαμόρφωσης bash (bash.bashrc) για να εφαρμόσει τις αλλαγές και να διαχειριστεί τη συμπεριφορά εκκίνησης.</li>
-                 <li><b>Loading Screen</b><br>Εγκαθιστά μια προσαρμοσμένη οθόνη φόρτωσης με ASCII art που εμφανίζεται κατά την εκκίνηση του Termux, χρησιμοποιώντας είτε προεπιλεγμένη είτε παρεχόμενη από τον χρήστη τέχνη. Επιτρέπει τον ορισμό της διάρκειας εμφάνισης σε δευτερόλεπτα. Τροποποιεί το αρχείο <b><code>~/.bash_profile</code></b> για την υλοποίηση της οθόνης.</li>
-                 <li><b>Digital Footprint Finder</b><br>Ένα εργαλείο OSINT για την ανακάλυψη δημόσιων προφίλ που σχετίζονται με ένα όνομα χρήστη σε διάφορες διαδικτυακές πλατφόρμες (κοινωνικά δίκτυα, ιστότοποι προγραμματισμού κ.λπ.). Διαθέτει μηχανισμούς προσωρινής αποθήκευσης (24 ώρες προεπιλογή), λειτουργίες stealth (λιγότερο επιθετική σάρωση) και αποθηκεύει τα αποτελέσματα σε μορφή κειμένου και JSON σε έναν φάκελο 'Digital Footprint Finder' στις Λήψεις.</li>
-                 <li><b>Smart Notes</b><br>Μια ασφαλής εφαρμογή σημειώσεων βασισμένη σε τερματικό (TUI) που χρησιμοποιεί curses. Διαθέτει κρυπτογραφημένη αποθήκευση (στο ~/.smart_notes.json), ενσωμάτωση ημερολογίου, υπενθυμίσεις (χρησιμοποιώντας τον προγραμματιστή εργασιών του Termux μέσω ανάλυσης dateutil και προαιρετικής εκτέλεσης εντολών), υποστήριξη εμπλουτισμένου κειμένου και προηγμένες δυνατότητες αναζήτησης.</li>
-                 <li><b>QR Code Generator</b><br>Ένα απλό εργαλείο για τη δημιουργία εικόνων κώδικα QR από κείμενο (συνήθως URLs). Αποθηκεύει την παραγόμενη εικόνα PNG σε έναν φάκελο 'QR Codes' εντός του κύριου καταλόγου Λήψεις, χρησιμοποιώντας μια απολυμασμένη έκδοση των δεδομένων εισόδου ως όνομα αρχείου.</li>
-                 <li><b>File Converter</b><br>Ένας διαδραστικός μετατροπέας αρχείων βασισμένος σε τερματικό (TUI) που υποστηρίζει διάφορες μορφές σε έγγραφα, εικόνες (συμπεριλαμβανομένων SVG/PSD μέσω cairosvg/psd-tools), ήχο/βίντεο (απαιτεί ffmpeg), αρχεία (ZIP, RAR μέσω unrar, 7Z, TAR, GZ) και δεδομένα (CSV/JSON). Οργανώνει τα μετατρεπόμενα αρχεία σε 40 κατηγοριοποιημένους υποφακέλους εντός ενός κύριου καταλόγου 'File Converter' στις Λήψεις.</li>
-                 <li><b>Extra Content</b><br>Ένα βοηθητικό script που αντιγράφει τον φάκελο 'Extra Content' (και όλο το περιεχόμενό του) από τον κατάλογο του έργου DedSec (`~/DedSec/Extra Content`) στον κύριο φάκελο Λήψεις (`~/storage/downloads/Extra Content`) στην αποθήκευση της συσκευής.</li>
-             </ol>
-            <div class="modal-disclaimer"><p><strong>Νομική Αποποίηση Ευθύνης:</strong> Όλα τα εργαλεία και οι πληροφορίες που παρουσιάζονται εδώ προορίζονται αποκλειστικά για εκπαιδευτικούς και ηθικούς ερευνητικούς σκοπούς. Χρησιμοποιήστε τα αποκλειστικά σε συστήματα που σας ανήκουν ή για τα οποία έχετε ρητή, γραπτή άδεια να δοκιμάσετε. Η μη εξουσιοδοτημένη χρήση είναι παράνομη. Ο χρήστης είναι αποκλειστικά υπεύθυνος για όλες τις ενέργειες που πραγματοποιεί, και οι δημιουργοί αυτού του έργου δεν αναλαμβάνουν καμία ευθύνη για οποιαδήποτε κακή χρήση ή ζημία.</p></div>
-        </div>
-    </div>
-</div>
-
-    <div id="contact-credits-modal" class="modal-overlay">
-        <div class="modal-content">
-            <div class="modal-header"><h2 data-en="Contact Us & Credits" data-gr="Επικοινωνία & Συντελεστές">Contact Us & Credits</h2><button class="close-modal" aria-label="Close">×</button></div>
-            <div class="modal-body" data-lang-section="en">
-                <h3 data-en="Contact Us" data-gr="Επικοινωνία">Contact Us</h3><div class="contact-grid"><a href="https://wa.me/37257263676" target="_blank" class="app-icon"><i class="fab fa-whatsapp"></i><span data-en="WhatsApp" data-gr="WhatsApp">WhatsApp</span></a><a href="https://www.instagram.com/dedsec_project_official" target="_blank" class="app-icon"><i class="fab fa-instagram"></i><span data-en="Instagram" data-gr="Instagram">Instagram</span></a><a href="https://t.me/dedsecproject" target="_blank" class="app-icon"><i class="fab fa-telegram"></i><span data-en="Telegram" data-gr="Telegram">Telegram</span></a></div><hr class="modal-divider"><h3 data-en="Credits" data-gr="Συντελεστές">Credits</h3><p><b>Creator:</b> dedsec1121fk</p><p><b>Artwork:</b> Christina Chatzidimitriou</p><p><b>Voice-overs:</b> Dimitra Isxuropoulou</p><p><b>Technical Help:</b> lamprouil, UKI_hunter, apoloco</p>
-            </div>
-            <div class="modal-body hidden-by-default" data-lang-section="gr">
-                <h3 data-en="Contact Us" data-gr="Επικοινωνία">Επικοινωνία</h3><div class="contact-grid"><a href="https://wa.me/37257263676" target="_blank" class="app-icon"><i class="fab fa-whatsapp"></i><span data-en="WhatsApp" data-gr="WhatsApp">WhatsApp</span></a><a href="https://www.instagram.com/dedsec_project_official" target="_blank" class="app-icon"><i class="fab fa-instagram"></i><span data-en="Instagram" data-gr="Instagram">Instagram</span></a><a href="https://t.me/dedsecproject" target="_blank" class="app-icon"><i class="fab fa-telegram"></i><span data-en="Telegram" data-gr="Telegram">Telegram</span></a></div><hr class="modal-divider"><h3 data-en="Credits" data-gr="Συντελεστές">Συντελεστές</h3><p><b>Δημιουργός:</b> dedsec1121fk</p><p><b>Καλλιτεχνική Επιμέλεια:</b> Χριστίνα Χατζηδημητρίου</p><p><b>Αφηγήσεις:</b> Δήμητρα Ισχυροπούλου</p><p><b>Τεχνική Βοήθεια:</b> lamprouil, UKI_hunter, apoloco</p>
-            </div>
-        </div>
-    </div>
-
-    <div id="useful-information-modal" class="modal-overlay">
-        <div class="modal-content">
-            <div class="modal-header"><h2 data-en="Useful Information" data-gr="Χρήσιμες Πληροφορίες">Useful Information</h2><button class="close-modal" aria-label="Close">×</button></div>
-            <div class="modal-body"><div class="search-container modal-search-container"><input type="text" id="useful-info-search-input" placeholder="Search articles..." data-en="Search articles..." data-gr="Αναζήτηση άρθρων..."><div id="useful-info-results-container" class="hidden"></div></div><p id="useful-info-prompt" data-en="Please select an entry from the list below to view its content." data-gr="Παρακαλώ επιλέξτε μια καταχώρηση από την παρακάτω λίστα για να δείτε το περιεχόμενό της.">Please select an entry from the list below to view its content.</p><div id="useful-information-nav" class="app-grid"></div><hr class="modal-divider"><div id="useful-information-content"></div></div>
         </div>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="common.js"></script>
     <script src="script.js" defer></script>
 </body>
 </html>
