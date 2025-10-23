@@ -3,21 +3,11 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentLanguage = localStorage.getItem('language') || 'en';
     let currentTheme = localStorage.getItem('theme') || 'dark';
 
-    // Initialize navigation
+    // Initialize all functionality
     initializeNavigation();
-
-    // Initialize theme
     initializeTheme();
-
-    // Initialize language
     initializeLanguage();
-
-    // Add back to home button if not on index page
-    if (!window.location.pathname.endsWith('index.html') && !window.location.pathname.endsWith('/')) {
-        addBackHomeButton();
-    }
-
-    // Add language switcher
+    addBackHomeButton();
     addLanguageSwitcher();
 
     function initializeNavigation() {
@@ -25,7 +15,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const navMenu = document.getElementById('nav-menu');
 
         if (burgerIcon && navMenu) {
-            burgerIcon.addEventListener('click', () => {
+            burgerIcon.addEventListener('click', (e) => {
+                e.stopPropagation();
                 burgerIcon.classList.toggle('open');
                 navMenu.classList.toggle('open');
             });
@@ -48,7 +39,6 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
-        // Set active page in navigation
         setActiveNavItem();
     }
 
@@ -67,75 +57,39 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function initializeTheme() {
-        // Apply saved theme
         if (currentTheme === 'light') {
             document.body.classList.add('light-theme');
         } else {
             document.body.classList.remove('light-theme');
         }
-
-        // Theme switcher functionality
-        const themeSwitcherBtn = document.getElementById('theme-switcher-btn');
-        if (themeSwitcherBtn) {
-            const themeIcon = themeSwitcherBtn.querySelector('i');
-            const themeSpan = themeSwitcherBtn.querySelector('span');
-
-            const updateThemeButton = (isLightTheme) => {
-                if (isLightTheme) {
-                    themeIcon.classList.remove('fa-moon');
-                    themeIcon.classList.add('fa-sun');
-                    themeSpan.setAttribute('data-en', 'Light Theme');
-                    themeSpan.setAttribute('data-gr', 'Φωτεινό Θέμα');
-                } else {
-                    themeIcon.classList.remove('fa-sun');
-                    themeIcon.classList.add('fa-moon');
-                    themeSpan.setAttribute('data-en', 'Dark Theme');
-                    themeSpan.setAttribute('data-gr', 'Σκοτεινό Θέμα');
-                }
-                updateElementLanguage(themeSpan, currentLanguage);
-            };
-
-            themeSwitcherBtn.addEventListener('click', () => {
-                document.body.classList.toggle('light-theme');
-                const isLight = document.body.classList.contains('light-theme');
-                localStorage.setItem('theme', isLight ? 'light' : 'dark');
-                updateThemeButton(isLight);
-            });
-            
-            updateThemeButton(document.body.classList.contains('light-theme'));
-        }
     }
 
     function initializeLanguage() {
-        // Apply saved language
         changeLanguage(currentLanguage);
-
-        // Language modal functionality
-        const languageModal = document.getElementById('language-selection-modal');
-        if (languageModal) {
-            languageModal.querySelectorAll('.language-button').forEach(button => {
-                button.addEventListener('click', () => {
-                    changeLanguage(button.dataset.lang);
-                    if (languageModal.classList.contains('visible')) {
-                        hideModal(languageModal);
-                    }
-                });
-            });
-        }
     }
 
     function addBackHomeButton() {
-        const backHomeDiv = document.createElement('div');
-        backHomeDiv.className = 'back-home';
-        backHomeDiv.innerHTML = `
-            <a href="index.html" class="back-home-btn" title="Back to Home">
-                <i class="fas fa-home"></i>
-            </a>
-        `;
-        document.body.appendChild(backHomeDiv);
+        if (!window.location.pathname.endsWith('index.html') && !window.location.pathname.endsWith('/')) {
+            // Remove existing back button if any
+            const existingBackHome = document.querySelector('.back-home');
+            if (existingBackHome) existingBackHome.remove();
+
+            const backHomeDiv = document.createElement('div');
+            backHomeDiv.className = 'back-home';
+            backHomeDiv.innerHTML = `
+                <a href="index.html" class="back-home-btn" title="Back to Home">
+                    <i class="fas fa-home"></i>
+                </a>
+            `;
+            document.body.appendChild(backHomeDiv);
+        }
     }
 
     function addLanguageSwitcher() {
+        // Remove existing language switcher if any
+        const existingLangSwitcher = document.querySelector('.lang-switcher-container');
+        if (existingLangSwitcher) existingLangSwitcher.remove();
+
         const langSwitcherDiv = document.createElement('div');
         langSwitcherDiv.className = 'lang-switcher-container';
         langSwitcherDiv.innerHTML = `
@@ -148,7 +102,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const langBtn = document.getElementById('lang-switcher-btn');
         if (langBtn) {
             langBtn.addEventListener('click', () => {
-                // Toggle between English and Greek
                 const newLang = currentLanguage === 'en' ? 'gr' : 'en';
                 changeLanguage(newLang);
             });
@@ -168,36 +121,35 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Update language sections
         document.querySelectorAll('[data-lang-section]').forEach(el => {
-            el.style.display = el.dataset.langSection === lang ? 'block' : 'none';
-            el.classList.toggle('hidden', el.dataset.langSection !== lang);
-            if (el.dataset.langSection === lang) {
+            const shouldShow = el.dataset.langSection === lang;
+            el.style.display = shouldShow ? 'block' : 'none';
+            el.classList.toggle('hidden', !shouldShow);
+            if (shouldShow) {
                 el.classList.remove('hidden-by-default');
             }
         });
 
-        // Update navigation items
-        document.querySelectorAll('.nav-item').forEach(item => {
-            updateElementLanguage(item, lang);
-        });
-
-        // Update page title based on current page
         updatePageTitle(lang);
     };
 
     function updateElementLanguage(element, lang) {
+        const text = element.getAttribute(`data-${lang}`) || element.getAttribute('data-en');
+        if (!text) return;
+
+        // Check if element has direct text content
         const hasDirectText = Array.from(element.childNodes).some(node => 
             node.nodeType === Node.TEXT_NODE && node.textContent.trim().length > 0
         );
         
         if (hasDirectText) {
-            const text = element.getAttribute(`data-${lang}`) || element.getAttribute('data-en');
+            // Replace only text nodes
             Array.from(element.childNodes).forEach(node => {
                 if (node.nodeType === Node.TEXT_NODE && node.textContent.trim().length > 0) {
                     node.textContent = text;
                 }
             });
-        } else if (element.children.length === 0) {
-            const text = element.getAttribute(`data-${lang}`) || element.getAttribute('data-en');
+        } else {
+            // Replace all content
             element.textContent = text;
         }
     }
@@ -249,33 +201,67 @@ document.addEventListener('DOMContentLoaded', () => {
     window.showModal = (modal) => {
         if (!modal) return;
         modal.classList.add('visible');
+        document.body.style.overflow = 'hidden';
     };
 
     window.hideModal = (modal) => {
         if (!modal) return;
         modal.classList.remove('visible');
+        document.body.style.overflow = '';
     };
 
-    // Copy to clipboard function
+    // Copy to clipboard function - FIXED
     window.copyToClipboard = (button, targetId) => {
         const codeElement = document.getElementById(targetId);
-        if (!codeElement || !navigator.clipboard) {
-            console.warn('Clipboard API not available or element not found.');
-            button.textContent = currentLanguage === 'gr' ? 'Σφάλμα' : 'Error';
-            setTimeout(() => { 
-                button.textContent = currentLanguage === 'gr' ? 'Αντιγραφή' : 'Copy'; 
-            }, 1500);
+        if (!codeElement) {
+            console.warn('Element not found:', targetId);
             return;
         }
+
+        const textToCopy = codeElement.textContent || codeElement.innerText;
         
-        const originalText = button.textContent;
-        navigator.clipboard.writeText(codeElement.innerText).then(() => {
-            button.textContent = currentLanguage === 'gr' ? 'Αντιγράφηκε!' : 'Copied!';
-            setTimeout(() => { button.textContent = originalText; }, 1500);
+        if (!navigator.clipboard) {
+            // Fallback for older browsers
+            const textArea = document.createElement('textarea');
+            textArea.value = textToCopy;
+            document.body.appendChild(textArea);
+            textArea.select();
+            try {
+                document.execCommand('copy');
+                showCopyFeedback(button, true);
+            } catch (err) {
+                showCopyFeedback(button, false);
+            }
+            document.body.removeChild(textArea);
+            return;
+        }
+
+        navigator.clipboard.writeText(textToCopy).then(() => {
+            showCopyFeedback(button, true);
         }).catch(err => {
             console.error('Failed to copy text: ', err);
-            button.textContent = currentLanguage === 'gr' ? 'Απέτυχε!' : 'Failed!';
-            setTimeout(() => { button.textContent = originalText; }, 1500);
+            showCopyFeedback(button, false);
         });
     };
+
+    function showCopyFeedback(button, success) {
+        const originalText = button.textContent;
+        const currentLang = localStorage.getItem('language') || 'en';
+        
+        if (success) {
+            button.textContent = currentLang === 'gr' ? 'Αντιγράφηκε!' : 'Copied!';
+            button.style.background = '#00FF00';
+            button.style.color = '#000000';
+        } else {
+            button.textContent = currentLang === 'gr' ? 'Απέτυχε!' : 'Failed!';
+            button.style.background = '#FF0000';
+            button.style.color = '#FFFFFF';
+        }
+        
+        setTimeout(() => {
+            button.textContent = originalText;
+            button.style.background = '';
+            button.style.color = '';
+        }, 1500);
+    }
 });

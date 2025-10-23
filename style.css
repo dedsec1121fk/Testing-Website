@@ -1074,4 +1074,199 @@ body.light-theme .modal-content {
 
 .modal-body h3 {
     color: var(--nm-text);
-    border-bottom: 1px solid var
+    border-bottom: 1px solid var(--nm-border);
+    padding-bottom: 10px;
+    margin-top: 20px;
+}
+
+/* =================================================================
+   FIXED STYLES FOR BUTTONS AND FUNCTIONALITY
+   ================================================================= */
+
+/* Copy button styles */
+.copy-btn {
+    background: var(--nm-accent);
+    color: var(--nm-darkest);
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: 'Roboto Mono', monospace;
+    font-size: 0.8rem;
+    transition: all 0.3s ease;
+    margin-left: 10px;
+}
+
+.copy-btn:hover {
+    background: var(--nm-accent-hover);
+}
+
+.code-container {
+    display: flex;
+    align-items: center;
+    background: var(--nm-darkest);
+    border: 1px solid var(--nm-border);
+    border-radius: 10px;
+    padding: 10px;
+    margin: 10px 0;
+    font-family: 'Roboto Mono', monospace;
+}
+
+.code-container code {
+    flex: 1;
+    color: var(--nm-text);
+    font-size: 0.9rem;
+    word-break: break-all;
+}
+
+/* Note styles */
+.note {
+    background: var(--nm-darkest);
+    border-left: 4px solid var(--nm-warning);
+    padding: 15px;
+    margin: 15px 0;
+    border-radius: 5px;
+}
+
+.note-warning {
+    border-left-color: var(--nm-warning);
+}
+
+.note-danger {
+    border-left-color: var(--nm-danger);
+}
+
+.tip {
+    background: rgba(0, 255, 0, 0.1);
+    border-left: 4px solid var(--nm-success);
+    padding: 15px;
+    margin: 15px 0;
+    border-radius: 5px;
+}
+
+.modal-disclaimer {
+    background: rgba(255, 0, 0, 0.1);
+    border-left: 4px solid var(--nm-danger);
+    padding: 15px;
+    margin: 15px 0;
+    border-radius: 5px;
+}
+
+/* Form styles */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--nm-text);
+    font-weight: bold;
+    font-family: 'Roboto Mono', monospace;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px 15px;
+    background-color: var(--nm-darkest);
+    border: 2px solid var(--nm-border);
+    color: var(--nm-text);
+    border-radius: 10px;
+    font-family: 'Roboto Mono', monospace;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: var(--nm-accent);
+    background-color: var(--nm-dark);
+}
+
+.form-actions {
+    text-align: center;
+    margin-top: 30px;
+}
+
+/* Utility classes */
+.hidden {
+    display: none !important;
+}
+
+.hidden-by-default {
+    display: none;
+}
+
+/* Loading animation */
+.fa-spin {
+    animation: fa-spin 1s infinite linear;
+}
+
+@keyframes fa-spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Language switcher button */
+.lang-switcher-btn {
+    background: var(--nm-accent);
+    color: var(--nm-darkest);
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.lang-switcher-btn:hover {
+    background: var(--nm-accent-hover);
+    transform: scale(1.1);
+}
+
+/* Back to home button */
+.back-home-btn {
+    background: var(--nm-accent);
+    color: var(--nm-darkest);
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.back-home-btn:hover {
+    background: var(--nm-accent-hover);
+    transform: scale(1.1);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .modal-content {
+        width: 95%;
+        height: 90%;
+    }
+    
+    .code-container {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .copy-btn {
+        margin-left: 0;
+        width: 100%;
+    }
+}
