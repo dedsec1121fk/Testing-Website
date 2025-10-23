@@ -7,8 +7,9 @@ document.addEventListener('DOMContentLoaded', () => {
     initializeNavigation();
     initializeTheme();
     initializeLanguage();
-    initializeOldWebsiteLanguageModal();
-    initializeThemeSwitcher();
+    initializeOldLanguageModal(); // MODIFIED: Call old modal init
+    initializeOldThemeSwitcher(); // MODIFIED: Call old theme init
+    initializeOldLangSwitcher(); // MODIFIED: Call old lang init
     initializeCopyButtons();
     addBackHomeButton();
 
@@ -70,121 +71,89 @@ document.addEventListener('DOMContentLoaded', () => {
         changeLanguage(currentLanguage);
     }
 
-    function initializeOldWebsiteLanguageModal() {
+    // REMOVED: initializeOldWebsiteLanguageModal
+
+    // ADDED: initializeOldLanguageModal from old script.js logic
+    function initializeOldLanguageModal() {
         const languageModal = document.getElementById('language-selection-modal');
-        const languageOptions = document.querySelectorAll('.language-option-old');
-        const selectButtons = document.querySelectorAll('.select-language-btn');
+        if (!languageModal) return;
         
-        // Check if user has already selected a language
-        const languageSelected = localStorage.getItem('language-selected');
-        
-        if (languageSelected === 'true') {
-            // Hide modal if language already selected
-            if (languageModal) {
-                languageModal.classList.remove('visible');
-                languageModal.style.display = 'none';
-            }
-            return;
+        const languageModalCloseBtn = languageModal.querySelector('.close-modal');
+        if (languageModalCloseBtn) {
+            languageModalCloseBtn.style.display = 'none'; // Hide close button on start
+            languageModalCloseBtn.addEventListener('click', () => hideModal(languageModal));
         }
 
-        // Show modal if no language selection has been made
-        if (languageModal) {
-            languageModal.classList.add('visible');
-            languageModal.style.display = 'flex';
-            
-            // Make sure it's on top and blocks everything
-            languageModal.style.zIndex = '9999';
-            languageModal.style.position = 'fixed';
-            languageModal.style.top = '0';
-            languageModal.style.left = '0';
-            languageModal.style.width = '100%';
-            languageModal.style.height = '100%';
-        }
-
-        // Add event listeners to language options (click anywhere on the option)
-        languageOptions.forEach(option => {
-            option.addEventListener('click', (e) => {
-                // Don't trigger if the click was on the button (handled separately)
-                if (!e.target.classList.contains('select-language-btn') && !e.target.closest('.select-language-btn')) {
-                    const selectedLang = option.getAttribute('data-lang');
-                    selectLanguage(selectedLang);
-                }
+        languageModal.querySelectorAll('.language-button').forEach(button => {
+            button.addEventListener('click', () => {
+                changeLanguage(button.dataset.lang);
+                hideModal(languageModal);
             });
         });
 
-        // Add event listeners to select buttons
-        selectButtons.forEach((button, index) => {
-            button.addEventListener('click', (e) => {
-                e.stopPropagation(); // Prevent triggering the parent option click
-                const option = button.closest('.language-option-old');
-                const selectedLang = option.getAttribute('data-lang');
-                selectLanguage(selectedLang);
-            });
+        // Show the modal on startup
+        showModal(languageModal);
+    }
+
+    // REMOVED: initializeThemeSwitcher
+
+    // ADDED: initializeOldThemeSwitcher from old script.js logic
+    function initializeOldThemeSwitcher() {
+        const themeSwitcherBtn = document.getElementById('theme-switcher-btn');
+        if (!themeSwitcherBtn) return;
+
+        const themeIcon = themeSwitcherBtn.querySelector('i');
+        const themeSpan = themeSwitcherBtn.querySelector('span');
+
+        const updateThemeButton = (isLightTheme) => {
+            if (!themeIcon || !themeSpan) return;
+            const currentLang = localStorage.getItem('language') || 'en';
+            if (isLightTheme) {
+                themeIcon.classList.remove('fa-moon');
+                themeIcon.classList.add('fa-sun');
+                themeSpan.setAttribute('data-en', 'Light Theme');
+                themeSpan.setAttribute('data-gr', 'Φωτεινό Θέμα');
+            } else {
+                themeIcon.classList.remove('fa-sun');
+                themeIcon.classList.add('fa-moon');
+                themeSpan.setAttribute('data-en', 'Theme');
+                themeSpan.setAttribute('data-gr', 'Θέμα');
+            }
+            themeSpan.textContent = themeSpan.getAttribute(`data-${currentLang}`) || themeSpan.getAttribute('data-en');
+        };
+
+        themeSwitcherBtn.addEventListener('click', () => {
+            document.body.classList.toggle('light-theme');
+            const isLight = document.body.classList.contains('light-theme');
+            localStorage.setItem('theme', isLight ? 'light' : 'dark');
+            updateThemeButton(isLight);
         });
 
-        function selectLanguage(lang) {
-            localStorage.setItem('language-selected', 'true');
-            changeLanguage(lang);
-            
-            // Hide modal with animation
-            if (languageModal) {
-                languageModal.style.animation = 'modalDisappear 0.3s ease-in forwards';
-                setTimeout(() => {
-                    languageModal.style.display = 'none';
-                }, 300);
-            }
-        }
-    }
-
-    function initializeThemeSwitcher() {
-        const themeSwitchBtn = document.getElementById('theme-switch-btn');
-        const navThemeSwitcher = document.getElementById('nav-theme-switcher');
-        const langSwitchBtn = document.getElementById('lang-switch-btn');
-        const navLangSwitcher = document.getElementById('nav-lang-switcher');
-
-        // Floating theme switcher
-        if (themeSwitchBtn) {
-            themeSwitchBtn.addEventListener('click', toggleTheme);
-        }
-
-        // Navigation theme switcher
-        if (navThemeSwitcher) {
-            navThemeSwitcher.addEventListener('click', toggleTheme);
-        }
-
-        // Floating language switcher
-        if (langSwitchBtn) {
-            langSwitchBtn.addEventListener('click', () => {
-                const newLang = currentLanguage === 'en' ? 'gr' : 'en';
-                changeLanguage(newLang);
-            });
-        }
-
-        // Navigation language switcher
-        if (navLangSwitcher) {
-            navLangSwitcher.addEventListener('click', () => {
-                const newLang = currentLanguage === 'en' ? 'gr' : 'en';
-                changeLanguage(newLang);
-            });
-        }
-    }
-
-    function toggleTheme() {
-        currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
-        localStorage.setItem('theme', currentTheme);
-        
-        if (currentTheme === 'light') {
+        // Set initial theme based on localStorage
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'light') {
             document.body.classList.add('light-theme');
         } else {
             document.body.classList.remove('light-theme');
         }
-
-        // Update theme button icon
-        const themeButtons = document.querySelectorAll('#theme-switch-btn, #nav-theme-switcher i');
-        themeButtons.forEach(button => {
-            button.className = currentTheme === 'dark' ? 'fas fa-moon' : 'fas fa-sun';
-        });
+        updateThemeButton(document.body.classList.contains('light-theme'));
     }
+    
+    // ADDED: initializeOldLangSwitcher from old script.js logic
+    function initializeOldLangSwitcher() {
+         const langSwitcherBtn = document.getElementById('lang-switcher-btn');
+         if(langSwitcherBtn) {
+            langSwitcherBtn.addEventListener('click', () => {
+                const languageModal = document.getElementById('language-selection-modal');
+                if(languageModal) {
+                    const languageModalCloseBtn = languageModal.querySelector('.close-modal');
+                    if (languageModalCloseBtn) languageModalCloseBtn.style.display = ''; 
+                    showModal(languageModal);
+                }
+            });
+         }
+    }
+
 
     function initializeCopyButtons() {
         // Add event listeners to all copy buttons
@@ -235,6 +204,11 @@ document.addEventListener('DOMContentLoaded', () => {
             if (shouldShow) {
                 el.classList.remove('hidden-by-default');
             }
+        });
+        
+        // ADDED: Update language buttons selection state
+        document.querySelectorAll('.language-button').forEach(button => {
+            button.classList.toggle('selected', button.dataset.lang === lang);
         });
 
         updatePageTitle(lang);

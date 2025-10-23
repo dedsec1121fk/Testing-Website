@@ -455,76 +455,14 @@ body.light-theme .note.note-warning {
 }
 
 /* =================================================================
-   FLOATING SWITCHER STYLES
+   FLOATING SWITCHER STYLES (REMOVED)
    ================================================================= */
 
-.floating-theme-switcher,
-.floating-lang-switcher {
-    position: fixed;
-    bottom: 20px;
-    z-index: 1000;
-}
-
-.floating-theme-switcher {
-    left: 20px;
-}
-
-.floating-lang-switcher {
-    left: 80px;
-}
-
-.theme-switch-btn,
-.lang-switch-btn {
-    background: var(--nm-accent);
-    color: var(--nm-darkest);
-    border: none;
-    border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    cursor: pointer;
-    font-size: 1.2rem;
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-    opacity: 0.8; /* 80% opacity */
-}
-
-.theme-switch-btn:hover,
-.lang-switch-btn:hover {
-    background: var(--nm-accent-hover);
-    transform: scale(1.1);
-    opacity: 1;
-}
 
 /* =================================================================
-   NAV SETTINGS STYLES
+   NAV SETTINGS STYLES (REMOVED)
    ================================================================= */
 
-.nav-settings {
-    margin-top: 20px;
-    border-top: 1px solid var(--nm-border);
-    padding-top: 10px;
-}
-
-.nav-setting-btn {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    width: 100%;
-    text-align: left;
-    background: none;
-    border: none;
-    color: inherit;
-    font: inherit;
-    cursor: pointer;
-}
-
-.nav-setting-btn:hover {
-    background: var(--nm-accent);
-    color: var(--nm-darkest);
-}
 
 /* =================================================================
    BACKGROUND OPACITY ADJUSTMENTS
@@ -586,205 +524,41 @@ body.light-theme .note.note-warning {
 }
 
 /* =================================================================
-   OLD WEBSITE LANGUAGE SELECTION STYLES
+   OLD WEBSITE LANGUAGE SELECTION STYLES (REMOVED)
    ================================================================= */
 
-.old-website-modal {
-    background: rgba(0, 0, 0, 0.95) !important;
-    z-index: 9999 !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    opacity: 1 !important;
-    visibility: visible !important;
-}
-
-.old-website-modal-content {
-    background: linear-gradient(135deg, #1a1a2e, #16213e) !important;
-    border: 3px solid #9966FF !important;
-    border-radius: 15px !important;
-    box-shadow: 0 0 50px rgba(153, 102, 255, 0.5) !important;
-    max-width: 500px !important;
-    width: 90% !important;
-    animation: modalAppear 0.5s ease-out !important;
-}
-
-@keyframes modalAppear {
-    0% {
-        opacity: 0;
-        transform: scale(0.8) translateY(-50px);
-    }
-    100% {
-        opacity: 1;
-        transform: scale(1) translateY(0);
-    }
-}
-
-@keyframes modalDisappear {
-    0% {
-        opacity: 1;
-        transform: scale(1);
-    }
-    100% {
-        opacity: 0;
-        transform: scale(0.8);
-    }
-}
-
-.old-website-modal-header {
-    background: linear-gradient(135deg, #9966FF, #6633CC) !important;
-    padding: 20px !important;
-    text-align: center !important;
-    border-bottom: 2px solid #FFD700 !important;
-}
-
-.old-website-modal-header h2 {
-    color: #FFFFFF !important;
-    font-family: 'Orbitron', sans-serif !important;
-    font-size: 1.5rem !important;
-    margin: 0 !important;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5) !important;
-}
-
-.old-website-modal-body {
-    padding: 30px !important;
-    background: rgba(255, 255, 255, 0.05) !important;
-}
-
-.language-selection-old-style {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    margin-bottom: 25px;
-}
-
-.language-option-old {
-    display: flex;
-    align-items: center;
-    background: rgba(255, 255, 255, 0.1);
-    border: 2px solid transparent;
-    border-radius: 10px;
-    padding: 15px;
-    transition: all 0.3s ease;
-    cursor: pointer;
-}
-
-.language-option-old:hover {
-    background: rgba(153, 102, 255, 0.2);
-    border-color: #9966FF;
-    transform: translateX(10px);
-}
-
-.flag-icon {
-    font-size: 2.5rem;
-    margin-right: 15px;
-    min-width: 60px;
-    text-align: center;
-}
-
-.language-text {
-    flex: 1;
-}
-
-.language-text strong {
-    display: block;
-    color: #FFFFFF;
-    font-size: 1.2rem;
+/* ADDED: Styles for simple language modal from old style.css */
+.language-button {
+    background-color: transparent;
+    color: var(--nm-text);
+    border: 1px solid var(--nm-accent);
     font-family: 'Orbitron', sans-serif;
-    margin-bottom: 5px;
-}
-
-.language-text span {
-    color: #CCCCCC;
-    font-size: 0.9rem;
-}
-
-.select-language-btn {
-    background: linear-gradient(135deg, #00FF00, #00CC00);
-    border: none;
+    text-transform: uppercase;
+    font-weight: 700;
+    padding: 12px 25px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+    /* Added uniform border-radius */
+    clip-path: none;
     border-radius: 20px;
-    color: #000000;
-    padding: 10px 20px;
-    font-family: 'Orbitron', sans-serif;
-    font-weight: bold;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    min-width: 80px;
+    box-shadow: none; 
 }
 
-.select-language-btn:hover {
-    background: linear-gradient(135deg, #00CC00, #00FF00);
-    transform: scale(1.05);
-    box-shadow: 0 0 15px rgba(0, 255, 0, 0.5);
+.language-button:hover,
+.language-button.selected {
+    color: var(--nm-darkest);
+    background-color: var(--nm-accent);
+    border-color: var(--nm-accent-hover);
+    box-shadow: none; 
 }
 
-.language-footer-note {
-    text-align: center;
-    padding-top: 20px;
-    border-top: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-.language-footer-note p {
-    color: #999999;
-    font-size: 0.8rem;
-    margin: 0;
-    font-style: italic;
-}
-
-/* Make sure the language modal is on top of everything */
-#language-selection-modal {
-    z-index: 9999 !important;
-}
-
-/* Ensure the modal is visible and blocks interaction */
-.old-website-modal.visible {
-    opacity: 1 !important;
-    visibility: visible !important;
-    display: flex !important;
-}
 
 /* Responsive design for language modal */
 @media (max-width: 768px) {
-    .old-website-modal-content {
-        width: 95% !important;
-        margin: 20px !important;
-    }
-    
-    .language-option-old {
-        flex-direction: column;
-        text-align: center;
-        padding: 20px;
-    }
-    
-    .flag-icon {
-        margin-right: 0;
-        margin-bottom: 10px;
-    }
-    
-    .language-text {
-        margin-bottom: 15px;
-    }
-    
-    .select-language-btn {
-        width: 100%;
-    }
-    
     .language-selection-grid {
         grid-template-columns: 1fr;
         gap: 15px;
-    }
-
-    .floating-theme-switcher,
-    .floating-lang-switcher {
-        bottom: 10px;
-    }
-
-    .floating-theme-switcher {
-        left: 10px;
-    }
-
-    .floating-lang-switcher {
-        left: 70px;
     }
 
     .theme-switch-btn,

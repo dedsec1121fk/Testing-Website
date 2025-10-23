@@ -36,42 +36,20 @@
     </script>
 </head>
 <body class="dark-theme">
-    <!-- Language Selection Modal (Like Old Websites) -->
-    <div id="language-selection-modal" class="modal-overlay old-website-modal">
-        <div class="modal-content old-website-modal-content">
-            <div class="old-website-modal-header">
-                <h2>🌐 Select Your Language / Επιλέξτε Γλώσσα</h2>
-            </div>
-            <div class="old-website-modal-body">
-                <div class="language-selection-old-style">
-                    <div class="language-option-old" data-lang="en">
-                        <div class="flag-icon">🇺🇸</div>
-                        <div class="language-text">
-                            <strong>English</strong>
-                            <span>Continue in English</span>
-                        </div>
-                        <button class="select-language-btn">Select</button>
-                    </div>
-                    
-                    <div class="language-option-old" data-lang="gr">
-                        <div class="flag-icon">🇬🇷</div>
-                        <div class="language-text">
-                            <strong>Ελληνικά</strong>
-                            <span>Συνέχεια στα Ελληνικά</span>
-                        </div>
-                        <button class="select-language-btn">Επιλογή</button>
-                    </div>
-                </div>
-                
-                <div class="language-footer-note">
-                    <p>You can change this later in settings / Μπορείτε να αλλάξετε αργότερα στις ρυθμίσεις</p>
-                </div>
-            </div>
-        </div>
+    <div id="language-selection-modal" class="modal-overlay">
+      <div class="modal-content modal-content-auto-height">
+          <div class="modal-header">
+            <h2 data-en="Choose Language" data-gr="Επιλογή Γλώσσας">Choose Language / Επιλογή Γλώσσας</h2>
+            <button class="close-modal" aria-label="Close">×</button>
+          </div>
+          <div class="modal-body modal-body-centered">
+              <button class="language-button" data-lang="en" aria-label="Change language to English">English</button>
+              <button class="language-button" data-lang="gr" aria-label="Change language to Greek">Ελληνικά</button>
+          </div>
+      </div>
     </div>
 
-    <!-- Rest of your existing code remains the same -->
-    <!-- Burger Menu -->
+
     <div class="burger-menu">
         <div class="burger-icon-container">
             <div class="burger-icon" id="burger-icon">
@@ -90,18 +68,7 @@
             <a href="contact.html" class="nav-item" data-en="Contact" data-gr="Επικοινωνία">Contact</a>
             <a href="privacy.html" class="nav-item" data-en="Privacy" data-gr="Απόρρητο">Privacy</a>
             
-            <!-- Language and Theme Switchers in Navigation -->
-            <div class="nav-settings">
-                <button class="nav-item nav-setting-btn" id="nav-theme-switcher">
-                    <i class="fas fa-moon"></i>
-                    <span data-en="Theme" data-gr="Θέμα">Theme</span>
-                </button>
-                <button class="nav-item nav-setting-btn" id="nav-lang-switcher">
-                    <i class="fas fa-globe"></i>
-                    <span data-en="Language" data-gr="Γλώσσα">Language</span>
-                </button>
             </div>
-        </div>
     </div>
 
     <div class="phone-container">
@@ -185,7 +152,25 @@
                                 <p data-en="Explore our projects and GitHub repositories" data-gr="Εξερευνήστε τα έργα και τα αποθετήρια GitHub">Explore our projects and GitHub repositories</p>
                             </div>
                         </div>
-                    </div>
+
+                        <h4 class="grid-heading" data-en="Settings & Legal" data-gr="Ρυθμίσεις & Νομικά">Settings & Legal</h4>
+                        <div class="app-grid">
+                            <button id="theme-switcher-btn" class="app-wrapper">
+                                <div class="app-icon"><i class="fas fa-moon"></i></div>
+                                <span class="app-label" data-en="Theme" data-gr="Θέμα">Theme</span>
+                            </button>
+
+                            <button id="lang-switcher-btn" class="app-wrapper">
+                                <div class="app-icon"><i class="fas fa-globe"></i></div>
+                                <span class="app-label">Language / Γλώσσα</span>
+                            </button>
+
+                            <button class="app-wrapper" data-modal="privacy" onclick="alert('This will be linked in a real scenario, but for now, use the nav menu.');">
+                                <div class="app-icon"><i class="fas fa-user-shield"></i></div>
+                                <span class="app-label" data-en="Privacy Policy" data-gr="Πολιτική Απορρήτου">Privacy Policy</span>
+                            </button>
+                        </div>
+                        </div>
                 </div>
 
                 <footer class="main-footer">
@@ -199,7 +184,6 @@
         </div>
     </div>
 
-    <!-- Certificate Modal -->
     <div id="certificate-modal" class="modal-overlay">
         <div class="modal-content">
             <div class="modal-header">
@@ -249,20 +233,6 @@
                 </div>
             </div>
         </div>
-    </div>
-
-    <!-- Floating Theme Switcher -->
-    <div class="floating-theme-switcher">
-        <button class="theme-switch-btn" id="theme-switch-btn" title="Switch Theme">
-            <i class="fas fa-moon"></i>
-        </button>
-    </div>
-
-    <!-- Floating Language Switcher -->
-    <div class="floating-lang-switcher">
-        <button class="lang-switch-btn" id="lang-switch-btn" title="Switch Language">
-            <i class="fas fa-globe"></i>
-        </button>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
