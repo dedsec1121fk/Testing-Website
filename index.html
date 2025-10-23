@@ -15,8 +15,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&family=Roboto+Mono:wght@400;700&family=Inter:wght@400;700&family=Noto+Serif:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="common.css">
+    <link rel="stylesheet" href="style.css">
 
     <script type="application/ld+json">
     {
@@ -36,59 +36,44 @@
     </script>
 </head>
 <body class="dark-theme">
-    <div id="language-selection-modal" class="modal-overlay old-website-modal">
-        <div class="modal-content old-website-modal-content">
-            <div class="old-website-modal-header">
-                <h2>🌐 Select Your Language / Επιλέξτε Γλώσσα</h2>
-            </div>
-            <div class="old-website-modal-body">
-                <div class="language-selection-old-style">
-                    <div class="language-option-old" data-lang="en">
-                        <div class="flag-icon">🇺🇸</div>
-                        <div class="language-text">
-                            <strong>English</strong>
-                            <span>Continue in English</span>
-                        </div>
-                        <button class="select-language-btn">Select</button>
-                    </div>
-                    
-                    <div class="language-option-old" data-lang="gr">
-                        <div class="flag-icon">🇬🇷</div>
-                        <div class="language-text">
-                            <strong>Ελληνικά</strong>
-                            <span>Συνέχεια στα Ελληνικά</span>
-                        </div>
-                        <button class="select-language-btn">Επιλογή</button>
-                    </div>
-                </div>
-                
-                <div class="language-footer-note">
-                    <p>You can change this later in settings / Μπορείτε να αλλάξετε αργότερα στις ρυθμίσεις</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <div class="burger-menu">
         <div class="burger-icon-container">
-            <div class="burger-icon" id="burger-icon">
+            <div id="burger-icon" class="burger-icon">
                 <span></span>
                 <span></span>
                 <span></span>
             </div>
         </div>
-        <div class="nav-menu" id="nav-menu">
-            <a href="index.html" class="nav-item" data-en="Home" data-gr="Αρχική">Home</a>
-            <a href="learn.html" class="nav-item" data-en="Learn About The Tools" data-gr="Μάθετε για τα Εργαλεία">Learn About The Tools</a>
-            <a href="installation.html" class="nav-item" data-en="Installation" data-gr="Εγκατάσταση">Installation</a>
-            <a href="useful-info.html" class="nav-item" data-en="Useful Information" data-gr="Χρήσιμες Πληροφορίες">Useful Information</a>
-            <a href="collaborations.html" class="nav-item" data-en="Collaborations" data-gr="Συνεργασίες">Collaborations</a>
-            <a href="portfolio.html" class="nav-item" data-en="Portfolio" data-gr="Portfolio">Portfolio</a>
-            <a href="contact.html" class="nav-item" data-en="Contact" data-gr="Επικοινωνία">Contact</a>
-            <a href="privacy.html" class="nav-item" data-en="Privacy" data-gr="Απόρρητο">Privacy</a>
-        </div>
     </div>
 
+    <nav id="nav-menu" class="nav-menu">
+        <a href="index.html" class="nav-item nav-item-home" data-en="Home" data-gr="Αρχική">
+            <i class="fas fa-home"></i>
+            <span class="nav-item-text">Home</span>
+        </a>
+        <a href="about.html" class="nav-item" data-en="About" data-gr="Σχετικά">
+            <i class="fas fa-info-circle"></i>
+            <span class="nav-item-text">About</span>
+        </a>
+        <a href="contact.html" class="nav-item" data-en="Contact" data-gr="Επικοινωνία">
+            <i class="fas fa-envelope"></i>
+            <span class="nav-item-text">Contact</span>
+        </a>
+        
+        <div class="nav-switches-container">
+            <button id="theme-switch" class="nav-switch" aria-label="Toggle Dark/Light Theme">
+                <i class="fas fa-sun theme-icon-sun"></i>
+                <i class="fas fa-moon theme-icon-moon"></i>
+                <span class="nav-item-text" data-en="Theme" data-gr="Θέμα">Theme</span>
+            </button>
+
+            <button id="lang-switch" class="nav-switch" data-modal="language-prompt">
+                <i class="fas fa-globe"></i>
+                <span class="nav-item-text" data-en="Language" data-gr="Γλώσσα">Language</span>
+            </button>
+        </div>
+        </nav>
+    
     <div class="phone-container">
         <div id="scroll-indicator-thumb"></div>
         <div class="screen">
@@ -124,135 +109,157 @@
                     </button>
                 </div>
 
-                <div class="page-content">
-                    <div class="content-section">
-                        <h2 data-en="Welcome to DedSec Project" data-gr="Καλώς ήρθατε στο DedSec Project">Welcome to DedSec Project</h2>
-                        <p data-en="DedSec Project is a comprehensive cybersecurity toolkit designed for ethical hacking, security research, and educational purposes. Our mission is to provide security professionals and enthusiasts with powerful tools to understand and defend against modern cyber threats in a controlled, legal environment." data-gr="Το DedSec Project είναι ένα ολοκληρωμένο εργαλείο κυβερνοασφάλειας σχεδιασμένο για ηθικό hacking, έρευνα ασφαλείας και εκπαιδευτικούς σκοπούς. Η αποστολή μας είναι να παρέχουμε σε επαγγελματίες ασφαλείας και λάτρεις ισχυρά εργαλεία για να κατανοήσουν και να αμυνθούν ενάντια σε σύγχρονες απειλές κυβερνοασφάλειας σε ένα ελεγχόμενο, νόμιμο περιβάλλον.">DedSec Project is a comprehensive cybersecurity toolkit designed for ethical hacking, security research, and educational purposes.</p>
+                <div class="hero-section">
+                    <p class="hero-text" data-en="" data-gr=""></p>
+                </div>
 
-                        <h3 data-en="What is DedSec Project?" data-gr="Τι είναι το DedSec Project;">What is DedSec Project?</h3>
-                        <p data-en="DedSec Project is an advanced security framework that brings together various cybersecurity tools and utilities into a single, easy-to-use platform. Originally designed for Android devices using Termux, it has evolved into a robust toolkit for security testing, network analysis, digital forensics, and educational demonstrations." data-gr="Το DedSec Project είναι ένα προηγμένο πλαίσιο ασφαλείας που ενσωματώνει διάφορα εργαλεία και βοηθητικά προγράμματα κυβερνοασφάλειας σε μια ενιαία, εύχρηστη πλατφόρμα. Αρχικά σχεδιασμένο για συσκευές Android που χρησιμοποιούν το Termux, έχει εξελιχθεί σε ένα ισχυρό εργαλείο για δοκιμές ασφαλείας, ανάλυση δικτύου, ψηφιακή εγκληματολογία και εκπαιδευτικές επιδείξεις.">DedSec Project is an advanced security framework that brings together various cybersecurity tools and utilities.</p>
+                <h4 class="grid-heading" data-en="Explore the Toolkit" data-gr="Εξερευνήστε την Εργαλειοθήκη">Explore the Toolkit</h4>
+                <div class="app-grid">
+                    <button class="app-wrapper" data-modal="scripts">
+                        <div class="app-icon"><i class="fas fa-shield-alt"></i></div>
+                        <span class="app-label" data-en="Understand What The DedSec Project Does" data-gr="Κατανοήστε Τι Κάνει Το DedSec Project">Understand What The DedSec Project Does</span>
+                    </button>
+                    
+                    <button class="app-wrapper" data-modal="installation">
+                        <div class="app-icon"><i class="fas fa-download"></i></div>
+                        <span class="app-label" data-en="How To Install And Setup The DedSec Project" data-gr="Πώς Να Εγκαταστήσετε Και Να Ρυθμίσετε Το DedSec Project">How To Install And Setup Το DedSec Project</span>
+                    </button>
 
-                        <h3 data-en="Key Features" data-gr="Βασικά Χαρακτηριστικά">Key Features</h3>
-                        <ul>
-                            <li data-en="Comprehensive suite of ethical hacking tools" data-gr="Ολοκληρωμένη σουίτα εργαλείων ηθικού hacking">Comprehensive suite of ethical hacking tools</li>
-                            <li data-en="Educational demonstrations of security vulnerabilities" data-gr="Εκπαιδευτικές επιδείξεις ευπαθειών ασφαλείας">Educational demonstrations of security vulnerabilities</li>
-                            <li data-en="Network analysis and reconnaissance tools" data-gr="Εργαλεία ανάλυσης δικτύου και αναγνώρισης">Network analysis and reconnaissance tools</li>
-                            <li data-en="Digital forensics and OSINT capabilities" data-gr="Δυνατότητες ψηφιακής εγκληματολογίας και OSINT">Digital forensics and OSINT capabilities</li>
-                            <li data-en="User-friendly interface for both beginners and experts" data-gr="Φιλική διεπαφή για αρχάριους και ειδικούς">User-friendly interface for both beginners and experts</li>
-                            <li data-en="Regular updates with new tools and features" data-gr="Τακτικές ενημερώσεις με νέα εργαλεία και λειτουργίες">Regular updates with new tools and features</li>
-                            <li data-en="Multi-language support (English and Greek)" data-gr="Υποστήριξη πολλαπλών γλωσσών (Αγγλικά και Ελληνικά)">Multi-language support (English and Greek)</li>
-                        </ul>
+                    <button class="app-wrapper" data-modal="useful-information">
+                        <div class="app-icon"><i class="fas fa-lightbulb"></i></div>
+                        <span class="app-label" data-en="Useful Information" data-gr="Χρήσιμες Πληροφορίες">Useful Information</span>
+                    </button>
+                </div>
 
-                        <h3 data-en="Our Mission" data-gr="Η Αποστολή Μας">Our Mission</h3>
-                        <p data-en="We believe that understanding cybersecurity is crucial in today's digital world. Our mission is to make security education accessible and engaging through hands-on tools and real-world scenarios. By demonstrating how attacks work, we help users develop the skills needed to defend against them." data-gr="Πιστεύουμε ότι η κατανόηση της κυβερνοασφάλειας είναι ζωτικής σημασίας στον σημερινό ψηφιακό κόσμο. Η αποστολή μας είναι να κάνουμε την εκπαίδευση ασφαλείας προσιτή και ελκυστική μέσα από πρακτικά εργαλεία και σενάρια του πραγματικού κόσμου. Δείχνοντας πώς λειτουργούν οι επιθέσεις, βοηθάμε τους χρήστες να αναπτύξουν τις δεξιότητες που απαιτούνται για να αμυνθούν εναντίον τους.">We believe that understanding cybersecurity is crucial in today's digital world.</p>
+                <h4 class="grid-heading" data-en="About & Community" data-gr="Σχετικά & Κοινότητα">About & Community</h4>
+                <div class="app-grid">
+                    <button class="app-wrapper" data-modal="collaborations">
+                        <div class="app-icon"><i class="fas fa-handshake"></i></div>
+                        <span class="app-label" data-en="Collaborations" data-gr="Συνεργασίες">Collaborations</span>
+                    </button>
+                    
+                    <button class="app-wrapper" data-modal="portfolio-github">
+                        <div class="app-icon"><i class="fas fa-briefcase"></i></div>
+                        <span class="app-label" data-en="Portfolio & GitHub Info" data-gr="Portfolio & GitHub Info">Portfolio & GitHub Info</span>
+                    </button>
 
-                        <div class="tip">
-                            <p data-en="All tools are provided for educational and authorized testing purposes only. Always ensure you have proper authorization before testing any system." data-gr="Όλα τα εργαλεία παρέχονται μόνο για εκπαιδευτικούς και εξουσιοδοτημένους σκοπούς δοκιμών. Βεβαιωθείτε πάντα ότι έχετε τη σωστή άδεια πριν δοκιμάσετε οποιοδήποτε σύστημα.">All tools are provided for educational and authorized testing purposes only.</p>
-                        </div>
+                    <button class="app-wrapper" data-modal="contact-credits">
+                        <div class="app-icon"><i class="fas fa-id-card-clip"></i></div>
+                        <span class="app-label" data-en="Contact & Credits" data-gr="Επαφή & Συντελεστές">Contact & Credits</span>
+                    </button>
+                </div>
 
-                        <h3 data-en="Get Started" data-gr="Ξεκινήστε">Get Started</h3>
-                        <p data-en="Use the navigation menu to explore the different aspects of the DedSec Project:" data-gr="Χρησιμοποιήστε το μενού πλοήγησης για να εξερευνήσετε τις διαφορετικές πτυχές του DedSec Project:">Use the navigation menu to explore the different aspects of the DedSec Project:</p>
-                        
-                        <div class="info-grid">
-                            <div class="info-card">
-                                <i class="fas fa-tools"></i>
-                                <h4 data-en="Learn About The Tools" data-gr="Μάθετε για τα Εργαλεία">Learn About The Tools</h4>
-                                <p data-en="Discover the capabilities and educational purpose of each tool" data-gr="Ανακαλύψτε τις δυνατότητες και τον εκπαιδευτικό σκοπό κάθε εργαλείου">Discover the capabilities and educational purpose of each tool</p>
-                            </div>
-                            <div class="info-card">
-                                <i class="fas fa-download"></i>
-                                <h4 data-en="Installation Guide" data-gr="Οδηγός Εγκατάστασης">Installation Guide</h4>
-                                <p data-en="Step-by-step instructions to install and setup the project" data-gr="Βήμα-βήμα οδηγίες για εγκατάσταση και ρύθμιση">Step-by-step instructions to install and setup the project</p>
-                            </div>
-                            <div class="info-card">
-                                <i class="fas fa-briefcase"></i>
-                                <h4 data-en="Portfolio & GitHub" data-gr="Portfolio & GitHub">Portfolio & GitHub</h4>
-                                <p data-en="Explore our projects and GitHub repositories" data-gr="Εξερευνήστε τα έργα και τα αποθετήρια GitHub">Explore our projects and GitHub repositories</p>
-                            </div>
-                        </div>
+                <h4 class="grid-heading" data-en="Privacy & Legal" data-gr="Απόρρητο & Νομικά">Privacy & Legal</h4>
+                <div class="app-grid">
+                    <button class="app-wrapper" data-modal="privacy-policy">
+                        <div class="app-icon"><i class="fas fa-user-lock"></i></div>
+                        <span class="app-label" data-en="Privacy Policy" data-gr="Πολιτική Απορρήτου">Privacy Policy</span>
+                    </button>
+                    
+                    <button class="app-wrapper" data-modal="terms-of-service">
+                        <div class="app-icon"><i class="fas fa-file-contract"></i></div>
+                        <span class="app-label" data-en="Terms of Service" data-gr="Όροι Παροχής Υπηρεσιών">Terms of Service</span>
+                    </button>
+                </div>
 
-                        <h4 class="grid-heading" data-en="Settings & Legal" data-gr="Ρυθμίσεις & Νομικά">Settings & Legal</h4>
-                        <div class="app-grid">
-                            <button id="theme-switcher-btn" class="app-wrapper">
-                                <div class="app-icon"><i class="fas fa-moon"></i></div>
-                                <span class="app-label" data-en="Theme" data-gr="Θέμα">Theme</span>
-                            </button>
-
-                            <button id="lang-switcher-btn" class="app-wrapper">
-                                <div class="app-icon"><i class="fas fa-globe"></i></div>
-                                <span class="app-label">Language / Γλώσσα</span>
-                            </button>
-
-                            <button class="app-wrapper" data-modal="privacy" onclick="window.location.href='privacy.html';">
-                                <div class="app-icon"><i class="fas fa-user-shield"></i></div>
-                                <span class="app-label" data-en="Privacy Policy" data-gr="Πολιτική Απορρήτου">Privacy Policy</span>
-                            </button>
-                        </div>
-                        </div>
+                <div class="store-links">
+                    <div class="store-link">
+                        <a href="#" target="_blank">
+                            <i class="fab fa-google-play"></i>
+                            <span data-en="Get it on Google Play" data-gr="Κατεβάστε το από το Google Play">Get it on Google Play</span>
+                        </a>
+                    </div>
+                    <div class="store-link">
+                        <a href="#" target="_blank">
+                            <i class="fab fa-app-store"></i>
+                            <span data-en="Download on the App Store" data-gr="Κατεβάστε το από το App Store">Download on the App Store</span>
+                        </a>
+                    </div>
                 </div>
 
                 <footer class="main-footer">
-                    <p data-lang-section="en">© 2025 DedSec Project. All Rights Reserved.</p>
-                    <p data-lang-section="gr" class="hidden-by-default">© 2025 DedSec Project. Με επιφύλαξη παντός δικαιώματος.</p>
-                    <p data-lang-section="en" style="font-size: 0.7em; opacity: 0.7; margin-top: 10px;">Trademark Disclaimer: The "DedSec" name and logo are inspired by the "Watch Dogs" series and are used for thematic purposes only. This project is not affiliated with or endorsed by Ubisoft Entertainment S.A.</p>
-                    <p data-lang-section="gr" class="hidden-by-default" style="font-size: 0.7em; opacity: 0.7; margin-top: 10px;">Αποποίηση Ευθύνης Εμπορικού Σήματος: Το όνομα και το λογότυπο "DedSec" είναι εμπνευσμένα από τη σειρά "Watch Dogs" και χρησιμοποιούνται μόνο για θεματικούς σκοπούς. Αυτό το έργο δεν συνδέεται ούτε υποστηρίζεται από την Ubisoft Entertainment S.A.</p>
-                    <p>Made by dedsec1121fk.</p>
+                    <p data-en="Copyright © 2024 DedSec Project. All rights reserved." data-gr="Πνευματικά Δικαιώματα © 2024 DedSec Project. Όλα τα δικαιώματα διατηρούνται.">
+                        Copyright © 2024 DedSec Project. All rights reserved.
+                    </p>
                 </footer>
             </main>
         </div>
     </div>
-
-    <div id="certificate-modal" class="modal-overlay">
+    
+    <div id="certificate-modal" class="modal-overlay hidden">
         <div class="modal-content">
             <div class="modal-header">
-                <h2 data-en="1 Year Anniversary Certificate" data-gr="Πιστοποιητικό 1 Χρόνου Επετείου">1 Year Anniversary Certificate</h2>
+                <h2 data-en="Anniversary Certificate" data-gr="Πιστοποιητικό Επετείου">Anniversary Certificate</h2>
                 <button class="close-modal" aria-label="Close">×</button>
             </div>
             <div class="modal-body">
-                <div class="certificate-form-container">
-                    <p data-en="Fill out the form below to generate your exclusive 1-year anniversary certificate!" 
-                       data-gr="Συμπληρώστε την παρακάτω φόρμα για να δημιουργήσετε το αποκλειστικό σας πιστοποιητικό 1 χρόνου επετείου!">
-                       Fill out the form below to generate your exclusive 1-year anniversary certificate!
-                    </p>
+                <p data-en="Fill out the details below to generate your personalized 1 Year Anniversary Certificate of Participation."
+                   data-gr="Συμπληρώστε τα στοιχεία παρακάτω για να δημιουργήσετε το εξατομικευμένο σας Πιστοποιητικό Συμμετοχής για την 1η Επέτειο.">
+                   Fill out the details below to generate your personalized 1 Year Anniversary Certificate of Participation.
+                </p>
+                
+                <form id="certificate-form">
+                    <div class="form-group half-width">
+                        <label for="firstName" data-en="First Name" data-gr="Όνομα">First Name</label>
+                        <input type="text" id="firstName" name="firstName" required>
+                    </div>
                     
-                    <form id="certificate-form">
-                        <div class="form-group">
-                            <label for="firstName" data-en="First Name" data-gr="Όνομα">First Name</label>
-                            <input type="text" id="firstName" name="firstName" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="lastName" data-en="Last Name" data-gr="Επώνυμο">Last Name</label>
-                            <input type="text" id="lastName" name="lastName" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="age" data-en="Age" data-gr="Ηλικία">Age</label>
-                            <input type="number" id="age" name="age" min="1" max="120" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="country" data-en="Country" data-gr="Χώρα">Country</label>
-                            <input type="text" id="country" name="country" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="city" data-en="City" data-gr="Πόλη">City</label>
-                            <input type="text" id="city" name="city" required>
-                        </div>
-                        
-                        <div class="form-actions">
-                            <button type="button" id="generate-certificate" class="accept-btn">
-                                <i class="fas fa-download"></i>
-                                <span data-en="Download Certificate" data-gr="Λήψη Πιστοποιητικού">Download Certificate</span>
-                            </button>
-                        </div>
-                    </form>
-                </div>
+                    <div class="form-group half-width">
+                        <label for="lastName" data-en="Last Name" data-gr="Επώνυμο">Last Name</label>
+                        <input type="text" id="lastName" name="lastName" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="age" data-en="Age" data-gr="Ηλικία">Age</label>
+                        <input type="number" id="age" name="age" min="1" max="120" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="country" data-en="Country" data-gr="Χώρα">Country</label>
+                        <input type="text" id="country" name="country" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="city" data-en="City" data-gr="Πόλη">City</label>
+                        <input type="text" id="city" name="city" required>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" id="generate-certificate" class="accept-btn">
+                            <i class="fas fa-download"></i>
+                            <span data-en="Download Certificate" data-gr="Λήψη Πιστοποιητικού">Download Certificate</span>
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
 
+    <div id="language-prompt-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 data-en="Choose Your Language" data-gr="Επιλέξτε Γλώσσα">Choose Your Language</h2>
+                <button class="close-modal" aria-label="Close">×</button>
+            </div>
+            <div class="modal-body centered-content">
+                <p data-en="Please select your preferred language to continue." data-gr="Παρακαλώ επιλέξτε την προτιμώμενη γλώσσα για να συνεχίσετε.">Please select your preferred language to continue.</p>
+                <div class="language-options">
+                    <button class="language-button" data-lang="en">
+                        <i class="fas fa-globe"></i> English
+                    </button>
+                    <button class="language-button" data-lang="gr">
+                        <i class="fas fa-globe"></i> Ελληνικά (Greek)
+                    </button>
+                </div>
+                <div class="form-actions" style="margin-top: 20px;">
+                    <button id="language-select-confirm" class="accept-btn" style="width: 100%;">
+                        <i class="fas fa-check"></i> 
+                        <span data-en="Confirm Selection" data-gr="Επιβεβαίωση Επιλογής">Confirm Selection</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="common.js"></script>

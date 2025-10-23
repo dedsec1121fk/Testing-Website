@@ -3,13 +3,189 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentLanguage = localStorage.getItem('language') || 'en';
     let currentTheme = localStorage.getItem('theme') || 'dark';
 
+    // --- Helper for Modals (Assumed missing) ---
+    function openModal(modalId) {
+        const modal = document.getElementById(modalId);
+        if (modal) {
+            modal.classList.remove('hidden');
+            modal.classList.add('visible');
+            document.body.style.overflow = 'hidden'; // Prevent scrolling
+        }
+    }
+
+    function closeModal(modalId) {
+        const modal = document.getElementById(modalId);
+        if (modal) {
+            modal.classList.remove('visible');
+            modal.classList.add('hidden');
+            document.body.style.overflow = ''; // Restore scrolling
+        }
+    }
+    
+    // --- THEME LOGIC ---
+    function setTheme(theme) {
+        if (theme === 'light') {
+            document.body.classList.add('light-theme');
+            document.body.classList.remove('dark-theme');
+            localStorage.setItem('theme', 'light');
+            currentTheme = 'light';
+        } else {
+            document.body.classList.remove('light-theme');
+            document.body.classList.add('dark-theme');
+            localStorage.setItem('theme', 'dark');
+            currentTheme = 'dark';
+        }
+    }
+
+    // --- LANGUAGE LOGIC ---
+    // Function to apply translations based on the currentLanguage and data attributes
+    function applyLanguage() {
+        document.documentElement.lang = currentLanguage;
+        // Update all elements with data-en/data-gr attributes
+        document.querySelectorAll('[data-en][data-gr]').forEach(el => {
+            const translation = el.getAttribute(`data-${currentLanguage}`);
+            if (!translation) return;
+
+            // Check if the element is an input and update placeholder
+            if (el.tagName === 'INPUT' && el.hasAttribute('placeholder')) {
+                el.setAttribute('placeholder', translation);
+            } 
+            // Check if the element has an icon and a text span inside (like nav-switch), update the span
+            else if (el.querySelector('i') && el.querySelector('span.nav-item-text')) {
+                const span = el.querySelector('span.nav-item-text');
+                if (span) span.textContent = translation;
+            }
+            // Fallback for general text content (H1, P, etc.)
+            else {
+                el.textContent = translation;
+            }
+        });
+    }
+
+    function setLanguage(lang) {
+        if (lang === currentLanguage) {
+             // Update selection state on language buttons
+             document.querySelectorAll('.language-button').forEach(btn => {
+                if (btn.getAttribute('data-lang') === lang) {
+                    btn.classList.add('selected');
+                } else {
+                    btn.classList.remove('selected');
+                }
+            });
+             return;
+        }
+        currentLanguage = lang;
+        localStorage.setItem('language', lang);
+        applyLanguage();
+        // Update selected class in the language modal
+        document.querySelectorAll('.language-button').forEach(btn => {
+            if (btn.getAttribute('data-lang') === lang) {
+                btn.classList.add('selected');
+            } else {
+                btn.classList.remove('selected');
+            }
+        });
+    }
+
+    // --- INITIALIZERS from old files ---
+    
+    function initializeTheme() {
+        // Apply saved theme on load
+        setTheme(currentTheme); 
+    }
+
+    function initializeLanguage() {
+        // Apply language on load
+        setLanguage(currentLanguage);
+    }
+
+    function initializeOldThemeSwitcher() {
+        const switchButton = document.getElementById('theme-switch');
+        if (switchButton) {
+            switchButton.addEventListener('click', () => {
+                const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+                setTheme(newTheme);
+            });
+        }
+    }
+    
+    function initializeOldLangSwitcher() {
+        // This is for the button in the nav-menu to open the language modal
+        const langSwitchButton = document.getElementById('lang-switch');
+        if (langSwitchButton) {
+            langSwitchButton.addEventListener('click', (e) => {
+                e.preventDefault();
+                openModal('language-prompt-modal');
+            });
+        }
+    }
+
+    // --- LANGUAGE PROMPT MODAL LOGIC (Old Website Style) ---
+    function initializeOldWebsiteLanguageModal() {
+        const modal = document.getElementById('language-prompt-modal');
+        if (!modal) return;
+
+        // 1. Show modal if no language is set in localStorage
+        const languagePromptShown = localStorage.getItem('languagePromptShown');
+        if (!currentLanguage || !languagePromptShown) {
+            // Wait for 1 second before showing the prompt
+            setTimeout(() => {
+                openModal('language-prompt-modal');
+            }, 1000); 
+        }
+
+        let selectedLang = currentLanguage; // Temp language selection
+        
+        // 2. Handle language selection buttons
+        document.querySelectorAll('.language-button').forEach(btn => {
+            btn.addEventListener('click', () => {
+                selectedLang = btn.getAttribute('data-lang');
+                // Visually select
+                document.querySelectorAll('.language-button').forEach(b => b.classList.remove('selected'));
+                btn.classList.add('selected');
+            });
+            // Initial selection state
+            if (btn.getAttribute('data-lang') === currentLanguage) {
+                 btn.classList.add('selected');
+            }
+        });
+
+        // 3. Handle confirm button
+        document.getElementById('language-select-confirm')?.addEventListener('click', () => {
+            if (selectedLang) {
+                setLanguage(selectedLang);
+                localStorage.setItem('languagePromptShown', 'true'); // Prevent showing again
+                closeModal('language-prompt-modal');
+            } else {
+                alert('Please select a language.');
+            }
+        });
+        
+        // 4. Handle close button and click-outside logic
+        const closeLogic = () => {
+             // If they close it without selecting, keep the current language (default 'en')
+             if (!localStorage.getItem('language')) {
+                 setLanguage('en');
+                 localStorage.setItem('languagePromptShown', 'true'); 
+             }
+             closeModal('language-prompt-modal');
+        }
+
+        modal.querySelector('.close-modal')?.addEventListener('click', closeLogic);
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                 closeLogic();
+            }
+        });
+    }
+
     // Initialize all functionality
     initializeNavigation();
-    initializeTheme();
-    initializeLanguage();
-    initializeOldWebsiteLanguageModal(); // MODIFIED: Call correct modal init
-    initializeOldThemeSwitcher(); // MODIFIED: Call old theme init
-    initializeOldLangSwitcher(); // MODIFIED: Call old lang init
+    initializeTheme(); // MODIFIED/REDEFINED
+    initializeLanguage(); // MODIFIED/REDEFINED
+    initializeOldWebsiteLanguageModal(); // NEW
+    initializeOldThemeSwitcher(); // NEW
+    initializeOldLangSwitcher(); // NEW
     initializeCopyButtons();
     addBackHomeButton();
 
@@ -41,335 +217,52 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
         }
-
         setActiveNavItem();
     }
 
     function setActiveNavItem() {
         const currentPage = window.location.pathname.split('/').pop() || 'index.html';
-        const navItems = document.querySelectorAll('.nav-item');
+        const navItems = document.querySelectorAll('.nav-menu .nav-item');
         
         navItems.forEach(item => {
-            const href = item.getAttribute('href');
-            if (href === currentPage || (currentPage === '' && href === 'index.html')) {
+            const itemPage = item.getAttribute('href').split('/').pop();
+            item.classList.remove('active');
+            if (itemPage === currentPage) {
                 item.classList.add('active');
-            } else {
-                item.classList.remove('active');
             }
         });
-    }
-
-    function initializeTheme() {
-        if (currentTheme === 'light') {
-            document.body.classList.add('light-theme');
-        } else {
-            document.body.classList.remove('light-theme');
-        }
-    }
-
-    function initializeLanguage() {
-        changeLanguage(currentLanguage);
-    }
-
-    // ADDED: initializeOldWebsiteLanguageModal from original common.js
-    function initializeOldWebsiteLanguageModal() {
-        const languageModal = document.getElementById('language-selection-modal');
-        const languageOptions = document.querySelectorAll('.language-option-old');
-        const selectButtons = document.querySelectorAll('.select-language-btn');
-        
-        // Check if user has already selected a language
-        const languageSelected = localStorage.getItem('language-selected');
-        
-        if (languageSelected === 'true') {
-            // Hide modal if language already selected
-            if (languageModal) {
-                languageModal.classList.remove('visible');
-                languageModal.style.display = 'none';
-            }
-            return;
-        }
-
-        // Show modal if no language selection has been made
-        if (languageModal) {
-            languageModal.classList.add('visible');
-            languageModal.style.display = 'flex';
-            
-            // Make sure it's on top and blocks everything
-            languageModal.style.zIndex = '9999';
-            languageModal.style.position = 'fixed';
-            languageModal.style.top = '0';
-            languageModal.style.left = '0';
-            languageModal.style.width = '100%';
-            languageModal.style.height = '100%';
-        }
-
-        // Add event listeners to language options (click anywhere on the option)
-        languageOptions.forEach(option => {
-            option.addEventListener('click', (e) => {
-                // Don't trigger if the click was on the button (handled separately)
-                if (!e.target.classList.contains('select-language-btn') && !e.target.closest('.select-language-btn')) {
-                    const selectedLang = option.getAttribute('data-lang');
-                    selectLanguage(selectedLang);
-                }
-            });
-        });
-
-        // Add event listeners to select buttons
-        selectButtons.forEach((button, index) => {
-            button.addEventListener('click', (e) => {
-                e.stopPropagation(); // Prevent triggering the parent option click
-                const option = button.closest('.language-option-old');
-                const selectedLang = option.getAttribute('data-lang');
-                selectLanguage(selectedLang);
-            });
-        });
-
-        function selectLanguage(lang) {
-            localStorage.setItem('language-selected', 'true');
-            changeLanguage(lang);
-            
-            // Hide modal with animation
-            if (languageModal) {
-                languageModal.style.animation = 'modalDisappear 0.3s ease-in forwards';
-                setTimeout(() => {
-                    languageModal.style.display = 'none';
-                }, 300);
-            }
-        }
-    }
-
-
-    // ADDED: initializeOldThemeSwitcher from old script.js logic
-    function initializeOldThemeSwitcher() {
-        const themeSwitcherBtn = document.getElementById('theme-switcher-btn');
-        if (!themeSwitcherBtn) return;
-
-        const themeIcon = themeSwitcherBtn.querySelector('i');
-        const themeSpan = themeSwitcherBtn.querySelector('span');
-
-        const updateThemeButton = (isLightTheme) => {
-            if (!themeIcon || !themeSpan) return;
-            const currentLang = localStorage.getItem('language') || 'en';
-            if (isLightTheme) {
-                themeIcon.classList.remove('fa-moon');
-                themeIcon.classList.add('fa-sun');
-                themeSpan.setAttribute('data-en', 'Light Theme');
-                themeSpan.setAttribute('data-gr', 'Φωτεινό Θέμα');
-            } else {
-                themeIcon.classList.remove('fa-sun');
-                themeIcon.classList.add('fa-moon');
-                themeSpan.setAttribute('data-en', 'Theme');
-                themeSpan.setAttribute('data-gr', 'Θέμα');
-            }
-            themeSpan.textContent = themeSpan.getAttribute(`data-${currentLang}`) || themeSpan.getAttribute('data-en');
-        };
-
-        themeSwitcherBtn.addEventListener('click', () => {
-            document.body.classList.toggle('light-theme');
-            const isLight = document.body.classList.contains('light-theme');
-            localStorage.setItem('theme', isLight ? 'light' : 'dark');
-            updateThemeButton(isLight);
-        });
-
-        // Set initial theme based on localStorage
-        const savedTheme = localStorage.getItem('theme');
-        if (savedTheme === 'light') {
-            document.body.classList.add('light-theme');
-        } else {
-            document.body.classList.remove('light-theme');
-        }
-        updateThemeButton(document.body.classList.contains('light-theme'));
     }
     
-    // ADDED: initializeOldLangSwitcher from old script.js logic
-    function initializeOldLangSwitcher() {
-         const langSwitcherBtn = document.getElementById('lang-switcher-btn');
-         if(langSwitcherBtn) {
-            langSwitcherBtn.addEventListener('click', () => {
-                const languageModal = document.getElementById('language-selection-modal');
-                if(languageModal) {
-                    // This modal doesn't have a close button, so we just show it.
-                    // The user must select a language to close it.
-                    languageModal.style.display = 'flex';
-                    languageModal.classList.add('visible');
-                    // Reset animation in case it was closed
-                    languageModal.style.animation = 'modalAppear 0.5s ease-out';
-                }
-            });
-         }
-    }
-
-
     function initializeCopyButtons() {
-        // Add event listeners to all copy buttons
-        document.addEventListener('click', (e) => {
-            if (e.target.classList.contains('copy-btn') || e.target.closest('.copy-btn')) {
-                const copyBtn = e.target.classList.contains('copy-btn') ? e.target : e.target.closest('.copy-btn');
-                const targetId = copyBtn.getAttribute('data-target');
-                if (targetId) {
-                    copyToClipboard(copyBtn, targetId);
-                }
-            }
+        const copyButtons = document.querySelectorAll('.copy-btn');
+        copyButtons.forEach(button => {
+            button.addEventListener('click', handleCopyClick);
         });
     }
 
     function addBackHomeButton() {
-        if (!window.location.pathname.endsWith('index.html') && !window.location.pathname.endsWith('/')) {
-            // Remove existing back button if any
-            const existingBackHome = document.querySelector('.back-home');
-            if (existingBackHome) existingBackHome.remove();
-
-            const backHomeDiv = document.createElement('div');
-            backHomeDiv.className = 'back-home';
-            backHomeDiv.innerHTML = `
-                <a href="index.html" class="back-home-btn" title="Back to Home">
-                    <i class="fas fa-home"></i>
-                </a>
-            `;
-            document.body.appendChild(backHomeDiv);
-        }
-    }
-
-    // Global language change function
-    window.changeLanguage = (lang) => {
-        currentLanguage = lang;
-        localStorage.setItem('language', lang);
-        document.documentElement.lang = lang;
-        
-        // Update all elements with data attributes
-        document.querySelectorAll('[data-en]').forEach(el => {
-            updateElementLanguage(el, lang);
-        });
-
-        // Update language sections
-        document.querySelectorAll('[data-lang-section]').forEach(el => {
-            const shouldShow = el.dataset.langSection === lang;
-            el.style.display = shouldShow ? 'block' : 'none';
-            el.classList.toggle('hidden', !shouldShow);
-            if (shouldShow) {
-                el.classList.remove('hidden-by-default');
-            }
-        });
-        
-        // ADDED: Update language buttons selection state (for simple modal)
-        document.querySelectorAll('.language-button').forEach(button => {
-            button.classList.toggle('selected', button.dataset.lang === lang);
-        });
-
-        updatePageTitle(lang);
-        updatePlaceholders(lang);
-    };
-
-    function updateElementLanguage(element, lang) {
-        const text = element.getAttribute(`data-${lang}`) || element.getAttribute('data-en');
-        if (!text) return;
-
-        // Check if element has direct text content
-        const hasDirectText = Array.from(element.childNodes).some(node => 
-            node.nodeType === Node.TEXT_NODE && node.textContent.trim().length > 0
-        );
-        
-        if (hasDirectText) {
-            // Replace only text nodes
-            Array.from(element.childNodes).forEach(node => {
-                if (node.nodeType === Node.TEXT_NODE && node.textContent.trim().length > 0) {
-                    node.textContent = text;
-                }
-            });
-        } else {
-            // Replace all content
-            element.textContent = text;
-        }
-    }
-
-    function updatePlaceholders(lang) {
-        // Update search input placeholder
-        const searchInput = document.getElementById('main-search-input');
-        if (searchInput) {
-            searchInput.placeholder = lang === 'gr' ? 'Αναζήτηση στο διαδίκτυο...' : 'Search the Web...';
-        }
-
-        // Update certificate form placeholders
-        const formInputs = document.querySelectorAll('#certificate-form input');
-        formInputs.forEach(input => {
-            const fieldName = input.id;
-            const placeholders = {
-                'firstName': { en: 'Enter your first name', gr: 'Εισάγετε το όνομά σας' },
-                'lastName': { en: 'Enter your last name', gr: 'Εισάγετε το επώνυμό σας' },
-                'age': { en: 'Enter your age', gr: 'Εισάγετε την ηλικία σας' },
-                'country': { en: 'Enter your country', gr: 'Εισάγετε τη χώρα σας' },
-                'city': { en: 'Enter your city', gr: 'Εισάγετε την πόλη σας' }
-            };
+        // Only show back-home-button on non-index pages
+        if (window.location.pathname.split('/').pop() !== 'index.html' && document.body.querySelector('.phone-container')) {
+            const btnContainer = document.createElement('div');
+            btnContainer.classList.add('back-home-btn-container');
             
-            if (placeholders[fieldName]) {
-                input.placeholder = placeholders[fieldName][lang];
-            }
-        });
-    }
-
-    function updatePageTitle(lang) {
-        const pageTitles = {
-            'index.html': {
-                en: 'DedSec Project - 1 Year Anniversary',
-                gr: 'DedSec Project - 1 Χρόνο Επέτειος'
-            },
-            'learn.html': {
-                en: 'Learn About The Tools - DedSec Project',
-                gr: 'Μάθετε για τα Εργαλεία - DedSec Project'
-            },
-            'installation.html': {
-                en: 'Installation Guide - DedSec Project',
-                gr: 'Οδηγός Εγκατάστασης - DedSec Project'
-            },
-            'useful-info.html': {
-                en: 'Useful Information - DedSec Project',
-                gr: 'Χρήσιμες Πληροφορίες - DedSec Project'
-            },
-            'collaborations.html': {
-                en: 'Collaborations - DedSec Project',
-                gr: 'Συνεργασίες - DedSec Project'
-            },
-            'portfolio.html': {
-                en: 'Portfolio & GitHub - DedSec Project',
-                gr: 'Portfolio & GitHub - DedSec Project'
-            },
-            'contact.html': {
-                en: 'Contact & Credits - DedSec Project',
-                gr: 'Επικοινωνία & Συντελεστές - DedSec Project'
-            },
-            'privacy.html': {
-                en: 'Privacy Policy - DedSec Project',
-                gr: 'Πολιτική Απορρήτου - DedSec Project'
-            }
-        };
-
-        const currentPage = window.location.pathname.split('/').pop() || 'index.html';
-        const title = pageTitles[currentPage]?.[lang] || pageTitles['index.html'][lang];
-        if (title) {
-            document.title = title;
+            const btn = document.createElement('a');
+            btn.href = 'index.html';
+            btn.classList.add('back-home-btn');
+            btn.innerHTML = `<i class="fas fa-arrow-left"></i> <span data-en="Back to Home" data-gr="Επιστροφή στην Αρχική">Back to Home</span>`;
+            
+            btnContainer.appendChild(btn);
+            document.body.querySelector('.phone-container').insertAdjacentElement('afterbegin', btnContainer);
         }
     }
 
-    // Modal functions
-    window.showModal = (modal) => {
-        if (!modal) return;
-        modal.classList.add('visible');
-        document.body.style.overflow = 'hidden';
-    };
+    function handleCopyClick(event) {
+        const button = event.currentTarget;
+        const codeBlock = button.closest('.code-block');
+        if (!codeBlock) return;
 
-    window.hideModal = (modal) => {
-        if (!modal) return;
-        modal.classList.remove('visible');
-        document.body.style.overflow = '';
-    };
-
-    // Copy to clipboard function - FIXED
-    window.copyToClipboard = (button, targetId) => {
-        const codeElement = document.getElementById(targetId);
-        if (!codeElement) {
-            console.warn('Element not found:', targetId);
-            return;
-        }
+        const codeElement = codeBlock.querySelector('code');
+        if (!codeElement) return;
 
         const textToCopy = codeElement.textContent || codeElement.innerText;
         
