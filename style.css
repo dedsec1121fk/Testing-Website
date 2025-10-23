@@ -1,16 +1,42 @@
+/* Same as original style.css but with added styles for welcome content */
+
 :root {
-    --nm-abyss-blue: #01040a;
-    --nm-darkest: #0B121C;
-    --nm-dark: #151E2A;
-    --nm-container: #1F2A38;
-    --nm-border: #3A4A5E;
-    --nm-accent: #9966FF;
-    --nm-accent-hover: #9933FF;
-    --nm-text: #FFFFFF;
-    --nm-text-muted: #7A8899;
-    --nm-danger: #FF0000;
-    --nm-success: #00FF00;
-    --nm-warning: #FFFF00;
+    /* MODIFIED: Digital Lavender Palette */
+    --nm-abyss-blue: #01040a; 
+    --nm-darkest: #0B121C;    
+    --nm-dark: #151E2A;       
+    --nm-container: #1F2A38;  
+    --nm-border: #3A4A5E;      
+    --nm-accent: #9966FF;      /* Digital Lavender (Used for borders/success/title) */
+    --nm-accent-hover: #9933FF; /* Brighter, more distinct PURPLE for Main Title */
+    --nm-text: #FFFFFF;        /* All text/titles default to PURE WHITE */
+    --nm-text-muted: #7A8899;  
+    /* DANGER/FAIL: Red */
+    --nm-danger: #FF0000;      
+    --nm-danger-hover: #FF0000; 
+    /* SUCCESS: Green */
+    --nm-success: #00FF00;     
+    /* WARNING/HIGHLIGHT: Yellow */
+    --nm-warning: #FFFF00;     
+    
+    --glow-rgb: 153, 102, 255; /* RGB components for the accent color */
+    --glow-color: rgba(var(--glow-rgb), 0.0); 
+    /* Search Bar Color: MODIFIED to use main accent color */
+    --nm-search-green: var(--nm-accent); 
+    /* Search Bar Glow: MODIFIED to remove glow */
+    --glow-color-search: rgba(var(--glow-rgb), 0.0); 
+    /* Highlight Red Glow (kept for compatibility, though red is not requested) */
+    --glow-color-danger: rgba(255, 0, 0, 0.0); 
+    /* Highlighter Yellow Glow */
+    --glow-color-warning: rgba(255, 255, 0, 0.8); 
+
+    --warning-bg: rgba(255, 255, 0, 0.1); /* Yellow background for warning notes */
+    --danger-bg: rgba(255, 0, 0, 0.1);
+
+    --safe-area-inset-bottom: env(safe-area-inset-bottom, 10px);
+    --shape-cut: 20px;
+    /* REMOVED: Remove custom clip path variable */
+    --clip-path-shape: none; 
 }
 
 body.light-theme {
@@ -19,175 +45,64 @@ body.light-theme {
     --nm-dark: #e9e9e9;
     --nm-container: #ffffff;
     --nm-border: #cccccc;
-    --nm-text: #000000;
-    --nm-text-muted: #555555;
+    --nm-text: #000000;        /* Light theme text is BLACK */
+    --nm-text-muted: #555555;  /* Light theme muted text is darker gray */
+    --nm-warning: #9966FF; 
+    --glow-color: rgba(var(--glow-rgb), 0.3);
 }
 
-/* Base Styles */
-html, body {
-    height: 100%;
-    width: 100%;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    background-color: var(--nm-abyss-blue);
-    font-family: 'Roboto Mono', monospace;
-    color: var(--nm-text);
-    transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.phone-container {
-    width: 100%;
-    height: 100%;
-    background: var(--nm-darkest);
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    box-sizing: border-box;
-}
-
-.screen {
-    width: 100%;
-    height: 100%;
-    background-color: var(--nm-abyss-blue);
-    position: relative;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    z-index: 0;
-}
-
-.screen::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-image: url('https://raw.githubusercontent.com/dedsec1121fk/dedsec1121fk.github.io/5860edb8a7468d955336c9cf1d8b357597d6d645/Assets/Images/Logos/Custom%20Black%20Purple%20Fox%20Logo.png');
-    background-size: contain;
-    background-position: center;
-    background-repeat: no-repeat;
-    opacity: 0.3;
-    z-index: -1;
-}
-
+/* --- ADDED/MODIFIED FOR LIGHT THEME BACKGROUND LOGO SWAP --- */
 body.light-theme .screen::after {
-    background-image: url('https://raw.githubusercontent.com/dedsec1121fk/dedsec1121fk.github.io/6f776cd9772a079a6d26370dddab911bf7cde8cd/Assets/Images/Logos/Custom%20White%20Purple%20Fox%20Logo.jpg');
-    opacity: 0.3;
+    background-image: url('https://raw.githubusercontent.com/dedsec1121fk/dedsec1121fk.github.io/6f776cd9772a079a6d26370dddab911bf7cde8cd/Assets/Images/Logos/Custom%20White%20Purple%20Fox%20Logo.jpg') !important;
+    opacity: 0.3; /* Keep visibility for light theme */
 }
 
-.screen-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 1;
+/* =================================================================
+   LIGHT THEME FIXES
+   ================================================================= */
+
+/* Fix low-contrast text on accent-colored backgrounds (hover states, etc.) */
+body.light-theme .app-icon:hover,
+body.light-theme .app-wrapper:hover .app-icon i,
+body.light-theme .search-result-item:hover,
+body.light-theme .copy-btn:hover,
+body.light-theme .modal-footer button:hover,
+body.light-theme .language-button:hover,
+body.light-theme .language-button.selected,
+body.light-theme .store-link a:hover {
+    color: #FFFFFF; /* Use pure white for high contrast on purple backgrounds */
 }
 
-.home-screen {
-    flex-grow: 1;
-    overflow-y: auto;
-    overflow-x: hidden;
-    min-height: 0;
-    padding: 0 15px 15px;
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+/* Fix muted text in search results on hover */
+body.light-theme #search-results-container .search-result-item:hover small,
+body.light-theme #useful-info-results-container .search-result-item:hover small {
+    color: rgba(255, 255, 255, 0.85);
 }
 
-/* Custom Scrollbar */
-::-webkit-scrollbar {
-    width: 8px;
+/* Fix hardcoded dark backgrounds */
+body.light-theme .modal-header {
+    background: rgba(0,0,0,0.03); /* A very light, almost white background */
 }
-::-webkit-scrollbar-track {
-    background: var(--nm-dark);
-}
-::-webkit-scrollbar-thumb {
-    background-color: var(--nm-accent);
-    border-radius: 10px;
-}
-::-webkit-scrollbar-thumb:hover {
-    background-color: var(--nm-accent-hover);
+body.light-theme .modal-body code {
+    background: rgba(0,0,0,0.08); /* A light gray background for code snippets */
 }
 
-/* Header & Search */
-.main-header-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-    gap: 15px;
-    margin-bottom: 10px;
-    padding: 25px 15px 0 15px;
-    box-sizing: border-box;
+/* Fix accept/decline button text color */
+body.light-theme .decline-btn,
+body.light-theme .accept-btn {
+    color: #FFFFFF !important; /* Use white text for high contrast on bright red/green */
 }
 
-.main-header-container h1 {
-    margin: 0;
-    text-align: center;
-    white-space: nowrap;
-    font-size: clamp(7vw, 9vw, 4.0rem);
-    color: var(--nm-accent);
-    font-family: 'Orbitron', sans-serif;
-    text-shadow: 
-        -1px -1px 0 #000,  
-        1px -1px 0 #000,
-        -1px 1px 0 #000,
-        1px 1px 0 #000,
-        0 0 10px var(--nm-accent),
-        0 0 20px var(--nm-accent);
+/* Fix inconsistent warning note styling */
+body.light-theme .note.note-warning {
+    color: #000000; /* Use black text for readability on yellow background */
+    border-left-color: #FBC02D; /* A darker yellow to match the theme */
 }
 
-.search-container {
-    position: relative;
-    width: 100%;
-    max-width: 500px;
-    margin: 0 auto;
-}
+/* =================================================================
+   WELCOME CONTENT STYLES
+   ================================================================= */
 
-.search-container::before {
-    font-family: 'Font Awesome 5 Free', 'FontAwesome';
-    font-weight: 900;
-    content: '\f002';
-    position: absolute;
-    left: 20px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: var(--nm-text-muted);
-    z-index: 2;
-    pointer-events: none;
-}
-
-#main-search-input {
-    width: 100%;
-    padding: 10px 45px;
-    background-color: var(--nm-darkest);
-    border: 2px solid var(--nm-accent);
-    color: var(--nm-text);
-    font-family: 'Roboto Mono', monospace;
-    font-size: 0.9rem;
-    transition: background-color 0.3s ease;
-    border-radius: 50px;
-    box-sizing: border-box;
-}
-
-#main-search-input:focus {
-    outline: none;
-    background-color: var(--nm-dark);
-}
-
-/* Welcome Content */
 .welcome-content {
     width: 100%;
     max-width: 800px;
@@ -217,6 +132,7 @@ body.light-theme .screen::after {
     font-family: 'Orbitron', sans-serif;
     font-size: 1.8rem;
     margin: 0 0 15px 0;
+    text-shadow: 0 0 10px var(--nm-accent);
 }
 
 .welcome-card p {
@@ -246,6 +162,7 @@ body.light-theme .screen::after {
 .info-card:hover {
     border-color: var(--nm-accent);
     transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(153, 102, 255, 0.2);
 }
 
 .info-card i {
@@ -268,6 +185,55 @@ body.light-theme .screen::after {
     margin: 0;
 }
 
+/* Feature Highlights */
+.feature-highlights {
+    margin-bottom: 30px;
+}
+
+.feature-highlights h3 {
+    color: var(--nm-accent);
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.3rem;
+    text-align: center;
+    margin-bottom: 20px;
+    border-bottom: 1px solid var(--nm-border);
+    padding-bottom: 10px;
+}
+
+.features-list {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+}
+
+.feature-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 15px;
+    background: var(--nm-dark);
+    border: 1px solid var(--nm-border);
+    border-radius: 10px;
+    transition: all 0.2s ease;
+}
+
+.feature-item:hover {
+    border-color: var(--nm-accent);
+    background: var(--nm-container);
+}
+
+.feature-item i {
+    color: var(--nm-accent);
+    margin-right: 12px;
+    font-size: 1.1rem;
+    width: 20px;
+    text-align: center;
+}
+
+.feature-item span {
+    color: var(--nm-text);
+    font-size: 0.9rem;
+}
+
 /* Disclaimer Section */
 .disclaimer-section {
     margin-top: 30px;
@@ -287,16 +253,361 @@ body.light-theme .screen::after {
     line-height: 1.5;
 }
 
+/* =================================================================
+   REST OF ORIGINAL STYLES
+   ================================================================= */
+
+@keyframes scanline-scroll {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-50%); }
+}
+
+/* MODIFIED: Remove text glitch animation entirely */
+@keyframes text-glitch {
+    0% { transform: translate(0, 0) skew(0); }
+    100% { transform: translate(0, 0) skew(0); }
+}
+
+/* MODIFIED: Remove flickering effect and associated text-shadows (glowing) */
+@keyframes flicker {
+  0%, 100% {
+    opacity: 1;
+    text-shadow: none;
+  }
+}
+
+/* REMOVED: Pulsing glow animation for the main title */
+
+
+html, body {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: var(--nm-abyss-blue);
+    font-family: 'Roboto Mono', monospace;
+    color: var(--nm-text);
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* --- ADDED: Reset for button elements used as app icons --- */
+.app-grid button.app-wrapper {
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    font: inherit; 
+    color: inherit; 
+    text-align: inherit; 
+    cursor: pointer;
+}
+
+button.hero-cta-button {
+    cursor: pointer;
+}
+
+.phone-container {
+    width: 100%;
+    height: 100%;
+    background: var(--nm-darkest);
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    transition: background-color 0.3s ease, width 0.3s ease, height 0.3s ease, border-radius 0.3s ease;
+}
+
+.phone-container::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 8px;
+    height: 100%;
+    /* REMOVED GLOW */
+    background: linear-gradient(to bottom, var(--nm-danger), var(--nm-danger-hover), var(--nm-danger));
+    box-shadow: none;
+    z-index: 10;
+    display: none; 
+}
+
+#scroll-indicator-thumb {
+    position: absolute;
+    right: 0;
+    top: 0; 
+    width: 8px;
+    height: 40px;
+    background: var(--nm-accent); 
+    box-shadow: none;
+    z-index: 11;
+    transition: opacity 0.3s ease, background-color 0.3s ease;
+    opacity: 0; 
+    pointer-events: none;
+}
+
+.screen {
+    width: 100%;
+    height: 100%;
+    background-color: var(--nm-abyss-blue);
+    background-image:
+        /* MODIFIED: Removed hexagon background image/pattern */
+        url("data:image/svg+xml,%3Csvg viewBox='0 0 800 800' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3E/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    background-size: cover, cover; 
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: background-color 0.3s ease;
+    z-index: 0;
+}
+
+/* --- MODIFIED: Uses new Dark Theme Logo as background --- */
+.screen::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* DEFAULT DARK THEME LOGO */
+    background-image: url('https://raw.githubusercontent.com/dedsec1121fk/dedsec1121fk.github.io/5860edb8a7468d955336c9cf1d8b357597d6d645/Assets/Images/Logos/Custom%20Black%20Purple%20Fox%20Logo.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0.3; 
+    z-index: -1;
+    transition: background-image 0.3s ease, opacity 0.3s ease;
+}
+
+.screen-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+    overflow: hidden; 
+}
+
+.screen-overlay::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 200%; 
+    background: transparent; 
+    animation: none; 
+    will-change: transform; 
+}
+
+.screen::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    background: none;
+    pointer-events: none;
+    z-index: 3;
+}
+
+body.light-theme .screen-overlay,
+body.light-theme .screen::before,
+body.light-theme .phone-container::after { 
+    display: none;
+}
+
+.home-screen {
+    flex-grow: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    min-height: 0;
+    padding: 0 15px 15px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* MODIFIED: Universal Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 10px;
+}
+::-webkit-scrollbar-track {
+    background: var(--nm-dark);
+}
+::-webkit-scrollbar-thumb {
+    background-color: var(--nm-accent);
+    border-radius: 10px;
+    border: 2px solid var(--nm-dark);
+    box-shadow: none;
+}
+::-webkit-scrollbar-thumb:hover {
+    background-color: var(--nm-accent-hover);
+}
+body.light-theme ::-webkit-scrollbar-thumb {
+    /* Ensure scrollbar thumb is visible in light theme */
+    background-color: #555555; 
+    border-color: var(--nm-dark);
+}
+
+
+.main-header-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    gap: 15px;
+    /* FIX: Reduced margin-bottom from 20px to 10px */
+    margin-bottom: 10px;
+    padding: 25px 15px 0 15px;
+    box-sizing: border-box;
+    /* FIX: Center the container */
+    /* REMOVED: margin-left: auto; */
+    /* REMOVED: margin-right: auto; */
+}
+
+/* --- REMOVED: .header-logo container since we are using .screen::after --- */
+
+.main-header-container h1 {
+    margin: 0;
+    text-align: center;
+    white-space: nowrap;
+    font-size: clamp(7vw, 9vw, 4.0rem);
+    color: var(--nm-accent);
+    /* --- ADDED: Purple glow with black stroke for readability --- */
+    text-shadow: 
+        /* Black Stroke */
+        -1px -1px 0 #000,  
+         1px -1px 0 #000,
+        -1px  1px 0 #000,
+         1px  1px 0 #000,
+        /* Purple Glow */
+        0 0 10px var(--nm-accent),
+        0 0 20px var(--nm-accent),
+        0 0 30px var(--nm-accent),
+        0 0 40px var(--nm-accent-hover);
+}
+
+.search-container {
+    position: relative;
+    width: 100%;
+    max-width: 500px; 
+    margin: 0 auto; 
+}
+
+/* MODIFIED: Removed all box-shadow for no glow effect */
+@keyframes pulse-cyan {
+    0% { box-shadow: none; } 
+    50% { box-shadow: none; } 
+    100% { box-shadow: none; } 
+}
+
+
+#main-search-input {
+    width: 100%;
+    padding: 10px 45px;
+    background-color: var(--nm-darkest);
+    border: 2px solid var(--nm-search-green); /* Set to nm-accent */
+    color: var(--nm-text);
+    font-family: 'Roboto Mono', monospace;
+    font-size: 0.9rem;
+    transition: background-color 0.3s ease;
+    /* MODIFIED: Remove clip-path, large border-radius for pill shape */
+    clip-path: none; 
+    border-radius: 50px; 
+    box-sizing: border-box;
+    animation: none; /* Removed pulse animation for no glow */
+}
+
+#main-search-input:focus {
+    outline: none;
+    background-color: var(--nm-dark);
+}
+
+/* *
+* === THIS IS THE FIX ===
+* The two lines below were added to make the suggestions box appear correctly.
+*
+*/
+#search-suggestions-container,
+#search-results-container,
+#useful-info-results-container {
+    position: absolute;
+    top: 105%;
+    left: 0;
+    width: 100%;
+    background-color: var(--nm-dark);
+    border: 1px solid var(--nm-search-green); /* Set to nm-accent */
+    box-shadow: none; /* Removed glow */
+    max-height: 300px;
+    overflow-y: auto;
+    z-index: 100;
+    /* Large border-radius for rounded results box */
+    clip-path: none;
+    border-radius: 20px;
+}
+
+#search-suggestions-container .search-result-item,
+#search-results-container .search-result-item,
+#useful-info-results-container .search-result-item {
+    padding: 12px 15px;
+    color: var(--nm-text);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border-bottom: 1px solid var(--nm-border);
+}
+#search-suggestions-container .search-result-item:last-child,
+#search-results-container .search-result-item:last-child,
+#useful-info-results-container .search-result-item:last-child {
+    border-bottom: none;
+}
+
+#search-suggestions-container .search-result-item:hover,
+#search-results-container .search-result-item:hover,
+#useful-info-results-container .search-result-item:hover {
+    background-color: var(--nm-accent); 
+    color: var(--nm-darkest); 
+}
+#search-results-container .search-result-item small,
+#useful-info-results-container .search-result-item small {
+    display: block;
+    font-size: 0.7rem;
+    color: var(--nm-text-muted);
+    margin-top: 4px;
+}
+#search-results-container .search-result-item:hover small,
+#useful-info-results-container .search-result-item:hover small {
+    color: rgba(0, 0, 0, 0.7);
+}
+
+.content-highlight {
+    /* Set to Yellow and removed glow */
+    background-color: rgba(255, 255, 0, 0.3); 
+    box-shadow: none; 
+    transition: background-color 1s ease;
+}
+
 /* Footer */
 .main-footer {
     text-align: center;
     padding: 1rem;
     font-size: 0.7rem;
     color: var(--nm-text-muted);
-    margin-top: 25px;
+    margin-top: 25px; /* Added margin to push it down */
 }
 
-/* Responsive */
+/* Responsive adjustments for welcome content */
 @media (min-width: 768px) {
     .phone-container {
         width: 95%;
@@ -315,6 +626,10 @@ body.light-theme .screen::after {
 
     .info-grid {
         grid-template-columns: repeat(3, 1fr);
+    }
+
+    .features-list {
+        grid-template-columns: repeat(2, 1fr);
     }
 
     .main-header-container h1 {

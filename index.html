@@ -42,6 +42,7 @@
     </div>
 
     <div class="phone-container">
+        <div id="scroll-indicator-thumb"></div>
         <div class="screen">
             <div class="screen-overlay"></div>
             
@@ -49,20 +50,21 @@
                 <div class="main-header-container">
                     <h1 data-en="DedSec Project" data-gr="DedSec Project">DedSec Project</h1>
                     
-                    <!-- Global Search Bar -->
+                    <!-- Global Search Bar with same logic as old index -->
                     <div class="search-container">
-                        <form action="https://www.google.com/search" method="get" target="_blank" id="main-search-form">
+                        <form action="https://www.google.com/search" method="get" target="_blank" style="width: 100%;" id="main-search-form">
                             <input type="text" name="q" id="main-search-input" placeholder="Search the Web..." data-en="Search the Web..." data-gr="Αναζήτηση στο διαδίκτυο..." autocomplete="off">
                         </form>
+                        <div id="search-suggestions-container" class="hidden"></div>
                     </div>
                 </div>
 
-                <!-- Welcome Information -->
+                <!-- Welcome Information Only - No Buttons -->
                 <div class="welcome-content">
                     <div class="welcome-card">
                         <i class="fas fa-shield-alt"></i>
                         <h2 data-en="Welcome to DedSec Project" data-gr="Καλωσήρθατε στο DedSec Project">Welcome to DedSec Project</h2>
-                        <p data-en="Your comprehensive cybersecurity toolkit for ethical hacking, security research, and educational purposes. Explore our tools and resources to understand modern cyber threats and learn defensive security techniques." data-gr="Το ολοκληρωμένο εργαλείο κυβερνοασφάλειας για ηθικό hacking, έρευνα ασφαλείας και εκπαιδευτικούς σκοπούς. Εξερευνήστε τα εργαλεία και τους πόρους μας για να κατανοήσετε τις σύγχρονες απειλές κυβερνοασφάλειας και να μάθετε τεχνικές αμυντικής ασφάλειας.">
+                        <p data-en="Your comprehensive cybersecurity toolkit for ethical hacking, security research, and educational purposes. This platform provides powerful tools and resources to help you understand modern cyber threats and develop defensive security skills in a safe, controlled environment." data-gr="Το ολοκληρωμένο εργαλείο κυβερνοασφάλειας για ηθικό hacking, έρευνα ασφαλείας και εκπαιδευτικούς σκοπούς. Αυτή η πλατφόρμα παρέχει ισχυρά εργαλεία και πόρους για να σας βοηθήσει να κατανοήσετε τις σύγχρονες απειλές κυβερνοασφάλειας και να αναπτύξετε δεξιότητες αμυντικής ασφάλειας σε ένα ασφαλές, ελεγχόμενο περιβάλλον.">
                             Your comprehensive cybersecurity toolkit for ethical hacking, security research, and educational purposes.
                         </p>
                     </div>
@@ -70,33 +72,63 @@
                     <div class="info-grid">
                         <div class="info-card">
                             <i class="fas fa-tools"></i>
-                            <h3 data-en="Powerful Tools" data-gr="Ισχυρά Εργαλεία">Powerful Tools</h3>
-                            <p data-en="Access a wide range of security tools for network analysis, OSINT gathering, and ethical testing." data-gr="Πρόσβαση σε ένα ευρύ φάσμα εργαλείων ασφαλείας για ανάλυση δικτύου, συλλογή OSINT και ηθικές δοκιμές.">
-                                Access a wide range of security tools for network analysis and ethical testing.
+                            <h3 data-en="Comprehensive Toolkit" data-gr="Ολοκληρωμένη Εργαλειοθήκη">Comprehensive Toolkit</h3>
+                            <p data-en="Access a wide range of security tools including network analysis, OSINT gathering, vulnerability assessment, and educational demonstrations of common security threats." data-gr="Πρόσβαση σε ένα ευρύ φάσμα εργαλείων ασφαλείας, συμπεριλαμβανομένης ανάλυσης δικτύου, συλλογής OSINT, αξιολόγησης ευπάθειας και εκπαιδευτικών επιδείξεων κοινών απειλών ασφαλείας.">
+                                Access a wide range of security tools including network analysis, OSINT gathering, and vulnerability assessment.
                             </p>
                         </div>
 
                         <div class="info-card">
                             <i class="fas fa-graduation-cap"></i>
                             <h3 data-en="Educational Focus" data-gr="Εκπαιδευτική Εστίαση">Educational Focus</h3>
-                            <p data-en="Learn about cybersecurity concepts and how to protect against modern threats through practical examples." data-gr="Μάθετε για τις έννοιες της κυβερνοασφάλειας και πώς να προστατεύεστε από σύγχρονες απειλές μέσα από πρακτικά παραδείγματα.">
-                                Learn about cybersecurity concepts and how to protect against modern threats.
+                            <p data-en="Learn cybersecurity concepts through practical examples and demonstrations. Understand how attacks work to better defend against them in real-world scenarios." data-gr="Μάθετε τις έννοιες της κυβερνοασφάλειας μέσα από πρακτικά παραδείγματα και επιδείξεις. Κατανοήστε πώς λειτουργούν οι επιθέσεις για να προστατεύεστε καλύτερα σε πραγματικά σενάρια.">
+                                Learn cybersecurity concepts through practical examples and demonstrations of real-world threats.
                             </p>
                         </div>
 
                         <div class="info-card">
-                            <i class="fas fa-users"></i>
-                            <h3 data-en="Community Driven" data-gr="Κοινότητα">Community Driven</h3>
-                            <p data-en="Join a growing community of security enthusiasts and professionals sharing knowledge and resources." data-gr="Γίνετε μέλος μιας αναπτυσσόμενης κοινότητας λάτρων και επαγγελματιών ασφαλείας που μοιράζονται γνώση και πόρους.">
-                                Join a growing community of security enthusiasts and professionals.
+                            <i class="fas fa-lock"></i>
+                            <h3 data-en="Safe Environment" data-gr="Ασφαλές Περιβάλλον">Safe Environment</h3>
+                            <p data-en="All tools are designed for educational use in controlled environments. Practice security testing ethically and legally on systems you own or have explicit permission to test." data-gr="Όλα τα εργαλεία σχεδιάζονται για εκπαιδευτική χρήση σε ελεγχόμενα περιβάλλοντα. Εξασκηθείτε σε δοκιμές ασφαλείας ηθικά και νόμιμα σε συστήματα που σας ανήκουν ή έχετε ρητή άδεια να δοκιμάσετε.">
+                                Practice security testing ethically and legally in controlled, authorized environments.
                             </p>
+                        </div>
+                    </div>
+
+                    <div class="feature-highlights">
+                        <h3 data-en="Key Features" data-gr="Κύρια Χαρακτηριστικά">Key Features</h3>
+                        <div class="features-list">
+                            <div class="feature-item">
+                                <i class="fas fa-network-wired"></i>
+                                <span data-en="Network Security Tools" data-gr="Εργαλεία Ασφαλείας Δικτύου">Network Security Tools</span>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-search"></i>
+                                <span data-en="OSINT Gathering" data-gr="Συλλογή OSINT">OSINT Gathering</span>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-bug"></i>
+                                <span data-en="Vulnerability Assessment" data-gr="Αξιολόγηση Ευπάθειας">Vulnerability Assessment</span>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-shield-virus"></i>
+                                <span data-en="Security Demonstrations" data-gr="Επιδείξεις Ασφαλείας">Security Demonstrations</span>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-database"></i>
+                                <span data-en="Secure File Management" data-gr="Ασφαλής Διαχείριση Αρχείων">Secure File Management</span>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-comments"></i>
+                                <span data-en="Encrypted Communication" data-gr="Κρυπτογραφημένη Επικοινωνία">Encrypted Communication</span>
+                            </div>
                         </div>
                     </div>
 
                     <div class="disclaimer-section">
                         <div class="note note-warning">
-                            <p data-en="Important: All tools and information are provided for educational and authorized testing purposes only. Always ensure you have proper authorization before conducting any security tests." data-gr="Σημαντικό: Όλα τα εργαλεία και οι πληροφορίες παρέχονται αποκλειστικά για εκπαιδευτικούς και εξουσιοδοτημένους σκοπούς δοκιμών. Βεβαιωθείτε πάντα ότι έχετε τη σωστή άδεια πριν πραγματοποιήσετε οποιεσδήποτε δοκιμές ασφαλείας.">
-                                Important: All tools and information are provided for educational and authorized testing purposes only.
+                            <p data-en="⚠️ Important Disclaimer: All tools and information provided here are for educational and authorized testing purposes only. Use them exclusively on systems you own or have explicit, written permission to test. Unauthorized use is illegal and unethical. The user is solely responsible for all actions taken." data-gr="⚠️ Σημαντική Αποποίηση Ευθύνης: Όλα τα εργαλεία και οι πληροφορίες που παρέχονται εδώ προορίζονται αποκλειστικά για εκπαιδευτικούς και εξουσιοδοτημένους σκοπούς δοκιμών. Χρησιμοποιήστε τα αποκλειστικά σε συστήματα που σας ανήκουν ή για τα οποία έχετε ρητή, γραπτή άδεια να δοκιμάσετε. Η μη εξουσιοδοτημένη χρήση είναι παράνομη και ανήθικη. Ο χρήστης είναι αποκλειστικά υπεύθυνος για όλες τις ενέργειες που πραγματοποιεί.">
+                                ⚠️ Important Disclaimer: All tools and information provided here are for educational and authorized testing purposes only.
                             </p>
                         </div>
                     </div>
@@ -106,28 +138,24 @@
                 <footer class="main-footer">
                     <p data-lang-section="en">© 2025 DedSec Project. All Rights Reserved.</p>
                     <p data-lang-section="gr" class="hidden-by-default">© 2025 DedSec Project. Με επιφύλαξη παντός δικαιώματος.</p>
+                    <p data-lang-section="en" style="font-size: 0.7em; opacity: 0.7; margin-top: 10px;">Trademark Disclaimer: The "DedSec" name and logo are inspired by the "Watch Dogs" series and are used for thematic purposes only. This project is not affiliated with or endorsed by Ubisoft Entertainment S.A.</p>
+                    <p data-lang-section="gr" class="hidden-by-default" style="font-size: 0.7em; opacity: 0.7; margin-top: 10px;">Αποποίηση Ευθύνης Εμπορικού Σήματος: Το όνομα και το λογότυπο "DedSec" είναι εμπνευσμένα από τη σειρά "Watch Dogs" και χρησιμοποιούνται μόνο για θεματικούς σκοπούς. Αυτό το έργο δεν συνδέεται ούτε υποστηρίζεται από την Ubisoft Entertainment S.A.</p>
                     <p>Made by dedsec1121fk</p>
                 </footer>
             </main>
         </div>
     </div>
 
-    <!-- Language Selection Modal - Shows on load -->
+    <!-- Language Selection Modal - Shows on load like original -->
     <div id="language-selection-modal" class="modal-overlay visible">
         <div class="modal-content modal-content-auto-height">
             <div class="modal-header">
-                <h2 data-en="Choose Language" data-gr="Επιλογή Γλώσσας">Choose Language</h2>
+                <h2 data-en="Choose Language" data-gr="Επιλογή Γλώσσας">Choose Language / Επιλογή Γλώσσας</h2>
                 <button class="close-modal" aria-label="Close">×</button>
             </div>
             <div class="modal-body modal-body-centered">
-                <button class="language-button" data-lang="en" aria-label="Change language to English">
-                    <i class="fas fa-language"></i>
-                    English
-                </button>
-                <button class="language-button" data-lang="gr" aria-label="Change language to Greek">
-                    <i class="fas fa-language"></i>
-                    Ελληνικά
-                </button>
+                <button class="language-button" data-lang="en" aria-label="Change language to English">English</button>
+                <button class="language-button" data-lang="gr" aria-label="Change language to Greek">Ελληνικά</button>
             </div>
         </div>
     </div>
