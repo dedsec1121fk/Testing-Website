@@ -38,14 +38,16 @@
 <body class="dark-theme">
     <!-- Burger Menu -->
     <div class="burger-menu">
-        <div class="burger-icon" id="burger-icon">
-            <span></span>
-            <span></span>
-            <span></span>
+        <div class="burger-icon-container">
+            <div class="burger-icon" id="burger-icon">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
         </div>
         <div class="nav-menu" id="nav-menu">
             <a href="index.html" class="nav-item active" data-en="Home" data-gr="Αρχική">Home</a>
-            <a href="understand.html" class="nav-item" data-en="Understand" data-gr="Κατανόηση">Understand</a>
+            <a href="learn.html" class="nav-item" data-en="Learn About The Tools" data-gr="Μάθετε για τα Εργαλεία">Learn About The Tools</a>
             <a href="installation.html" class="nav-item" data-en="Installation" data-gr="Εγκατάσταση">Installation</a>
             <a href="portfolio.html" class="nav-item" data-en="Portfolio" data-gr="Portfolio">Portfolio</a>
             <a href="contact.html" class="nav-item" data-en="Contact" data-gr="Επικοινωνία">Contact</a>
@@ -88,41 +90,53 @@
                     </button>
                 </div>
 
-                <div class="hero-section">
-                    <p class="hero-text" data-en="Welcome to DedSec Project - Your comprehensive cybersecurity toolkit for ethical hacking and security research." data-gr="Καλώς ήρθατε στο DedSec Project - Το ολοκληρωμένο εργαλείο κυβερνοασφάλειας για ηθικό hacking και έρευνα ασφαλείας.">Welcome to DedSec Project - Your comprehensive cybersecurity toolkit for ethical hacking and security research.</p>
-                </div>
+                <div class="page-content">
+                    <div class="content-section">
+                        <h2 data-en="Welcome to DedSec Project" data-gr="Καλώς ήρθατε στο DedSec Project">Welcome to DedSec Project</h2>
+                        <p data-en="DedSec Project is a comprehensive cybersecurity toolkit designed for ethical hacking, security research, and educational purposes. Our mission is to provide security professionals and enthusiasts with powerful tools to understand and defend against modern cyber threats in a controlled, legal environment." data-gr="Το DedSec Project είναι ένα ολοκληρωμένο εργαλείο κυβερνοασφάλειας σχεδιασμένο για ηθικό hacking, έρευνα ασφαλείας και εκπαιδευτικούς σκοπούς. Η αποστολή μας είναι να παρέχουμε σε επαγγελματίες ασφαλείας και λάτρεις ισχυρά εργαλεία για να κατανοήσουν και να αμυνθούν ενάντια σε σύγχρονες απειλές κυβερνοασφάλειας σε ένα ελεγχόμενο, νόμιμο περιβάλλον.">DedSec Project is a comprehensive cybersecurity toolkit designed for ethical hacking, security research, and educational purposes.</p>
 
-                <h4 class="grid-heading" data-en="Quick Access" data-gr="Γρήγορη Πρόσβαση">Quick Access</h4>
-                <div class="app-grid">
-                    <a href="understand.html" class="app-wrapper">
-                        <div class="app-icon"><i class="fas fa-shield-alt"></i></div>
-                        <span class="app-label" data-en="Understand The Project" data-gr="Κατανόηση Έργου">Understand The Project</span>
-                    </a>
-                    
-                    <a href="installation.html" class="app-wrapper">
-                        <div class="app-icon"><i class="fas fa-download"></i></div>
-                        <span class="app-label" data-en="Installation Guide" data-gr="Οδηγός Εγκατάστασης">Installation Guide</span>
-                    </a>
+                        <h3 data-en="What is DedSec Project?" data-gr="Τι είναι το DedSec Project;">What is DedSec Project?</h3>
+                        <p data-en="DedSec Project is an advanced security framework that brings together various cybersecurity tools and utilities into a single, easy-to-use platform. Originally designed for Android devices using Termux, it has evolved into a robust toolkit for security testing, network analysis, digital forensics, and educational demonstrations." data-gr="Το DedSec Project είναι ένα προηγμένο πλαίσιο ασφαλείας που ενσωματώνει διάφορα εργαλεία και βοηθητικά προγράμματα κυβερνοασφάλειας σε μια ενιαία, εύχρηστη πλατφόρμα. Αρχικά σχεδιασμένο για συσκευές Android που χρησιμοποιούν το Termux, έχει εξελιχθεί σε ένα ισχυρό εργαλείο για δοκιμές ασφαλείας, ανάλυση δικτύου, ψηφιακή εγκληματολογία και εκπαιδευτικές επιδείξεις.">DedSec Project is an advanced security framework that brings together various cybersecurity tools and utilities.</p>
 
-                    <a href="portfolio.html" class="app-wrapper">
-                        <div class="app-icon"><i class="fas fa-briefcase"></i></div>
-                        <span class="app-label" data-en="Portfolio & GitHub" data-gr="Portfolio & GitHub">Portfolio & GitHub</span>
-                    </a>
+                        <h3 data-en="Key Features" data-gr="Βασικά Χαρακτηριστικά">Key Features</h3>
+                        <ul>
+                            <li data-en="Comprehensive suite of ethical hacking tools" data-gr="Ολοκληρωμένη σουίτα εργαλείων ηθικού hacking">Comprehensive suite of ethical hacking tools</li>
+                            <li data-en="Educational demonstrations of security vulnerabilities" data-gr="Εκπαιδευτικές επιδείξεις ευπαθειών ασφαλείας">Educational demonstrations of security vulnerabilities</li>
+                            <li data-en="Network analysis and reconnaissance tools" data-gr="Εργαλεία ανάλυσης δικτύου και αναγνώρισης">Network analysis and reconnaissance tools</li>
+                            <li data-en="Digital forensics and OSINT capabilities" data-gr="Δυνατότητες ψηφιακής εγκληματολογίας και OSINT">Digital forensics and OSINT capabilities</li>
+                            <li data-en="User-friendly interface for both beginners and experts" data-gr="Φιλική διεπαφή για αρχάριους και ειδικούς">User-friendly interface for both beginners and experts</li>
+                            <li data-en="Regular updates with new tools and features" data-gr="Τακτικές ενημερώσεις με νέα εργαλεία και λειτουργίες">Regular updates with new tools and features</li>
+                            <li data-en="Multi-language support (English and Greek)" data-gr="Υποστήριξη πολλαπλών γλωσσών (Αγγλικά και Ελληνικά)">Multi-language support (English and Greek)</li>
+                        </ul>
 
-                    <a href="contact.html" class="app-wrapper">
-                        <div class="app-icon"><i class="fas fa-id-card-alt"></i></div>
-                        <span class="app-label" data-en="Contact & Credits" data-gr="Επικοινωνία & Συντελεστές">Contact & Credits</span>
-                    </a>
+                        <h3 data-en="Our Mission" data-gr="Η Αποστολή Μας">Our Mission</h3>
+                        <p data-en="We believe that understanding cybersecurity is crucial in today's digital world. Our mission is to make security education accessible and engaging through hands-on tools and real-world scenarios. By demonstrating how attacks work, we help users develop the skills needed to defend against them." data-gr="Πιστεύουμε ότι η κατανόηση της κυβερνοασφάλειας είναι ζωτικής σημασίας στον σημερινό ψηφιακό κόσμο. Η αποστολή μας είναι να κάνουμε την εκπαίδευση ασφαλείας προσιτή και ελκυστική μέσα από πρακτικά εργαλεία και σενάρια του πραγματικού κόσμου. Δείχνοντας πώς λειτουργούν οι επιθέσεις, βοηθάμε τους χρήστες να αναπτύξουν τις δεξιότητες που απαιτούνται για να αμυνθούν εναντίον τους.">We believe that understanding cybersecurity is crucial in today's digital world.</p>
 
-                    <a href="privacy.html" class="app-wrapper">
-                        <div class="app-icon"><i class="fas fa-user-shield"></i></div>
-                        <span class="app-label" data-en="Privacy Policy" data-gr="Πολιτική Απορρήτου">Privacy Policy</span>
-                    </a>
+                        <div class="tip">
+                            <p data-en="All tools are provided for educational and authorized testing purposes only. Always ensure you have proper authorization before testing any system." data-gr="Όλα τα εργαλεία παρέχονται μόνο για εκπαιδευτικούς και εξουσιοδοτημένους σκοπούς δοκιμών. Βεβαιωθείτε πάντα ότι έχετε τη σωστή άδεια πριν δοκιμάσετε οποιοδήποτε σύστημα.">All tools are provided for educational and authorized testing purposes only.</p>
+                        </div>
 
-                    <button id="theme-switcher-btn" class="app-wrapper">
-                        <div class="app-icon"><i class="fas fa-moon"></i></div>
-                        <span class="app-label" data-en="Theme" data-gr="Θέμα">Theme</span>
-                    </button>
+                        <h3 data-en="Get Started" data-gr="Ξεκινήστε">Get Started</h3>
+                        <p data-en="Use the navigation menu to explore the different aspects of the DedSec Project:" data-gr="Χρησιμοποιήστε το μενού πλοήγησης για να εξερευνήσετε τις διαφορετικές πτυχές του DedSec Project:">Use the navigation menu to explore the different aspects of the DedSec Project:</p>
+                        
+                        <div class="info-grid">
+                            <div class="info-card">
+                                <i class="fas fa-tools"></i>
+                                <h4 data-en="Learn About The Tools" data-gr="Μάθετε για τα Εργαλεία">Learn About The Tools</h4>
+                                <p data-en="Discover the capabilities and educational purpose of each tool" data-gr="Ανακαλύψτε τις δυνατότητες και τον εκπαιδευτικό σκοπό κάθε εργαλείου">Discover the capabilities and educational purpose of each tool</p>
+                            </div>
+                            <div class="info-card">
+                                <i class="fas fa-download"></i>
+                                <h4 data-en="Installation Guide" data-gr="Οδηγός Εγκατάστασης">Installation Guide</h4>
+                                <p data-en="Step-by-step instructions to install and setup the project" data-gr="Βήμα-βήμα οδηγίες για εγκατάσταση και ρύθμιση">Step-by-step instructions to install and setup the project</p>
+                            </div>
+                            <div class="info-card">
+                                <i class="fas fa-briefcase"></i>
+                                <h4 data-en="Portfolio & GitHub" data-gr="Portfolio & GitHub">Portfolio & GitHub</h4>
+                                <p data-en="Explore our projects and GitHub repositories" data-gr="Εξερευνήστε τα έργα και τα αποθετήρια GitHub">Explore our projects and GitHub repositories</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <footer class="main-footer">

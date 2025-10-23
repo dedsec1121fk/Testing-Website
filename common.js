@@ -208,9 +208,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 en: 'DedSec Project - 1 Year Anniversary',
                 gr: 'DedSec Project - 1 Χρόνο Επέτειος'
             },
-            'understand.html': {
-                en: 'Understand DedSec Project',
-                gr: 'Κατανόηση DedSec Project'
+            'learn.html': {
+                en: 'Learn About The Tools - DedSec Project',
+                gr: 'Μάθετε για τα Εργαλεία - DedSec Project'
             },
             'installation.html': {
                 en: 'Installation Guide - DedSec Project',
