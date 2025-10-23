@@ -1262,14 +1262,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 if (query.length < 2) {
                     resultsContainer.classList.add('hidden');
-                    allTools.forEach(li => li.style.display = ''); // Show all tools
+                    // FIX: Show all tools when search is cleared or too short
+                    allTools.forEach(li => li.style.display = ''); 
                     return;
+                }
+                
+                if (!isScriptsIndexBuilt) {
+                    // Prevent searching if the index isn't ready
+                    return; 
                 }
 
                 const results = SearchEngine.search(query, scriptsSearchIndex, lang, 'scripts');
 
                 if (results.length > 0) {
-                    allTools.forEach(li => li.style.display = 'none'); // Hide all tools
+                    // FIX: Hide all tool list items when search results are showing
+                    allTools.forEach(li => li.style.display = 'none'); 
 
                     results.slice(0, 7).forEach(result => {
                         const itemEl = document.createElement('div');
@@ -1281,9 +1288,12 @@ document.addEventListener('DOMContentLoaded', () => {
                         itemEl.innerHTML = `${highlightedSnippet} <small>${result.title}</small>`;
                         
                         itemEl.addEventListener('click', () => {
+                            // On click, clear search and hide results
                             input.value = '';
                             resultsContainer.classList.add('hidden');
-                            allTools.forEach(li => li.style.display = ''); // Show all tools again
+                            
+                            // FIX: Re-show all tools after a search result is selected and search is cleared
+                            allTools.forEach(li => li.style.display = ''); 
 
                             // Scroll to and highlight the original <li> element
                             const targetElement = result.element;
@@ -1300,7 +1310,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     resultsContainer.classList.remove('hidden');
                 } else {
                     resultsContainer.classList.add('hidden');
-                    allTools.forEach(li => li.style.display = ''); // Show all tools
+                    // FIX: If no results, display the full list again
+                    allTools.forEach(li => li.style.display = ''); 
                 }
             });
         });
