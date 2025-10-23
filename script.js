@@ -7,6 +7,34 @@ document.addEventListener('DOMContentLoaded', () => {
     let usefulInformationLoaded = false;
     let isFetchingUsefulInfo = false;
 
+    // --- CERTIFICATE TRANSLATIONS ---
+    const certificateTranslations = {
+        en: {
+            title: 'Certificate of Participation',
+            subtitle: 'DedSec Project - 1 Year Anniversary',
+            certifies: 'This certifies that',
+            participated: 'participated in the 1 Year Anniversary version of the DedSec Project website.',
+            event: 'Event held October 20 - October 31, 2025.',
+            issuedTo: 'Issued To',
+            age: 'Age',
+            location: 'Location',
+            dateIssued: 'Date Issued',
+            team: 'DedSec Project Team'
+        },
+        gr: {
+            title: 'Πιστοποιητικό Συμμετοχής',
+            subtitle: 'DedSec Project - 1η Επέτειος',
+            certifies: 'Το παρόν πιστοποιεί ότι',
+            participated: 'συμμετείχε στην έκδοση της 1ης επετείου της ιστοσελίδας του DedSec Project.',
+            event: 'Η εκδήλωση πραγματοποιήθηκε από 20 Οκτωβρίου έως 31 Οκτωβρίου 2025.',
+            issuedTo: 'Εκδόθηκε σε',
+            age: 'Ηλικία',
+            location: 'Τοποθεσία',
+            dateIssued: 'Ημερομηνία Έκδοσης',
+            team: 'Ομάδα DedSec Project'
+        }
+    };
+
     // --- INITIALIZE ALL FUNCTIONALITY ---
     initializeBurgerMenu();
     initializeLanguageSwitcher();
@@ -339,6 +367,23 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         if (generateCertificateBtn && certificateForm) {
+            // Set initial button color to purple
+            generateCertificateBtn.style.background = 'linear-gradient(135deg, var(--nm-accent), var(--nm-accent-hover))';
+            generateCertificateBtn.style.borderColor = 'var(--nm-accent)';
+            generateCertificateBtn.style.color = '#000000';
+
+            // Add mouse listeners to control purple hover state
+            generateCertificateBtn.addEventListener('mouseenter', () => {
+                if (!generateCertificateBtn.querySelector('.fa-check')) {
+                    generateCertificateBtn.style.background = 'linear-gradient(135deg, var(--nm-accent-hover), var(--nm-accent))';
+                }
+            });
+            generateCertificateBtn.addEventListener('mouseleave', () => {
+                if (!generateCertificateBtn.querySelector('.fa-check')) {
+                    generateCertificateBtn.style.background = 'linear-gradient(135deg, var(--nm-accent), var(--nm-accent-hover))';
+                }
+            });
+
             generateCertificateBtn.addEventListener('click', generateCertificate);
         }
 
@@ -346,6 +391,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const closeModal = () => {
                 certificateModal.classList.remove('visible');
                 certificateForm?.reset();
+                const preview = document.getElementById('certificate-preview');
+                if (preview) {
+                    preview.classList.add('hidden');
+                }
             };
             
             certificateModal.addEventListener('click', e => {
@@ -358,13 +407,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function generateCertificate() {
         const form = document.getElementById('certificate-form');
+        
         if (!form.checkValidity()) {
             form.reportValidity();
             return;
         }
 
-        if (typeof window.jspdf === 'undefined' || typeof html2canvas === 'undefined') {
-            alert('Error: Certificate generator libraries not loaded. Please check your internet connection.');
+        if (typeof window.jspdf === 'undefined' || typeof window.jspdf.jsPDF === 'undefined') {
+            console.error("CRITICAL: jsPDF library (window.jspdf.jsPDF) not found.");
+            alert('Error: Certificate generator failed to load. Please check your internet connection, disable ad-blockers, and try again.');
+            return;
+        }
+
+        if (typeof html2canvas === 'undefined') {
+            console.error("CRITICAL: html2canvas library not found.");
+            alert('Error: Certificate generator failed to load. Please check your internet connection, disable ad-blockers, and try again.');
             return;
         }
 
@@ -399,52 +456,31 @@ document.addEventListener('DOMContentLoaded', () => {
                 doc.addImage(imgData, 'PNG', 0, 0, pageWidth, pageHeight);
                 
                 const fileName = currentLanguage === 'gr' 
-                    ? `Πιστοποιητικό_${firstName}_${lastName}.pdf`
-                    : `Certificate_${firstName}_${lastName}.pdf`;
+                    ? `Πιστοποιητικό_Επετείου_DedSec_${firstName}_${lastName}.pdf`
+                    : `DedSec_Anniversary_Certificate_${firstName}_${lastName}.pdf`;
                 
                 doc.save(fileName);
                 showCertificateSuccess(firstName);
             }).catch(error => {
-                console.error("Error generating certificate:", error);
+                console.error("Error generating certificate with html2canvas:", error);
                 document.body.removeChild(tempCertificate);
-                alert("An error occurred while generating the certificate.");
+                alert("An error occurred while generating the certificate. Please try again.");
             });
 
         } catch (error) {
             console.error("Error in certificate generation:", error);
-            alert("An error occurred while generating the certificate.");
+            alert("An error occurred while generating the certificate. Please try again.");
         }
     }
 
     function createCertificateHTML(firstName, lastName, age, country, city) {
-        const translations = {
-            en: {
-                title: 'Certificate of Participation',
-                subtitle: 'DedSec Project',
-                certifies: 'This certifies that',
-                participated: 'has successfully participated in the DedSec Project cybersecurity program.',
-                issuedTo: 'Issued To',
-                age: 'Age',
-                location: 'Location',
-                dateIssued: 'Date Issued',
-                team: 'DedSec Project Team'
-            },
-            gr: {
-                title: 'Πιστοποιητικό Συμμετοχής',
-                subtitle: 'DedSec Project',
-                certifies: 'Το παρόν πιστοποιεί ότι',
-                participated: 'συμμετείχε επιτυχώς στο πρόγραμμα κυβερνοασφάλειας DedSec Project.',
-                issuedTo: 'Εκδόθηκε σε',
-                age: 'Ηλικία',
-                location: 'Τοποθεσία',
-                dateIssued: 'Ημερομηνία Έκδοσης',
-                team: 'Ομάδα DedSec Project'
-            }
-        };
-
-        const trans = translations[currentLanguage];
+        const translations = certificateTranslations[currentLanguage];
         const fullName = `${firstName} ${lastName}`;
-        const today = new Date().toLocaleDateString(currentLanguage === 'gr' ? 'el-GR' : 'en-US');
+        const today = new Date().toLocaleDateString(currentLanguage === 'gr' ? 'el-GR' : 'en-US', { 
+            year: 'numeric', 
+            month: 'long', 
+            day: 'numeric' 
+        });
 
         const certificateDiv = document.createElement('div');
         certificateDiv.style.cssText = `
@@ -470,45 +506,48 @@ document.addEventListener('DOMContentLoaded', () => {
                     <i class="fas fa-shield-alt"></i>
                 </div>
                 <h1 style="font-size: 2.2rem; color: #FFD700; margin: 0 0 10px 0; font-weight: bold; text-transform: uppercase; letter-spacing: 2px; font-family: 'Noto Serif', serif;">
-                    ${trans.title}
+                    ${translations.title}
                 </h1>
                 <h2 style="font-size: 1.5rem; color: #9966FF; margin: 0; font-weight: normal; font-style: italic; font-family: 'Noto Serif', serif;">
-                    ${trans.subtitle}
+                    ${translations.subtitle}
                 </h2>
             </div>
             
             <div style="margin: 30px 0;">
                 <p style="font-size: 1.1rem; margin: 15px 0; line-height: 1.6; font-family: 'Noto Serif', serif;">
-                    ${trans.certifies}
+                    ${translations.certifies}
                 </p>
                 <div style="font-size: 2.5rem; font-weight: bold; color: #FFD700; margin: 20px 0; padding: 10px; border-bottom: 2px solid #FFD700; border-top: 2px solid #FFD700; font-family: 'Noto Serif', serif; text-transform: uppercase; letter-spacing: 1px;">
                     ${fullName}
                 </div>
                 <p style="font-size: 1.1rem; margin: 15px 0; line-height: 1.6; font-family: 'Noto Serif', serif;">
-                    ${trans.participated}
+                    ${translations.participated}
+                </p>
+                <p style="font-size: 1.1rem; margin: 15px 0; line-height: 1.6; font-family: 'Noto Serif', serif;">
+                    ${translations.event}
                 </p>
             </div>
             
             <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-top: 40px; padding-top: 20px; border-top: 1px solid #3A4A5E;">
                 <div style="text-align: left;">
                     <div style="margin: 8px 0; font-size: 0.9rem;">
-                        <span style="font-weight: bold; color: #FFD700;">${trans.issuedTo}:</span> ${fullName}
+                        <span style="font-weight: bold; color: #FFD700;">${translations.issuedTo}:</span> ${fullName}
                     </div>
                     <div style="margin: 8px 0; font-size: 0.9rem;">
-                        <span style="font-weight: bold; color: #FFD700;">${trans.age}:</span> ${age}
+                        <span style="font-weight: bold; color: #FFD700;">${translations.age}:</span> ${age}
                     </div>
                     <div style="margin: 8px 0; font-size: 0.9rem;">
-                        <span style="font-weight: bold; color: #FFD700;">${trans.location}:</span> ${city}, ${country}
+                        <span style="font-weight: bold; color: #FFD700;">${translations.location}:</span> ${city}, ${country}
                     </div>
                 </div>
                 <div style="text-align: right;">
                     <div style="margin: 8px 0; font-size: 0.9rem;">
-                        <span style="font-weight: bold; color: #FFD700;">${trans.dateIssued}:</span> ${today}
+                        <span style="font-weight: bold; color: #FFD700;">${translations.dateIssued}:</span> ${today}
                     </div>
                     <div style="text-align: center; margin-top: 10px;">
                         <div style="width: 200px; height: 1px; background: #ffffff; margin: 0 auto 10px auto;"></div>
                         <span style="font-style: italic; color: #7A8899; font-family: 'Noto Serif', serif;">
-                            ${trans.team}
+                            ${translations.team}
                         </span>
                     </div>
                 </div>
@@ -535,258 +574,347 @@ document.addEventListener('DOMContentLoaded', () => {
         
         setTimeout(() => {
             generateBtn.innerHTML = originalHTML;
-            generateBtn.style.background = 'linear-gradient(135deg, var(--nm-success), #00CC00)';
-            generateBtn.style.borderColor = 'var(--nm-success)';
+            generateBtn.style.background = 'linear-gradient(135deg, var(--nm-accent), var(--nm-accent-hover))';
+            generateBtn.style.borderColor = 'var(--nm-accent)';
             generateBtn.style.color = '#000000';
             changeLanguage(currentLanguage);
         }, 3000);
     }
 
     // --- USEFUL INFORMATION SEARCH FUNCTIONALITY ---
+    const SearchEngine = {
+        idfMaps: {},
+
+        tokenize(text, lang) {
+            if (!text) return [];
+            return text
+                .toLowerCase()
+                .replace(/[.,/#!$%\^&\*;:{}=\-_`~()]/g, "")
+                .split(/\s+/)
+                .filter(word => word.length > 1);
+        },
+
+        preprocessItem(item) {
+            return {
+                ...item,
+                titleTokens: this.tokenize(item.title, item.lang),
+                textTokens: this.tokenize(item.text, item.lang)
+            };
+        },
+
+        calculateIdf(indexName, index) {
+            const docFreq = new Map();
+            const totalDocs = index.length;
+            if (totalDocs === 0) return;
+
+            index.forEach(item => {
+                const seenTokens = new Set([...item.titleTokens, ...item.textTokens]);
+                seenTokens.forEach(token => {
+                    docFreq.set(token, (docFreq.get(token) || 0) + 1);
+                });
+            });
+
+            this.idfMaps[indexName] = new Map();
+            docFreq.forEach((freq, token) => {
+                this.idfMaps[indexName].set(token, Math.log(totalDocs / freq));
+            });
+        },
+
+        calculateTf(tokens) {
+            const tf = new Map();
+            tokens.forEach(token => {
+                tf.set(token, (tf.get(token) || 0) + 1);
+            });
+            tokens.forEach(token => {
+                tf.set(token, tf.get(token) / tokens.length);
+            });
+            return tf;
+        },
+
+        search(query, index, indexName, lang) {
+            if (!query || !index || index.length === 0) return [];
+
+            const queryTokens = this.tokenize(query, lang);
+            if (queryTokens.length === 0) return [];
+
+            if (!this.idfMaps[indexName]) {
+                this.calculateIdf(indexName, index);
+            }
+
+            const idfMap = this.idfMaps[indexName];
+            const queryTf = this.calculateTf(queryTokens);
+            const queryVector = new Map();
+            let queryNorm = 0;
+
+            queryTokens.forEach(token => {
+                const tf = queryTf.get(token) || 0;
+                const idf = idfMap.get(token) || 0;
+                const tfidf = tf * idf;
+                queryVector.set(token, tfidf);
+                queryNorm += tfidf * tfidf;
+            });
+            queryNorm = Math.sqrt(queryNorm);
+
+            const scores = index.map(item => {
+                const docTfTitle = this.calculateTf(item.titleTokens);
+                const docTfText = this.calculateTf(item.textTokens);
+                const docVector = new Map();
+                let docNorm = 0;
+
+                const allTokens = new Set([...queryTokens, ...item.titleTokens, ...item.textTokens]);
+                allTokens.forEach(token => {
+                    const tfTitle = docTfTitle.get(token) || 0;
+                    const tfText = docTfText.get(token) || 0;
+                    const tf = tfTitle * 1.5 + tfText;
+                    const idf = idfMap.get(token) || 0;
+                    const tfidf = tf * idf;
+                    docVector.set(token, tfidf);
+                    docNorm += tfidf * tfidf;
+                });
+                docNorm = Math.sqrt(docNorm);
+
+                let dotProduct = 0;
+                queryTokens.forEach(token => {
+                    dotProduct += (queryVector.get(token) || 0) * (docVector.get(token) || 0);
+                });
+
+                const similarity = queryNorm > 0 && docNorm > 0 ? dotProduct / (queryNorm * docNorm) : 0;
+                return { item, score: similarity };
+            });
+
+            return scores
+                .filter(result => result.score > 0)
+                .sort((a, b) => b.score - a.score)
+                .map(result => result.item);
+        }
+    };
+
     function initializeUsefulInfoSearch() {
         const searchInput = document.getElementById('useful-info-search-input');
-        const resultsContainer = document.getElementById('useful-info-results-container');
-        const navContainer = document.getElementById('useful-information-nav');
-        
-        if (!searchInput || !resultsContainer || !navContainer) return;
+        const searchBtn = document.getElementById('useful-info-search-btn');
+        const resultsContainer = document.getElementById('useful-info-results');
+        const loadingIndicator = document.getElementById('useful-info-loading');
 
-        const SearchEngine = {
-            tokenize(text, lang) {
-                if (!text) return [];
-                return text
-                    .toLowerCase()
-                    .replace(/[.,/#!$%\^&\*;:{}=\-_`~()]/g, "")
-                    .split(/\s+/)
-                    .filter(word => word.length > 1);
-            },
+        if (!searchInput || !searchBtn || !resultsContainer) return;
 
-            search(query, index, lang) {
-                const queryTokens = this.tokenize(query, lang);
-                if (queryTokens.length === 0) return [];
-
-                const scoredResults = index
-                    .filter(item => item.lang === lang)
-                    .map(item => {
-                        let score = 0;
-                        queryTokens.forEach(qToken => {
-                            const exactTitleMatches = item.titleTokens.filter(t => t === qToken).length;
-                            if (exactTitleMatches > 0) score += exactTitleMatches * 10;
-                            
-                            const exactTextMatches = item.textTokens.filter(t => t === qToken).length;
-                            if (exactTextMatches > 0) score += exactTextMatches * 2;
-                        });
-
-                        if (item.text.toLowerCase().includes(query.toLowerCase().trim())) score *= 1.2;
-                        return { ...item, score };
-                    });
-
-                return scoredResults
-                    .filter(item => item.score > 0)
-                    .sort((a, b) => b.score - a.score);
-            },
-
-            generateSnippet(text, query, lang) {
-                const queryTokens = this.tokenize(query, lang);
-                if (queryTokens.length === 0) return text.substring(0, 120) + (text.length > 120 ? '...' : '');
-
-                let bestIndex = -1;
-                const lowerCaseText = text.toLowerCase();
-
-                for (const token of queryTokens) {
-                    const index = lowerCaseText.indexOf(token);
-                    if (index !== -1) {
-                        bestIndex = index;
-                        break;
-                    }
-                }
-                
-                if (bestIndex === -1) {
-                    return text.substring(0, 120) + (text.length > 120 ? '...' : '');
-                }
-
-                const snippetLength = 120;
-                const start = Math.max(0, bestIndex - Math.round(snippetLength / 4));
-                const end = Math.min(text.length, start + snippetLength);
-                
-                let snippet = text.substring(start, end);
-                if (start > 0) snippet = '... ' + snippet;
-                if (end < text.length) snippet = snippet + ' ...';
-
-                return snippet;
-            },
-
-            highlight(snippet, query, lang) {
-                const queryTokens = this.tokenize(query, lang);
-                if (queryTokens.length === 0) return snippet;
-                const regex = new RegExp(`(${queryTokens.join('|')})`, 'gi');
-                return snippet.replace(regex, '<strong>$1</strong>');
-            }
-        };
-
-        searchInput.addEventListener('input', () => {
+        const performSearch = () => {
             const query = searchInput.value.trim();
-            resultsContainer.innerHTML = '';
-
-            if (!isUsefulInfoIndexBuilt || query.length < 2) {
+            
+            if (query.length === 0) {
+                resultsContainer.innerHTML = '';
                 resultsContainer.classList.add('hidden');
                 return;
             }
 
-            const results = SearchEngine.search(query, usefulInfoSearchIndex, currentLanguage);
+            if (loadingIndicator) loadingIndicator.classList.remove('hidden');
+            resultsContainer.classList.add('hidden');
 
-            if (results.length > 0) {
-                results.slice(0, 7).forEach(result => {
-                    const itemEl = document.createElement('div');
-                    itemEl.classList.add('search-result-item');
-                    const snippet = SearchEngine.generateSnippet(result.text, query, currentLanguage);
-                    const highlightedSnippet = SearchEngine.highlight(snippet, query, currentLanguage);
-
-                    itemEl.innerHTML = `${highlightedSnippet} <small>${result.title}</small>`;
-                    itemEl.addEventListener('click', () => {
-                        searchInput.value = '';
-                        resultsContainer.classList.add('hidden');
-                        loadInformationContent(result.url, result.title, result.text);
-                    });
-                    resultsContainer.appendChild(itemEl);
+            if (!isUsefulInfoIndexBuilt || !usefulInformationLoaded) {
+                loadUsefulInformation().then(() => {
+                    executeSearch(query);
+                }).catch(error => {
+                    console.error('Error loading useful information:', error);
+                    if (loadingIndicator) loadingIndicator.classList.add('hidden');
                 });
-                resultsContainer.classList.remove('hidden');
             } else {
-                resultsContainer.classList.add('hidden');
+                executeSearch(query);
+            }
+        };
+
+        const executeSearch = (query) => {
+            const searchResults = SearchEngine.search(query, usefulInfoSearchIndex, 'usefulInfo', currentLanguage);
+            displaySearchResults(searchResults, query);
+            
+            if (loadingIndicator) loadingIndicator.classList.add('hidden');
+            resultsContainer.classList.remove('hidden');
+        };
+
+        searchBtn.addEventListener('click', performSearch);
+        
+        searchInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                performSearch();
             }
         });
 
-        // Load useful information when modal opens
-        const usefulInfoModal = document.getElementById('useful-information-modal');
-        if (usefulInfoModal) {
-            usefulInfoModal.addEventListener('click', (e) => {
-                if (e.target === usefulInfoModal || e.target.classList.contains('close-modal')) {
-                    searchInput.value = '';
-                    resultsContainer.classList.add('hidden');
-                }
-            });
-        }
-    }
-
-    async function loadInformationContent(url, title, textToHighlight = null) {
-        try {
-            const response = await fetch(url);
-            if (!response.ok) throw new Error(`Fetch failed: ${response.status}`);
-            const htmlContent = await response.text();
-            createAndShowArticleModal(title, htmlContent, textToHighlight);
-        } catch (error) {
-            console.error('Failed to load content:', error);
-        }
-    }
-
-    function createAndShowArticleModal(title, htmlContent, textToHighlight = null) {
-        document.querySelectorAll('.article-modal-overlay').forEach(modal => modal.remove());
-        const modalOverlay = document.createElement('div');
-        modalOverlay.className = 'modal-overlay article-modal-overlay';
-        modalOverlay.innerHTML = `
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h2>${title}</h2>
-                    <button class="close-modal">&times;</button>
-                </div>
-                <div class="modal-body">${htmlContent}</div>
-            </div>`;
-        document.body.appendChild(modalOverlay);
-
-        // Attach copy buttons to dynamic content
-        setTimeout(() => {
-            const codeContainers = modalOverlay.querySelectorAll('.code-container');
-            codeContainers.forEach(container => {
-                const copyBtn = container.querySelector('.copy-btn');
-                const codeEl = container.querySelector('code');
-                if (copyBtn && codeEl && !codeEl.id) {
-                    const uniqueId = `dynamic-code-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
-                    codeEl.id = uniqueId;
-                    copyBtn.addEventListener('click', () => copyToClipboard(copyBtn, uniqueId));
-                }
-            });
-        }, 100);
-
-        setTimeout(() => modalOverlay.classList.add('visible'), 10);
-        changeLanguage(currentLanguage);
-
-        const closeModal = () => {
-            modalOverlay.classList.remove('visible');
-            modalOverlay.addEventListener('transitionend', () => modalOverlay.remove(), { once: true });
+        const debounce = (func, delay) => {
+            let timeoutId;
+            return (...args) => {
+                clearTimeout(timeoutId);
+                timeoutId = setTimeout(() => func.apply(this, args), delay);
+            };
         };
 
-        modalOverlay.addEventListener('click', (e) => {
-            if (e.target === modalOverlay) closeModal();
-        });
-        modalOverlay.querySelector('.close-modal').addEventListener('click', closeModal);
+        searchInput.addEventListener('input', debounce(() => {
+            if (searchInput.value.trim().length > 2) {
+                performSearch();
+            } else if (searchInput.value.trim().length === 0) {
+                resultsContainer.innerHTML = '';
+                resultsContainer.classList.add('hidden');
+            }
+        }, 300));
+    }
+
+    async function loadUsefulInformation() {
+        if (isFetchingUsefulInfo) return;
+        if (usefulInformationLoaded) return;
+
+        isFetchingUsefulInfo = true;
+        const loadingIndicator = document.getElementById('useful-info-loading');
+        
+        try {
+            if (loadingIndicator) loadingIndicator.classList.remove('hidden');
+
+            const response = await fetch('/api/useful-info');
+            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+            
+            const data = await response.json();
+            usefulInfoFiles = data.files || [];
+            usefulInfoSearchIndex = [];
+
+            usefulInfoFiles.forEach(file => {
+                const processedItem = SearchEngine.preprocessItem(file);
+                usefulInfoSearchIndex.push(processedItem);
+            });
+
+            isUsefulInfoIndexBuilt = true;
+            usefulInformationLoaded = true;
+            
+        } catch (error) {
+            console.error('Error fetching useful information:', error);
+            usefulInfoFiles = [];
+            usefulInfoSearchIndex = [];
+        } finally {
+            isFetchingUsefulInfo = false;
+            if (loadingIndicator) loadingIndicator.classList.add('hidden');
+        }
+    }
+
+    function displaySearchResults(results, query) {
+        const resultsContainer = document.getElementById('useful-info-results');
+        if (!resultsContainer) return;
+
+        if (results.length === 0) {
+            resultsContainer.innerHTML = `
+                <div class="no-results">
+                    <i class="fas fa-search"></i>
+                    <p data-en="No articles found matching your search." data-gr="Δεν βρέθηκαν άρθρα που να ταιριάζουν με την αναζήτησή σας.">
+                        No articles found matching your search.
+                    </p>
+                </div>
+            `;
+            changeLanguage(currentLanguage);
+            return;
+        }
+
+        resultsContainer.innerHTML = results.map(item => `
+            <div class="search-result-item">
+                <h3>${escapeHtml(item.title)}</h3>
+                <p>${escapeHtml(item.text.substring(0, 150))}...</p>
+                <div class="result-meta">
+                    <span class="result-category">${escapeHtml(item.category)}</span>
+                    <span class="result-date">${escapeHtml(item.date)}</span>
+                </div>
+            </div>
+        `).join('');
+
+        changeLanguage(currentLanguage);
+    }
+
+    function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
     }
 
     // --- CAROUSEL FUNCTIONALITY ---
     function initializeCarousels() {
-        const carousels = document.querySelectorAll('.gym-carousel');
-        carousels.forEach(carousel => {
-            const images = carousel.querySelectorAll('.gym-clothing-images img');
-            const prevBtn = carousel.querySelector('.carousel-btn.prev');
-            const nextBtn = carousel.querySelector('.carousel-btn.next');
-            
-            if (images.length > 0 && prevBtn && nextBtn) {
-                let currentIndex = 0;
-                
-                const showImage = (index) => {
-                    images.forEach((img, i) => img.classList.toggle('active', i === index));
-                };
-                
-                prevBtn.addEventListener('click', () => {
-                    currentIndex = (currentIndex > 0) ? currentIndex - 1 : images.length - 1;
-                    showImage(currentIndex);
-                });
-                
-                nextBtn.addEventListener('click', () => {
-                    currentIndex = (currentIndex < images.length - 1) ? currentIndex + 1 : 0;
-                    showImage(currentIndex);
-                });
-                
-                showImage(0);
-            }
-        });
-    }
-
-    // --- MODAL MANAGEMENT ---
-    function initializeModals() {
-        document.querySelectorAll('.modal-overlay').forEach(modal => {
-            const closeModalBtn = modal.querySelector('.close-modal');
-            const closeModal = () => modal.classList.remove('visible');
-            
-            modal.addEventListener('click', e => {
-                if (e.target === modal) closeModal();
-            });
-            
-            if (closeModalBtn) {
-                closeModalBtn.addEventListener('click', closeModal);
-            }
-        });
-    }
-
-    // Initialize modals
-    initializeModals();
-
-    // --- SCROLL INDICATOR ---
-    function initializeScrollIndicator() {
-        const scrollThumb = document.getElementById('scroll-indicator-thumb');
-        const homeScreen = document.querySelector('.home-screen');
+        const carousels = document.querySelectorAll('.carousel');
         
-        if (scrollThumb && homeScreen) {
-            homeScreen.addEventListener('scroll', () => {
-                const scrollTop = homeScreen.scrollTop;
-                const scrollHeight = homeScreen.scrollHeight - homeScreen.clientHeight;
-                const scrollPercentage = (scrollTop / scrollHeight) * 100;
-                
-                scrollThumb.style.opacity = scrollPercentage > 0 ? '1' : '0';
-                scrollThumb.style.top = `${scrollPercentage}%`;
+        carousels.forEach(carousel => {
+            const track = carousel.querySelector('.carousel-track');
+            const items = Array.from(track.children);
+            const nextBtn = carousel.querySelector('.carousel-btn.next');
+            const prevBtn = carousel.querySelector('.carousel-btn.prev');
+            const dotsContainer = carousel.querySelector('.carousel-dots');
+            
+            if (!track || items.length === 0) return;
+            
+            let currentIndex = 0;
+            const itemWidth = items[0].getBoundingClientRect().width;
+            
+            // Set initial positions
+            items.forEach((item, index) => {
+                item.style.left = `${itemWidth * index}px`;
             });
-        }
+            
+            // Create dots
+            if (dotsContainer) {
+                items.forEach((_, index) => {
+                    const dot = document.createElement('button');
+                    dot.classList.add('carousel-dot');
+                    if (index === 0) dot.classList.add('active');
+                    dot.addEventListener('click', () => moveToIndex(index));
+                    dotsContainer.appendChild(dot);
+                });
+            }
+            
+            const moveToIndex = (index) => {
+                currentIndex = index;
+                track.style.transform = `translateX(-${currentIndex * itemWidth}px)`;
+                
+                // Update dots
+                if (dotsContainer) {
+                    dotsContainer.querySelectorAll('.carousel-dot').forEach((dot, i) => {
+                        dot.classList.toggle('active', i === currentIndex);
+                    });
+                }
+            };
+            
+            const moveNext = () => {
+                currentIndex = (currentIndex + 1) % items.length;
+                moveToIndex(currentIndex);
+            };
+            
+            const movePrev = () => {
+                currentIndex = (currentIndex - 1 + items.length) % items.length;
+                moveToIndex(currentIndex);
+            };
+            
+            if (nextBtn) nextBtn.addEventListener('click', moveNext);
+            if (prevBtn) prevBtn.addEventListener('click', movePrev);
+            
+            // Auto-advance carousel every 5 seconds
+            let autoAdvance = setInterval(moveNext, 5000);
+            
+            // Pause auto-advance on hover
+            carousel.addEventListener('mouseenter', () => clearInterval(autoAdvance));
+            carousel.addEventListener('mouseleave', () => {
+                autoAdvance = setInterval(moveNext, 5000);
+            });
+            
+            // Touch/swipe support
+            let startX = 0;
+            let currentX = 0;
+            
+            track.addEventListener('touchstart', e => {
+                startX = e.touches[0].clientX;
+            });
+            
+            track.addEventListener('touchmove', e => {
+                currentX = e.touches[0].clientX;
+            });
+            
+            track.addEventListener('touchend', () => {
+                const diff = startX - currentX;
+                if (Math.abs(diff) > 50) {
+                    if (diff > 0) {
+                        moveNext();
+                    } else {
+                        movePrev();
+                    }
+                }
+            });
+        });
     }
-
-    initializeScrollIndicator();
-
-    console.log('DedSec Project - All functionalities initialized successfully');
 });
