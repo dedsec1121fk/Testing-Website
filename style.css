@@ -443,8 +443,6 @@ button.hero-cta-button {
     align-items: center;
     box-sizing: border-box;
     transition: background-color 0.3s ease, width 0.3s ease, height 0.3s ease, border-radius 0.3s ease;
-    /* FIX: Added margin auto to ensure phone-container is absolutely centered on small screens too */
-    margin: 0 auto; 
 }
 
 .phone-container::after {
@@ -790,7 +788,7 @@ body.light-theme ::-webkit-scrollbar-thumb {
     box-sizing: border-box;
     position: relative;
     clip-path: none;
-    border-radius: 50px;
+    border-radius: 50%;
     gap: 12px;
     box-shadow: none;
     height: 56px;
