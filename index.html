@@ -33,27 +33,6 @@
       }
     }
     </script>
-    <style>
-        /* Add this style to ensure 3 items per row in app-grid */
-        .app-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr); /* Force 3 columns */
-            gap: 10px; /* Adjust gap as needed */
-            padding: 10px;
-        }
-        /* Style for the single Useful Info button container */
-        .useful-info-container {
-            display: flex;
-            justify-content: center;
-            padding: 10px;
-            margin-top: 5px; /* Add some space below search bar */
-        }
-        .useful-info-container .app-wrapper {
-             width: calc(33.33% - 10px); /* Match grid item width roughly */
-             max-width: 150px; /* Optional: Limit max width */
-        }
-
-    </style>
 </head>
 <body class="dark-theme">
     <div class="phone-container">
@@ -69,13 +48,6 @@
                             <input type="text" name="q" id="main-search-input" placeholder="Search the Web..." data-en="Search the Web..." data-gr="Αναζήτηση στο διαδίκτυο..." autocomplete="off">
                         </form>
                         <div id="search-suggestions-container" class="hidden"></div>
-                    </div>
-                     {/* Useful Info button moved here */}
-                    <div class="useful-info-container">
-                         <button class="app-wrapper" data-modal="useful-information">
-                            <div class="app-icon"><i class="fas fa-lightbulb"></i></div>
-                            <span class="app-label" data-en="Useful Information" data-gr="Χρήσιμες Πληροφορίες">Useful Information</span>
-                        </button>
                     </div>
                 </div>
 
@@ -103,36 +75,21 @@
                 </div>
 
                 <h4 class="grid-heading" data-en="Explore the Toolkit" data-gr="Εξερευνήστε την Εργαλειοθήκη">Explore the Toolkit</h4>
-                {/* Grid adjusted to have 3 items per row implicitly via CSS */}
                 <div class="app-grid">
-                     <button class="app-wrapper" data-modal="basic-tools">
-                        <div class="app-icon"><i class="fas fa-toolbox"></i></div>
-                        <span class="app-label" data-en="Basic Tools" data-gr="Βασικά Εργαλεία">Basic Tools</span>
-                    </button>
-                    
-                    <button class="app-wrapper" data-modal="mods">
-                        <div class="app-icon"><i class="fas fa-cogs"></i></div>
-                        <span class="app-label" data-en="Mods" data-gr="Mods">Mods</span>
-                    </button>
-
-                    <button class="app-wrapper" data-modal="social-media-fakes">
-                        <div class="app-icon"><i class="fas fa-users"></i></div>
-                        <span class="app-label" data-en="Social Media Fake Pages" data-gr="Ψεύτικες Σελίδες Social Media">Social Media Fake Pages</span>
-                    </button>
-                    
-                    {/* Next row starts here */}
-                    <button class="app-wrapper" data-modal="personal-info-capture">
-                        <div class="app-icon"><i class="fas fa-camera"></i></div>
-                        <span class="app-label" data-en="Personal Information Capture" data-gr="Λήψη Προσωπικών Πληροφοριών">Personal Information Capture</span>
+                    <button class="app-wrapper" data-modal="scripts">
+                        <div class="app-icon"><i class="fas fa-shield-alt"></i></div>
+                        <span class="app-label" data-en="Understand What The DedSec Project Does" data-gr="Κατανοήστε Τι Κάνει Το DedSec Project">Understand What The DedSec Project Does</span>
                     </button>
                     
                     <button class="app-wrapper" data-modal="installation">
                         <div class="app-icon"><i class="fas fa-download"></i></div>
                         <span class="app-label" data-en="How To Install And Setup The DedSec Project" data-gr="Πώς Να Εγκαταστήσετε Και Να Ρυθμίσετε Το DedSec Project">How To Install And Setup The DedSec Project</span>
                     </button>
-                    
-                     {/* Useful Information button removed from here */}
-                    
+
+                    <button class="app-wrapper" data-modal="useful-information">
+                        <div class="app-icon"><i class="fas fa-lightbulb"></i></div>
+                        <span class="app-label" data-en="Useful Information" data-gr="Χρήσιμες Πληροφορίες">Useful Information</span>
+                    </button>
                 </div>
 
                 <h4 class="grid-heading" data-en="About & Community" data-gr="Σχετικά & Κοινότητα">About & Community</h4>
@@ -181,8 +138,6 @@
             </main>
         </div>
     </div>
-
-    {/* --- MODALS START HERE --- */}
 
     <div id="certificate-modal" class="modal-overlay">
         <div class="modal-content">
@@ -326,171 +281,227 @@
                 <p><strong>1. Ανάληψη Κινδύνου και Ευθύνης:</strong> Με την πρόσβαση ή τη χρήση του Λογισμικού, αναγνωρίζετε και συμφωνείτε ότι το κάνετε με δική σας ευθύνη. Είστε αποκλειστικά και εξ ολοκλήρου υπεύθυνοι για τις ενέργειές σας και για τυχόν συνέπειες που μπορεί να προκύψουν από τη χρήση ή κακή χρήση αυτού του Λογισμικού. Αυτό περιλαμβάνει, ενδεικτικά, τη συμμόρφωση με όλους τους ισχύοντες τοπικούς, πολιτειακούς, εθνικούς και διεθνείς νόμους και κανονισμούς που σχετίζονται με την κυβερνοασφάλεια, την προστασία δεδομένων και τις ηλεκτρονικές επικοινωνίες.</p>
                 <p><strong>2. Απαγορευμένες Δραστηριότητες:</strong> Απαγορεύεται αυστηρά οποιαδήποτε χρήση του Λογισμικού για μη εξουσιοδοτημένες ή κακόβουλες δραστηριότητες. Αυτό περιλαμβάνει, χωρίς περιορισμό: πρόσβαση σε συστήματα ή δεδομένα χωρίς εξουσιοδοτημένη πρόσβαση, εκτέλεση επιθέσεων άρνησης υπηρεσίας (denial-of-service), κλοπή δεδομένων, απάτη, διάδοση κακόβουλου λογισμικού ή οποιαδήποτε άλλη δραστηριότητα που παραβιάζει την ισχύουσα νομοθεσία. Η συμμετοχή σε τέτοιες δραστηριότητες μπορεί να οδηγήσει σε σοβαρές αστικές και ποινικές κυρώσεις.</p>
                 <p><strong>3. Καμία Εγγύηση:</strong> Το Λογισμικό παρέχεται "ΩΣ ΕΧΕΙ", χωρίς καμία εγγύηση οποιουδήποτε είδους, ρητή ή σιωπηρή. Αυτό περιλαμβάνει, ενδεικτικά, τις σιωπηρές εγγυήσεις εμπορευσιμότητας, καταλληλότητας για συγκεκριμένο σκοπό και μη παραβίασης. Οι προγραμματιστές και οι συντελεστές δεν παρέχουν καμία εγγύηση ότι το Λογισμικό θα είναι απαλλαγμένο από σφάλματα, ασφαλές ή αδιάλειπτο.</p>
-                <p><strong>4. Περιορισμός Ευθύνης:</strong> Σε καμία περίπτωση οι προγραμματιστές, οι συντελεστές ή οι διανομείς του Λογισμικού δεν φέρουν ευθύνη για οποιαδήποτε αξίμη, ζημιές ή άλλη ευθύνη, είτε πρόκειται για αγωγή σύμβασης, αδικοπραξίας ή άλλως, που προκύπτει από, ή σε σχέση με το Λογισμικό ή τη χρήση ή άλλες συναλλαγές με το Λογισμικό. Αυτό περιλαμβάνει τυχόν άμεσες, έμμεσες, τυχαίες, ειδικές, παραδειγματικές ή επακόλουθες ζημιές (συμπεριλαμβανομένης, αλλά όχι μόνο, της προμήθειας υποκατάστατων αγαθών ή υπηρεσιών, απώλειας χρήσης, δεδομένων ή κερδών ή διακοπής εργασιών).</p>
+                <p><strong>4. Περιορισμός Ευθύνης:</strong> Σε καμία περίπτωση οι προγραμματιστές, οι συντελεστές ή οι διανομείς του Λογισμικού δεν φέρουν ευθύνη για οποιαδήποτε απαίτηση, ζημιές ή άλλη ευθύνη, είτε πρόκειται για αγωγή σε συμβόλαιο, αδικοπραξία ή με άλλο τρόπο, που προκύπτει από, ή σε σχέση με το Λογισμικό ή τη χρήση ή άλλες συναλλαγές με το Λογισμικό. Αυτό περιλαμβάνει οποιεσδήποτε άμεσες, έμμεσες, τυχαίες, ειδικές, υποδειγματικές ή επακόλουθες ζημιές (συμπεριλαμβανομένων, ενδεικτικά, της προμήθειας υποκατάστατων αγαθών ή υπηρεσιών, απώλειας χρήσης, δεδομένων ή κερδών ή διακοπής εργασιών).</p>
             </div>
             <hr class="modal-divider">
-            <h3 class="text-center">Περίληψη Πολιτικής Απορήτου</h3>
+            <h3 class="text-center">Σύνοψη Πολιτικής Απορρήτου</h3>
             <div class="privacy-policy-embed">
-                <p>Δεσμευόμαστε να προστατεύουμε το απόρρητό σας. Δεν αποθηκεύουμε ή μεταδίδουμε τα προσωπικά σας δεδομένα. Χρησιμοποιούμε υπηρεσίες τρίτων όπως το Google AdSense, οι οποίες ενδέχεται να χρησιμοποιούν cookies για διαφημίσεις. Παρακαλούμε ελέγξτε τις πολιτικές τους. Με τη χρήση της υπηρεσίας μας, συμφωνείτε με την πλήρη Πολιτική Απορήτου μας.</p>
+                <p>Δεσμευόμαστε να προστατεύουμε το απόρρητό σας. Δεν αποθηκεύουμε ούτε μεταδίδουμε τα προσωπικά σας δεδομένα. Χρησιμοποιούμε υπηρεσίες τρίτων, όπως το Google AdSense, οι οποίες ενδέχεται να χρησιμοποιούν cookies για διαφήμιση. Παρακαλούμε ελέγξτε τις πολιτικές τους. Με τη χρήση της υπηρεσίας μας, συμφωνείτε με την πλήρη Πολιτική Απορρήτου μας.</p>
             </div>
-            <div class="note"><p><strong>Με το κλικ στο "Αποδοχή", επιβεβαιώνετε ότι διαβάσατε, κατανοήσατε και συμφωνείτε να δεσμεύεστε από όλους τους όρους και τις προϋποθέσεις που περιγράφονται σε αυτήν την αποποίηση ευθύνης και την πλήρη Πολιτική Απορήτου μας. Εάν δεν συμφωνείτε με αυτούς τους όρους, πρέπει να κάνετε κλικ στο "Απόρριψη" και να διακόψετε αμέσως κάθε χρήση του Λογισμικού.</strong></p></div>
-          </div>
-          <div class="modal-footer">
-            <button id="decline-disclaimer" class="decline-btn" data-en="Decline" data-gr="Απόρριψη">Decline</button>
-            <button id="accept-disclaimer" class="accept-btn" data-en="Accept" data-gr="Αποδοχή">Accept</button>
+            <div class="note"><p><strong>Με κλικ στο «Αποδοχή», επιβεβαιώνετε ότι έχετε διαβάσει, κατανοήσει και συμφωνείτε να δεσμεύεστε από όλους τους όρους και προϋποθέσεις που περιγράφονται σε αυτήν την αποποίηση ευθύνης και στην πλήρη Πολιτική Απορρήτου μας. Εάν δεν συμφωνείτε με αυτούς τους όρους, πρέπει να κάνετε κλικ στο «Άρνηση» και να διακόψετε αμέσως κάθε χρήση του Λογισμικού.</strong></p></div>
           </div>
       </div>
+      <div class="modal-footer modal-footer-disclaimer">
+          <button id="decline-disclaimer-btn" class="decline-btn" data-en="Decline" data-gr="Άρνηση">Decline</button>
+          <button id="accept-disclaimer-btn" class="accept-btn" data-en="Accept" data-gr="Αποδοχή">Accept</button>
+      </div>
     </div>
-    
+
+    <div id="scripts-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header"><h2 data-en="Understand What The DedSec Project Does" data-gr="Κατανοήστε Τι Κάνει Το DedSec Project">Understand What The DedSec Project Does</h2><button class="close-modal" aria-label="Close">×</button></div>
+            <div class="modal-body">
+                <p data-en="This tool is a powerful and versatile collection of scripts designed for ethical hacking, network analysis, and utility functions, primarily optimized for Termux on Android."
+                   data-gr="Αυτό το εργαλείο είναι μια ισχυρή και ευέλικτη συλλογή σεναρίων σχεδιασμένων για ηθικό χακάρισμα, ανάλυση δικτύου και λειτουργίες βοηθητικών προγραμμάτων, βελτιστοποιημένα κυρίως για το Termux σε Android.">
+                   This tool is a powerful and versatile collection of scripts designed for ethical hacking, network analysis, and utility functions, primarily optimized for Termux on Android.
+                </p>
+                <h3 data-en="Core Tools" data-gr="Βασικά Εργαλεία">Core Tools</h3>
+                <div class="app-grid list-grid">
+                    <div class="app-wrapper script-info">
+                        <div class="app-icon"><i class="fas fa-network-wired"></i></div>
+                        <span class="app-label" data-en="DedSec's Network" data-gr="Δίκτυο DedSec">DedSec's Network</span>
+                        <span class="sub-item" data-en="Advanced network scanner, security audit, and utility toolkit. Non-root." data-gr="Προηγμένος σαρωτής δικτύου, έλεγχος ασφαλείας και εργαλειοθήκη βοηθητικών προγραμμάτων. Χωρίς root.">
+                            Advanced network scanner, security audit, and utility toolkit. Non-root.
+                        </span>
+                    </div>
+                    <div class="app-wrapper script-info">
+                        <div class="app-icon"><i class="fas fa-fingerprint"></i></div>
+                        <span class="app-label" data-en="Digital Footprint Finder" data-gr="Εύρεση Ψηφιακού Αποτυπώματος">Digital Footprint Finder</span>
+                        <span class="sub-item" data-en="Searches for public accounts using a username across 100+ platforms (OSINT)." data-gr="Αναζητά δημόσιους λογαριασμούς χρησιμοποιώντας όνομα χρήστη σε 100+ πλατφόρμες (OSINT).">
+                            Searches for public accounts using a username across 100+ platforms (OSINT).
+                        </span>
+                    </div>
+                    <div class="app-wrapper script-info">
+                        <div class="app-icon"><i class="fas fa-database"></i></div>
+                        <span class="app-label" data-en="Fox's Connections" data-gr="Συνδέσεις του Fox">Fox's Connections</span>
+                        <span class="sub-item" data-en="A unified Flask server for encrypted chat, file sharing, and a secure database." data-gr="Ένας ενοποιημένος διακομιστής Flask για κρυπτογραφημένη συνομιλία, κοινή χρήση αρχείων και ασφαλή βάση δεδομένων.">
+                            A unified Flask server for encrypted chat, file sharing, and a secure database.
+                        </span>
+                    </div>
+                    <div class="app-wrapper script-info">
+                        <div class="app-icon"><i class="fas fa-mobile-alt"></i></div>
+                        <span class="app-label" data-en="Android App Launcher" data-gr="Εκκινητής Εφαρμογών Android">Android App Launcher</span>
+                        <span class="sub-item" data-en="Lists all installed apps on the device, allows launch, and extracts APKs." data-gr="Λίστα όλων των εγκατεστημένων εφαρμογών στη συσκευή, επιτρέπει την εκκίνηση και εξαγωγή APKs.">
+                            Lists all installed apps on the device, allows launch, and extracts APKs.
+                        </span>
+                    </div>
+                    <div class="app-wrapper script-info">
+                        <div class="app-icon"><i class="fas fa-file-export"></i></div>
+                        <span class="app-label" data-en="File Converter" data-gr="Μετατροπέας Αρχείων">File Converter</span>
+                        <span class="sub-item" data-en="TUI-based tool to convert documents, images, and A/V files (40+ formats)." data-gr="Εργαλείο με βάση το TUI για μετατροπή εγγράφων, εικόνων και αρχείων A/V (40+ μορφές).">
+                            TUI-based tool to convert documents, images, and A/V files (40+ formats).
+                        </span>
+                    </div>
+                    <div class="app-wrapper script-info">
+                        <div class="app-icon"><i class="fas fa-sticky-note"></i></div>
+                        <span class="app-label" data-en="Smart Notes" data-gr="Έξυπνες Σημειώσεις">Smart Notes</span>
+                        <span class="sub-item" data-en="Advanced TUI note-taking app with reminders, full-text search, and markdown." data-gr="Προηγμένη εφαρμογή σημειώσεων TUI με υπενθυμίσεις, αναζήτηση πλήρους κειμένου και markdown.">
+                            Advanced TUI note-taking app with reminders, full-text search, and markdown.
+                        </span>
+                    </div>
+                    <div class="app-wrapper script-info">
+                        <div class="app-icon"><i class="fas fa-qrcode"></i></div>
+                        <span class="app-label" data-en="QR Code Generator" data-gr="Δημιουργός QR Code">QR Code Generator</span>
+                        <span class="sub-item" data-en="A simple, fast script to encode URLs into high-quality QR code images." data-gr="Ένα απλό, γρήγορο σενάριο για κωδικοποίηση URLs σε εικόνες QR code υψηλής ποιότητας.">
+                            A simple, fast script to encode URLs into high-quality QR code images.
+                        </span>
+                    </div>
+                    <div class="app-wrapper script-info">
+                        <div class="app-icon"><i class="fas fa-cogs"></i></div>
+                        <span class="app-label" data-en="Settings" data-gr="Ρυθμίσεις">Settings</span>
+                        <span class="sub-item" data-en="Manage updates, dependencies, menu style, and language within a TUI." data-gr="Διαχείριση ενημερώσεων, εξαρτήσεων, στυλ μενού και γλώσσας εντός TUI.">
+                            Manage updates, dependencies, menu style, and language within a TUI.
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div id="installation-modal" class="modal-overlay">
         <div class="modal-content">
             <div class="modal-header"><h2 data-en="How To Install And Setup The DedSec Project" data-gr="Πώς Να Εγκαταστήσετε Και Να Ρυθμίσετε Το DedSec Project">How To Install And Setup The DedSec Project</h2><button class="close-modal" aria-label="Close">×</button></div>
-            <div class="modal-body" data-lang-section="en">
-                <h3>Requirements</h3><ul><li><b>Device:</b> Android with <a href="https://f-droid.org/" target="_blank">Termux</a> installed.</li><li><b>Storage:</b> Min <b>8GB</b> free. <span class="sub-item">(Images and recordings also consume space.)</span></li><li><b>RAM:</b> Min <b>2GB</b>.</li></ul><h3>Step-by-Step Installation</h3><ol><li><b>Install Termux & Add-Ons</b><div class="tip"><p><b>Note:</b> To install APKs (e.g., F-Droid), ensure you:<br>- Enable unknown sources (Settings > Security > <b>Install Unknown Apps</b>).<br>- Download F-Droid, then get Termux from <a href="https://f-droid.org/">F-Droid</a>.<br>- Install add-ons: Termux:API, Termux:Styling.<br>- Allow the <code>fdroid</code> process when prompted.</p></div></li><li><b>Update Packages & Install Git</b><div class="note note-warning"><b>Important:</b> Open the Termux application on your device before copying and pasting the command below.</div><div class="code-container"><button class="copy-btn" onclick="copyToClipboard(this, 'pkg_cmd_en')">Copy</button><code id="pkg_cmd_en">pkg update -y && pkg upgrade -y && pkg install git nano -y && termux-setup-storage</code></div></li><li><b>Clone the Repository</b><div class="code-container"><button class="copy-btn" onclick="copyToClipboard(this, 'clone_cmd_en')">Copy</button><code id="clone_cmd_en">git clone https://github.com/dedsec1121fk/DedSec</code></div></li><li><b>Run the Setup Script</b><div class="code-container"><button class="copy-btn" onclick="copyToClipboard(this, 'setup_cmd_en')">Copy</button><code id="setup_cmd_en">cd DedSec && bash Setup.sh</code></div><div class="tip"><p>The script will handle the complete installation. After the process, you will see a settings menu, you must choose Change Menu Style and then choose a menu style: list or grid.<br>After that close Termux from notifications and reopen it.</p></div></li></ol><div class="tip" style="margin-top: 20px;"><p><b>Tip:</b> After setup, you can quickly open the menu by typing <code>e</code> (for the English version) or <code>g</code> (for the Greek version) in Termux.</p></div>
-                <div class="modal-disclaimer"><p><strong>Legal Disclaimer:</strong> All tools and information presented here are for educational and ethical research purposes only. Use them exclusively on systems you own or have explicit, written permission to test. Unauthorized use is illegal. The user is solely responsible for all actions taken, and the creators of this project assume no liability for any misuse or damage.</p><p><strong>Trademark Disclaimer:</strong> The "DedSec" name and logo used in this project are for thematic and inspirational purposes only. This is an independent, fan-made project created for educational purposes and has no official connection to the "Watch Dogs" franchise. It is not associated with, endorsed by, or affiliated with Ubisoft Entertainment S.A. All trademarks and copyrights for "Watch Dogs" and "DedSec" as depicted in the games belong to their respective owners, Ubisoft Entertainment S.A.</p></div>
-            </div>
-            <div class="modal-body hidden-by-default" data-lang-section="gr">
-                <h3>Απαιτήσεις</h3><ul><li><b>Συσκευή:</b> Android με εγκατεστημένο το <a href="https://f-droid.org/" target="_blank">Termux</a>.</li><li><b>Αποθηκευτικός Χώρος:</b> Ελάχιστος <b>8GB</b> ελεύθερος.<span class="sub-item">(Οι εικόνες και οι ηχογραφήσεις καταναλώνουν επίσης χώρο.)</span></li><li><b>RAM:</b> Ελάχ. <b>2GB</b>.</li></ul><h3>Βήμα-Βήμα Εγκατάσταση</h3><ol><li><b>Εγκατάσταση του Termux & Πρόσθετων</b><div class="tip"><p><b>Σημείωση:</b> Για την εγκατάσταση APKs (π.χ. F-Droid), βεβαιωθείτε ότι έχετε:<br/>- Ενεργοποίηση άγνωστων πηγών (Ρυθμίσεις > Ασφάλεια > <b>Εγκατάσταση άγνωστων εφαρμογών</b>).<br/>- Κατεβάστε το F-Droid και, στη συνέχεια, εγκαταστήστε το Termux μέσω του <a href="https://f-droid.org/">F-Droid</a>.<br/>- Επιτρέψτε τη διαδικασία <code>fdroid</code> όταν σας ζητηθεί.</p></div></li><li><b>Ενημέρωση Πακέτων & Εγκατάσταση Git</b><div class="note note-warning"><b>Σημαντικό:</b> Ανοίξτε την εφαρμογή Termux στη συσκευή σας πριν αντιγράψετε και επικολλήσετε την παρακάτω εντολή.</div><div class="code-container"><button class="copy-btn" onclick="copyToClipboard(this, 'pkg_cmd_gr')">Αντιγραφή</button><code id="pkg_cmd_gr">pkg update -y && pkg upgrade -y && pkg install git nano -y && termux-setup-storage</code></div></li><li><b>Κλωνοποιήστε το αποθετήριο</b><div class="code-container"><button class="copy-btn" onclick="copyToClipboard(this, 'clone_cmd_gr')">Αντιγραφή</button><code id="clone_cmd_gr">git clone https://github.com/dedsec1121fk/DedSec</code></div></li><li><b>Εκτελέστε το Script Εγκατάστασης</b><div class="code-container"><button class="copy-btn" onclick="copyToClipboard(this, 'setup_cmd_gr')">Αντιγραφή</button><code id="setup_cmd_gr">cd DedSec && bash Setup.sh</code></div><div class="tip"><p>Το script θα αναλάβει την πλήρη εγκατάσταση. Μετά τη διαδικασία, θα δείτε ένα μενού ρυθμίσεων, πρέπει να επιλέξετε 'Change Menu Style' και στη συνέχεια να επιλέξετε ένα στυλ μενού: list or grid.<br>Μετά από αυτό, κλείστε το Termux από τις ειδοποιήσεις και ανοίξτε το ξανά.</p></div></li></ol><div class="tip" style="margin-top: 20px;"><p><b>Συμβουλή:</b> Μετά την εγκατάσταση, μπορείτε να ανοίξετε γρήγορα το μενού πληκτρολογώντας <code>e</code> (για την Αγγλική έκδοση) ή <code>g</code> (για την Ελληνική έκδοση) στο Termux.</p></div>
-                <div class="modal-disclaimer"><p><strong>Νομική Αποποίηση Ευθύνης:</strong> Όλα τα εργαλεία και οι πληροφορίες που παρουσιάζονται εδώ προορίζονται αποκλειστικά για εκπαιδευτικούς και ηθικούς ερευνητικούς σκοπούς. Χρησιμοποιήστε τα αποκλειστικά σε συστήματα που σας ανήκουν ή για τα οποία έχετε ρητή, γραπτή άδεια να δοκιμάσετε. Η μη εξουσιοδοτημένη χρήση είναι παράνομη. Ο χρήστης είναι αποκλειστικά υπεύθυνος για όλες τις ενέργειες που πραγματοποιεί, και οι δημιουργοί αυτού του έργου δεν αναλαμβάνουν καμία ευθύνη για οποιαδήποτε κακή χρήση ή ζημία.</p><p><strong>Αποποίηση Ευθύνης Εμπορικού Σήματος:</strong> Το όνομα και το λογότυπο "DedSec" που χρησιμοποιούνται σε αυτό το έργο είναι μόνο για θεματικούς και εμπνευστικούς σκοπούς. Αυτό είναι ένα ανεξάρτητο, fan-made έργο που δημιουργήθηκε για εκπαιδευτικούς σκοπούς και δεν έχει καμία επίσημη σύνδεση με το franchise "Watch Dogs". Δεν συνδέεται, δεν υποστηρίζεται από, ούτε σχετίζεται με την Ubisoft Entertainment S.A. Όλα τα εμπορικά σήματα και τα πνευματικά δικαιώματα για το "Watch Dogs" και το "DedSec" όπως απεικονίζονται στα παιχνίδια ανήκουν στους αντίστοιχους κατόχους τους, την Ubisoft Entertainment S.A.</p></div>
-            </div>
-        </div>
-    </div>
-
-    <div id="basic-tools-modal" class="modal-overlay">
-        <div class="modal-content">
-            <div class="modal-header"><h2 data-en="Basic Tools" data-gr="Βασικά Εργαλεία">Basic Tools</h2><button class="close-modal" aria-label="Close">×</button></div>
-            <div class="modal-body" data-lang-section="en">
-                <h3>Toolkit Summary</h3>
-                <ol>
-                    <li><b>Android App Launcher</b><br>A utility to manage installed applications on your Android device. You can launch, view details for, uninstall, or extract the APK file of any app. It also includes an <b>App Perm Inspector</b> feature that scans the APK to identify dangerous permissions and detect embedded advertising trackers, generating a security report for your review.</li>
-                    <li><b>DedSec's Network</b><br>A comprehensive network analysis and security toolkit that provides various network utilities including Wi-Fi scanning, port scanning, network discovery, speed tests, and security auditing. Features include passive Wi-Fi network analysis, enhanced port scanning with service detection, HTTP header security analysis, DNS record lookups, and various network diagnostic tools. All results and configuration files are saved in a dedicated folder named <b><code>DedSec's Network</code></b> inside the project directory for review.</li>
-                    <li><b>Digital Footprint Finder</b><br>An OSINT (Open Source Intelligence) tool that helps you discover what public information exists about a username across multiple online platforms. It scans social media sites, coding platforms, and other services to find publicly accessible profiles associated with a username. The tool includes caching mechanisms to avoid repeated requests, stealth modes to reduce detection, and saves results in both text and JSON formats inside a <b><code>Digital Footprint Finder</code></b> folder in your phone's main <b>Downloads</b> directory for further analysis.</li>
-                    <li><b>File Converter</b><br>An advanced, interactive file converter for Termux. It supports a wide range of document, image, audio/video, and data conversions (e.g., PDF, DOCX, PNG, MP4, CSV). All converted files are organized into a "File Converter" folder in your Downloads.</li>
-                    <li><b>Fox's Connections</b><br>A secure, end-to-end encrypted chat application protected by a one-time Secret Key. Features include text messaging, voice notes, file sharing (up to 10 GB), live camera capture, and peer-to-peer video calls. Files shared in the chat can be downloaded directly from the chat interface by the participants. It also includes a public, link-based file database.</li>
-                    <li><b>QR Code Generator</b><br>Generates a QR code image for any link you provide and saves it inside a 'QR Codes' folder within the phone's Downloads directory.</li>
-                    <li><b>Settings</b><br>A central control panel to manage the DedSec Project. Use it to view system information, update all project scripts and required packages, change the Termux prompt style, and switch between list or grid menu layouts. This script modifies your <b><code>/data/data/com.termux/files/usr/etc/bash.bashrc</code></b> file to apply changes.</li>
-                    <li><b>Smart Notes</b><br>A secure note-taking application with advanced features including encrypted storage, calendar integration, and reminder system. It provides a curses-based TUI interface for easy navigation, supports rich text editing, and includes a sophisticated search system. The reminder feature can schedule notifications using Termux's job scheduler, making it a powerful organizational tool.</li>
-                </ol>
-                <div class="modal-disclaimer"><p><strong>Legal Disclaimer:</strong> All tools and information presented here are for educational and ethical research purposes only. Use them exclusively on systems you own or have explicit, written permission to test. Unauthorized use is illegal. The user is solely responsible for all actions taken, and the creators of this project assume no liability for any misuse or damage.</p></div>
-            </div>
-            <div class="modal-body hidden-by-default" data-lang-section="gr">
-                <h3>Περίληψη Εργαλείων</h3>
-                <ol>
-                    <li><b>Android App Launcher</b><br>Ένα βοηθητικό πρόγραμμα για τη διαχείριση των εγκατεστημένων εφαρμογών στη συσκευή σας Android. Μπορείτε να εκκινήσετε, να δείτε λεπτομέρειες, να απεγκαταστήσετε ή να εξαγάγετε το αρχείο APK οποιασδήποτε εφαρμογής. Περιλαμβάνει επίσης τη λειτουργία <b>App Perm Inspector</b> που σαρώνει το APK για να εντοπίσει επικίνδυνες άδειες και ενσωματωμένους trackers διαφημίσεων, δημιουργώντας μια αναφορά ασφαλείας για έλεγχο.</li>
-                    <li><b>DedSec's Network</b><br>Ένα ολοκληρωμένο πακέτο εργαλείων ανάλυσης δικτύου και ασφάλειας που παρέχει διάφορα βοηθήματα δικτύου όπως σάρωση Wi-Fi, σάρωση θυρών, ανακάλυψη δικτύου, δοκιμές ταχύτητας και έλεγχο ασφαλείας. Περιλαμβάνει ανάλυση παθητικών δικτύων Wi-Fi, βελτιωμένη σάρωση θυρών με ανίχνευση υπηρεσιών, ανάλυση ασφαλείας κεφαλίδων HTTP, αναζήτηση εγγραφών DNS και διάφορα διαγνωστικά εργαλεία δικτύου. Όλα τα αποτελέσματα και τα αρχεία ρυθμίσεων αποθηκεύονται σε έναν ειδικό φάκελο με το όνομα <b><code>DedSec's Network</code></b> μέσα στον κατάλογο του έργου για ανασκόπηση.</li>
-                    <li><b>Digital Footprint Finder</b><br>Ένα εργαλείο OSINT (Open Source Intelligence) που βοηθά στην ανακάλυψη δημόσιων πληροφοριών για ένα όνομα χρήστη σε πολλαπλές πλατφόρμες. Σαρώνει κοινωνικά δίκτυα, πλατφόρμες προγραμματισμού και άλλες υπηρεσίες για να βρει δημόσια προφίλ που σχετίζονται με ένα όνομα χρήστη. Το εργαλείο περιλαμβάνει μηχανισμούς προσωρινής αποθήκευσης, λειτουργίες stealth για μείωση της ανίχνευσης και αποθηκεύει τα αποτελέσματα σε μορφή κειμένου και JSON μέσα σε έναν φάκελο <b><code>Digital Footprint Finder</code></b> στον κύριο κατάλογο <b>Λήψεις</b> του τηλεφώνου σας για περαιτέρω ανάλυση.</li>
-                    <li><b>File Converter</b><br>Ένας προηγμένος, διαδραστικός μετατροπέας αρχείων για το Termux. Υποστηρίζει ένα ευρύ φάσμα μετατροπών εγγράφων, εικόνων, ήχου/βίντεο και δεδομένων (π.χ. PDF, DOCX, PNG, MP4, CSV). Όλα τα μετατρεπόμενα αρχεία οργανώνονται σε έναν φάκελο "File Converter" στις Λήψεις σας.</li>
-                    <li><b>Fox's Connections</b><br>Μια ασφαλής, end-to-end κρυπτογραφημένη εφαρμογή συνομιλίας που προστατεύεται από ένα μυστικό κλειδί μίας χρήσης. Περιλαμβάνει ανταλλαγή μηνυμάτων κειμένου, φωνητικά μηνύματα, κοινή χρήση αρχείων (έως 10 GB), ζωντανή λήψη κάμερας και βιντεοκλήσεις peer-to-peer. Τα αρχεία που κοινοποιούνται μπορούν να ληφθούν απευθείας από τη διεπαφή συνομιλίας από τους συμμετέχοντες. Περιλαμβάνει επίσης μια δημόσια βάση δεδομένων αρχείων προσβάσιμη με σύνδεσμο.</li>
-                    <li><b>QR Code Generator</b><br>Δημιουργεί μια εικόνα QR code για οποιονδήποτε σύνδεσμο παρέχετε και την αποθηκεύει σε έναν φάκελο 'QR Codes' στον κατάλογο Λήψεων του τηλεφώνου.</li>
-                    <li><b>Settings</b><br>Ένας κεντρικός πίνακας ελέγχου για τη διαχείριση του DedSec Project. Χρησιμοποιήστε τον για να δείτε πληροφορίες συστήματος, να ενημερώσετε όλα τα σενάρια του έργου και τα απαιτούμενα πακέτα, να αλλάξετε το στυλ της γραμμής εντολών του Termux και να επιλέξετε μεταξύ διάταξης μενού λίστας ή πλέγματος. Αυτό το σενάριο τροποποιεί το αρχείο σας <b><code>/data/data/com.termux/files/usr/etc/bash.bashrc</code></b> για να εφαρμόσει τις αλλαγές.</li>
-                    <li><b>Smart Notes</b><br>Μια ασφαλής εφαρμογή σημειώσεων με προηγμένες λειτουργίες όπως κρυπτογραφημένη αποθήκευση, ενσωμάτωση ημερολογίου και σύστημα υπενθυμίσεων. Παρέχει διεπαφή TUI για εύκολη πλοήγηση, υποστηρίζει επεξεργασία πλούσιου κειμένου και περιλαμβάνει ένα εξελιγμένο σύστημα αναζήτησης. Η λειτουργία υπενθυμίσεων μπορεί να προγραμματίζει ειδοποιήσεις χρησιμοποιώντας τον προγραμματιστή εργασιών του Termux.</li>
-                </ol>
-                <div class="modal-disclaimer"><p><strong>Νομική Αποποίηση Ευθύνης:</strong> Όλα τα εργαλεία και οι πληροφορίες που παρουσιάζονται εδώ προορίζονται αποκλειστικά για εκπαιδευτικούς και ηθικούς ερευνητικούς σκοπούς. Χρησιμοποιήστε τα αποκλειστικά σε συστήματα που σας ανήκουν ή για τα οποία έχετε ρητή, γραπτή άδεια να δοκιμάσετε. Η μη εξουσιοδοτημένη χρήση είναι παράνομη. Ο χρήστης είναι αποκλειστικά υπεύθυνος για όλες τις ενέργειες που πραγματοποιεί, και οι δημιουργοί αυτού του έργου δεν αναλαμβάνουν καμία ευθύνη για οποιαδήποτε κακή χρήση ή ζημία.</p></div>
-            </div>
-        </div>
-    </div>
-    
-    <div id="mods-modal" class="modal-overlay">
-        <div class="modal-content">
-            <div class="modal-header"><h2 data-en="Mods" data-gr="Mods">Mods</h2><button class="close-modal" aria-label="Close">×</button></div>
-            <div class="modal-body" data-lang-section="en">
-                <h3>Toolkit Summary</h3>
-                <ol>
-                    <li><b>Loading Screen</b><br>Installs a custom ASCII art loading screen that appears when you start Termux. You can use the default art, provide your own, and set the display duration. This script works by adding configuration to your <b><code>~/.bash_profile</code></b> file.</li>
-                    <li><b>Masker</b><br>An educational tool to demonstrate how links can be disguised, helping you learn to identify potentially malicious URLs by showing how a seemingly innocent link can redirect to a different destination.</li>
-                </ol>
-                <div class="modal-disclaimer"><p><strong>Legal Disclaimer:</strong> All tools and information presented here are for educational and ethical research purposes only. Use them exclusively on systems you own or have explicit, written permission to test. Unauthorized use is illegal. The user is solely responsible for all actions taken, and the creators of this project assume no liability for any misuse or damage.</p></div>
-            </div>
-            <div class="modal-body hidden-by-default" data-lang-section="gr">
-                <h3>Περίληψη Εργαλείων</h3>
-                <ol>
-                    <li><b>Loading Screen</b><br>Εγκαθιστά μια προσαρμοσμένη οθόνη φόρτωσης με ASCII art που εμφανίζεται κατά την εκκίνηση του Termux. Μπορείτε να χρησιμοποιήσετε την προεπιλεγμένη εικόνα, να δώσετε τη δική σας και να ορίσετε τη διάρκεια εμφάνισης. Αυτό το σενάριο λειτουργεί προσθέτοντας ρυθμίσεις στο αρχείο σας <b><code>~/.bash_profile</code></b>.</li>
-                    <li><b>Masker</b><br>Ένα εκπαιδευτικό εργαλείο που επιδεικνύει πώς μπορούν να μεταμφιεστούν οι σύνδεσμοι, βοηθώντας σας να μάθετε να αναγνωρίζετε πιθανώς κακόβουλα URL, δείχνοντας πώς ένας φαινομενικά αθώος σύνδεσμος μπορεί να ανακατευθύνει σε διαφορετικό προορισμό.</li>
-                </ol>
-                <div class="modal-disclaimer"><p><strong>Νομική Αποποίηση Ευθύνης:</strong> Όλα τα εργαλεία και οι πληροφορίες που παρουσιάζονται εδώ προορίζονται αποκλειστικά για εκπαιδευτικούς και ηθικούς ερευνητικούς σκοπούς. Χρησιμοποιήστε τα αποκλειστικά σε συστήματα που σας ανήκουν ή για τα οποία έχετε ρητή, γραπτή άδεια να δοκιμάσετε. Η μη εξουσιοδοτημένη χρήση είναι παράνομη. Ο χρήστης είναι αποκλειστικά υπεύθυνος για όλες τις ενέργειες που πραγματοποιεί, και οι δημιουργοί αυτού του έργου δεν αναλαμβάνουν καμία ευθύνη για οποιαδήποτε κακή χρήση ή ζημία.</p></div>
-            </div>
-        </div>
-    </div>
-    
-    <div id="social-media-fakes-modal" class="modal-overlay">
-        <div class="modal-content">
-            <div class="modal-header"><h2 data-en="Social Media Fake Pages" data-gr="Ψεύτικες Σελίδες Social Media">Social Media Fake Pages</h2><button class="close-modal" aria-label="Close">×</button></div>
-            <div class="modal-body" data-lang-section="en">
-                <h3>⚠️ Understanding Threats: Educational Demonstrations</h3>
-                <div class="note note-danger"><p><strong>CRITICAL NOTICE:</strong> The following scripts are included for <strong>educational and defensive purposes ONLY</strong>. Their function is to demonstrate how common attacks work, so you can learn to recognize and protect yourself against them. They should only be used in a controlled environment, <strong>on your own devices and accounts</strong>, for self-testing.</p></div>
-                <hr class="modal-divider">
-                 {/* Updated D */}
-                <p>These scripts can create fake pages for famous Social Medias and not only. Their saves can be found in folders inside your internal storage Downloads folder.</p>
-                <div class="modal-disclaimer"><p><strong>Legal Disclaimer:</strong> All tools and information presented here are for educational and ethical research purposes only. Use them exclusively on systems you own or have explicit, written permission to test. Unauthorized use is illegal. The user is solely responsible for all actions taken, and the creators of this project assume no liability for any misuse or damage.</p></div>
-            </div>
-            <div class="modal-body hidden-by-default" data-lang-section="gr">
-                <h3>⚠️ Κατανόηση Απειλών: Εκπαιδευτικές Επιδείξεις</h3>
-                <div class="note note-danger"><p><strong>ΚΡΙΣΙΜΗ ΣΗΜΕΙΩΣΗ:</strong> Τα παρακάτω σενάρια περιλαμβάνονται <strong>ΑΠΟΚΛΕΙΣΤΙΚΑ για εκπαιδευτικούς και αμυντικούς σκοπούς</strong>. Η λειτουργία τους είναι να επιδεικνύουν πώς λειτουργούν οι συνήθεις επιθέσεις, ώστε να μπορείτε να μάθετε να τις αναγνωρίζετε και να προστατεύεστε από αυτές. Πρέπει να χρησιμοποιούνται μόνο σε ελεγχόμενο περιβάλλον, <strong>στις δικές σας συσκευές και λογαριασμούς</strong>, για αυτο-έλεγχο.</p></div>
-                <hr class="modal-divider">
-                 {/* Updated D */}
-                <p>Αυτά τα σενάρια μπορούν να δημιουργήσουν ψεύτικες σελίδες για διάσημα Social Media και όχι μόνο. Οι αποθηκεύσεις τους βρίσκονται σε φακέλους μέσα στις λήψεις της εσωτερικής σας αποθήκευσης.</p>
-                <div class="modal-disclaimer"><p><strong>Νομική Αποποίηση Ευθύνης:</strong> Όλα τα εργαλεία και οι πληροφορίες που παρουσιάζονται εδώ προορίζονται αποκλειστικά για εκπαιδευτικούς και ηθικούς ερευνητικούς σκοπούς. Χρησιμοποιήστε τα αποκλειστικά σε συστήματα που σας ανήκουν ή για τα οποία έχετε ρητή, γραπτή άδεια να δοκιμάσετε. Η μη εξουσιοδοτημένη χρήση είναι παράνομη. Ο χρήστης είναι αποκλειστικά υπεύθυνος για όλες τις ενέργειες που πραγματοποιεί, και οι δημιουργοί αυτού του έργου δεν αναλαμβάνουν καμία ευθύνη για οποιαδήποτε κακή χρήση ή ζημία.</p></div>
-            </div>
-        </div>
-    </div>
-    
-    <div id="personal-info-capture-modal" class="modal-overlay">
-        <div class="modal-content">
-            <div class="modal-header"><h2 data-en="Personal Information Capture" data-gr="Λήψη Προσωπικών Πληροφοριών">Personal Information Capture</h2><button class="close-modal" aria-label="Close">×</button></div>
-            <div class="modal-body" data-lang-section="en">
-                <h3>⚠️ Understanding Threats: Educational Demonstrations</h3>
-                <div class="note note-danger"><p><strong>CRITICAL NOTICE:</strong> The following scripts are included for <strong>educational and defensive purposes ONLY</strong>. Their function is to demonstrate how common attacks work, so you can learn to recognize and protect yourself against them. They should only be used in a controlled environment, <strong>on your own devices and accounts</strong>, for self-testing.</p></div>
-                <hr class="modal-divider">
-                 {/* Updated D */}
-                <p>These scripts can catch camera (front or back) photos, microphone recordings, location and not only. Their saves can be found in folders inside your internal storage Downloads.</p>
-                <div class="modal-disclaimer"><p><strong>Legal Disclaimer:</strong> All tools and information presented here are for educational and ethical research purposes only. Use them exclusively on systems you own or have explicit, written permission to test. Unauthorized use is illegal. The user is solely responsible for all actions taken, and the creators of this project assume no liability for any misuse or damage.</p></div>
-            </div>
-            <div class="modal-body hidden-by-default" data-lang-section="gr">
-                <h3>⚠️ Κατανόηση Απειλών: Εκπαιδευτικές Επιδείξεις</h3>
-                <div class="note note-danger"><p><strong>ΚΡΙΣΙΜΗ ΣΗΜΕΙΩΣΗ:</strong> Τα παρακάτω σενάρια περιλαμβάνονται <strong>ΑΠΟΚΛΕΙΣΤΙΚΑ για εκπαιδευτικούς και αμυντικούς σκοπούς</strong>. Η λειτουργία τους είναι να επιδεικνύουν πώς λειτουργούν οι συνήθεις επιθέσεις, ώστε να μπορείτε να μάθετε να τις αναγνωρίζετε και να προστατεύεστε από αυτές. Πρέπει να χρησιμοποιούνται μόνο σε ελεγχόμενο περιβάλλον, <strong>στις δικές σας συσκευές και λογαριασμούς</strong>, για αυτο-έλεγχο.</p></div>
-                <hr class="modal-divider">
-                 {/* Updated D */}
-                <p>Αυτά τα σενάρια μπορούν να καταγράψουν φωτογραφίες από την κάμερα (μπροστινή ή πίσω), ηχογραφήσεις μικροφώνου, τοποθεσία και όχι μόνο. Οι αποθηκεύσεις τους βρίσκονται σε φακέλους μέσα στις λήψεις της εσωτερικής σας αποθήκευσης.</p>
-                <div class="modal-disclaimer"><p><strong>Νομική Αποποίηση Ευθύνης:</strong> Όλα τα εργαλεία και οι πληροφορίες που παρουσιάζονται εδώ προορίζονται αποκλειστικά για εκπαιδευτικούς και ηθικούς ερευνητικούς σκοπούς. Χρησιμοποιήστε τα αποκλειστικά σε συστήματα που σας ανήκουν ή για τα οποία έχετε ρητή, γραπτή άδεια να δοκιμάσετε. Η μη εξουσιοδοτημένη χρήση είναι παράνομη. Ο χρήστης είναι αποκλειστικά υπεύθυνος για όλες τις ενέργειες που πραγματοποιεί, και οι δημιουργοί αυτού του έργου δεν αναλαμβάνουν καμία ευθύνη για οποιαδήποτε κακή χρήση ή ζημία.</p></div>
-            </div>
-        </div>
-    </div>
-
-    <div id="contact-credits-modal" class="modal-overlay">
-        <div class="modal-content">
-            <div class="modal-header"><h2 data-en="Contact Us & Credits" data-gr="Επικοινωνία & Συντελεστές">Contact Us & Credits</h2><button class="close-modal" aria-label="Close">×</button></div>
-            <div class="modal-body" data-lang-section="en">
-                <h3 data-en="Contact Us" data-gr="Επικοινωνία">Contact Us</h3><div class="contact-grid"><a href="https://wa.me/37257263676" target="_blank" class="app-icon"><i class="fab fa-whatsapp"></i><span data-en="WhatsApp" data-gr="WhatsApp">WhatsApp</span></a><a href="https://www.instagram.com/dedsec_project_official" target="_blank" class="app-icon"><i class="fab fa-instagram"></i><span data-en="Instagram" data-gr="Instagram">Instagram</span></a><a href="https://t.me/dedsecproject" target="_blank" class="app-icon"><i class="fab fa-telegram"></i><span data-en="Telegram" data-gr="Telegram">Telegram</span></a></div><hr class="modal-divider"><h3 data-en="Credits" data-gr="Συντελεστές">Credits</h3><p><b>Creator:</b> dedsec1121fk</p><p><b>Artwork:</b> Christina Chatzidimitriou</p><p><b>Voice-overs:</b> Dimitra Isxuropoulou</p><p><b>Technical Help:</b> lamprouil, UKI_hunter, apoloco</p>
-            </div>
-            <div class="modal-body hidden-by-default" data-lang-section="gr">
-                <h3 data-en="Contact Us" data-gr="Επικοινωνία">Επικοινωνία</h3><div class="contact-grid"><a href="https://wa.me/37257263676" target="_blank" class="app-icon"><i class="fab fa-whatsapp"></i><span data-en="WhatsApp" data-gr="WhatsApp">WhatsApp</span></a><a href="https://www.instagram.com/dedsec_project_official" target="_blank" class="app-icon"><i class="fab fa-instagram"></i><span data-en="Instagram" data-gr="Instagram">Instagram</span></a><a href="https://t.me/dedsecproject" target="_blank" class="app-icon"><i class="fab fa-telegram"></i><span data-en="Telegram" data-gr="Telegram">Telegram</span></a></div><hr class="modal-divider"><h3 data-en="Credits" data-gr="Συντελεστές">Συντελεστές</h3><p><b>Δημιουργός:</b> dedsec1121fk</p><p><b>Καλλιτεχνική Επιμέλεια:</b> Χριστίνα Χατζηδημητρίου</p><p><b>Αφηγήσεις:</b> Δήμητρα Ισχυροπούλου</p><p><b>Τεχνική Βοήθεια:</b> lamprouil, UKI_hunter, apoloco</p>
-            </div>
-        </div>
-    </div>
-    
-    <div id="portfolio-github-modal" class="modal-overlay">
-        <div class="modal-content">
-            <div class="modal-header"><h2 data-en="Portfolio & GitHub Info" data-gr="Portfolio & GitHub Info">Portfolio & GitHub Info</h2><button class="close-modal" aria-label="Close">×</button></div>
             <div class="modal-body">
-                <h3 data-en="Portfolio" data-gr="Portfolio">Portfolio</h3>
-                <div class="contact-grid">
-                    <a href="https://www.ded-sec.space" target="_blank" class="app-icon"><i class="fas fa-project-diagram"></i><span data-en="DedSec Project" data-gr="DedSec Project">DedSec Project</span></a>
-                    <a href="https://www.ded-sec.space/Zepo-And-Xan-Project/" target="_blank" class="app-icon"><i class="fas fa-project-diagram"></i><span data-en="Zepo And Xan Project" data-gr="Zepo And Xan Project">Zepo And Xan Project</span></a>
-                    <a href="https://www.ded-sec.space/ICE-Project/" target="_blank" class="app-icon"><i class="fas fa-project-diagram"></i><span data-en="ICE Project" data-gr="ICE Project">ICE Project</span></a>
-                    <a href="https://www.ded-sec.space/Scav-Project" target="_blank" class="app-icon"><i class="fas fa-project-diagram"></i><span data-en="Scav Project" data-gr="Scav Project">Scav Project</span></a>
-                    <a href="https://www.ded-sec.space/KuNuPi-Project/" target="_blank" class="app-icon"><i class="fas fa-project-diagram"></i><span data-en="KuNuPi Project" data-gr="KuNuPi Project">KuNuPi Project</span></a>
+                <p data-en="The DedSec Project is designed for the Termux application on Android. It is not an Android app but a collection of Python/Bash scripts run within a Termux shell environment."
+                   data-gr="Το DedSec Project έχει σχεδιαστεί για την εφαρμογή Termux σε Android. Δεν είναι εφαρμογή Android αλλά μια συλλογή σεναρίων Python/Bash που εκτελούνται σε περιβάλλον Termux shell.">
+                   The DedSec Project is designed for the Termux application on Android. It is not an Android app but a collection of Python/Bash scripts run within a Termux shell environment.
+                </p>
+                <h3 data-en="1. Prerequisites (Termux Setup)" data-gr="1. Προαπαιτούμενα (Ρύθμιση Termux)">1. Prerequisites (Termux Setup)</h3>
+                <ol>
+                    <li data-en="Install Termux from the official F-Droid repository or the Google Play Store." data-gr="Εγκαταστήστε το Termux από το επίσημο αποθετήριο F-Droid ή το Google Play Store.">Install Termux from the official F-Droid repository or the Google Play Store.</li>
+                    <li data-en="Run the command to grant storage access (crucial for file scripts):" data-gr="Εκτελέστε την εντολή για να παραχωρήσετε πρόσβαση στον αποθηκευτικό χώρο (κρίσιμο για τα σενάρια αρχείων):">
+                        Run the command to grant storage access (crucial for file scripts):
+                        <pre><code>termux-setup-storage</code></pre>
+                    </li>
+                    <li data-en="Install the base required packages:" data-gr="Εγκαταστήστε τα βασικά απαιτούμενα πακέτα:">
+                        Install the base required packages:
+                        <pre><code>pkg install python git</code></pre>
+                    </li>
+                </ol>
+
+                <h3 data-en="2. Cloning the Repository" data-gr="2. Κλωνοποίηση του Αποθετηρίου">2. Cloning the Repository</h3>
+                <p data-en="Run this single command to clone the project from GitHub:" data-gr="Εκτελέστε αυτήν τη μία εντολή για να κλωνοποιήσετε το έργο από το GitHub:">
+                    Run this single command to clone the project from GitHub:
+                </p>
+                <pre><code>git clone https://github.com/dedsec1121fk/DedSec</code></pre>
+
+                <h3 data-en="3. Running the Setup Script" data-gr="3. Εκτέλεση του Σεναρίου Ρύθμισης">3. Running the Setup Script</h3>
+                <p data-en="Navigate into the new directory and run the main setup/menu script:" data-gr="Πλοηγηθείτε στον νέο κατάλογο και εκτελέστε το κύριο σενάριο ρύθμισης/μενού:">
+                    Navigate into the new directory and run the main setup/menu script:
+                </p>
+                <pre><code>cd DedSec &amp;&amp; python3 menu.py</code></pre>
+                <p class="note" data-en="The menu script will automatically install all necessary Python module dependencies for the full toolkit." data-gr="Το σενάριο μενού θα εγκαταστήσει αυτόματα όλες τις απαραίτητες εξαρτήσεις μονάδων Python για την πλήρη εργαλειοθήκη.">
+                    The menu script will automatically install all necessary Python module dependencies for the full toolkit.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div id="useful-information-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header"><h2 data-en="Useful Information" data-gr="Χρήσιμες Πληροφορίες">Useful Information</h2><button class="close-modal" aria-label="Close">×</button></div>
+            <div class="modal-body">
+                <div class="search-container modal-search-container">
+                    <input type="text" id="useful-info-search-input" placeholder="Search articles..." data-en="Search articles..." data-gr="Αναζήτηση άρθρων...">
+                    <div id="useful-info-results-container" class="hidden"></div>
+                </div>
+                <p id="useful-info-prompt" data-en="Please select an entry from the list below to view its content." data-gr="Παρακαλώ επιλέξτε μια καταχώρηση από την παρακάτω λίστα για να δείτε το περιεχομένο της.">
+                    Please select an entry from the list below to view its content.
+                </p>
+                <div id="useful-information-nav" class="app-grid">
+                    <button class="app-wrapper info-entry" data-entry-id="termux-basics">
+                        <div class="app-icon"><i class="fas fa-terminal"></i></div>
+                        <span class="app-label" data-en="Termux Basic Commands & Tips" data-gr="Βασικές Εντολές & Συμβουλές Termux">Termux Basic Commands & Tips</span>
+                        <span class="sub-item" data-en="A quick start guide for new Termux users." data-gr="Ένας γρήγορος οδηγός εκκίνησης για νέους χρήστες Termux.">A quick start guide for new Termux users.</span>
+                    </button>
+                    <button class="app-wrapper info-entry" data-entry-id="ethical-hacking-legal">
+                        <div class="app-icon"><i class="fas fa-balance-scale-right"></i></div>
+                        <span class="app-label" data-en="Legal & Ethical Hacking Guidelines" data-gr="Νομικές & Ηθικές Οδηγίες Hacking">Legal & Ethical Hacking Guidelines</span>
+                        <span class="sub-item" data-en="Important laws and ethics to follow." data-gr="Σημαντικοί νόμοι και ηθικές αρχές που πρέπει να ακολουθήσετε.">Important laws and ethics to follow.</span>
+                    </button>
+                    <button class="app-wrapper info-entry" data-entry-id="what-is-osint">
+                        <div class="app-icon"><i class="fas fa-search"></i></div>
+                        <span class="app-label" data-en="What is OSINT (Open Source Intelligence)?" data-gr="Τι είναι το OSINT (Πληροφορίες Ανοικτής Πηγής);">What is OSINT (Open Source Intelligence)?</span>
+                        <span class="sub-item" data-en="A brief explanation of OSINT techniques and tools." data-gr="Μια σύντομη εξήγηση των τεχνικών και εργαλείων OSINT.">A brief explanation of OSINT techniques and tools.</span>
+                    </button>
+                    <button class="app-wrapper info-entry" data-entry-id="android-apk-security">
+                        <div class="app-icon"><i class="fas fa-lock"></i></div>
+                        <span class="app-label" data-en="Android APK Security Analysis" data-gr="Ανάλυση Ασφάλειας Android APK">Android APK Security Analysis</span>
+                        <span class="sub-item" data-en="How to inspect an APK for permissions and trackers." data-gr="Πώς να επιθεωρήσετε ένα APK για δικαιώματα και ιχνηλάτες.">How to inspect an APK for permissions and trackers.</span>
+                    </button>
                 </div>
                 <hr class="modal-divider">
-                <h3 data-en="Repositories" data-gr="Αποθετήρια">Repositories</h3>
-                <div class="contact-grid">
-                    <a href="https://github.com/dedsec1121fk/DedSec" target="_blank" class="app-icon"><i class="fab fa-github"></i><span data-en="DedSec (The Official Project)" data-gr="DedSec (Το Επίσημο Έργο)">DedSec (The Official Project)</span></a>
-                </div>
-                <hr class="modal-divider">
-                <h3 data-en="Statistics" data-gr="Στατιστικά">Statistics</h3>
-                <div class="github-stats">
-                    <img src="https://github-readme-stats.vercel.app/api?username=dedsec1121fk&show_icons=true&theme=transparent&border_color=9966ff&text_color=d0d8e0&title_color=9966ff&icon_color=e6d9ff" alt="GitHub Stats">
-                    <img src="https://streak-stats.demolab.com/?user=dedsec1121fk&theme=transparent&border=9966ff&ring=9966ff&fire=9966ff&currStreakLabel=9966ff" alt="GitHub Streak Stats">
-                    <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=dedsec1121fk&layout=compact&theme=transparent&border_color=9966ff&text_color=d0d8e0&title_color=9966ff&icon_color=e6d9ff" alt="Top Languages">
+                <div id="useful-information-content">
+                    <div id="termux-basics-content" class="info-content hidden">
+                        <h3>Termux Basic Commands & Tips</h3>
+                        <p><strong>Package Management:</strong></p>
+                        <ul>
+                            <li><code>pkg update &amp;&amp; pkg upgrade</code>: Always keep your packages up to date.</li>
+                            <li><code>pkg install [package-name]</code>: Install new tools (e.g., <code>pkg install python</code>).</li>
+                            <li><code>pkg search [query]</code>: Search for available packages.</li>
+                        </ul>
+                        <p><strong>File System:</strong></p>
+                        <ul>
+                            <li><code>ls</code>: List directory contents.</li>
+                            <li><code>cd [directory]</code>: Change directory.</li>
+                            <li><code>pwd</code>: Print working directory.</li>
+                            <li><code>termux-setup-storage</code>: CRITICAL command to access device storage (Downloads, DCIM, etc.).</li>
+                            <li><code>cp [source] [destination]</code>: Copy files.</li>
+                        </ul>
+                        <p><strong>Termux Tips:</strong></p>
+                        <ul>
+                            <li><strong>Volume Keys:</strong> The volume down key acts as the <code>Ctrl</code> key. Press <code>Ctrl + C</code> to stop a running process.</li>
+                            <li><strong>Extra Keys:</strong> Swipe right from the left edge to open the sidebar and access the "Keyboard" button for extra function keys (Esc, Tab, Ctrl, Alt, etc.).</li>
+                            <li><strong>Run Python:</strong> Use <code>python3 your_script.py</code> to execute Python scripts.</li>
+                        </ul>
+                    </div>
+                    <div id="ethical-hacking-legal-content" class="info-content hidden">
+                        <h3>Legal & Ethical Hacking Guidelines</h3>
+                        <p><strong>The Core Principle:</strong> Never test or scan a system or network you do not own or have explicit, prior written permission to test. Unauthorized access is illegal and can lead to severe civil and criminal penalties.</p>
+                        <p><strong>Laws to Know (Examples):</strong></p>
+                        <ul>
+                            <li><strong>Computer Fraud and Abuse Act (CFAA) - US:</strong> Prohibits unauthorized access to computer systems. Even minor activities like scanning for open ports without permission can potentially violate this act.</li>
+                            <li><strong>General Data Protection Regulation (GDPR) - EU:</strong> Protects personal data. Activities that lead to the unauthorized collection, storage, or exposure of personal data are illegal.</li>
+                        </ul>
+                        <p><strong>Ethical Responsibility:</strong></p>
+                        <ul>
+                            <li><strong>Consent:</strong> Always get written permission from the system owner first.</li>
+                            <li><strong>No Harm:</strong> Your testing should not disrupt, damage, or compromise the stability of the target system.</li>
+                            <li><strong>Responsible Disclosure:</strong> If you find a vulnerability in a third-party system, report it responsibly and privately to the owner, rather than publicizing it.</li>
+                        </ul>
+                        <p class="warning-note">The DedSec Project tools are for <strong>educational and authorized ethical testing only</strong>. The user is entirely responsible for their actions and must comply with all local, national, and international laws.</p>
+                    </div>
+                    <div id="what-is-osint-content" class="info-content hidden">
+                        <h3>What is OSINT (Open Source Intelligence)?</h3>
+                        <p>OSINT, or Open Source Intelligence, is data collected from publicly available sources to be used in an intelligence context. In cybersecurity, OSINT is a critical phase of reconnaissance and penetration testing.</p>
+                        <p><strong>Key Principles:</strong></p>
+                        <ul>
+                            <li><strong>Publicly Available:</strong> The information must be legally accessible to the general public, even if it requires a user account or search. This includes social media, websites, news articles, public records, and forum posts.</li>
+                            <li><strong>Not Hacking:</strong> OSINT does not involve unauthorized access, cracking passwords, or exploiting vulnerabilities. It's about clever aggregation and analysis of existing public data.</li>
+                        </ul>
+                        <p><strong>DedSec Project's Digital Footprint Finder:</strong> This tool performs OSINT by checking if a target username exists on a large list of social media and web platforms by simply checking for a public profile URL. It mimics what a manual search would do, but automated and faster.</p>
+                    </div>
+                    <div id="android-apk-security-content" class="info-content hidden">
+                        <h3>Android APK Security Analysis</h3>
+                        <p>An APK (Android Package Kit) is the package file format used by the Android operating system for distribution and installation of mobile apps.</p>
+                        <p><strong>What to Check:</strong></p>
+                        <ul>
+                            <li><strong>Permissions:</strong> The Android Manifest file inside the APK lists all the permissions the app requests (e.g., <code>READ_CONTACTS</code>, <code>ACCESS_FINE_LOCATION</code>). Excessive or unnecessary permissions can be a security risk.</li>
+                            <li><strong>Network Activity:</strong> Monitoring the app's network connections can reveal if it's communicating with suspicious or unwanted servers.</li>
+                            <li><strong>Trackers:</strong> Tools can detect common third-party trackers (advertising, analytics) embedded in the app.</li>
+                        </ul>
+                        <p><strong>DedSec Project's Android App Launcher:</strong> This tool includes a function to list and extract APK files from installed apps, allowing a user to then perform a manual security analysis on the file outside the device's sandbox environment.</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -499,11 +510,129 @@
     <div id="collaborations-modal" class="modal-overlay">
         <div class="modal-content">
             <div class="modal-header"><h2 data-en="Collaborations" data-gr="Συνεργασίες">Collaborations</h2><button class="close-modal" aria-label="Close">×</button></div>
-            <div class="modal-body" data-lang-section="en">
-                <h3 data-en="Python Gym Clothing" data-gr="Python Gym Clothing">Python Gym Clothing</h3><div class="content-section-modal"><div class="tip"><p><strong>Discount Code:</strong> Use the following code at checkout for a 10% discount!</p></div><div class="code-container"><button class="copy-btn" onclick="copyToClipboard(this, 'coupon-code-en')">Copy</button><code id="coupon-code-en">dedsec</code></div><p class="store-link"><a href="https://pythongymclothing.com/" target="_blank" rel="noopener noreferrer" data-en="Visit The Official Store" data-gr="Επισκεφθείτε Το Επίσημο Κατάστημα">Visit The Official Store</a></p><div class="gym-carousel"><div class="gym-clothing-images"><img src="https://raw.githubusercontent.com/dedsec1121fk/dedsec1121fk.github.io/fb8392bf97e6813816b2a0b4d3b81699ca5dee8a/Assets/Images/Python%20Gym%20Clothing/Image%201.jpg" alt="Python Gym Clothing Image 1" class="active"><img src="https://raw.githubusercontent.com/dedsec1121fk/dedsec1121fk.github.io/fb8392bf97e6813816b2a0b4d3b81699ca5dee8a/Assets/Images/Python%20Gym%20Clothing/Image%202.jpg" alt="Python Gym Clothing Image 2"><img src="https://raw.githubusercontent.com/dedsec1121fk/dedsec1121fk.github.io/fb8392bf97e6813816b2a0b4d3b81699ca5dee8a/Assets/Images/Python%20Gym%20Clothing/Image%203.jpg" alt="Python Gym Clothing Image 3"><img src="https://raw.githubusercontent.com/dedsec1121fk/dedsec1121fk.github.io/fb8392bf97e6813816b2a0b4d3b81699ca5dee8a/Assets/Images/Python%20Gym%20Clothing/Image%204.jpg" alt="Python Gym Clothing Image 4"><img src="https://raw.githubusercontent.com/dedsec1121fk/dedsec1121fk.github.io/fb8392bf97e6813816b2a0b4d3b81699ca5dee8a/Assets/Images/Python%20Gym%20Clothing/Image%205.jpg" alt="Python Gym Clothing Image 5"></div><button class="carousel-btn prev" aria-label="Previous Image">&lt;</button><button class="carousel-btn next" aria-label="Next Image">&gt;</button></div></div><hr class="modal-divider"><h3 data-en="AdGen" data-gr="AdGen">AdGen</h3><div class="content-section-modal"><p>With AdGen you can now create customized ads for your product using AI!</p><img class="ad-image" src="https://raw.githubusercontent.com/dedsec1121fk/dedsec1121fk.github.io/fb8392bf97e6813816b2a0b4d3b81699ca5dee8a/Assets/Images/AdGen/AdGen.png" alt="AdGen AI Ad Creation"><p class="store-link"><a href="https://adgenai.space/main.php" target="_blank" rel="noopener noreferrer" data-en="Create Your Ad" data-gr="Δημιουργήστε τη διαφήμισή σας">Create Your Ad</a></p></div>
+            <div class="modal-body">
+                <p data-en="The DedSec Project is a community-driven initiative. We are proud to collaborate with other individuals and projects in the cybersecurity and open-source community." 
+                   data-gr="Το DedSec Project είναι μια πρωτοβουλία με γνώμονα την κοινότητα. Είμαστε περήφανοι που συνεργαζόμαστε με άλλα άτομα και έργα στην κοινότητα της κυβερνοασφάλειας και του ανοιχτού κώδικα.">
+                   The DedSec Project is a community-driven initiative. We are proud to collaborate with other individuals and projects in the cybersecurity and open-source community.
+                </p>
+                <div class="collaboration-list">
+                    <div class="collaboration-item">
+                        <div class="collab-header">
+                            <i class="fas fa-user-secret"></i>
+                            <h4 data-en="Hacker's Hub" data-gr="Κέντρο Hacker">Hacker's Hub</h4>
+                            <span class="collab-status online" data-en="Online" data-gr="Σε σύνδεση">Online</span>
+                        </div>
+                        <p data-en="A long-standing partnership focused on sharing OSINT techniques and co-developing ethical security tools. Our core members frequently contribute to their projects." data-gr="Μια μακροχρόνια συνεργασία που επικεντρώνεται στην ανταλλαγή τεχνικών OSINT και στην από κοινού ανάπτυξη ηθικών εργαλείων ασφαλείας. Τα βασικά μας μέλη συμβάλλουν συχνά στα έργα τους.">
+                            A long-standing partnership focused on sharing OSINT techniques and co-developing ethical security tools. Our core members frequently contribute to their projects.
+                        </p>
+                        <a href="https://github.com/Hacker-Hub-Official" target="_blank" data-en="Visit GitHub" data-gr="Επισκεφθείτε το GitHub">Visit GitHub <i class="fas fa-external-link-alt"></i></a>
+                    </div>
+
+                    <div class="collaboration-item">
+                        <div class="collab-header">
+                            <i class="fas fa-code-branch"></i>
+                            <h4 data-en="Code Forge" data-gr="Σφυρηλάτηση Κώδικα">Code Forge</h4>
+                            <span class="collab-status maintenance" data-en="Maintenance" data-gr="Συντήρηση">Maintenance</span>
+                        </div>
+                        <p data-en="An open-source collective specializing in Python utility scripts, providing valuable feedback and contributions to our File Converter and Smart Notes tools." data-gr="Μια συλλογικότητα ανοιχτού κώδικα που ειδικεύεται σε σενάρια βοηθητικών προγραμμάτων Python, παρέχοντας πολύτιμη ανατροφοδότηση και συνεισφορές στα εργαλεία μας File Converter και Smart Notes.">
+                            An open-source collective specializing in Python utility scripts, providing valuable feedback and contributions to our File Converter and Smart Notes tools.
+                        </p>
+                        <a href="#" target="_blank" class="disabled-link" data-en="Website (Maintenance)" data-gr="Ιστοσελίδα (Συντήρηση)">Website (Maintenance)</a>
+                    </div>
+
+                    <div class="collaboration-item">
+                        <div class="collab-header">
+                            <i class="fas fa-shield-virus"></i>
+                            <h4 data-en="Cyber Guardian" data-gr="Cyber Guardian">Cyber Guardian</h4>
+                            <span class="collab-status online" data-en="Online" data-gr="Σε σύνδεση">Online</span>
+                        </div>
+                        <p data-en="Collaborating on the network defense side, providing insights and testing scenarios for the security features in DedSec's Network. They are a dedicated security auditing team." data-gr="Συνεργασία στην πλευρά της άμυνας δικτύου, παρέχοντας πληροφορίες και σενάρια δοκιμών για τα χαρακτηριστικά ασφαλείας στο Δίκτυο DedSec. Είναι μια αφοσιωμένη ομάδα ελέγχου ασφαλείας.">
+                            Collaborating on the network defense side, providing insights and testing scenarios for the security features in DedSec's Network. They are a dedicated security auditing team.
+                        </p>
+                        <a href="https://github.com/CyberGuardian" target="_blank" data-en="Visit GitHub" data-gr="Επισκεφθείτε το GitHub">Visit GitHub <i class="fas fa-external-link-alt"></i></a>
+                    </div>
+                </div>
+                <hr class="modal-divider">
+                <p class="note" data-en="Interested in collaboration? Contact us via the 'Contact Us & Credits' section!" data-gr="Ενδιαφέρεστε για συνεργασία; Επικοινωνήστε μαζί μας μέσω της ενότητας «Επικοινωνία & Συντελεστές»!">
+                    Interested in collaboration? Contact us via the 'Contact Us & Credits' section!
+                </p>
             </div>
-            <div class="modal-body hidden-by-default" data-lang-section="gr">
-                <h3 data-en="Python Gym Clothing" data-gr="Python Gym Clothing">Python Gym Clothing</h3><div class="content-section-modal"><div class="tip"><p><strong>Κωδικός Έκπτωσης:</strong> Χρησιμοποιήστε τον παρακάτω κωδικό στο ταμείο για έκπτωση 10%!</p></div><div class="code-container"><button class="copy-btn" onclick="copyToClipboard(this, 'coupon-code-gr')">Αντιγραφή</button><code id="coupon-code-gr">dedsec</code></div><p class="store-link"><a href="https://pythongymclothing.com/" target="_blank" rel="noopener noreferrer" data-en="Visit The Official Store" data-gr="Επισκεφθείτε Το Επίσημο Κατάστημα">Επισκεφθείτε Το Επίσημο Κατάστημα</a></p><div class="gym-carousel"><div class="gym-clothing-images"><img src="https://raw.githubusercontent.com/dedsec1121fk/dedsec1121fk.github.io/fb8392bf97e6813816b2a0b4d3b81699ca5dee8a/Assets/Images/Python%20Gym%20Clothing/Image%201.jpg" alt="Python Gym Clothing Image 1" class="active"><img src="https://raw.githubusercontent.com/dedsec1121fk/dedsec1121fk.github.io/fb8392bf97e6813816b2a0b4d3b81699ca5dee8a/Assets/Images/Python%20Gym%20Clothing/Image%202.jpg" alt="Python Gym Clothing Image 2"><img src="https://raw.githubusercontent.com/dedsec1121fk/dedsec1121fk.github.io/fb8392bf97e6813816b2a0b4d3b81699ca5dee8a/Assets/Images/Python%20Gym%20Clothing/Image%203.jpg" alt="Python Gym Clothing Image 3"><img src="https://raw.githubusercontent.com/dedsec1121fk/dedsec1121fk.github.io/fb8392bf97e6813816b2a0b4d3b81699ca5dee8a/Assets/Images/Python%20Gym%20Clothing/Image%204.jpg" alt="Python Gym Clothing Image 4"><img src="https://raw.githubusercontent.com/dedsec1121fk/dedsec1121fk.github.io/fb8392bf97e6813816b2a0b4d3b81699ca5dee8a/Assets/Images/Python%20Gym%20Clothing/Image%205.jpg" alt="Python Gym Clothing Image 5"></div><button class="carousel-btn prev" aria-label="Previous Image">&lt;</button><button class="carousel-btn next" aria-label="Next Image">&gt;</button></div></div><hr class="modal-divider"><h3 data-en="AdGen" data-gr="AdGen">AdGen</h3><div class="content-section-modal"><p>Με το AdGen μπορείτε τώρα να δημιουργήσετε προσαρμοσμένες διαφημίσεις για το προϊόν σας χρησιμοποιώντας AI!</p><img class="ad-image" src="https://raw.githubusercontent.com/dedsec1121fk/dedsec1121fk.github.io/fb8392bf97e6813816b2a0b4d3b81699ca5dee8a/Assets/Images/AdGen/AdGen.png" alt="AdGen AI Ad Creation"><p class="store-link"><a href="https://adgenai.space/main.php" target="_blank" rel="noopener noreferrer" data-en="Create Your Ad" data-gr="Δημιουργήστε τη διαφήμισή σας">Δημιουργήστε τη διαφήμισή σας</a></p></div>
+        </div>
+    </div>
+
+    <div id="portfolio-github-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header"><h2 data-en="Portfolio & GitHub Info" data-gr="Portfolio & GitHub Info">Portfolio & GitHub Info</h2><button class="close-modal" aria-label="Close">×</button></div>
+            <div class="modal-body">
+                <div class="profile-card">
+                    <img id="profile-pic" src="https://avatars.githubusercontent.com/u/103986754?v=4" alt="dedsec1121fk Profile Picture" onclick="expandImage('https://avatars.githubusercontent.com/u/103986754?v=4')" style="cursor: pointer;">
+                    <h3 data-en="dedsec1121fk" data-gr="dedsec1121fk">dedsec1121fk</h3>
+                    <p class="profile-bio" data-en="The founder and lead developer of the DedSec Project. Focused on creating ethical, non-root security and utility tools for the Termux community." data-gr="Ο ιδρυτής και επικεφαλής προγραμματιστής του DedSec Project. Επικεντρώνεται στη δημιουργία ηθικών εργαλείων ασφαλείας και βοηθητικών προγραμμάτων χωρίς root για την κοινότητα Termux.">
+                        The founder and lead developer of the DedSec Project. Focused on creating ethical, non-root security and utility tools for the Termux community.
+                    </p>
+                </div>
+                
+                <h4 data-en="Official GitHub Repository" data-gr="Επίσημο Αποθετήριο GitHub">Official GitHub Repository</h4>
+                <p data-en="All project files, source code, and updates are hosted on the main GitHub repository." data-gr="Όλα τα αρχεία έργου, ο πηγαίος κώδικας και οι ενημερώσεις φιλοξενούνται στο κύριο αποθετήριο GitHub.">
+                    All project files, source code, and updates are hosted on the main GitHub repository.
+                </p>
+                <a href="https://github.com/dedsec1121fk/DedSec" target="_blank" class="action-link">
+                    <i class="fab fa-github"></i> 
+                    <span data-en="View DedSec Repository" data-gr="Προβολή Αποθετηρίου DedSec">View DedSec Repository</span>
+                </a>
+
+                <h4 data-en="Developer's Personal Portfolio" data-gr="Προσωπικό Portfolio Προγραμματιστή">Developer's Personal Portfolio</h4>
+                <p data-en="Explore other projects, technical articles, and professional history of the lead developer." data-gr="Εξερευνήστε άλλα έργα, τεχνικά άρθρα και το επαγγελματικό ιστορικό του επικεφαλής προγραμματιστή.">
+                    Explore other projects, technical articles, and professional history of the lead developer.
+                </p>
+                <a href="https://dedsec1121fk.github.io/" target="_blank" class="action-link">
+                    <i class="fas fa-briefcase"></i> 
+                    <span data-en="Visit Portfolio Site" data-gr="Επισκεφθείτε την Ιστοσελίδα Portfolio">Visit Portfolio Site</span>
+                </a>
+
+                <h4 data-en="Contribute" data-gr="Συμβολή">Contribute</h4>
+                <p data-en="We welcome contributions! You can help by reporting bugs, suggesting features, or submitting code via a Pull Request." data-gr="Καλωσορίζουμε τις συνεισφορές! Μπορείτε να βοηθήσετε αναφέροντας σφάλματα, προτείνοντας λειτουργίες ή υποβάλλοντας κώδικα μέσω ενός Pull Request.">
+                    We welcome contributions! You can help by reporting bugs, suggesting features, or submitting code via a Pull Request.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div id="contact-credits-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header"><h2 data-en="Contact Us & Credits" data-gr="Επικοινωνία & Συντελεστές">Contact Us & Credits</h2><button class="close-modal" aria-label="Close">×</button></div>
+            <div class="modal-body">
+                <h3 data-en="Contact Information" data-gr="Στοιχεία Επικοινωνίας">Contact Information</h3>
+                <p data-en="For technical support, security questions, or collaboration inquiries, please use the primary communication channels:" data-gr="Για τεχνική υποστήριξη, ερωτήσεις ασφαλείας ή ερωτήματα συνεργασίας, χρησιμοποιήστε τα κύρια κανάλια επικοινωνίας:">
+                    For technical support, security questions, or collaboration inquiries, please use the primary communication channels:
+                </p>
+                <div class="contact-methods">
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <span data-en="Email" data-gr="Email">Email:</span>
+                        <a href="mailto:dedsec.project@proton.me">dedsec.project@proton.me</a>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fab fa-telegram"></i>
+                        <span data-en="Telegram" data-gr="Telegram">Telegram:</span>
+                        <a href="https://t.me/dedsecproject" target="_blank">@dedsecproject</a>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fab fa-github"></i>
+                        <span data-en="GitHub Issues" data-gr="GitHub Issues">GitHub Issues:</span>
+                        <a href="https://github.com/dedsec1121fk/DedSec/issues" target="_blank" data-en="Report a bug or suggest a feature." data-gr="Αναφέρετε ένα σφάλμα ή προτείνετε μια λειτουργία.">Report a bug or suggest a feature.</a>
+                    </div>
+                </div>
+
+                <hr class="modal-divider">
+
+                <h3 data-en="Credits & Special Thanks" data-gr="Συντελεστές & Ειδικές Ευχαριστίες">Credits & Special Thanks</h3>
+                <ul class="credits-list">
+                    <li><span class="credit-name">dedsec1121fk</span><span class="credit-role" data-en="Founder, Lead Developer & Maintainer" data-gr="Ιδρυτής, Επικεφαλής Προγραμματιστής & Συντηρητής">Founder, Lead Developer & Maintainer</span></li>
+                    <li><span class="credit-name">The Open-Source Community</span><span class="credit-role" data-en="For countless libraries and inspiration." data-gr="Για αμέτρητες βιβλιοθήκες και έμπνευση.">For countless libraries and inspiration.</span></li>
+                    <li><span class="credit-name">Ubisoft Entertainment S.A.</span><span class="credit-role" data-en="For the thematic inspiration (Watch Dogs/DedSec)" data-gr="Για τη θεματική έμπνευση (Watch Dogs/DedSec)">For the thematic inspiration (Watch Dogs/DedSec)</span></li>
+                    <li><span class="credit-name">Community Testers</span><span class="credit-role" data-en="For invaluable bug reports and feedback." data-gr="Για ανεκτίμητες αναφορές σφαλμάτων και σχόλια.">For invaluable bug reports and feedback.</span></li>
+                </ul>
             </div>
         </div>
     </div>
@@ -512,52 +641,60 @@
         <div class="modal-content">
             <div class="modal-header"><h2 data-en="Privacy Policy" data-gr="Πολιτική Απορρήτου">Privacy Policy</h2><button class="close-modal" aria-label="Close">×</button></div>
             <div class="modal-body" data-lang-section="en">
-                <h3>Last Updated: October 6, 2025</h3>
-                <p>This Privacy Policy explains how we handle information in connection with the DedSec Project website ("Service"). Your access to and use of the Service is conditioned on your acceptance of and compliance with this Policy.</p>
-                <h4>1. Information Collection and Use</h4>
-                <p>We are committed to protecting your privacy. Our Service is designed to be used without the need for you to submit personal data. However, certain features may involve the collection of limited information:</p>
+                <p><strong>Effective Date:</strong> October 20, 2025</p>
+                
+                <h3>1. Data Collection & Use</h3>
+                <p>The DedSec Project website (ded-sec.space) and the underlying Python/Bash tools (the "Software") are designed with a commitment to minimal data collection.</p>
                 <ul>
-                    <li><strong>Third-Party Services:</strong> We may use third-party services that collect information. These include:
-                        <ul>
-                            <li><strong>Google AdSense:</strong> To serve advertisements on our site, Google and its partners may use cookies (such as the DoubleClick cookie) to serve ads based on your visit to this site and/or other sites on the Internet. You can opt out of personalized advertising by visiting <a href="https://www.google.com/settings/ads" target="_blank">Google's Ads Settings</a>.</li>
-                            <li><strong>External Links:</strong> Our Service contains links to other sites (e.g., GitHub, Gumroad, social media). If you click on a third-party link, you will be directed to that site. We strongly advise you to review the Privacy Policy of every site you visit. We have no control over and assume no responsibility for the content, privacy policies, or practices of any third-party sites or services.</li>
-                        </ul>
-                    </li>
+                    <li><strong>No Personal Data Storage:</strong> We do not collect, store, or transmit any personally identifiable information (PII) from users of the Software or this website, except as explicitly required by third-party services as noted below.</li>
+                    <li><strong>Tool Use:</strong> The Software's functions (e.g., network scanning, OSINT searches) are executed entirely on your local device (Termux/Android). We do not receive, record, or track your input, search terms, or results.</li>
+                    <li><strong>Website Analytics:</strong> We use standard, anonymous website traffic analytics (e.g., Google Analytics or similar) to understand user engagement. This data is non-personal and is used solely for improving the website's performance and design.</li>
                 </ul>
-                <h4>2. Cookies</h4>
-                <p>Cookies are files with a small amount of data that are commonly used as anonymous unique identifiers. Our Service may use cookies as part of third-party integrations like Google AdSense. You have the option to either accept or refuse these cookies and know when a cookie is being sent to your device through your browser settings.</p>
-                <h4>3. Data Security</h4>
-                <p>We value your trust in providing us with any information. While we strive to use commercially acceptable means of protecting it, remember that no method of transmission over the internet or method of electronic storage is 100% secure and reliable, and we cannot guarantee its absolute security. As noted, personally identifiable information is not transmitted.</p>
-                <h4>4. Children's Privacy</h4>
-                <p>This Service does not address anyone under the age of of 13. We do not knowingly collect personally identifiable information from children under 13.</p>
-                <h4>5. Changes to This Privacy Policy</h4>
-                <p>We may update our Privacy Policy from time to time. Thus, we advise you to review this page periodically for any changes. We will notify you of any changes by posting the new Privacy Policy on this page. These changes are effective immediately after they are posted.</p>
-                <h4>6. Contact Us</h4>
-                <p>If you have any questions or suggestions about our Privacy Policy, do not hesitate to contact us through the methods provided on our "Contact Us" page.</p>
+                
+                <h3>2. Third-Party Services</h3>
+                <p>We rely on third-party services that may have their own data collection policies:</p>
+                <ul>
+                    <li><strong>Google AdSense:</strong> This website may display advertisements served by Google AdSense. AdSense uses cookies to serve personalized ads based on a user's prior visits to this and other websites.</li>
+                    <li><strong>External Links:</strong> This site contains links to other websites (GitHub, Telegram, etc.). We are not responsible for the privacy practices or the content of these external sites.</li>
+                    <li><strong>QR Code Generation:</strong> The QR Code Generator script only uses Python libraries and does not send data to an external server. The link you provide is encoded locally.</li>
+                </ul>
+
+                <h3>3. Cookies</h3>
+                <p>The website uses minimal cookies necessary for functionality (e.g., storing your theme and language preferences). Third-party services, such as Google AdSense, may use tracking cookies.</p>
+
+                <h3>4. Changes to This Policy</h3>
+                <p>We may update our Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page.</p>
+
+                <h3>5. Contact Us</h3>
+                <p>If you have any questions or suggestions about our Privacy Policy, please feel free to contact us via the methods provided in the 'Contact Us' page.</p>
             </div>
             <div class="modal-body hidden-by-default" data-lang-section="gr">
-                <h3>Τελευταία Ενημέρωση: 6 Οκτωβρίου 2025</h3>
-                <p>Αυτή η Πολιτική Απορρήτου εξηγεί πώς διαχειριζόμαστε τις πληροφορίες σε σχέση με τον ιστότοπο του DedSec Project («Υπηρεσία»). Η πρόσβαση και η χρήση της Υπηρεσίας από εσάς εξαρτάται από την αποδοχή και τη συμμόρφωσή σας με αυτήν την Πολιτική.</p>
-                <h4>1. Συλλογή και Χρήση Πληροφοριών</h4>
-                <p>Δεσμευόμαστε να προστατεύουμε το απόρρητό σας. Η Υπηρεσία μας έχει σχεδιαστεί για να χρησιμοποιείται χωρίς να χρειάζεται να υποβάλετε προσωπικά δεδομένα. Ωστόσο, ορισμένες λειτουργίες μπορεί να περιλαμβάνουν τη συλλογή περιορισμένων πληροφοριών:</p>
+                <p><strong>Ημερομηνία Εφαρμογής:</strong> 20 Οκτωβρίου 2025</p>
+                
+                <h3>1. Συλλογή & Χρήση Δεδομένων</h3>
+                <p>Η ιστοσελίδα DedSec Project (ded-sec.space) και τα υποκείμενα εργαλεία Python/Bash («το Λογισμικό») είναι σχεδιασμένα με δέσμευση για ελάχιστη συλλογή δεδομένων.</p>
                 <ul>
-                    <li><strong>Υπηρεσίες Τρίτων:</strong> Ενδέχεται να χρησιμοποιούμε υπηρεσίες τρίτων που συλλέγουν πληροφορίες. Αυτές περιλαμβάνουν:
-                        <ul>
-                            <li><strong>Google AdSense:</strong> Για την προβολή διαφημίσεων στον ιστότοπό μας, η Google και οι συνεργάτες της ενδέχεται να χρησιμοποιούν cookies (όπως το cookie DoubleClick) για την προβολή διαφημίσεων με βάση την επίσκεψή σας σε αυτόν τον ιστότοπο ή/και σε άλλους ιστότοπους στο Διαδίκτυο. Μπορείτε να εξαιρεθείτε από την εξατομικευμένη διαφήμιση μεταβαίνοντας στις <a href="https://www.google.com/settings/ads" target="_blank">Ρυθμίσεις διαφημίσεων της Google</a>.</li>
-                            <li><strong>Εξωτερικοί Σύνδεσμοι:</strong> Η Υπηρεσία μας περιέχει συνδέσμους προς άλλους ιστότοπους (π.χ. GitHub, Gumroad, μέσα κοινωνικής δικτύωσης). Εάν κάνετε κλικ σε έναν σύνδεσμο τρίτου μέρους, θα κατευθυνθείτε σε αυτόν τον ιστότοπο. Σας συμβουλεύουμε να ελέγχετε την Πολιτική Απορρήτου κάθε ιστότοπου που επισκέπτεστε. Δεν έχουμε κανέναν έλεγχο και δεν αναλαμβάνουμε καμία ευθύνη για το περιεχόμενο, τις πολιτικές απορρήτου ή τις πρακτικές οποιωνδήποτε ιστότοπων ή υπηρεσιών τρίτων.</li>
-                        </ul>
-                    </li>
+                    <li><strong>Καμία Αποθήκευση Προσωπικών Δεδομένων:</strong> Δεν συλλέγουμε, αποθηκεύουμε ή μεταδίδουμε προσωπικά αναγνωρίσιμα στοιχεία (PII) από τους χρήστες του Λογισμικού ή αυτής της ιστοσελίδας, εκτός εάν απαιτείται ρητά από υπηρεσίες τρίτων, όπως σημειώνεται παρακάτω.</li>
+                    <li><strong>Χρήση Εργαλείων:</strong> Οι λειτουργίες του Λογισμικού (π.χ. σάρωση δικτύου, αναζητήσεις OSINT) εκτελούνται εξ ολοκλήρου στην τοπική σας συσκευή (Termux/Android). Δεν λαμβάνουμε, καταγράφουμε ή παρακολουθούμε την εισαγωγή σας, τους όρους αναζήτησης ή τα αποτελέσματα.</li>
+                    <li><strong>Ανάλυση Ιστοσελίδας:</strong> Χρησιμοποιούμε τυπική, ανώνυμη ανάλυση επισκεψιμότητας ιστοσελίδας (π.χ., Google Analytics ή παρόμοια) για να κατανοήσουμε την αφοσίωση των χρηστών. Αυτά τα δεδομένα δεν είναι προσωπικά και χρησιμοποιούνται αποκλειστικά για τη βελτίωση της απόδοσης και του σχεδιασμού της ιστοσελίδας.</li>
                 </ul>
-                <h4>2. Cookies</h4>
-                <p>Τα cookies είναι αρχεία με μικρή ποσότητα δεδομένων που χρησιμοποιούνται συνήθως ως ανώνυμα μοναδικά αναγνωριστικά. Η Υπηρεσία μας ενδέχεται να χρησιμοποιεί cookies ως μέρος ενσωματώσεων τρίτων, όπως το Google AdSense. Έχετε την επιλογή να αποδεχτείτε ή να απορρίψετε αυτά τα cookies και να γνωρίζετε πότε ένα cookie αποστέλλεται στη συσκευή σας μέσω των ρυθμίσεων του περιηγητή σας.</p>
-                <h4>3. Ασφάλεια Δεδομένων</h4>
-                <p>Εκτιμούμε την εμπιστοσύνη σας στην παροχή οποιωνδήποτε πληροφοριών. Ενώ προσπαθούμε να χρησιμοποιούμε εμπορικά αποδεκτά μέσα για την προστασία τους, να θυμάστε ότι καμία μέθοδος μετάδοσης μέσω του διαδικτύου ή μέθοδος ηλεκτρονικής αποθήκευσης δεν είναι 100% ασφαλής και αξιόπιστη, και δεν μπορούμε να εγγυηθούμε την απόλυτη ασφάλειά της. Όπως σημειώνεται, προσωπικά αναγνωρίσιμες πληροφορίες δεν μεταδίδονται.</p>
-                <h4>4. Απόρρητο Παιδιών</h4>
-                <p>Αυτή η Υπηρεσία δεν απευθύνεται σε άτομα κάτω των 13 ετών. Δεν συλλέγουμε εν γνώσει μας προσωπικά αναγνωρίσιμες πληροφορίες από παιδιά κάτω των 13 ετών.</p>
-                <h4>5. Αλλαγές σε Αυτή την Πολιτική Απορρήτου</h4>
-                <p>Ενδέχεται να ενημερώνουμε την Πολιτική Απορρήτου μας κατά διαστήματα. Επομένως, σας συμβουλεύουμε να ελέγχετε περιοδικά αυτή τη σελίδα για τυχόν αλλαγές. Θα σας ειδοποιήσουμε για τυχόν αλλαγές δημοσιεύοντας τη νέα Πολιτική Απορήτου σε αυτή τη σελίδα. Αυτές οι αλλαγές ισχύουν αμέσως μετά τη δημοσίευσή τους.</p>
-                <h4>6. Επικοινωνήστε μαζί μας</h4>
-                <p>Εάν έχετε οποιεσδήποτε ερωτήσεις ή προτάσεις σχετικά με την Πολιτική Απορρήτου μας, μη διστάσετε να επικοινωνήσετε μαζί μας μέσω των μεθόδων που παρέχονται στη σελίδα «Επικοινωνία».</p>
+                
+                <h3>2. Υπηρεσίες Τρίτων</h3>
+                <p>Βασιζόμαστε σε υπηρεσίες τρίτων που ενδέχεται να έχουν τις δικές τους πολιτικές συλλογής δεδομένων:</p>
+                <ul>
+                    <li><strong>Google AdSense:</strong> Αυτή η ιστοσελίδα ενδέχεται να εμφανίζει διαφημίσεις που παρέχονται από το Google AdSense. Το AdSense χρησιμοποιεί cookies για την προβολή εξατομικευμένων διαφημίσεων με βάση προηγούμενες επισκέψεις ενός χρήστη σε αυτήν και σε άλλες ιστοσελίδες.</li>
+                    <li><strong>Εξωτερικοί Σύνδεσμοι:</strong> Αυτός ο ιστότοπος περιέχει συνδέσμους προς άλλους ιστότοπους (GitHub, Telegram, κ.λπ.). Δεν φέρουμε ευθύνη για τις πρακτικές απορρήτου ή το περιεχόμενο αυτών των εξωτερικών ιστότοπων.</li>
+                    <li><strong>Δημιουργία QR Code:</strong> Το σενάριο Δημιουργός QR Code χρησιμοποιεί μόνο βιβλιοθήκες Python και δεν στέλνει δεδομένα σε εξωτερικό διακομιστή. Ο σύνδεσμος που παρέχετε κωδικοποιείται τοπικά.</li>
+                </ul>
+
+                <h3>3. Cookies</h3>
+                <p>Η ιστοσελίδα χρησιμοποιεί ελάχιστα cookies απαραίτητα για τη λειτουργικότητα (π.χ., αποθήκευση των προτιμήσεων θέματος και γλώσσας). Υπηρεσίες τρίτων, όπως το Google AdSense, ενδέχεται να χρησιμοποιούν cookies παρακολούθησης.</p>
+
+                <h3>4. Αλλαγές σε Αυτήν την Πολιτική</h3>
+                <p>Ενδέχεται να ενημερώνουμε την Πολιτική Απορρήτου μας κατά καιρούς. Θα σας ειδοποιήσουμε για τυχόν αλλαγές δημοσιεύοντας τη νέα Πολιτική Απορρήτου σε αυτήν τη σελίδα.</p>
+
+                <h3>5. Επικοινωνία</h3>
+                <p>Αν έχετε οποιεσδήποτε ερωτήσεις ή προτάσεις σχετικά με την Πολιτική Απορρήτου μας, μη διστάσετε να επικοινωνήσετε μαζί μας μέσω των μεθόδων που παρέχονται στη σελίδα «Επικοινωνία».</p>
             </div>
         </div>
     </div>
@@ -565,14 +702,23 @@
     <div id="useful-information-modal" class="modal-overlay">
         <div class="modal-content">
             <div class="modal-header"><h2 data-en="Useful Information" data-gr="Χρήσιμες Πληροφορίες">Useful Information</h2><button class="close-modal" aria-label="Close">×</button></div>
-            <div class="modal-body"><div class="search-container modal-search-container"><input type="text" id="useful-info-search-input" placeholder="Search articles..." data-en="Search articles..." data-gr="Αναζήτηση άρθρων..."><div id="useful-info-results-container" class="hidden"></div></div><p id="useful-info-prompt" data-en="Please select an entry from the list below to view its content." data-gr="Παρακαλώ επιλέξτε μια καταχώρηση από την παρακάτω λίστα για να δείτε το περιεχομένο της.">Please select an entry from the list below to view its content.</p><div id="useful-information-nav" class="app-grid"></div><hr class="modal-divider"><div id="useful-information-content"></div></div>
+            <div class="modal-body">
+                <div class="search-container modal-search-container">
+                    <input type="text" id="useful-info-search-input" placeholder="Search articles..." data-en="Search articles..." data-gr="Αναζήτηση άρθρων...">
+                    <div id="useful-info-results-container" class="hidden"></div>
+                </div>
+                <p id="useful-info-prompt" data-en="Please select an entry from the list below to view its content." data-gr="Παρακαλώ επιλέξτε μια καταχώρηση από την παρακάτω λίστα για να δείτε το περιεχομένο της.">
+                    Please select an entry from the list below to view its content.
+                </p>
+                <div id="useful-information-nav" class="app-grid"></div>
+                <hr class="modal-divider">
+                <div id="useful-information-content"></div>
+            </div>
         </div>
     </div>
 
-    {/* --- MODALS END HERE --- */}
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <script src="script.js" defer></script>
+    <script src="script.js"></script>
 </body>
 </html>

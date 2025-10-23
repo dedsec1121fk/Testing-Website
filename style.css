@@ -358,11 +358,43 @@ body.light-theme .note.note-warning {
 }
 
 /* Multi-color Border Animation for App Icons */
-/* --- REMOVED: @keyframes multiColorBorder --- */
+@keyframes multiColorBorder {
+    0% { border-color: #FF0000; }
+    3.33% { border-color: #FF3300; }
+    6.66% { border-color: #FF6600; }
+    10% { border-color: #FF9900; }
+    13.33% { border-color: #FFCC00; }
+    16.66% { border-color: #FFFF00; }
+    20% { border-color: #CCFF00; }
+    23.33% { border-color: #99FF00; }
+    26.66% { border-color: #66FF00; }
+    30% { border-color: #33FF00; }
+    33.33% { border-color: #00FF00; }
+    36.66% { border-color: #00FF33; }
+    40% { border-color: #00FF66; }
+    43.33% { border-color: #00FF99; }
+    46.66% { border-color: #00FFCC; }
+    50% { border-color: #00FFFF; }
+    53.33% { border-color: #00CCFF; }
+    56.66% { border-color: #0099FF; }
+    60% { border-color: #0066FF; }
+    63.33% { border-color: #0033FF; }
+    66.66% { border-color: #0000FF; }
+    70% { border-color: #3300FF; }
+    73.33% { border-color: #6600FF; }
+    76.66% { border-color: #9900FF; }
+    80% { border-color: #CC00FF; }
+    83.33% { border-color: #FF00FF; }
+    86.66% { border-color: #FF00CC; }
+    90% { border-color: #FF0099; }
+    93.33% { border-color: #FF0066; }
+    96.66% { border-color: #FF0033; }
+    100% { border-color: #FF0000; }
+}
 
 /* Apply animation to app icons */
 .app-wrapper .app-icon {
-    /* REMOVED: animation: multiColorBorder 15s infinite linear; */
+    animation: multiColorBorder 15s infinite linear;
     border-width: 2px;
     border-style: solid;
 }
@@ -397,6 +429,56 @@ body.light-theme .note.note-warning {
 }
 
 /* REMOVED: Pulsing glow animation for the main title */
+
+/* =================================================================
+   ADDED MISSING UTILITY CLASSES
+   ================================================================= */
+
+/* Used to hide elements via JavaScript */
+.hidden {
+    display: none !important;
+}
+
+/* Used for immediate transitions or to disable pointer events */
+.pointer-none {
+    pointer-events: none;
+}
+
+/* Used for temporary states, like a brief flash on copy success */
+@keyframes flash-success {
+    0% { background-color: var(--nm-success); }
+    100% { background-color: var(--nm-container); }
+}
+
+/* =================================================================
+   ADDED UX FEEDBACK STYLES
+   ================================================================= */
+
+/* 1. Copy Button Success Feedback */
+.copy-btn.success {
+    background: var(--nm-success);
+    border-color: #00CC00;
+    color: #000000;
+    animation: flash-success 0.5s ease-out;
+}
+
+/* 2. Form Input Error States (Certificate Generator/Other Forms) */
+.form-group input.error,
+.form-group input:invalid {
+    border-color: var(--nm-danger) !important;
+    box-shadow: 0 0 8px rgba(255, 0, 0, 0.5);
+    background-color: rgba(255, 0, 0, 0.1);
+}
+
+/* 3. Loading/Spinner Icon */
+/* A simple spinner animation is often useful for asynchronous actions */
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.fa-spin {
+    animation: spin 1s linear infinite;
+}
 
 
 html, body {
@@ -445,17 +527,33 @@ button.hero-cta-button {
     transition: background-color 0.3s ease, width 0.3s ease, height 0.3s ease, border-radius 0.3s ease;
 }
 
-/* --- REMOVED: Scroll indicator elements causing visual glitches --- */
 .phone-container::after {
-    /* FIX: Removed the red vertical line */
-    display: none !important;
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 8px;
+    height: 100%;
+    /* REMOVED GLOW */
+    background: linear-gradient(to bottom, var(--nm-danger), var(--nm-danger-hover), var(--nm-danger));
+    box-shadow: none;
+    z-index: 10;
+    display: none; 
 }
 
 #scroll-indicator-thumb {
-    /* FIX: Removed the always-visible purple thumb */
-    display: none !important;
+    position: absolute;
+    right: 0;
+    top: 0; 
+    width: 8px;
+    height: 40px;
+    background: var(--nm-accent); 
+    box-shadow: none;
+    z-index: 11;
+    transition: opacity 0.3s ease, background-color 0.3s ease;
+    opacity: 0; 
+    pointer-events: none;
 }
-/* --- END OF SCROLL INDICATOR FIXES --- */
 
 .screen {
     width: 100%;
@@ -463,7 +561,7 @@ button.hero-cta-button {
     background-color: var(--nm-abyss-blue);
     background-image:
         /* MODIFIED: Removed hexagon background image/pattern */
-        url("data:image/svg+xml,%3Csvg viewBox='0 0 800 800' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3E/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        url("data:image/svg+xml,%3Csvg viewBox='0 0 800 800' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3E/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%E3%83%BC%3E");
     background-size: cover, cover; 
     position: relative;
     overflow: hidden;
@@ -486,7 +584,7 @@ button.hero-cta-button {
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
-    opacity: 0.3; 
+    opacity: 0.3;
     z-index: -1;
     transition: background-image 0.3s ease, opacity 0.3s ease;
 }
@@ -499,7 +597,7 @@ button.hero-cta-button {
     height: 100%;
     pointer-events: none;
     z-index: 1;
-    overflow: hidden; 
+    overflow: hidden;
 }
 
 .screen-overlay::after {
@@ -508,16 +606,17 @@ button.hero-cta-button {
     left: 0;
     top: 0;
     width: 100%;
-    height: 200%; 
-    background: transparent; 
-    animation: none; 
-    will-change: transform; 
+    height: 200%;
+    background: transparent;
+    animation: none;
+    will-change: transform;
 }
 
 .screen::before {
     content: '';
     position: absolute;
-    top: 0; left: 0;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
     background: none;
@@ -527,7 +626,7 @@ button.hero-cta-button {
 
 body.light-theme .screen-overlay,
 body.light-theme .screen::before,
-body.light-theme .phone-container::after { 
+body.light-theme .phone-container::after {
     display: none;
 }
 
@@ -559,12 +658,12 @@ body.light-theme .phone-container::after {
 ::-webkit-scrollbar-thumb:hover {
     background-color: var(--nm-accent-hover);
 }
+
 body.light-theme ::-webkit-scrollbar-thumb {
     /* Ensure scrollbar thumb is visible in light theme */
-    background-color: #555555; 
+    background-color: #555555;
     border-color: var(--nm-dark);
 }
-
 
 .main-header-container {
     display: flex;
@@ -581,357 +680,317 @@ body.light-theme ::-webkit-scrollbar-thumb {
     /* REMOVED: margin-right: auto; */
 }
 
-/* --- REMOVED: .header-logo container since we are using .screen::after --- */
-
+/* --- REMOVED: .header-logo container since we are... */
 .main-header-container h1 {
+    font-family: 'Orbitron', sans-serif;
+    color: var(--nm-text);
+    font-size: clamp(2.2rem, 10vw, 3rem);
+    text-align: center;
+    line-height: 1.2;
     margin: 0;
-    text-align: center;
-    white-space: nowrap;
-    font-size: clamp(7vw, 9vw, 4.0rem);
+    padding: 0;
+    letter-spacing: 2px;
+    font-weight: 700;
+    text-transform: uppercase;
+    /* REMOVED: All glow and shadow effects for a cleaner look */
+    text-shadow: none;
+    animation: none;
+    will-change: auto;
+}
+
+.main-header-container h1 span.logo-fox {
     color: var(--nm-accent);
-    /* --- ADDED: Purple glow with black stroke for readability --- */
-    text-shadow: 
-        /* Black Stroke */
-        -1px -1px 0 #000,  
-         1px -1px 0 #000,
-        -1px  1px 0 #000,
-         1px  1px 0 #000,
-        /* Purple Glow */
-        0 0 10px var(--nm-accent),
-        0 0 20px var(--nm-accent),
-        0 0 30px var(--nm-accent),
-        0 0 40px var(--nm-accent-hover);
+    /* REMOVED: All glitch animation and effects on the fox text */
+    animation: none;
+    text-shadow: none;
 }
 
-.search-container {
-    position: relative;
-    width: 100%;
-    max-width: 500px; 
-    margin: 0 auto; 
-}
-
-.useful-info-container {
-    display: flex;
-    justify-content: center;
-    padding: 10px;
-    margin-top: 5px;
-}
-
-.useful-info-container .app-wrapper {
-    width: calc(33.33% - 10px);
-    max-width: 150px;
-}
-
-/* MODIFIED: Removed all box-shadow for no glow effect */
-@keyframes pulse-cyan {
-    0% { box-shadow: none; } 
-    50% { box-shadow: none; } 
-    100% { box-shadow: none; } 
-}
-
-
-#main-search-input {
-    width: 100%;
-    padding: 10px 45px;
-    background-color: var(--nm-darkest);
-    border: 2px solid var(--nm-search-green); /* Set to nm-accent */
-    color: var(--nm-text);
-    font-family: 'Roboto Mono', monospace;
-    font-size: 0.9rem;
-    transition: background-color 0.3s ease;
-    /* MODIFIED: Remove clip-path, large border-radius for pill shape */
-    clip-path: none; 
-    border-radius: 50px; 
-    box-sizing: border-box;
-    animation: none; /* Removed pulse animation for no glow */
-}
-
-#main-search-input:focus {
-    outline: none;
-    background-color: var(--nm-dark);
-}
-
-/* *
-* === THIS IS THE FIX ===
-* The two lines below were added to make the suggestions box appear correctly.
-*
-*/
-#search-suggestions-container,
-#search-results-container,
-#useful-info-results-container {
-    position: absolute;
-    top: 105%;
-    left: 0;
-    width: 100%;
-    background-color: var(--nm-dark);
-    border: 1px solid var(--nm-search-green); /* Set to nm-accent */
-    box-shadow: none; /* Removed glow */
-    max-height: 300px;
-    overflow-y: auto;
-    z-index: 100;
-    /* Large border-radius for rounded results box */
-    clip-path: none;
-    border-radius: 20px;
-}
-
-#search-suggestions-container .search-result-item,
-#search-results-container .search-result-item,
-#useful-info-results-container .search-result-item {
-    padding: 12px 15px;
-    color: var(--nm-text);
-    cursor: pointer;
-    transition: all 0.2s ease;
-    border-bottom: 1px solid var(--nm-border);
-}
-#search-suggestions-container .search-result-item:last-child,
-#search-results-container .search-result-item:last-child,
-#useful-info-results-container .search-result-item:last-child {
-    border-bottom: none;
-}
-
-#search-suggestions-container .search-result-item:hover,
-#search-results-container .search-result-item:hover,
-#useful-info-results-container .search-result-item:hover {
-    background-color: var(--nm-accent); 
-    color: var(--nm-darkest); 
-}
-#search-results-container .search-result-item small,
-#useful-info-results-container .search-result-item small {
-    display: block;
-    font-size: 0.7rem;
-    color: var(--nm-text-muted);
-    margin-top: 4px;
-}
-#search-results-container .search-result-item:hover small,
-#useful-info-results-container .search-result-item:hover small {
-    color: rgba(0, 0, 0, 0.7);
-}
-
-.content-highlight {
-    /* Set to Yellow and removed glow */
-    background-color: rgba(255, 255, 0, 0.3); 
-    box-shadow: none; 
-    transition: background-color 1s ease;
-}
-
-/* --- NEW HERO SECTION STYLES --- */
 .hero-section {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
     width: 100%;
-    max-width: 500px;
-    /* FIX: Reduced top margin from 15px and bottom margin from 35px */
-    margin: 5px auto;
-    padding: 10px;
-    box-sizing: border-box;
+    text-align: center;
+    padding: 20px 0 20px 0;
+    /* FIX: Centering */
+    margin: 0 auto;
+    max-width: 480px;
 }
 
-.hero-text {
+.hero-section p {
     color: var(--nm-text-muted);
-    font-size: 0.9rem;
-    line-height: 1.6;
-    margin: 0 0 20px 0;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    margin-bottom: 25px;
+    text-align: center;
 }
 
 .hero-cta-button {
+    display: inline-block;
+    padding: 12px 30px;
     background-color: var(--nm-accent);
     color: #000000;
-    border: 2px solid var(--nm-accent);
     font-family: 'Orbitron', sans-serif;
-    text-transform: uppercase;
     font-weight: 700;
-    font-size: 0.9rem;
-    padding: 10px 15px;
+    font-size: 1rem;
+    text-decoration: none;
     border-radius: 20px;
-    transition: all 0.2s ease;
-    box-shadow: none;
-    max-width: 700px;
-    box-sizing: border-box;
-    text-align: center;
-    white-space: nowrap;
-    min-width: max-content;
+    border: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(153, 102, 255, 0.3);
 }
 
 .hero-cta-button:hover {
     background-color: var(--nm-accent-hover);
-    border-color: var(--nm-accent-hover);
-    color: #ffffff;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(153, 102, 255, 0.5);
 }
-/* --- END HERO SECTION STYLES --- */
 
+.search-container {
+    width: 100%;
+    /* FIX: Centering */
+    margin: 0 auto 15px auto;
+    max-width: 480px;
+    position: relative;
+    z-index: 10;
+}
 
-/* --- NEW GRID HEADING STYLES --- */
+.search-input {
+    width: 100%;
+    padding: 12px 15px;
+    background-color: var(--nm-dark);
+    color: var(--nm-text);
+    border: 2px solid var(--nm-border);
+    border-radius: 20px;
+    box-sizing: border-box;
+    font-size: 1rem;
+    font-family: 'Roboto Mono', monospace;
+    transition: all 0.3s ease;
+    /* REMOVED: search-specific glow */
+    box-shadow: none;
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: var(--nm-search-green);
+    /* REMOVED: search-specific glow */
+    box-shadow: 0 0 10px rgba(153, 102, 255, 0.5);
+}
+
+/* Placeholder color change */
+.search-input::placeholder {
+    color: var(--nm-text-muted);
+    opacity: 1; /* For Firefox */
+}
+.search-input:focus::placeholder {
+    color: var(--nm-accent);
+}
+
+/* Search results container styling */
+#search-results-container {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background-color: var(--nm-container);
+    border: 2px solid var(--nm-border);
+    border-top: none;
+    border-radius: 0 0 15px 15px;
+    max-height: 250px;
+    overflow-y: auto;
+    z-index: 50;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+    /* Initially hidden via .hidden class */
+    /* display: none; */
+}
+
+/* Search result item styling */
+.search-result-item {
+    display: flex;
+    flex-direction: column;
+    padding: 12px 15px;
+    cursor: pointer;
+    border-bottom: 1px solid var(--nm-dark);
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.search-result-item:last-child {
+    border-bottom: none;
+}
+
+.search-result-item:hover {
+    background-color: var(--nm-accent);
+    color: #000000; /* Text should be black on hover */
+}
+
+.search-result-item:hover .search-result-title {
+    color: #000000; /* Title should be black on hover */
+}
+
+.search-result-title {
+    font-size: 1rem;
+    font-weight: bold;
+    color: var(--nm-text);
+    margin-bottom: 3px;
+    transition: color 0.2s ease;
+}
+
+.search-result-description {
+    font-size: 0.85rem;
+    color: var(--nm-text-muted);
+}
+
+/* Grid/App Section */
 .grid-heading {
     width: 100%;
-    max-width: 500px;
-    text-align: center;
+    /* FIX: Centering */
+    margin: 20px auto 15px auto;
+    max-width: 480px;
+    text-align: left;
+    padding: 0 15px;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.grid-heading h2 {
     font-family: 'Orbitron', sans-serif;
     color: var(--nm-text);
-    text-transform: uppercase;
-    font-size: 1rem;
-    /* FIX: Reduced top margin from 25px to 10px */
-    margin: 10px auto 15px;
-    padding-bottom: 5px;
-    border-bottom: 1px solid var(--nm-border);
+    font-size: 1.4rem;
+    margin: 0;
+    font-weight: 500;
 }
-/* --- END GRID HEADING STYLES --- */
-
 
 .app-grid {
     display: grid;
-    grid-template-columns: repeat(3, max-content); /* <-- THIS IS THE FIX */
-    justify-content: center;
-    gap: 35px; /* MODIFIED: Set to 35px */
+    grid-template-columns: repeat(4, max-content);
+    gap: 20px;
+    padding: 10px 15px 30px 15px;
+    /* FIX: Centering */
+    margin: 0 auto;
+    max-width: 480px;
     width: 100%;
-    max-width: 500px;
-    margin: 0 auto 15px;
-    align-items: start;
+    justify-content: space-around;
+    box-sizing: border-box;
 }
 
 .app-wrapper {
-    width: 70px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 8px;
+    text-align: center;
     text-decoration: none;
-    color: var(--nm-text);
+    width: 70px; /* Standardize icon width */
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.app-wrapper:hover {
+    transform: translateY(-3px);
 }
 
 .app-icon {
-    /* Pitch Black Background */
-    background: #000000; 
-    border: 1px solid var(--nm-accent);
-    color: var(--nm-text); /* Enforce White text/icon */
-    cursor: pointer;
-    font-family: 'Roboto Mono', monospace;
-    transition: all 0.2s ease;
+    width: 50px;
+    height: 50px;
+    background-color: var(--nm-dark);
     display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: flex-start;
-    text-decoration: none;
-    padding: 10px 15px;
-    box-sizing: border-box;
-    position: relative;
-    /* Circular shape maintained for app icons */
-    clip-path: none;
-    border-radius: 50%;
-    gap: 12px;
-    box-shadow: none; /* Removed glow */
-    height: 56px;
-}
-
-.app-wrapper .app-icon {
     justify-content: center;
-    width: 64px;
-    height: 64px;
-    padding: 0;
-    gap: 0;
-    /* Enforce circle on button wrapper icon */
-    border-radius: 50%; 
+    align-items: center;
+    border-radius: 12px;
+    margin-bottom: 8px;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+    /* Multi-color border animation is applied by JS/Anniversary styles */
 }
 
-.app-label {
-    font-size: 0.75rem;
-    font-weight: 400;
-    color: var(--nm-text); /* Enforce White text */
-    text-align: center;
-    /* MODIFIED: Use normal word-break to ensure words wrap to the next line 
-       instead of being broken mid-word */
-    word-break: normal; 
-    /* ADDED: Use overflow-wrap to handle words that are individually too long 
-       for the 70px parent container, preventing overflow. */
-    overflow-wrap: break-word;
-    line-height: 1.2;
-}
-
-.app-icon:hover {
-    background: var(--nm-accent);
-    border-color: var(--nm-accent-hover);
-    color: var(--nm-darkest);
-    box-shadow: none; 
-}
-
-.app-wrapper:hover .app-icon,
-.app-wrapper:focus-visible .app-icon {
-    background: var(--nm-accent);
-    border-color: var(--nm-accent-hover);
-    box-shadow: none; 
-    outline: none;
-}
-
-.app-wrapper:hover .app-label,
-.app-wrapper:focus-visible .app-label {
-    color: var(--nm-accent-hover);
+.app-wrapper:hover .app-icon {
+    background-color: var(--nm-accent);
+    box-shadow: 0 4px 15px rgba(153, 102, 255, 0.5);
 }
 
 .app-icon i {
-    color: var(--nm-text); /* Enforce White icon color */
-    transition: color 0.2s ease;
-    font-size: 1.4rem;
-    margin: 0;
-    text-shadow: none; 
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-}
-
-.app-icon:hover i,
-.app-wrapper:hover .app-icon i,
-.app-wrapper:focus-visible .app-icon i {
-    color: var(--nm-darkest); 
-    text-shadow: none;
-}
-
-body.light-theme .app-icon {
-    /* Corrected colors for light theme icons */
-    background: var(--nm-container);
-    border: 1px solid var(--nm-border);
-    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    font-size: 24px;
     color: var(--nm-text);
+    transition: color 0.3s ease;
 }
 
-body.light-theme .app-icon:hover {
-    background: var(--nm-accent);
-    border-color: var(--nm-accent-hover);
+.app-wrapper:hover .app-icon i {
+    color: #000000; /* Black icon on purple hover */
 }
 
-.app-icon span {
+.app-wrapper span {
+    color: var(--nm-text);
     font-size: 0.75rem;
-    font-weight: 700;
     line-height: 1.2;
-    word-break: break-word;
-    text-align: left;
-}
-
-.github-stats {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 15px;
-    width: 100%;
-}
-.github-stats img {
-    width: 100%;
     max-width: 100%;
-    height: auto;
-    border: 1px solid var(--nm-border);
-    background-color: var(--nm-container);
-    /* Added uniform border-radius */
-    clip-path: none;
-    border-radius: 20px; 
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    transition: color 0.3s ease;
 }
 
-.main-footer {
+/* Language Toggle Button */
+.language-button-container {
+    width: 100%;
+    /* FIX: Centering */
+    margin: 10px auto;
+    max-width: 480px;
     text-align: center;
-    padding: 1rem;
-    font-size: 0.7rem;
-    color: var(--nm-text-muted);
-    margin-top: 25px; /* Added margin to push it down */
+    padding: 0 15px;
+    box-sizing: border-box;
 }
+
+.language-button {
+    background: var(--nm-dark);
+    color: var(--nm-text-muted);
+    border: 1px solid var(--nm-border);
+    padding: 8px 15px;
+    margin: 0 5px;
+    border-radius: 15px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    transition: all 0.2s ease;
+}
+
+.language-button:hover {
+    background: var(--nm-accent);
+    color: #000000;
+    border-color: var(--nm-accent);
+}
+
+.language-button.selected {
+    background: var(--nm-accent);
+    color: #000000;
+    border-color: var(--nm-accent);
+    font-weight: bold;
+}
+
+/* Footer Section */
+.main-footer {
+    width: 100%;
+    padding: 15px 15px calc(var(--safe-area-inset-bottom) + 10px) 15px;
+    background-color: var(--nm-darkest);
+    border-top: 1px solid var(--nm-border);
+    text-align: center;
+    box-sizing: border-box;
+    font-size: 0.8rem;
+    color: var(--nm-text-muted);
+}
+
+.main-footer a {
+    color: var(--nm-accent);
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.main-footer a:hover {
+    color: var(--nm-accent-hover);
+    text-decoration: underline;
+}
+
+/* =================================================================
+   MODAL STYLES (Used for settings, privacy, useful info)
+   ================================================================= */
 
 .modal-overlay {
     position: fixed;
@@ -939,573 +998,280 @@ body.light-theme .app-icon:hover {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(1, 8, 17, 0.8);
-    -webkit-backdrop-filter: blur(10px); 
-    backdrop-filter: blur(10px); 
+    background-color: rgba(0, 0, 0, 0.95);
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 1000;
     opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.3s ease, visibility 0s 0.3s;
-}
-
-body.light-theme .modal-overlay {
-    background: rgba(255, 255, 255, 0.7);
-}
-
-.modal-overlay.visible {
-    opacity: 1;
-    visibility: visible;
+    pointer-events: none;
     transition: opacity 0.3s ease;
 }
+
+.modal-overlay.open {
+    opacity: 1;
+    pointer-events: all;
+}
+
 .modal-content {
-    background: var(--nm-dark);
-    width: 95%;
-    max-width: 800px;
-    height: 85%;
-    max-height: 800px;
-    border: 1px solid var(--nm-accent); 
-    box-shadow: none; 
+    background-color: var(--nm-container);
+    border: 2px solid var(--nm-border);
+    border-radius: 20px;
+    width: 90%;
+    max-width: 600px;
+    max-height: 90vh;
     display: flex;
     flex-direction: column;
-    overflow: hidden;
     transform: translateY(20px);
-    transition: all 0.3s ease;
-    /* Added uniform border-radius */
-    clip-path: none;
-    border-radius: 20px;
-}
-.modal-content-auto-height { 
-    height: auto;
+    opacity: 0;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7);
 }
 
-body.light-theme .modal-content {
-     box-shadow: 0 5px 25px rgba(0,0,0,0.1);
-     border: 1px solid var(--nm-border);
-}
-
-.modal-overlay.visible .modal-content {
+.modal-overlay.open .modal-content {
     transform: translateY(0);
+    opacity: 1;
 }
+
 .modal-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 12px 20px;
-    background: rgba(11, 18, 28, 0.5);
+    padding: 15px 20px;
     border-bottom: 1px solid var(--nm-border);
-    transition: background-color 0.3s ease;
-    flex-shrink: 0;
+    background: var(--nm-dark);
+    border-radius: 20px 20px 0 0;
 }
+
 .modal-header h2 {
     font-family: 'Orbitron', sans-serif;
-    font-size: 1.1rem;
+    font-size: 1.2rem;
+    color: var(--nm-accent);
     margin: 0;
-    color: var(--nm-text);
-    text-transform: uppercase;
-    text-shadow: none; 
 }
+
 .close-modal {
     background: none;
     border: none;
     color: var(--nm-text-muted);
     font-size: 1.5rem;
     cursor: pointer;
-    transition: color 0.2s, text-shadow 0.2s;
-    padding: 0;
-    line-height: 1;
-}
-.close-modal:hover {
-    color: var(--nm-danger);
-    text-shadow: none; 
-}
-.modal-body {
-    padding: 25px;
-    overflow-y: auto;
-    flex-grow: 1;
-    line-height: 1.7;
-    min-height: 0;
-}
-.modal-body-centered { 
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 1rem;
+    transition: color 0.2s ease;
 }
 
-.modal-body h3 {
+.close-modal:hover {
+    color: var(--nm-danger);
+}
+
+.modal-body {
+    padding: 20px;
+    overflow-y: auto;
+    flex-grow: 1;
     color: var(--nm-text);
-    border-bottom: 1px solid var(--nm-border);
-    padding-bottom: 8px;
-    margin-top: 1.5rem;
-    margin-bottom: 1rem;
-    font-family: 'Orbitron', sans-serif;
-    text-align: center;
 }
-.modal-body h4 {
+
+/* Modal Content Styling */
+.modal-body h3 {
+    font-family: 'Orbitron', sans-serif;
     color: var(--nm-accent);
-    margin-top: 1.5rem;
-    margin-bottom: 0.5rem;
-    font-family: 'Orbitron', sans-serif;
-    text-align: center;
+    border-bottom: 1px solid var(--nm-border);
+    padding-bottom: 5px;
+    margin-top: 20px;
+    margin-bottom: 15px;
+    font-size: 1.1rem;
 }
-.modal-body h3:first-child {
-    margin-top: 0;
+
+.modal-body p {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 15px;
 }
+
+.modal-body ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.modal-body ul li {
+    font-size: 0.9rem;
+    line-height: 1.5;
+    margin-bottom: 8px;
+    padding-left: 20px;
+    position: relative;
+    color: var(--nm-text-muted);
+}
+
+.modal-body ul li::before {
+    content: '>>';
+    color: var(--nm-accent);
+    font-weight: bold;
+    position: absolute;
+    left: 0;
+}
+
 .modal-body a {
     color: var(--nm-accent);
     text-decoration: none;
-    font-weight: bold;
+    transition: color 0.2s ease;
 }
+
 .modal-body a:hover {
-    text-decoration: underline;
     color: var(--nm-accent-hover);
+    text-decoration: underline;
 }
 
 .modal-body code {
-    background: rgba(0,0,0,0.2);
-    padding: 0.1em 0.4em;
+    background-color: var(--nm-darkest);
+    color: var(--nm-success);
+    padding: 2px 6px;
     border-radius: 4px;
-    font-size: 0.85em;
-    color: var(--nm-text-muted);
-    overflow-wrap: break-word;
-    word-break: break-word;
-}
-
-.modal-disclaimer {
-    margin-top: 2rem;
-    padding-top: 1rem;
-    border-top: 1px solid var(--nm-border);
-    font-size: 0.8em;
-    color: var(--nm-text-muted);
-    text-align: center;
-    font-style: italic;
-}
-
-.privacy-policy-embed {
-    max-height: 120px;
-    overflow-y: auto;
-    border: 1px solid var(--nm-border);
-    padding: 15px;
-    margin: 1rem 0;
-    background: var(--nm-darkest);
-    font-size: 0.85em;
-    color: var(--nm-text-muted);
-    /* Added uniform border-radius */
-    border-radius: 20px;
-}
-
-.code-container {
-    position: relative;
-    background: var(--nm-darkest);
-    border: 1px solid var(--nm-border);
-    padding: 15px;
-    margin: 1em 0;
-    transition: background-color 0.3s ease;
-    /* Added uniform border-radius */
-    clip-path: none;
-    border-radius: 20px;
-    box-shadow: inset 0 0 10px rgba(0,0,0,0.5); 
-}
-.code-container code {
-    font-family: 'Roboto Mono', monospace;
-    color: var(--nm-text);
-    word-break: break-all;
-    display: block;
-    font-size: 0.85em;
-    background: none;
-    padding: 0;
-    border-radius: 0;
-}
-
-.copy-btn {
-    position: absolute;
-    top: 8px;
-    right: 8px;
-    background: var(--nm-container);
-    border: 1px solid var(--nm-border);
-    color: var(--nm-text);
-    padding: 4px 8px;
-    cursor: pointer;
-    white-space: nowrap;
-    font-family: 'Orbitron', sans-serif;
-    font-size: 0.7rem;
-    text-transform: uppercase;
-    transition: all 0.2s ease;
-    /* Added uniform border-radius */
-    clip-path: none;
-    border-radius: 20px;
-}
-.copy-btn:hover {
-    background: var(--nm-accent);
-    color: var(--nm-darkest);
-    box-shadow: none; 
-    border-color: var(--nm-accent-hover);
+    font-size: 0.85rem;
 }
 
 .modal-footer {
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
-    padding: 1rem;
+    padding: 15px 20px;
     border-top: 1px solid var(--nm-border);
-    flex-shrink: 0;
+    text-align: right;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
 }
 
-.modal-footer button,
-.language-button {
-    background-color: transparent;
+.modal-footer button {
+    background-color: var(--nm-border);
     color: var(--nm-text);
-    border: 1px solid var(--nm-accent);
-    font-family: 'Orbitron', sans-serif;
-    text-transform: uppercase;
-    font-weight: 700;
-    padding: 12px 25px;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 15px;
     cursor: pointer;
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 500;
     transition: all 0.2s ease;
-    position: relative;
-    /* Added uniform border-radius */
-    clip-path: none;
-    border-radius: 20px;
-    box-shadow: none; 
 }
 
-.modal-footer button:hover,
-.language-button:hover,
-.language-button.selected {
-    color: var(--nm-darkest);
+.modal-footer button:hover {
     background-color: var(--nm-accent);
-    border-color: var(--nm-accent-hover);
-    box-shadow: none; 
+    color: #000000;
 }
 
+.copy-btn {
+    background-color: var(--nm-accent);
+    color: #000000;
+    font-weight: 700 !important;
+}
 
-.decline-btn, .accept-btn {
-    color: var(--nm-darkest) !important;
+.copy-btn:hover {
+    background-color: var(--nm-accent-hover) !important;
 }
-.accept-btn {
-    background-color: var(--nm-success) !important; 
-    border-color: var(--nm-success) !important;
-}
+
+/* For Confirmation/Action Modals */
 .decline-btn {
-    background-color: var(--nm-danger) !important; 
-    border-color: var(--nm-danger) !important;
-}
-.accept-btn:hover {
-    box-shadow: none !important; 
-    opacity: 0.9;
+    background-color: var(--nm-danger);
+    color: #FFFFFF !important;
+    font-weight: 700;
 }
 .decline-btn:hover {
-    box-shadow: none !important; 
-    opacity: 0.9;
+    background-color: var(--nm-danger-hover);
+    box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
 }
 
-.tip {
-    background: var(--nm-dark);
-    border-left: 2px solid var(--nm-warning);
-    box-shadow: none; 
-    margin: 1em 0;
-    padding: 0.8em 1em;
-    border-radius: 0 20px 20px 0; /* Rounded right side only, typical for tips */
-    transition: all 0.3s ease;
+.accept-btn {
+    background-color: var(--nm-success);
+    color: #FFFFFF !important;
+    font-weight: 700;
+}
+.accept-btn:hover {
+    background-color: var(--nm-success);
+    box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
 }
 
-.contact-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 15px;
-    justify-items: center;
-    padding-top: 20px;
-}
-.contact-grid .app-icon {
-    width: 100%;
-    max-width: 350px;
-    height: auto;
-    padding: 12px 15px;
-    gap: 15px;
-    justify-content: center;
-    /* Enforce pill shape on list items */
-    clip-path: none;
-    border-radius: 20px; 
-}
+/* =================================================================
+   NOTE/INFO BOX STYLES
+   ================================================================= */
 
-.hidden { 
-    display: none !important; 
-} 
-.hidden-by-default { 
-    display: none; 
-} 
-
-.text-green-600 { color: var(--nm-success) !important; }
-
-.content-section-modal {
-    text-align: center;
-}
-
-.content-section-modal .tip {
-    background: var(--nm-dark);
-    border-left: 2px solid var(--nm-warning);
-    box-shadow: none; 
-    margin-bottom: 0;
-    text-align: left;
-}
-.content-section-modal .code-container {
-    margin-top: 0.5rem;
-    margin-bottom: 1rem;
-}
-.store-link {
-    margin: 1rem 0 1.5rem 0;
-}
-.store-link a {
-    color: var(--nm-accent);
-    font-weight: bold;
-    text-decoration: none;
-    border: 1px solid var(--nm-border);
-    padding: 10px 15px;
-    background-color: var(--nm-container);
-    transition: all 0.2s ease;
-    display: inline-block;
-    max-width: 100%;
-    box-sizing: border-box;
-    line-height: 1.4;
-    /* Added uniform border-radius */
-    clip-path: none;
-    border-radius: 20px;
-}
-.store-link a:hover {
-    background-color: var(--nm-accent-hover);
-    border-color: var(--nm-accent);
-    color: var(--nm-darkest);
-}
-
-.gym-carousel {
-    position: relative;
-    width: 100%;
-    max-width: 400px;
-    margin: 0 auto;
-    aspect-ratio: 3 / 4;
-    overflow: hidden;
-    border: 1px solid var(--nm-border);
-    background-color: var(--nm-container);
-    /* Added uniform border-radius */
-    clip-path: none;
-    border-radius: 20px;
-}
-.gym-clothing-images {
-    width: 100%;
-    height: 100%;
-}
-.gym-clothing-images img {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    opacity: 0;
-    transition: opacity 0.5s ease-in-out;
-}
-.gym-clothing-images img.active {
-    opacity: 1;
-}
-.carousel-btn {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background-color: rgba(0, 0, 0, 0.5);
-    color: white;
-    border: none;
-    padding: 10px;
-    cursor: pointer;
-    font-size: 1.5rem;
-    z-index: 10;
-    margin: 0 10px;
-}
-.carousel-btn.prev {
-    left: 0;
-}
-.carousel-btn.next {
-    right: 0;
-}
-.carousel-btn:hover {
-    background-color: rgba(0, 0, 0, 0.8);
-}
-
-#useful-information-content h3 {
-    text-align: left;
-    color: var(--nm-text);
-    border-bottom: 1px solid var(--nm-border);
-    padding-bottom: 8px;
-    margin-top: 1rem;
-    margin-bottom: 1rem;
-    font-family: 'Orbitron', sans-serif;
-}
-#useful-information-content p { margin-bottom: 1rem; }
-#useful-information-content ul, #useful-information-content ol {
-    padding-left: 25px;
-    margin-bottom: 1rem;
-}
-#useful-information-content li { margin-bottom: 0.5rem; }
-#useful-information-content a { color: var(--nm-accent); }
-#useful-information-content a:hover { color: var(--nm-accent-hover); text-decoration: underline; }
-
-/* --- Progress Bar for Useful Information Search --- */
-.progress-bar-container {
-    width: 100%;
-    height: 18px; /* Increased height for text */
+.note {
+    padding: 15px;
+    margin: 15px 0;
+    border-left: 5px solid;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    line-height: 1.5;
     background-color: var(--nm-darkest);
-    border-radius: 20px;
-    overflow: hidden;
-    margin-bottom: 10px;
-    position: relative; /* Needed for absolute positioning of text */
-    display: none; /* Hidden by default */
-    border: 1px solid var(--nm-border);
-}
-.progress-bar {
-    width: 0%;
-    height: 100%;
-    background-color: #8A2BE2; /* Purple */
-    transition: width 0.2s ease-in-out;
-    border-radius: 20px;
-}
-.progress-bar-text {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    color: white;
-    font-size: 0.7rem;
-    font-weight: bold;
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
 }
 
+.note-warning {
+    border-left-color: var(--nm-warning);
+    color: var(--nm-text);
+    background-color: var(--warning-bg);
+}
+
+.note-danger {
+    border-left-color: var(--nm-danger);
+    color: var(--nm-text);
+    background-color: var(--danger-bg);
+}
+
+.note-info {
+    border-left-color: var(--nm-accent);
+    color: var(--nm-text);
+    background-color: rgba(153, 102, 255, 0.1);
+}
+
+/* =================================================================
+   USEFUL INFORMATION SPECIFIC STYLES
+   ================================================================= */
+
+#useful-information-content h4 {
+    font-family: 'Orbitron', sans-serif;
+    color: var(--nm-success);
+    font-size: 1rem;
+    margin: 15px 0 10px 0;
+    font-weight: 500;
+}
+
+#useful-information-content p {
+    font-size: 0.95rem;
+}
 
 .modal-search-container {
-    margin-bottom: 20px;
-    position: relative;
-    width: 100%;
-    max-width: 500px;
-    margin-left: auto;
-    margin-right: auto;
+    margin-bottom: 20px !important;
 }
 
-.modal-search-container input {
-    width: 100%;
-    padding: 10px 15px 10px 45px;
-    background-color: var(--nm-darkest);
-    border: 2px solid var(--nm-search-green); /* Set to nm-accent */
-    color: var(--nm-text);
-    font-family: 'Roboto Mono', monospace;
+.modal-search-container .search-input {
+    border-radius: 15px;
+    padding: 10px 15px;
     font-size: 0.9rem;
-    transition: background-color 0.3s ease;
-    /* Large border-radius for pill shape */
-    clip-path: none;
-    border-radius: 50px;
-    box-sizing: border-box;
-    animation: none; /* Removed pulse animation for no glow */
 }
 
-.modal-search-container input:focus {
-    outline: none;
-    background-color: var(--nm-dark);
-}
-
-/* --- ADDED: Search Bar Icons --- */
-.search-container::before,
-.search-container::after,
-.modal-search-container::before {
-    /* This assumes Font Awesome is linked in the HTML */
-    font-family: 'Font Awesome 5 Free', 'FontAwesome';
-    font-weight: 900; /* Use solid icons */
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    color: var(--nm-text-muted);
-    z-index: 2;
-    pointer-events: none; /* Allows clicking through the icon to the input */
-}
-
-/* Magnifying Glass Icon (Left) for Main Search */
-.search-container::before {
-    content: '\f002'; /* fa-search */
-    left: 20px;
-}
-
-/* Globe Icon (Right) for Main Search */
-.search-container::after {
-    content: '\f0ac'; /* fa-globe */
-    right: 20px;
-}
-
-/* Magnifying Glass Icon (Left) for Modal Search */
-.modal-search-container::before {
-    content: '\f002'; /* fa-search */
-    left: 20px;
-}
-/* --- END: Search Bar Icons --- */
-
-/* --- Styles from removed inline attributes --- */
-#expanded-img {
-    max-width: 90vw;
-    max-height: 90vh;
-    border: 3px solid var(--nm-accent);
-    box-shadow: none; 
-    /* Added uniform border-radius */
-    border-radius: 20px;
-}
-.modal-divider {
-    margin: 2rem 0;
-    border-color: var(--nm-border);
-}
-.text-center {
-    text-align: center;
-}
-.note.note-warning {
-    background-color: var(--warning-bg);
-    color: white;
-    font-weight: bold;
-    border-left: 4px solid var(--nm-warning);
-    padding: 1rem;
-    /* Added uniform border-radius */
-    border-radius: 20px;
-}
-.note.note-danger {
-    border-left: 4px solid var(--nm-danger);
-    background: var(--danger-bg);
-    padding: 1rem;
-    /* Added uniform border-radius */
-    border-radius: 20px;
-}
-.certificate-footer .signature span {
-    font-style: italic;
-}
-.ad-image {
-    width: 100%;
-    max-width: 400px;
-    margin: 1rem auto;
-    display: block;
-    border-radius: 20px; /* Uniform border-radius */
-    border: 1px solid var(--nm-border);
-}
 #useful-info-prompt {
+    font-style: italic;
+    color: var(--nm-accent);
     text-align: center;
-    color: var(--nm-text-muted);
-    margin-bottom: 1rem;
+    font-weight: bold;
 }
+
 #useful-information-nav {
-    grid-template-columns: 1fr;
-    max-width: 100%;
-    gap: 15px; 
-    justify-content: initial; /* Override centering for this specific grid */
+    grid-template-columns: repeat(2, 1fr);
+    max-width: none;
+    width: 100%;
+    padding: 0;
+    gap: 10px;
 }
-/* Apply pill shape to the list of articles inside the Useful Information modal */
+
+#useful-information-nav .app-wrapper {
+    width: 100%;
+    align-items: flex-start;
+    text-align: left;
+}
+
 #useful-information-nav .app-icon {
-    width: 100%; /* Make them full width of container */
-    height: auto; /* Allow height to adjust */
-    padding: 12px 15px; /* Add padding for content */
+    width: auto;
+    height: auto;
+    background: var(--nm-darkest);
+    border: 1px solid var(--nm-border);
+    margin: 0;
+    padding: 10px 15px; /* Add padding for content */
     /* Enforce pill shape on list items */
     clip-path: none;
     border-radius: 20px;
@@ -1551,20 +1317,4 @@ span.sub-item {
     }
     
     /* FIX: Removed incorrect margin override that caused left-alignment */
-}
-
-/* =================================================================
-   LARGE DESKTOP STYLES
-   ================================================================= */
-@media (min-width: 1200px) {
-    .search-container,
-    .hero-section,
-    .grid-heading,
-    .app-grid {
-        max-width: 900px;
-    }
-
-    .app-grid {
-        grid-template-columns: repeat(8, max-content);
-    }
 }
