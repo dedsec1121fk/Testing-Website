@@ -455,16 +455,6 @@ body.light-theme .note.note-warning {
 }
 
 /* =================================================================
-   FLOATING SWITCHER STYLES (REMOVED)
-   ================================================================= */
-
-
-/* =================================================================
-   NAV SETTINGS STYLES (REMOVED)
-   ================================================================= */
-
-
-/* =================================================================
    BACKGROUND OPACITY ADJUSTMENTS
    ================================================================= */
 
@@ -524,38 +514,194 @@ body.light-theme .note.note-warning {
 }
 
 /* =================================================================
-   OLD WEBSITE LANGUAGE SELECTION STYLES (REMOVED)
+   OLD WEBSITE LANGUAGE SELECTION STYLES (Restored from original)
    ================================================================= */
 
-/* ADDED: Styles for simple language modal from old style.css */
-.language-button {
-    background-color: transparent;
-    color: var(--nm-text);
-    border: 1px solid var(--nm-accent);
-    font-family: 'Orbitron', sans-serif;
-    text-transform: uppercase;
-    font-weight: 700;
-    padding: 12px 25px;
+.old-website-modal {
+    background: rgba(0, 0, 0, 0.95) !important;
+    z-index: 9999 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    opacity: 0 !important; /* Start hidden */
+    visibility: hidden !important; /* Start hidden */
+}
+
+.old-website-modal.visible {
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+.old-website-modal-content {
+    background: linear-gradient(135deg, #1a1a2e, #16213e) !important;
+    border: 3px solid #9966FF !important;
+    border-radius: 15px !important;
+    box-shadow: 0 0 50px rgba(153, 102, 255, 0.5) !important;
+    max-width: 500px !important;
+    width: 90% !important;
+    animation: modalAppear 0.5s ease-out !important;
+}
+
+@keyframes modalAppear {
+    0% {
+        opacity: 0;
+        transform: scale(0.8) translateY(-50px);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+@keyframes modalDisappear {
+    0% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+}
+
+.old-website-modal-header {
+    background: linear-gradient(135deg, #9966FF, #6633CC) !important;
+    padding: 20px !important;
+    text-align: center !important;
+    border-bottom: 2px solid #FFD700 !important;
+}
+
+.old-website-modal-header h2 {
+    color: #FFFFFF !important;
+    font-family: 'Orbitron', sans-serif !important;
+    font-size: 1.5rem !important;
+    margin: 0 !important;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5) !important;
+}
+
+.old-website-modal-body {
+    padding: 30px !important;
+    background: rgba(255, 255, 255, 0.05) !important;
+}
+
+.language-selection-old-style {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.language-option-old {
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid transparent;
+    border-radius: 10px;
+    padding: 15px;
+    transition: all 0.3s ease;
     cursor: pointer;
-    transition: all 0.2s ease;
-    position: relative;
-    /* Added uniform border-radius */
-    clip-path: none;
+}
+
+.language-option-old:hover {
+    background: rgba(153, 102, 255, 0.2);
+    border-color: #9966FF;
+    transform: translateX(10px);
+}
+
+.flag-icon {
+    font-size: 2.5rem;
+    margin-right: 15px;
+    min-width: 60px;
+    text-align: center;
+}
+
+.language-text {
+    flex: 1;
+}
+
+.language-text strong {
+    display: block;
+    color: #FFFFFF;
+    font-size: 1.2rem;
+    font-family: 'Orbitron', sans-serif;
+    margin-bottom: 5px;
+}
+
+.language-text span {
+    color: #CCCCCC;
+    font-size: 0.9rem;
+}
+
+.select-language-btn {
+    background: linear-gradient(135deg, #00FF00, #00CC00);
+    border: none;
     border-radius: 20px;
-    box-shadow: none; 
+    color: #000000;
+    padding: 10px 20px;
+    font-family: 'Orbitron', sans-serif;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-width: 80px;
 }
 
-.language-button:hover,
-.language-button.selected {
-    color: var(--nm-darkest);
-    background-color: var(--nm-accent);
-    border-color: var(--nm-accent-hover);
-    box-shadow: none; 
+.select-language-btn:hover {
+    background: linear-gradient(135deg, #00CC00, #00FF00);
+    transform: scale(1.05);
+    box-shadow: 0 0 15px rgba(0, 255, 0, 0.5);
 }
 
+.language-footer-note {
+    text-align: center;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.language-footer-note p {
+    color: #999999;
+    font-size: 0.8rem;
+    margin: 0;
+    font-style: italic;
+}
+
+/* Make sure the language modal is on top of everything */
+#language-selection-modal {
+    z-index: 9999 !important;
+}
+
+/* Ensure the modal is visible and blocks interaction */
+.old-website-modal.visible {
+    opacity: 1 !important;
+    visibility: visible !important;
+    display: flex !important;
+}
 
 /* Responsive design for language modal */
 @media (max-width: 768px) {
+    .old-website-modal-content {
+        width: 95% !important;
+        margin: 20px !important;
+    }
+    
+    .language-option-old {
+        flex-direction: column;
+        text-align: center;
+        padding: 20px;
+    }
+    
+    .flag-icon {
+        margin-right: 0;
+        margin-bottom: 10px;
+    }
+    
+    .language-text {
+        margin-bottom: 15px;
+    }
+    
+    .select-language-btn {
+        width: 100%;
+    }
+    
     .language-selection-grid {
         grid-template-columns: 1fr;
         gap: 15px;
@@ -694,7 +840,7 @@ button.hero-cta-button {
     width: 100%;
     height: 100%;
     /* DEFAULT DARK THEME LOGO */
-    background-image: url('https://raw.githubusercontent.com/dedsec1121fk/dedsec1121fk.github.io/5860edb8a7468d955336c9cf1d8b357597d6d645/Assets/Images/Logos/Custom%20Black%20Purple%20Fox%20Logo.png');
+    background-image: url('https://raw.githubusercontent.com/dedsec1121fk/dedsec1121fk.github.io/5860edb8a7468d955336c9cf1d8b357597d6d645/Assets/Images/Logos/Custom%20Black%2Purple%20Fox%20Logo.png');
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;

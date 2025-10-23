@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initializeNavigation();
     initializeTheme();
     initializeLanguage();
-    initializeOldLanguageModal(); // MODIFIED: Call old modal init
+    initializeOldWebsiteLanguageModal(); // MODIFIED: Call correct modal init
     initializeOldThemeSwitcher(); // MODIFIED: Call old theme init
     initializeOldLangSwitcher(); // MODIFIED: Call old lang init
     initializeCopyButtons();
@@ -71,31 +71,73 @@ document.addEventListener('DOMContentLoaded', () => {
         changeLanguage(currentLanguage);
     }
 
-    // REMOVED: initializeOldWebsiteLanguageModal
-
-    // ADDED: initializeOldLanguageModal from old script.js logic
-    function initializeOldLanguageModal() {
+    // ADDED: initializeOldWebsiteLanguageModal from original common.js
+    function initializeOldWebsiteLanguageModal() {
         const languageModal = document.getElementById('language-selection-modal');
-        if (!languageModal) return;
+        const languageOptions = document.querySelectorAll('.language-option-old');
+        const selectButtons = document.querySelectorAll('.select-language-btn');
         
-        const languageModalCloseBtn = languageModal.querySelector('.close-modal');
-        if (languageModalCloseBtn) {
-            languageModalCloseBtn.style.display = 'none'; // Hide close button on start
-            languageModalCloseBtn.addEventListener('click', () => hideModal(languageModal));
+        // Check if user has already selected a language
+        const languageSelected = localStorage.getItem('language-selected');
+        
+        if (languageSelected === 'true') {
+            // Hide modal if language already selected
+            if (languageModal) {
+                languageModal.classList.remove('visible');
+                languageModal.style.display = 'none';
+            }
+            return;
         }
 
-        languageModal.querySelectorAll('.language-button').forEach(button => {
-            button.addEventListener('click', () => {
-                changeLanguage(button.dataset.lang);
-                hideModal(languageModal);
+        // Show modal if no language selection has been made
+        if (languageModal) {
+            languageModal.classList.add('visible');
+            languageModal.style.display = 'flex';
+            
+            // Make sure it's on top and blocks everything
+            languageModal.style.zIndex = '9999';
+            languageModal.style.position = 'fixed';
+            languageModal.style.top = '0';
+            languageModal.style.left = '0';
+            languageModal.style.width = '100%';
+            languageModal.style.height = '100%';
+        }
+
+        // Add event listeners to language options (click anywhere on the option)
+        languageOptions.forEach(option => {
+            option.addEventListener('click', (e) => {
+                // Don't trigger if the click was on the button (handled separately)
+                if (!e.target.classList.contains('select-language-btn') && !e.target.closest('.select-language-btn')) {
+                    const selectedLang = option.getAttribute('data-lang');
+                    selectLanguage(selectedLang);
+                }
             });
         });
 
-        // Show the modal on startup
-        showModal(languageModal);
+        // Add event listeners to select buttons
+        selectButtons.forEach((button, index) => {
+            button.addEventListener('click', (e) => {
+                e.stopPropagation(); // Prevent triggering the parent option click
+                const option = button.closest('.language-option-old');
+                const selectedLang = option.getAttribute('data-lang');
+                selectLanguage(selectedLang);
+            });
+        });
+
+        function selectLanguage(lang) {
+            localStorage.setItem('language-selected', 'true');
+            changeLanguage(lang);
+            
+            // Hide modal with animation
+            if (languageModal) {
+                languageModal.style.animation = 'modalDisappear 0.3s ease-in forwards';
+                setTimeout(() => {
+                    languageModal.style.display = 'none';
+                }, 300);
+            }
+        }
     }
 
-    // REMOVED: initializeThemeSwitcher
 
     // ADDED: initializeOldThemeSwitcher from old script.js logic
     function initializeOldThemeSwitcher() {
@@ -146,9 +188,12 @@ document.addEventListener('DOMContentLoaded', () => {
             langSwitcherBtn.addEventListener('click', () => {
                 const languageModal = document.getElementById('language-selection-modal');
                 if(languageModal) {
-                    const languageModalCloseBtn = languageModal.querySelector('.close-modal');
-                    if (languageModalCloseBtn) languageModalCloseBtn.style.display = ''; 
-                    showModal(languageModal);
+                    // This modal doesn't have a close button, so we just show it.
+                    // The user must select a language to close it.
+                    languageModal.style.display = 'flex';
+                    languageModal.classList.add('visible');
+                    // Reset animation in case it was closed
+                    languageModal.style.animation = 'modalAppear 0.5s ease-out';
                 }
             });
          }
@@ -206,7 +251,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
         
-        // ADDED: Update language buttons selection state
+        // ADDED: Update language buttons selection state (for simple modal)
         document.querySelectorAll('.language-button').forEach(button => {
             button.classList.toggle('selected', button.dataset.lang === lang);
         });

@@ -36,19 +36,38 @@
     </script>
 </head>
 <body class="dark-theme">
-    <div id="language-selection-modal" class="modal-overlay">
-      <div class="modal-content modal-content-auto-height">
-          <div class="modal-header">
-            <h2 data-en="Choose Language" data-gr="Επιλογή Γλώσσας">Choose Language / Επιλογή Γλώσσας</h2>
-            <button class="close-modal" aria-label="Close">×</button>
-          </div>
-          <div class="modal-body modal-body-centered">
-              <button class="language-button" data-lang="en" aria-label="Change language to English">English</button>
-              <button class="language-button" data-lang="gr" aria-label="Change language to Greek">Ελληνικά</button>
-          </div>
-      </div>
+    <div id="language-selection-modal" class="modal-overlay old-website-modal">
+        <div class="modal-content old-website-modal-content">
+            <div class="old-website-modal-header">
+                <h2>🌐 Select Your Language / Επιλέξτε Γλώσσα</h2>
+            </div>
+            <div class="old-website-modal-body">
+                <div class="language-selection-old-style">
+                    <div class="language-option-old" data-lang="en">
+                        <div class="flag-icon">🇺🇸</div>
+                        <div class="language-text">
+                            <strong>English</strong>
+                            <span>Continue in English</span>
+                        </div>
+                        <button class="select-language-btn">Select</button>
+                    </div>
+                    
+                    <div class="language-option-old" data-lang="gr">
+                        <div class="flag-icon">🇬🇷</div>
+                        <div class="language-text">
+                            <strong>Ελληνικά</strong>
+                            <span>Συνέχεια στα Ελληνικά</span>
+                        </div>
+                        <button class="select-language-btn">Επιλογή</button>
+                    </div>
+                </div>
+                
+                <div class="language-footer-note">
+                    <p>You can change this later in settings / Μπορείτε να αλλάξετε αργότερα στις ρυθμίσεις</p>
+                </div>
+            </div>
+        </div>
     </div>
-
 
     <div class="burger-menu">
         <div class="burger-icon-container">
@@ -67,8 +86,7 @@
             <a href="portfolio.html" class="nav-item" data-en="Portfolio" data-gr="Portfolio">Portfolio</a>
             <a href="contact.html" class="nav-item" data-en="Contact" data-gr="Επικοινωνία">Contact</a>
             <a href="privacy.html" class="nav-item" data-en="Privacy" data-gr="Απόρρητο">Privacy</a>
-            
-            </div>
+        </div>
     </div>
 
     <div class="phone-container">
@@ -165,7 +183,7 @@
                                 <span class="app-label">Language / Γλώσσα</span>
                             </button>
 
-                            <button class="app-wrapper" data-modal="privacy" onclick="alert('This will be linked in a real scenario, but for now, use the nav menu.');">
+                            <button class="app-wrapper" data-modal="privacy" onclick="window.location.href='privacy.html';">
                                 <div class="app-icon"><i class="fas fa-user-shield"></i></div>
                                 <span class="app-label" data-en="Privacy Policy" data-gr="Πολιτική Απορρήτου">Privacy Policy</span>
                             </button>
