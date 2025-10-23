@@ -1,5 +1,3 @@
-[file name]: common.js
-[file content begin]
 // Common JavaScript for DedSec Project - Guaranteed Working Version
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -20,22 +18,23 @@ function initializeBurgerMenu() {
     console.log('Initializing burger menu...');
     
     const burgerIcon = document.getElementById('burger-icon');
+    const burgerContainer = document.getElementById('burger-icon-container'); // Get the clickable container
     const navMenu = document.getElementById('nav-menu');
     
-    if (!burgerIcon || !navMenu) {
+    if (!burgerIcon || !navMenu || !burgerContainer) {
         console.warn('Burger menu elements not found');
         return;
     }
     
     console.log('Burger menu elements found, setting up event listeners...');
     
-    // Click event for burger icon
-    burgerIcon.addEventListener('click', function(e) {
+    // Click event for the entire burger container
+    burgerContainer.addEventListener('click', function(e) {
         e.stopPropagation();
-        console.log('Burger icon clicked');
+        console.log('Burger icon container clicked');
         
-        // Toggle active class on burger icon
-        this.classList.toggle('active');
+        // Toggle active class on the inner icon for animation
+        burgerIcon.classList.toggle('active');
         
         // Toggle active class on nav menu
         navMenu.classList.toggle('active');
@@ -46,7 +45,7 @@ function initializeBurgerMenu() {
     // Close menu when clicking anywhere outside
     document.addEventListener('click', function(e) {
         if (navMenu.classList.contains('active') && 
-            !burgerIcon.contains(e.target) && 
+            !burgerContainer.contains(e.target) && // Check against the container
             !navMenu.contains(e.target)) {
             
             console.log('Closing burger menu (clicked outside)');
@@ -390,4 +389,3 @@ window.dedSecCommon = {
 };
 
 console.log('DedSec Common JS loaded successfully');
-[file content end]
