@@ -749,7 +749,8 @@ body.light-theme ::-webkit-scrollbar-thumb {
 
 .app-grid {
     display: grid;
-    grid-template-columns: repeat(3, max-content);
+    /* FIX: Changed to 1fr columns to spread icons evenly and ensure true centering */
+    grid-template-columns: repeat(3, 1fr); 
     justify-content: center;
     gap: 35px;
     width: 100%;
@@ -759,7 +760,8 @@ body.light-theme ::-webkit-scrollbar-thumb {
 }
 
 .app-wrapper {
-    width: 70px;
+    /* FIX: Set width to 100% of the grid column and center contents */
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -1470,7 +1472,8 @@ span.sub-item {
     }
 
     .app-grid {
-        grid-template-columns: repeat(6, max-content);
+        /* Adjusted for wider screens */
+        grid-template-columns: repeat(6, 1fr); 
     }
 
     .main-header-container h1 {
@@ -1490,6 +1493,6 @@ span.sub-item {
     }
 
     .app-grid {
-        grid-template-columns: repeat(8, max-content);
+        grid-template-columns: repeat(8, 1fr);
     }
 }
