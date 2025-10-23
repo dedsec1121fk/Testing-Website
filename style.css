@@ -749,9 +749,12 @@ body.light-theme ::-webkit-scrollbar-thumb {
 
 .app-grid {
     display: grid;
-    /* FIX: Changed to 1fr columns to spread icons evenly and ensure true centering */
-    grid-template-columns: repeat(3, 1fr); 
-    justify-content: center; /* FIX: Added to center incomplete rows of icons */
+    /* THE FIX: Use auto-fit with minmax. This allows the columns to shrink-wrap 
+       the content (instead of forcing equal width), which enables 'justify-content: center' 
+       to properly center the icons when the last row is incomplete. 
+    */
+    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); 
+    justify-content: center; /* This now correctly centers incomplete rows */
     gap: 35px;
     width: 100%;
     max-width: 500px;
@@ -1474,7 +1477,7 @@ span.sub-item {
     }
 
     .app-grid {
-        /* Adjusted for wider screens */
+        /* Adjusted for wider screens: Use your desired column count (6) here */
         grid-template-columns: repeat(6, 1fr); 
     }
 
