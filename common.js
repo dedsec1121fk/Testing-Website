@@ -216,6 +216,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 en: 'Installation Guide - DedSec Project',
                 gr: 'Οδηγός Εγκατάστασης - DedSec Project'
             },
+            'useful-info.html': {
+                en: 'Useful Information - DedSec Project',
+                gr: 'Χρήσιμες Πληροφορίες - DedSec Project'
+            },
+            'collaborations.html': {
+                en: 'Collaborations - DedSec Project',
+                gr: 'Συνεργασίες - DedSec Project'
+            },
             'portfolio.html': {
                 en: 'Portfolio & GitHub - DedSec Project',
                 gr: 'Portfolio & GitHub - DedSec Project'
