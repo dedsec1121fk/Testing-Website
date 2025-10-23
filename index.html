@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>DedSec Project</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&family=Roboto+Mono:wght@400;700&family=Inter:wght@400;700&family=Noto+Serif:ital,wght@0,400;0,700;1,400&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="common.css">
+</head>
+<body class="dark-theme">
+    <!-- Burger Menu -->
+    <div class="burger-menu">
+        <div class="burger-icon-container">
+            <div class="burger-icon" id="burger-icon">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+        <div class="nav-menu" id="nav-menu">
+            <a href="index.html" class="nav-item" data-en="Home" data-gr="Αρχική">Home</a>
+            <a href="learn.html" class="nav-item" data-en="Learn About The Tools" data-gr="Μάθετε για τα Εργαλεία">Learn About The Tools</a>
+            <a href="installation.html" class="nav-item" data-en="Installation" data-gr="Εγκατάσταση">Installation</a>
+            <a href="useful-info.html" class="nav-item" data-en="Useful Information" data-gr="Χρήσιμες Πληροφορίες">Useful Information</a>
+            <a href="collaborations.html" class="nav-item" data-en="Collaborations" data-gr="Συνεργασίες">Collaborations</a>
+            <a href="portfolio.html" class="nav-item" data-en="Portfolio" data-gr="Portfolio">Portfolio</a>
+            <a href="contact.html" class="nav-item" data-en="Contact" data-gr="Επικοινωνία">Contact</a>
+            <a href="privacy.html" class="nav-item" data-en="Privacy" data-gr="Απόρρητο">Privacy</a>
+        </div>
+    </div>
+
+    <div class="phone-container">
+        <div class="screen">
+            <div class="screen-overlay"></div>
+            
+            <main class="home-screen">
+                <div class="main-header-container">
+                    <h1 data-en="DedSec Project" data-gr="DedSec Project">DedSec Project</h1>
+                    
+                    <!-- Global Search Bar -->
+                    <div class="search-container">
+                        <form action="https://www.google.com/search" method="get" target="_blank" id="main-search-form">
+                            <input type="text" name="q" id="main-search-input" placeholder="Search the Web..." data-en="Search the Web..." data-gr="Αναζήτηση στο διαδίκτυο..." autocomplete="off">
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Welcome Message -->
+                <div class="welcome-section">
+                    <p class="welcome-text" data-en="Welcome to DedSec Project - Your comprehensive cybersecurity toolkit for ethical hacking and security research." data-gr="Καλωσήρθατε στο DedSec Project - Το ολοκληρωμένο εργαλείο κυβερνοασφάλειας για ηθικό hacking και έρευνα ασφαλείας.">
+                        Welcome to DedSec Project - Your comprehensive cybersecurity toolkit for ethical hacking and security research.
+                    </p>
+                </div>
+
+                <!-- Quick Access Grid -->
+                <h4 class="grid-heading" data-en="Quick Access" data-gr="Γρήγορη Πρόσβαση">Quick Access</h4>
+                <div class="app-grid">
+                    <a href="learn.html" class="app-wrapper">
+                        <div class="app-icon"><i class="fas fa-shield-alt"></i></div>
+                        <span class="app-label" data-en="Learn Tools" data-gr="Μάθετε Εργαλεία">Learn Tools</span>
+                    </a>
+                    
+                    <a href="installation.html" class="app-wrapper">
+                        <div class="app-icon"><i class="fas fa-download"></i></div>
+                        <span class="app-label" data-en="Installation" data-gr="Εγκατάσταση">Installation</span>
+                    </a>
+
+                    <a href="useful-info.html" class="app-wrapper">
+                        <div class="app-icon"><i class="fas fa-lightbulb"></i></div>
+                        <span class="app-label" data-en="Useful Info" data-gr="Χρήσιμες Πληροφορίες">Useful Info</span>
+                    </a>
+
+                    <a href="collaborations.html" class="app-wrapper">
+                        <div class="app-icon"><i class="fas fa-handshake"></i></div>
+                        <span class="app-label" data-en="Collaborations" data-gr="Συνεργασίες">Collaborations</span>
+                    </a>
+
+                    <a href="portfolio.html" class="app-wrapper">
+                        <div class="app-icon"><i class="fas fa-briefcase"></i></div>
+                        <span class="app-label" data-en="Portfolio" data-gr="Portfolio">Portfolio</span>
+                    </a>
+                    
+                    <a href="contact.html" class="app-wrapper">
+                        <div class="app-icon"><i class="fas fa-id-card-alt"></i></div>
+                        <span class="app-label" data-en="Contact" data-gr="Επικοινωνία">Contact</span>
+                    </a>
+                </div>
+
+                <!-- Settings Section -->
+                <h4 class="grid-heading" data-en="Settings" data-gr="Ρυθμίσεις">Settings</h4>
+                <div class="app-grid">
+                    <button id="theme-switcher-btn" class="app-wrapper">
+                        <div class="app-icon"><i class="fas fa-moon"></i></div>
+                        <span class="app-label" data-en="Theme" data-gr="Θέμα">Theme</span>
+                    </button>
+
+                    <button id="lang-switcher-btn" class="app-wrapper">
+                        <div class="app-icon"><i class="fas fa-globe"></i></div>
+                        <span class="app-label">Language / Γλώσσα</span>
+                    </button>
+
+                    <a href="privacy.html" class="app-wrapper">
+                        <div class="app-icon"><i class="fas fa-user-shield"></i></div>
+                        <span class="app-label" data-en="Privacy" data-gr="Απόρρητο">Privacy</span>
+                    </a>
+                </div>
+
+                <!-- Footer -->
+                <footer class="main-footer">
+                    <p data-lang-section="en">© 2025 DedSec Project. All Rights Reserved.</p>
+                    <p data-lang-section="gr" class="hidden-by-default">© 2025 DedSec Project. Με επιφύλαξη παντός δικαιώματος.</p>
+                    <p>Made by dedsec1121fk</p>
+                </footer>
+            </main>
+        </div>
+    </div>
+
+    <!-- Language Selection Modal -->
+    <div id="language-selection-modal" class="modal-overlay">
+        <div class="modal-content modal-content-auto-height">
+            <div class="modal-header">
+                <h2 data-en="Choose Language" data-gr="Επιλογή Γλώσσας">Choose Language</h2>
+                <button class="close-modal" aria-label="Close">×</button>
+            </div>
+            <div class="modal-body modal-body-centered">
+                <button class="language-button" data-lang="en" aria-label="Change language to English">English</button>
+                <button class="language-button" data-lang="gr" aria-label="Change language to Greek">Ελληνικά</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="common.js"></script>
+</body>
+</html>

@@ -1,46 +1,16 @@
-/*
-    =================================================================
-    
-=================================================================
-*/
-
 :root {
-    /* MODIFIED: Digital Lavender Palette */
-    --nm-abyss-blue: #01040a; 
-    --nm-darkest: #0B121C;    
-    --nm-dark: #151E2A;       
-    --nm-container: #1F2A38;  
-    --nm-border: #3A4A5E;      
-    --nm-accent: #9966FF;      /* Digital Lavender (Used for borders/success/title) */
-    --nm-accent-hover: #9933FF; /* Brighter, more distinct PURPLE for Main Title */
-    --nm-text: #FFFFFF;        /* All text/titles default to PURE WHITE */
-    --nm-text-muted: #7A8899;  
-    /* DANGER/FAIL: Red */
-    --nm-danger: #FF0000;      
-    --nm-danger-hover: #FF0000; 
-    /* SUCCESS: Green */
-    --nm-success: #00FF00;     
-    /* WARNING/HIGHLIGHT: Yellow */
-    --nm-warning: #FFFF00;     
-    
-    --glow-rgb: 153, 102, 255; /* RGB components for the accent color */
-    --glow-color: rgba(var(--glow-rgb), 0.0); 
-    /* Search Bar Color: MODIFIED to use main accent color */
-    --nm-search-green: var(--nm-accent); 
-    /* Search Bar Glow: MODIFIED to remove glow */
-    --glow-color-search: rgba(var(--glow-rgb), 0.0); 
-    /* Highlight Red Glow (kept for compatibility, though red is not requested) */
-    --glow-color-danger: rgba(255, 0, 0, 0.0); 
-    /* Highlighter Yellow Glow */
-    --glow-color-warning: rgba(255, 255, 0, 0.8); 
-
-    --warning-bg: rgba(255, 255, 0, 0.1); /* Yellow background for warning notes */
-    --danger-bg: rgba(255, 0, 0, 0.1);
-
-    --safe-area-inset-bottom: env(safe-area-inset-bottom, 10px);
-    --shape-cut: 20px;
-    /* REMOVED: Remove custom clip path variable */
-    --clip-path-shape: none; 
+    --nm-abyss-blue: #01040a;
+    --nm-darkest: #0B121C;
+    --nm-dark: #151E2A;
+    --nm-container: #1F2A38;
+    --nm-border: #3A4A5E;
+    --nm-accent: #9966FF;
+    --nm-accent-hover: #9933FF;
+    --nm-text: #FFFFFF;
+    --nm-text-muted: #7A8899;
+    --nm-danger: #FF0000;
+    --nm-success: #00FF00;
+    --nm-warning: #FFFF00;
 }
 
 body.light-theme {
@@ -49,176 +19,324 @@ body.light-theme {
     --nm-dark: #e9e9e9;
     --nm-container: #ffffff;
     --nm-border: #cccccc;
-    --nm-text: #000000;        /* Light theme text is BLACK */
-    --nm-text-muted: #555555;  /* Light theme muted text is darker gray */
-    --nm-warning: #9966FF; 
-    --glow-color: rgba(var(--glow-rgb), 0.3);
+    --nm-text: #000000;
+    --nm-text-muted: #555555;
 }
 
-/* --- ADDED/MODIFIED FOR LIGHT THEME BACKGROUND LOGO SWAP --- */
+/* Base Styles */
+html, body {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: var(--nm-abyss-blue);
+    font-family: 'Roboto Mono', monospace;
+    color: var(--nm-text);
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.phone-container {
+    width: 100%;
+    height: 100%;
+    background: var(--nm-darkest);
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+.screen {
+    width: 100%;
+    height: 100%;
+    background-color: var(--nm-abyss-blue);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    z-index: 0;
+}
+
+.screen::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('https://raw.githubusercontent.com/dedsec1121fk/dedsec1121fk.github.io/5860edb8a7468d955336c9cf1d8b357597d6d645/Assets/Images/Logos/Custom%20Black%20Purple%20Fox%20Logo.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0.3;
+    z-index: -1;
+}
+
 body.light-theme .screen::after {
-    background-image: url('https://raw.githubusercontent.com/dedsec1121fk/dedsec1121fk.github.io/6f776cd9772a079a6d26370dddab911bf7cde8cd/Assets/Images/Logos/Custom%20White%20Purple%20Fox%20Logo.jpg') !important;
-    opacity: 0.3; /* Keep visibility for light theme */
+    background-image: url('https://raw.githubusercontent.com/dedsec1121fk/dedsec1121fk.github.io/6f776cd9772a079a6d26370dddab911bf7cde8cd/Assets/Images/Logos/Custom%20White%20Purple%20Fox%20Logo.jpg');
+    opacity: 0.3;
 }
 
-/* =================================================================
-   LIGHT THEME FIXES
-   ================================================================= */
-
-/* Fix low-contrast text on accent-colored backgrounds (hover states, etc.) */
-body.light-theme .app-icon:hover,
-body.light-theme .app-wrapper:hover .app-icon i,
-body.light-theme .search-result-item:hover,
-body.light-theme .copy-btn:hover,
-body.light-theme .modal-footer button:hover,
-body.light-theme .language-button:hover,
-body.light-theme .language-button.selected,
-body.light-theme .store-link a:hover {
-    color: #FFFFFF; /* Use pure white for high contrast on purple backgrounds */
+.screen-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
 }
 
-/* Fix muted text in search results on hover */
-body.light-theme #search-results-container .search-result-item:hover small,
-body.light-theme #useful-info-results-container .search-result-item:hover small {
-    color: rgba(255, 255, 255, 0.85);
+.home-screen {
+    flex-grow: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    min-height: 0;
+    padding: 0 15px 15px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
-/* Fix hardcoded dark backgrounds */
-body.light-theme .modal-header {
-    background: rgba(0,0,0,0.03); /* A very light, almost white background */
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
 }
-body.light-theme .modal-body code {
-    background: rgba(0,0,0,0.08); /* A light gray background for code snippets */
+::-webkit-scrollbar-track {
+    background: var(--nm-dark);
 }
-
-/* Fix accept/decline button text color */
-body.light-theme .decline-btn,
-body.light-theme .accept-btn {
-    color: #FFFFFF !important; /* Use white text for high contrast on bright red/green */
+::-webkit-scrollbar-thumb {
+    background-color: var(--nm-accent);
+    border-radius: 10px;
 }
-
-/* Fix inconsistent warning note styling */
-body.light-theme .note.note-warning {
-    color: #000000; /* Use black text for readability on yellow background */
-    border-left-color: #FBC02D; /* A darker yellow to match the theme */
+::-webkit-scrollbar-thumb:hover {
+    background-color: var(--nm-accent-hover);
 }
 
-/* =================================================================
-   ANNIVERSARY STYLES
-   ================================================================= */
+/* Header & Search */
+.main-header-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    gap: 15px;
+    margin-bottom: 10px;
+    padding: 25px 15px 0 15px;
+    box-sizing: border-box;
+}
 
-/* Anniversary Banner */
-.anniversary-banner {
-    background: linear-gradient(135deg, var(--nm-accent), var(--nm-accent-hover));
+.main-header-container h1 {
+    margin: 0;
+    text-align: center;
+    white-space: nowrap;
+    font-size: clamp(7vw, 9vw, 4.0rem);
+    color: var(--nm-accent);
+    font-family: 'Orbitron', sans-serif;
+    text-shadow: 
+        -1px -1px 0 #000,  
+        1px -1px 0 #000,
+        -1px 1px 0 #000,
+        1px 1px 0 #000,
+        0 0 10px var(--nm-accent),
+        0 0 20px var(--nm-accent);
+}
+
+.search-container {
+    position: relative;
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.search-container::before {
+    font-family: 'Font Awesome 5 Free', 'FontAwesome';
+    font-weight: 900;
+    content: '\f002';
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--nm-text-muted);
+    z-index: 2;
+    pointer-events: none;
+}
+
+#main-search-input {
+    width: 100%;
+    padding: 10px 45px;
+    background-color: var(--nm-darkest);
     border: 2px solid var(--nm-accent);
-    border-radius: 20px;
-    padding: 15px;
-    margin-bottom: 20px;
+    color: var(--nm-text);
+    font-family: 'Roboto Mono', monospace;
+    font-size: 0.9rem;
+    transition: background-color 0.3s ease;
+    border-radius: 50px;
+    box-sizing: border-box;
+}
+
+#main-search-input:focus {
+    outline: none;
+    background-color: var(--nm-dark);
+}
+
+/* Welcome Section */
+.welcome-section {
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
-    color: #000000; /* Ensure text is dark for contrast */
-    box-shadow: 0 0 15px rgba(var(--glow-rgb), 0.7);
+    width: 100%;
+    max-width: 500px;
+    margin: 5px auto;
+    padding: 10px;
+    box-sizing: border-box;
 }
 
-.anniversary-content {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    margin-bottom: 15px;
-}
-
-.anniversary-icon i {
-    font-size: 3em;
-    color: #000000;
-}
-
-.anniversary-text h3 {
-    font-family: 'Orbitron', sans-serif;
-    margin: 0 0 5px 0;
-    font-size: 1.2em;
-}
-
-.anniversary-text p {
+.welcome-text {
+    color: var(--nm-text-muted);
+    font-size: 0.9rem;
+    line-height: 1.6;
     margin: 0;
-    font-size: 0.9em;
 }
 
-.certificate-btn {
-    background: var(--nm-container);
-    border: 2px solid #000000;
-    color: #000000;
-    padding: 8px 15px;
-    border-radius: 10px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background 0.2s, color 0.2s, transform 0.2s;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.certificate-btn:hover {
-    background: #000000;
-    color: var(--nm-accent);
-    transform: translateY(-2px);
-}
-
-/* =================================================================
-   NEW LANGUAGE PROMPT STYLES
-   ================================================================= */
-
-.centered-content {
+/* Grid Headings */
+.grid-heading {
+    width: 100%;
+    max-width: 500px;
     text-align: center;
-}
-
-.language-options {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    margin-top: 20px;
-}
-
-.language-button {
-    background: var(--nm-container);
-    border: 2px solid var(--nm-border);
+    font-family: 'Orbitron', sans-serif;
     color: var(--nm-text);
-    padding: 10px 20px;
-    border-radius: 10px;
-    font-size: 1em;
-    cursor: pointer;
-    transition: all 0.2s;
+    text-transform: uppercase;
+    font-size: 1rem;
+    margin: 10px auto 15px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid var(--nm-border);
+}
+
+/* App Grid */
+.app-grid {
+    display: grid;
+    grid-template-columns: repeat(3, max-content);
+    justify-content: center;
+    gap: 35px;
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto 15px;
+    align-items: start;
+}
+
+.app-wrapper {
+    width: 70px;
     display: flex;
+    flex-direction: column;
     align-items: center;
     gap: 8px;
-    flex-direction: column; /* Stack icon and text */
-    width: 130px;
-    height: 100px;
+    text-decoration: none;
+    color: var(--nm-text);
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.app-icon {
+    background: #000000;
+    border: 1px solid var(--nm-accent);
+    color: var(--nm-text);
+    cursor: pointer;
+    font-family: 'Roboto Mono', monospace;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
     justify-content: center;
+    text-decoration: none;
+    border-radius: 50%;
+    width: 64px;
+    height: 64px;
+    box-shadow: none;
 }
 
-.language-button i {
-    font-size: 2em;
-    margin-bottom: 5px;
+.app-wrapper .app-icon {
+    animation: multiColorBorder 15s infinite linear;
+    border-width: 2px;
 }
 
-.language-button:hover:not(.selected) {
-    border-color: var(--nm-accent);
-    color: var(--nm-accent);
+.app-label {
+    font-size: 0.75rem;
+    font-weight: 400;
+    color: var(--nm-text);
+    text-align: center;
+    word-break: normal;
+    overflow-wrap: break-word;
+    line-height: 1.2;
 }
 
-.language-button.selected {
+.app-icon:hover {
     background: var(--nm-accent);
-    border-color: var(--nm-accent);
-    color: var(--nm-text-darkest, #000000); /* Ensure dark text on accent background */
-    box-shadow: 0 0 10px rgba(var(--glow-rgb), 0.5);
+    border-color: var(--nm-accent-hover);
+    color: var(--nm-darkest);
 }
 
+.app-wrapper:hover .app-icon {
+    animation: none;
+    background: var(--nm-accent);
+    border-color: var(--nm-accent-hover);
+}
 
-/* =================================================================
-   TABLET & WIDER SCREEN STYLES
-   ================================================================= */
+.app-wrapper:hover .app-label {
+    color: var(--nm-accent-hover);
+}
+
+.app-icon i {
+    color: var(--nm-text);
+    transition: color 0.2s ease;
+    font-size: 1.4rem;
+}
+
+.app-icon:hover i,
+.app-wrapper:hover .app-icon i {
+    color: var(--nm-darkest);
+}
+
+body.light-theme .app-icon {
+    background: var(--nm-container);
+    border: 1px solid var(--nm-border);
+    color: var(--nm-text);
+}
+
+body.light-theme .app-icon:hover {
+    background: var(--nm-accent);
+    border-color: var(--nm-accent-hover);
+}
+
+/* Multi-color Border Animation */
+@keyframes multiColorBorder {
+    0% { border-color: #FF0000; }
+    16.66% { border-color: #FFFF00; }
+    33.33% { border-color: #00FF00; }
+    50% { border-color: #00FFFF; }
+    66.66% { border-color: #0000FF; }
+    83.33% { border-color: #FF00FF; }
+    100% { border-color: #FF0000; }
+}
+
+/* Footer */
+.main-footer {
+    text-align: center;
+    padding: 1rem;
+    font-size: 0.7rem;
+    color: var(--nm-text-muted);
+    margin-top: 25px;
+}
+
+/* Responsive */
 @media (min-width: 768px) {
     .phone-container {
         width: 95%;
@@ -231,7 +349,7 @@ body.light-theme .note.note-warning {
     }
 
     .search-container,
-    .hero-section,
+    .welcome-section,
     .grid-heading,
     .app-grid {
         max-width: 700px;
@@ -244,6 +362,17 @@ body.light-theme .note.note-warning {
     .main-header-container h1 {
         font-size: clamp(2.5rem, 4vw, 3.5rem);
     }
-    
-    /* FIX: Removed incorrect margin override that caused left-alignment */
+}
+
+@media (min-width: 1200px) {
+    .search-container,
+    .welcome-section,
+    .grid-heading,
+    .app-grid {
+        max-width: 900px;
+    }
+
+    .app-grid {
+        grid-template-columns: repeat(8, max-content);
+    }
 }
