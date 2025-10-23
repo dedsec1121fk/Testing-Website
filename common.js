@@ -7,8 +7,10 @@ document.addEventListener('DOMContentLoaded', () => {
     initializeNavigation();
     initializeTheme();
     initializeLanguage();
+    initializeLanguageSelectionModal();
+    initializeThemeSwitcher();
+    initializeCopyButtons();
     addBackHomeButton();
-    addLanguageSwitcher();
 
     function initializeNavigation() {
         const burgerIcon = document.getElementById('burger-icon');
@@ -68,6 +70,99 @@ document.addEventListener('DOMContentLoaded', () => {
         changeLanguage(currentLanguage);
     }
 
+    function initializeLanguageSelectionModal() {
+        const languageModal = document.getElementById('language-selection-modal');
+        const languageButtons = document.querySelectorAll('.language-option-btn');
+        
+        // Check if user has already selected a language
+        if (localStorage.getItem('language-selected') === 'true') {
+            if (languageModal) {
+                languageModal.classList.remove('visible');
+            }
+            return;
+        }
+
+        // Show modal if no language selection has been made
+        if (languageModal) {
+            languageModal.classList.add('visible');
+        }
+
+        // Add event listeners to language buttons
+        languageButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const selectedLang = button.getAttribute('data-lang');
+                localStorage.setItem('language-selected', 'true');
+                changeLanguage(selectedLang);
+                if (languageModal) {
+                    languageModal.classList.remove('visible');
+                }
+            });
+        });
+    }
+
+    function initializeThemeSwitcher() {
+        const themeSwitchBtn = document.getElementById('theme-switch-btn');
+        const navThemeSwitcher = document.getElementById('nav-theme-switcher');
+        const langSwitchBtn = document.getElementById('lang-switch-btn');
+        const navLangSwitcher = document.getElementById('nav-lang-switcher');
+
+        // Floating theme switcher
+        if (themeSwitchBtn) {
+            themeSwitchBtn.addEventListener('click', toggleTheme);
+        }
+
+        // Navigation theme switcher
+        if (navThemeSwitcher) {
+            navThemeSwitcher.addEventListener('click', toggleTheme);
+        }
+
+        // Floating language switcher
+        if (langSwitchBtn) {
+            langSwitchBtn.addEventListener('click', () => {
+                const newLang = currentLanguage === 'en' ? 'gr' : 'en';
+                changeLanguage(newLang);
+            });
+        }
+
+        // Navigation language switcher
+        if (navLangSwitcher) {
+            navLangSwitcher.addEventListener('click', () => {
+                const newLang = currentLanguage === 'en' ? 'gr' : 'en';
+                changeLanguage(newLang);
+            });
+        }
+    }
+
+    function toggleTheme() {
+        currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        localStorage.setItem('theme', currentTheme);
+        
+        if (currentTheme === 'light') {
+            document.body.classList.add('light-theme');
+        } else {
+            document.body.classList.remove('light-theme');
+        }
+
+        // Update theme button icon
+        const themeButtons = document.querySelectorAll('#theme-switch-btn, #nav-theme-switcher i');
+        themeButtons.forEach(button => {
+            button.className = currentTheme === 'dark' ? 'fas fa-moon' : 'fas fa-sun';
+        });
+    }
+
+    function initializeCopyButtons() {
+        // Add event listeners to all copy buttons
+        document.addEventListener('click', (e) => {
+            if (e.target.classList.contains('copy-btn') || e.target.closest('.copy-btn')) {
+                const copyBtn = e.target.classList.contains('copy-btn') ? e.target : e.target.closest('.copy-btn');
+                const targetId = copyBtn.getAttribute('data-target');
+                if (targetId) {
+                    copyToClipboard(copyBtn, targetId);
+                }
+            }
+        });
+    }
+
     function addBackHomeButton() {
         if (!window.location.pathname.endsWith('index.html') && !window.location.pathname.endsWith('/')) {
             // Remove existing back button if any
@@ -82,29 +177,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 </a>
             `;
             document.body.appendChild(backHomeDiv);
-        }
-    }
-
-    function addLanguageSwitcher() {
-        // Remove existing language switcher if any
-        const existingLangSwitcher = document.querySelector('.lang-switcher-container');
-        if (existingLangSwitcher) existingLangSwitcher.remove();
-
-        const langSwitcherDiv = document.createElement('div');
-        langSwitcherDiv.className = 'lang-switcher-container';
-        langSwitcherDiv.innerHTML = `
-            <button class="lang-switcher-btn" id="lang-switcher-btn" title="Change Language">
-                <i class="fas fa-globe"></i>
-            </button>
-        `;
-        document.body.appendChild(langSwitcherDiv);
-
-        const langBtn = document.getElementById('lang-switcher-btn');
-        if (langBtn) {
-            langBtn.addEventListener('click', () => {
-                const newLang = currentLanguage === 'en' ? 'gr' : 'en';
-                changeLanguage(newLang);
-            });
         }
     }
 
@@ -130,6 +202,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         updatePageTitle(lang);
+        updatePlaceholders(lang);
     };
 
     function updateElementLanguage(element, lang) {
@@ -152,6 +225,31 @@ document.addEventListener('DOMContentLoaded', () => {
             // Replace all content
             element.textContent = text;
         }
+    }
+
+    function updatePlaceholders(lang) {
+        // Update search input placeholder
+        const searchInput = document.getElementById('main-search-input');
+        if (searchInput) {
+            searchInput.placeholder = lang === 'gr' ? 'Αναζήτηση στο διαδίκτυο...' : 'Search the Web...';
+        }
+
+        // Update certificate form placeholders
+        const formInputs = document.querySelectorAll('#certificate-form input');
+        formInputs.forEach(input => {
+            const fieldName = input.id;
+            const placeholders = {
+                'firstName': { en: 'Enter your first name', gr: 'Εισάγετε το όνομά σας' },
+                'lastName': { en: 'Enter your last name', gr: 'Εισάγετε το επώνυμό σας' },
+                'age': { en: 'Enter your age', gr: 'Εισάγετε την ηλικία σας' },
+                'country': { en: 'Enter your country', gr: 'Εισάγετε τη χώρα σας' },
+                'city': { en: 'Enter your city', gr: 'Εισάγετε την πόλη σας' }
+            };
+            
+            if (placeholders[fieldName]) {
+                input.placeholder = placeholders[fieldName][lang];
+            }
+        });
     }
 
     function updatePageTitle(lang) {
@@ -250,18 +348,15 @@ document.addEventListener('DOMContentLoaded', () => {
         
         if (success) {
             button.textContent = currentLang === 'gr' ? 'Αντιγράφηκε!' : 'Copied!';
-            button.style.background = '#00FF00';
-            button.style.color = '#000000';
+            button.classList.add('copied');
         } else {
             button.textContent = currentLang === 'gr' ? 'Απέτυχε!' : 'Failed!';
-            button.style.background = '#FF0000';
-            button.style.color = '#FFFFFF';
+            button.classList.add('failed');
         }
         
         setTimeout(() => {
             button.textContent = originalText;
-            button.style.background = '';
-            button.style.color = '';
+            button.classList.remove('copied', 'failed');
         }, 1500);
     }
 });
