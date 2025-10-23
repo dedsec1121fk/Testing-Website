@@ -1,197 +1,134 @@
-// Common JavaScript for DedSec Project - Guaranteed Working Version
-
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('DedSec Project - Initializing common functionality...');
-    
-    // Initialize all common functionality
-    initializeBurgerMenu();
-    initializeLanguageSwitching();
-    initializeCopyButtons();
-    initializeThemeSwitcher();
-    initializeModals();
-    
-    console.log('DedSec Project - Common functionality initialized successfully');
-});
-
-// Burger Menu Functionality - GUARANTEED TO WORK
-function initializeBurgerMenu() {
-    console.log('Initializing burger menu...');
-    
-    const burgerIcon = document.getElementById('burger-icon');
-    const burgerContainer = document.getElementById('burger-icon-container');
-    const navMenu = document.getElementById('nav-menu');
-    
-    if (!burgerIcon || !navMenu || !burgerContainer) {
-        console.warn('Burger menu elements not found');
-        return;
-    }
-    
-    console.log('Burger menu elements found, setting up event listeners...');
-    
-    burgerContainer.addEventListener('click', function(e) {
-        e.stopPropagation();
-        burgerIcon.classList.toggle('active');
-        navMenu.classList.toggle('active');
-    });
-    
-    document.addEventListener('click', function(e) {
-        if (navMenu.classList.contains('active') && !burgerContainer.contains(e.target) && !navMenu.contains(e.target)) {
-            burgerIcon.classList.remove('active');
-            navMenu.classList.remove('active');
-        }
-    });
-    
-    const navItems = navMenu.querySelectorAll('.nav-item');
-    navItems.forEach(item => {
-        item.addEventListener('click', function() {
-            // Don't close for theme/language buttons, as they open modals
-            if (this.id === 'theme-switcher-btn' || this.id === 'lang-switcher-btn') {
-                return;
-            }
-            burgerIcon.classList.remove('active');
-            navMenu.classList.remove('active');
-        });
-    });
-    
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape' && navMenu.classList.contains('active')) {
-            burgerIcon.classList.remove('active');
-            navMenu.classList.remove('active');
-        }
-    });
-    
-    console.log('Burger menu initialization complete');
-}
-
-// Language Switching Functionality
-function initializeLanguageSwitching() {
-    console.log('Initializing language switching...');
-    
+document.addEventListener('DOMContentLoaded', () => {
     let currentLanguage = localStorage.getItem('dedsec-language') || 'en';
-    applyLanguage(currentLanguage);
-    
-    window.changeLanguage = function(lang) {
-        console.log('Changing language to:', lang);
+
+    // --- LANGUAGE SWITCHER ---
+    function applyLanguage(lang) {
         currentLanguage = lang;
         localStorage.setItem('dedsec-language', lang);
-        applyLanguage(lang);
-    };
-    
-    function applyLanguage(lang) {
         document.documentElement.lang = lang;
-        document.querySelectorAll('[data-en]').forEach(element => {
-            const text = element.getAttribute(`data-${lang}`) || element.getAttribute('data-en');
-            
-            // This logic correctly handles elements with and without child nodes
-            const firstChild = element.childNodes[0];
-            if (element.childNodes.length === 1 && firstChild.nodeType === Node.TEXT_NODE) {
-                 element.textContent = text;
+
+        document.querySelectorAll('[data-en]').forEach(el => {
+            const text = el.getAttribute(`data-${lang}`) || el.getAttribute('data-en');
+            if (!text) return;
+
+            // Find a text node or a span to update
+            let target = null;
+            if (el.childNodes.length > 0 && el.childNodes[0].nodeType === 3) {
+                 target = el.childNodes[0]; // Direct text node
+            } else if (el.querySelector('span')) {
+                 target = el.querySelector('span'); // Span inside the element
             } else {
-                // If there are other elements inside (like an <i> tag), find a span to update
-                const span = element.querySelector('span');
-                if (span) {
-                    span.textContent = text;
-                }
+                 target = el; // The element itself
+            }
+            if(target) target.textContent = text;
+        });
+
+        document.querySelectorAll('[data-lang-section]').forEach(el => {
+            el.style.display = el.dataset.langSection === lang ? 'block' : 'none';
+        });
+        
+        document.querySelectorAll('.language-button').forEach(btn => {
+            btn.classList.toggle('selected', btn.dataset.lang === lang);
+        });
+        
+        // Dispatch event for other scripts to listen to
+        window.dispatchEvent(new CustomEvent('languageChanged', { detail: { lang: lang } }));
+    }
+    window.changeLanguage = applyLanguage; // Make it globally accessible
+
+    // --- BURGER MENU ---
+    function initializeBurgerMenu() {
+        const burgerContainer = document.getElementById('burger-icon-container');
+        const burgerIcon = document.getElementById('burger-icon');
+        const navMenu = document.getElementById('nav-menu');
+
+        if (!burgerContainer || !navMenu) return;
+
+        burgerContainer.addEventListener('click', (e) => {
+            e.stopPropagation();
+            burgerIcon.classList.toggle('active');
+            navMenu.classList.toggle('active');
+        });
+
+        document.addEventListener('click', () => {
+            if (navMenu.classList.contains('active')) {
+                burgerIcon.classList.remove('active');
+                navMenu.classList.remove('active');
             }
         });
-        document.querySelectorAll('[data-lang-section]').forEach(section => {
-            section.style.display = section.dataset.langSection === lang ? 'block' : 'none';
-        });
-        document.querySelectorAll('.language-button').forEach(button => {
-            button.classList.toggle('selected', button.dataset.lang === lang);
-        });
     }
 
-    // Attach listener for the new language button in the menu
-    const langSwitcherBtn = document.getElementById('lang-switcher-btn');
-    if(langSwitcherBtn) {
-        langSwitcherBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            const langModal = document.getElementById('language-selection-modal');
-            if(langModal) {
-                langModal.classList.add('visible');
+    // --- THEME SWITCHER ---
+    function initializeThemeSwitcher() {
+        const themeBtn = document.getElementById('theme-switcher-btn');
+        if (!themeBtn) return;
+        
+        const updateThemeUI = () => {
+            const isLight = document.body.classList.contains('light-theme');
+            const icon = themeBtn.querySelector('i');
+            const span = themeBtn.querySelector('span');
+            if (isLight) {
+                icon.className = 'fas fa-sun';
+                span.setAttribute('data-en', 'Light Theme');
+                span.setAttribute('data-gr', 'Φωτεινό Θέμα');
+            } else {
+                icon.className = 'fas fa-moon';
+                span.setAttribute('data-en', 'Theme');
+                span.setAttribute('data-gr', 'Θέμα');
             }
-        });
-    }
-
-    console.log('Language switching initialized');
-}
-
-// Copy to Clipboard Functionality
-function initializeCopyButtons() {
-    window.copyToClipboard = function(button, targetId) {
-        const codeElement = document.getElementById(targetId);
-        if (!codeElement) return;
-        navigator.clipboard.writeText(codeElement.innerText).then(() => {
-            const originalText = button.textContent;
-            const currentLanguage = localStorage.getItem('dedsec-language') || 'en';
-            button.textContent = currentLanguage === 'gr' ? 'Αντιγράφηκε!' : 'Copied!';
-            setTimeout(() => { button.textContent = originalText; }, 1500);
-        });
-    };
-}
-
-// Theme Switcher Functionality
-function initializeThemeSwitcher() {
-    console.log('Initializing theme switcher...');
-    
-    const themeSwitcherBtn = document.getElementById('theme-switcher-btn');
-    if (!themeSwitcherBtn) {
-        console.warn('Theme switcher button not found');
-        return;
-    }
-    
-    const themeIcon = themeSwitcherBtn.querySelector('i');
-    const themeSpan = themeSwitcherBtn.querySelector('span');
-    
-    const savedTheme = localStorage.getItem('dedsec-theme');
-    const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    if (savedTheme === 'light' || (!savedTheme && !systemPrefersDark)) {
-        document.body.classList.add('light-theme');
-    }
-    
-    function updateThemeButton() {
-        const isLight = document.body.classList.contains('light-theme');
-        const currentLang = localStorage.getItem('dedsec-language') || 'en';
-        if (isLight) {
-            if (themeIcon) { themeIcon.className = 'fas fa-sun'; }
-            if (themeSpan) { themeSpan.textContent = currentLang === 'gr' ? 'Φωτεινό Θέμα' : 'Light Theme'; }
-        } else {
-            if (themeIcon) { themeIcon.className = 'fas fa-moon'; }
-            if (themeSpan) { themeSpan.textContent = currentLang === 'gr' ? 'Σκοτεινό Θέμα' : 'Dark Theme'; }
+            applyLanguage(currentLanguage); // Re-apply language to update the text
+        };
+        
+        // Set initial theme
+        if (localStorage.getItem('theme') === 'light') {
+            document.body.classList.add('light-theme');
         }
+        
+        themeBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            document.body.classList.toggle('light-theme');
+            localStorage.setItem('theme', document.body.classList.contains('light-theme') ? 'light' : 'dark');
+            updateThemeUI();
+        });
+        
+        updateThemeUI();
     }
-    
-    themeSwitcherBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        document.body.classList.toggle('light-theme');
-        localStorage.setItem('dedsec-theme', document.body.classList.contains('light-theme') ? 'light' : 'dark');
-        updateThemeButton();
-    });
-    
-    updateThemeButton();
-    console.log('Theme switcher initialized');
-}
 
-// Modal Management
-function initializeModals() {
-    console.log('Initializing modals...');
-    document.querySelectorAll('.modal-overlay').forEach(modal => {
-        modal.addEventListener('click', function(e) {
-            if (e.target === this) {
-                this.classList.remove('visible');
+    // --- MODAL CONTROLS ---
+    function initializeModals() {
+        // Open modals via data-modal attribute
+        document.addEventListener('click', (e) => {
+            const trigger = e.target.closest('[data-modal]');
+            if (trigger) {
+                e.preventDefault();
+                const modalId = trigger.dataset.modal + '-modal';
+                const modal = document.getElementById(modalId);
+                if (modal) modal.classList.add('visible');
             }
         });
-    });
-    document.querySelectorAll('.close-modal').forEach(button => {
-        button.addEventListener('click', function() {
-            this.closest('.modal-overlay').classList.remove('visible');
+
+        // Close modals
+        document.querySelectorAll('.modal-overlay').forEach(modal => {
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) modal.classList.remove('visible');
+            });
+            modal.querySelector('.close-modal')?.addEventListener('click', () => {
+                modal.classList.remove('visible');
+            });
         });
-    });
-    document.querySelectorAll('.language-button').forEach(button => {
-        button.addEventListener('click', function() {
-            window.changeLanguage(this.dataset.lang);
-            this.closest('.modal-overlay').classList.remove('visible');
+        
+        // Handle language selection buttons inside the modal
+        document.querySelectorAll('#language-selection-modal .language-button').forEach(button => {
+            button.addEventListener('click', () => {
+                changeLanguage(button.dataset.lang);
+                button.closest('.modal-overlay').classList.remove('visible');
+            });
         });
-    });
-}
+    }
+
+    // --- INITIALIZE EVERYTHING ---
+    applyLanguage(currentLanguage); // Set language on load
+    initializeBurgerMenu();
+    initializeThemeSwitcher();
+    initializeModals();
+});

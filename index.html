@@ -17,23 +17,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="common.css">
-
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "WebSite",
-      "name": "DedSec Project - 1 Year Anniversary",
-      "url": "https://ded-sec.space/",
-      "potentialAction": {
-        "@type": "SearchAction",
-        "target": {
-          "@type": "EntryPoint",
-          "urlTemplate": "https://ded-sec.space/#search={search_term_string}"
-        },
-        "query-input": "required name=search_term_string"
-      }
-    }
-    </script>
 </head>
 <body class="dark-theme">
     <div class="burger-menu">
@@ -53,11 +36,10 @@
             <a href="portfolio.html" class="nav-item" data-en="Portfolio" data-gr="Portfolio">Portfolio</a>
             <a href="contact.html" class="nav-item" data-en="Contact" data-gr="Επικοινωνία">Contact</a>
             <a href="privacy.html" class="nav-item" data-en="Privacy" data-gr="Απόρρητο">Privacy</a>
-            
             <a href="#" class="nav-item" id="theme-switcher-btn">
                 <i class="fas fa-moon"></i> <span data-en="Theme" data-gr="Θέμα">Theme</span>
             </a>
-            <a href="#" class="nav-item" id="lang-switcher-btn">
+            <a href="#" class="nav-item" data-modal="language-selection" id="lang-switcher-btn">
                 <i class="fas fa-globe"></i> <span data-en="Language" data-gr="Γλώσσα">Language</span>
             </a>
         </div>
@@ -73,7 +55,7 @@
                     <h1 data-en="DedSec Project" data-gr="DedSec Project">DedSec Project</h1>
                     <div class="search-container">
                         <form action="https://www.google.com/search" method="get" target="_blank" style="width: 100%;" id="main-search-form">
-                            <input type="text" name="q" id="main-search-input" placeholder="Search the Web..." data-en="Search the Web..." data-gr="Αναζήτηση στο διαδίκω..." autocomplete="off">
+                            <input type="text" name="q" id="main-search-input" placeholder="Search the Web..." data-en="Search the Web..." data-gr="Αναζήτηση στο διαδίκτυο..." autocomplete="off">
                         </form>
                         <div id="search-suggestions-container" class="hidden"></div>
                     </div>
@@ -107,16 +89,25 @@
                 </div>
 
                 <footer class="main-footer">
-                    <p data-lang-section="en">© 2025 DedSec Project. All Rights Reserved.</p>
-                    <p data-lang-section="gr" class="hidden-by-default">© 2025 DedSec Project. Με επιφύλαξη παντός δικαιώματος.</p>
-                    <p data-lang-section="en" style="font-size: 0.7em; opacity: 0.7; margin-top: 10px;">Trademark Disclaimer: The "DedSec" name and logo are inspired by the "Watch Dogs" series and are used for thematic purposes only. This project is not affiliated with or endorsed by Ubisoft Entertainment S.A.</p>
-                    <p data-lang-section="gr" class="hidden-by-default" style="font-size: 0.7em; opacity: 0.7; margin-top: 10px;">Αποποίηση Ευθύνης Εμπορικού Σήματος: Το όνομα και το λογότυπο "DedSec" είναι εμπνευσμένα από τη σειρά "Watch Dogs" και χρησιμοποιούνται μόνο για θεματικούς σκοπούς. Αυτό το έργο δεν συνδέεται ούτε υποστηρίζεται από την Ubisoft Entertainment S.A.</p>
-                    <p>Made by dedsec1121fk.</p>
-                </footer>
+                    </footer>
             </main>
         </div>
     </div>
 
+    <div id="certificate-modal" class="modal-overlay">
+        </div>
+    <div id="language-selection-modal" class="modal-overlay">
+         <div class="modal-content modal-content-auto-height">
+          <div class="modal-header">
+            <h2 data-en="Choose Language" data-gr="Επιλογή Γλώσσας">Choose Language / Επιλογή Γλώσσας</h2>
+            <button class="close-modal" aria-label="Close">×</button>
+          </div>
+          <div class="modal-body modal-body-centered">
+              <button class="language-button" data-lang="en">English</button>
+              <button class="language-button" data-lang="gr">Ελληνικά</button>
+          </div>
+      </div>
+    </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="common.js"></script>
