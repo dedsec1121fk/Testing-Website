@@ -37,27 +37,40 @@
 </head>
 <body class="dark-theme">
     <!-- Language Selection Modal (Like Old Websites) -->
-    <div id="language-selection-modal" class="modal-overlay visible">
-        <div class="modal-content modal-content-auto-height">
-            <div class="modal-header">
-                <h2 data-en="Choose Your Language" data-gr="Επιλέξτε τη Γλώσσα σας">Choose Your Language</h2>
+    <div id="language-selection-modal" class="modal-overlay old-website-modal">
+        <div class="modal-content old-website-modal-content">
+            <div class="old-website-modal-header">
+                <h2>🌐 Select Your Language / Επιλέξτε Γλώσσα</h2>
             </div>
-            <div class="modal-body modal-body-centered">
-                <div class="language-selection-grid">
-                    <button class="language-option-btn" data-lang="en">
-                        <i class="fas fa-flag-usa"></i>
-                        <span>English</span>
-                    </button>
-                    <button class="language-option-btn" data-lang="gr">
-                        <i class="fas fa-flag"></i>
-                        <span>Ελληνικά</span>
-                    </button>
+            <div class="old-website-modal-body">
+                <div class="language-selection-old-style">
+                    <div class="language-option-old" data-lang="en">
+                        <div class="flag-icon">🇺🇸</div>
+                        <div class="language-text">
+                            <strong>English</strong>
+                            <span>Continue in English</span>
+                        </div>
+                        <button class="select-language-btn">Select</button>
+                    </div>
+                    
+                    <div class="language-option-old" data-lang="gr">
+                        <div class="flag-icon">🇬🇷</div>
+                        <div class="language-text">
+                            <strong>Ελληνικά</strong>
+                            <span>Συνέχεια στα Ελληνικά</span>
+                        </div>
+                        <button class="select-language-btn">Επιλογή</button>
+                    </div>
                 </div>
-                <p class="language-selection-note" data-en="You can change this later in the settings" data-gr="Μπορείτε να αλλάξετε αυτή την επιλογή αργότερα στις ρυθμίσεις">You can change this later in the settings</p>
+                
+                <div class="language-footer-note">
+                    <p>You can change this later in settings / Μπορείτε να αλλάξετε αργότερα στις ρυθμίσεις</p>
+                </div>
             </div>
         </div>
     </div>
 
+    <!-- Rest of your existing code remains the same -->
     <!-- Burger Menu -->
     <div class="burger-menu">
         <div class="burger-icon-container">
