@@ -1,6 +1,13 @@
 // script.js - Index page specific functionality
-// CONTENT REPLACED WITH LOGIC FROM old script.js
+// FIXED: Removed initializePortfolio wrapper and conflicting definitions
 document.addEventListener('DOMContentLoaded', () => {
+    // --- GLOBAL PORTFOLIO STATE ---
+    let currentLanguage = 'en'; // Local variable, state is managed by common.js
+    let usefulInfoSearchIndex = []; // Dedicated index for the modal, BUILT ON DEMAND
+    let usefulInfoFiles = []; // Stores the list of files to avoid re-fetching
+    let isUsefulInfoIndexBuilt = false; // Flag to check if the full index is ready
+    let usefulInformationLoaded = false;
+    let isFetchingUsefulInfo = false;
 
     // --- CERTIFICATE TRANSLATIONS ---
     const certificateTranslations = {
@@ -30,7 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // --- ANNIVERSARY CERTIFICATE FUNCTIONALITY (FROM OLD SCRIPT) ---
+    // --- ANNIVERSARY CERTIFICATE FUNCTIONALITY ---
     function initializeCertificateFeature() {
         const certificateBtn = document.querySelector('.certificate-btn');
         const generateCertificateBtn = document.getElementById('generate-certificate');
@@ -38,9 +45,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const certificateModal = document.getElementById('certificate-modal');
         
         if (certificateBtn) {
-            // MODIFIED: Use global showModal
             certificateBtn.addEventListener('click', () => {
-                if (certificateModal) showModal(certificateModal);
+                // Use global openModalAndHighlight
+                openModalAndHighlight('certificate');
             });
         }
 
@@ -52,13 +59,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // --- FIX: Add mouse listeners to control purple hover state ---
             generateCertificateBtn.addEventListener('mouseenter', () => {
-                // Only apply hover if not in success state (which is handled by showCertificateSuccess)
                 if (!generateCertificateBtn.querySelector('.fa-check')) {
                     generateCertificateBtn.style.background = 'linear-gradient(135deg, var(--nm-accent-hover), var(--nm-accent))';
                 }
             });
             generateCertificateBtn.addEventListener('mouseleave', () => {
-                // Only apply non-hover if not in success state
                 if (!generateCertificateBtn.querySelector('.fa-check')) {
                     generateCertificateBtn.style.background = 'linear-gradient(135deg, var(--nm-accent), var(--nm-accent-hover))';
                 }
@@ -72,9 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (certificateModal) {
             const closeModal = () => {
                 hideModal(certificateModal); // Use global hideModal
-                // Reset form
                 if(certificateForm) certificateForm.reset();
-                // Hide preview element if it exists
                 const preview = document.getElementById('certificate-preview');
                 if (preview) {
                     preview.classList.add('hidden');
@@ -92,13 +95,11 @@ document.addEventListener('DOMContentLoaded', () => {
     function generateCertificate() {
         const form = document.getElementById('certificate-form');
         
-        // Validate form
         if (!form.checkValidity()) {
             form.reportValidity();
             return;
         }
 
-        // Check if the jsPDF and html2canvas libraries are loaded before proceeding
         if (typeof window.jspdf === 'undefined' || typeof window.jspdf.jsPDF === 'undefined') {
             console.error("CRITICAL: jsPDF library (window.jspdf.jsPDF) not found.");
             alert('Error: Certificate generator failed to load. Please check your internet connection, disable ad-blockers, and try again.');
@@ -111,7 +112,6 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // Get form data
         const formData = new FormData(form);
         const firstName = formData.get('firstName');
         const lastName = formData.get('lastName');
@@ -119,49 +119,36 @@ document.addEventListener('DOMContentLoaded', () => {
         const country = formData.get('country');
         const city = formData.get('city');
 
-        // Generate PDF using html2canvas approach
         generateCertificateWithCanvas(firstName, lastName, age, country, city);
     }
 
-    // --- NEW FUNCTION: Generate certificate using html2canvas for Greek support ---
     function generateCertificateWithCanvas(firstName, lastName, age, country, city) {
         try {
-            // Create a temporary certificate element
             const tempCertificate = createCertificateHTML(firstName, lastName, age, country, city);
             document.body.appendChild(tempCertificate);
 
-            // Use html2canvas to capture the certificate as an image
             html2canvas(tempCertificate, {
-                scale: 2, // Higher quality
+                scale: 2, 
                 useCORS: true,
                 backgroundColor: '#ffffff'
             }).then(canvas => {
-                // Remove temporary element
                 document.body.removeChild(tempCertificate);
-
-                // Convert canvas to image data
                 const imgData = canvas.toDataURL('image/png');
                 
-                // Create PDF
                 const { jsPDF } = window.jspdf;
                 const doc = new jsPDF('landscape', 'mm', 'a4');
                 
-                // Calculate dimensions to fit the image in A4 landscape
                 const pageWidth = doc.internal.pageSize.getWidth();
                 const pageHeight = doc.internal.pageSize.getHeight();
                 
-                // Add image to PDF (fit to page)
                 doc.addImage(imgData, 'PNG', 0, 0, pageWidth, pageHeight);
                 
-                // Save the PDF
-                const currentLanguage = localStorage.getItem('language') || 'en';
-                const fileName = currentLanguage === 'gr' 
+                const currentLang = localStorage.getItem('language') || 'en';
+                const fileName = currentLang === 'gr' 
                     ? `Πιστοποιητικό_Επετείου_DedSec_${firstName}_${lastName}.pdf`
                     : `DedSec_Anniversary_Certificate_${firstName}_${lastName}.pdf`;
                 
                 doc.save(fileName);
-
-                // Show success message
                 showCertificateSuccess(firstName);
             }).catch(error => {
                 console.error("Error generating certificate with html2canvas:", error);
@@ -177,12 +164,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // --- NEW FUNCTION: Create certificate HTML for canvas capture ---
     function createCertificateHTML(firstName, lastName, age, country, city) {
-        const currentLanguage = localStorage.getItem('language') || 'en';
-        const translations = certificateTranslations[currentLanguage];
+        const currentLang = localStorage.getItem('language') || 'en';
+        const translations = certificateTranslations[currentLang];
         const fullName = `${firstName} ${lastName}`;
-        const today = new Date().toLocaleDateString(currentLanguage === 'gr' ? 'el-GR' : 'en-US', { 
+        const today = new Date().toLocaleDateString(currentLang === 'gr' ? 'el-GR' : 'en-US', { 
             year: 'numeric', 
             month: 'long', 
             day: 'numeric' 
@@ -200,7 +186,7 @@ document.addEventListener('DOMContentLoaded', () => {
             border-radius: 15px;
             padding: 40px 30px;
             color: #ffffff;
-            font-family: 'Noto Serif', serif; /* CHANGED: Use Noto Serif for Greek support */
+            font-family: 'Noto Serif', serif;
             text-align: center;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
             box-sizing: border-box;
@@ -271,120 +257,713 @@ document.addEventListener('DOMContentLoaded', () => {
             <i class="fas fa-check"></i>
             <span data-en="Certificate Downloaded!" data-gr="Το Πιστοποιητικό Λήφθηκε!">Certificate Downloaded!</span>
         `;
-        // --- MODIFIED: Changed success state colors as requested ---
-        generateBtn.style.background = '#FFFFFF'; // White background
-        generateBtn.style.borderColor = 'var(--nm-accent)'; // Purple border
-        generateBtn.style.color = 'var(--nm-accent)'; // Purple text/icon
+        generateBtn.style.background = '#FFFFFF';
+        generateBtn.style.borderColor = 'var(--nm-accent)';
+        generateBtn.style.color = 'var(--nm-accent)';
         
-        // Update language for success message
         if (window.changeLanguage) {
             window.changeLanguage(localStorage.getItem('language') || 'en');
         }
         
         setTimeout(() => {
             generateBtn.innerHTML = originalHTML;
-            // Restore original purple button state
             generateBtn.style.background = 'linear-gradient(135deg, var(--nm-accent), var(--nm-accent-hover))';
             generateBtn.style.borderColor = 'var(--nm-accent)';
-            generateBtn.style.color = '#000000'; // Restore original text color
+            generateBtn.style.color = '#000000';
             if (window.changeLanguage) {
-                window.changeLanguage(localStorage.getItem('language') || 'en'); // Re-apply language to original text
+                window.changeLanguage(localStorage.getItem('language') || 'en');
             }
         }, 3000);
     }
+
+    // --- START: USEFUL INFORMATION FUNCTIONS ---
+    const SearchEngine = {
+        idfMaps: {},
+
+        tokenize(text, lang) {
+            if (!text) return [];
+            return text
+                .toLowerCase()
+                .replace(/[.,/#!$%\^&\*;:{}=\-_`~()]/g, "")
+                .split(/\s+/)
+                .filter(word => word.length > 1);
+        },
+
+        preprocessItem(item) {
+            return {
+                ...item,
+                titleTokens: this.tokenize(item.title, item.lang),
+                textTokens: this.tokenize(item.text, item.lang)
+            };
+        },
+
+        calculateIdf(indexName, index) {
+            const docFreq = new Map();
+            const totalDocs = index.length;
+            if (totalDocs === 0) return;
+
+            index.forEach(item => {
+                const seenTokens = new Set([...item.titleTokens, ...item.textTokens]);
+                seenTokens.forEach(token => {
+                    docFreq.set(token, (docFreq.get(token) || 0) + 1);
+                });
+            });
+
+            const idfMap = new Map();
+            for (const [token, freq] of docFreq.entries()) {
+                idfMap.set(token, Math.log(totalDocs / (1 + freq)));
+            }
+            this.idfMaps[indexName] = idfMap;
+        },
+
+        _getNgrams(word, n = 2) {
+            const ngrams = new Set();
+            if (!word || word.length < n) return ngrams;
+            for (let i = 0; i <= word.length - n; i++) {
+                ngrams.add(word.substring(i, i + n));
+            }
+            return ngrams;
+        },
+
+        _calculateSimilarity(word1, word2) {
+            if (!word1 || !word2) return 0;
+            const ngrams1 = this._getNgrams(word1);
+            const ngrams2 = this._getNgrams(word2);
+            const intersection = new Set([...ngrams1].filter(x => ngrams2.has(x)));
+            const union = ngrams1.size + ngrams2.size - intersection.size;
+            return union === 0 ? 0 : intersection.size / union;
+        },
+
+        search(query, index, lang, indexName) {
+            const queryTokens = this.tokenize(query, lang);
+            if (queryTokens.length === 0) return [];
+            const idfMap = this.idfMaps[indexName] || new Map();
+            const currentLang = localStorage.getItem('language') || 'en';
+
+            const scoredResults = index
+                .filter(item => item.lang === currentLang)
+                .map(item => {
+                    let score = 0;
+                    const foundTokens = new Set();
+
+                    queryTokens.forEach(qToken => {
+                        const idf = idfMap.get(qToken) || 0.5;
+                        let tokenFound = false;
+
+                        let exactTitleMatches = item.titleTokens.filter(t => t === qToken).length;
+                        if (exactTitleMatches > 0) {
+                            score += exactTitleMatches * 10 * idf;
+                            tokenFound = true;
+                        }
+                        let exactTextMatches = item.textTokens.filter(t => t === qToken).length;
+                        if (exactTextMatches > 0) {
+                            score += exactTextMatches * 2 * idf;
+                            tokenFound = true;
+                        }
+                        if(tokenFound) foundTokens.add(qToken);
+
+                        if (!tokenFound) {
+                            let bestSimilarity = 0;
+                            const allItemTokens = [...item.titleTokens, ...item.textTokens];
+                            allItemTokens.forEach(tToken => {
+                                const similarity = this._calculateSimilarity(qToken, tToken);
+                                if (similarity > bestSimilarity) bestSimilarity = similarity;
+                            });
+                            
+                            if (bestSimilarity > 0.7) {
+                               score += bestSimilarity * 5 * idf;
+                               foundTokens.add(qToken);
+                            }
+                        }
+                    });
+
+                    if (foundTokens.size === queryTokens.length && queryTokens.length > 1) score *= 1.5;
+                    if (item.text.toLowerCase().includes(query.toLowerCase().trim())) score *= 1.2;
+                    score *= item.weight || 1;
+
+                    return { ...item, score };
+                });
+
+            return scoredResults
+                .filter(item => item.score > 0)
+                .sort((a, b) => b.score - a.score);
+        },
+        
+        generateSnippet(text, query, lang) {
+            const queryTokens = this.tokenize(query, lang);
+            if (queryTokens.length === 0) return text.substring(0, 120) + (text.length > 120 ? '...' : '');
     
-    // Debounce function (helper for search)
-    const debounce = (func, delay) => {
-         let timeoutId;
-         return (...args) => {
-             clearTimeout(timeoutId);
-             timeoutId = setTimeout(() => {
-                 func.apply(this, args);
-             }, delay);
-         };
+            let bestIndex = -1;
+            const lowerCaseText = text.toLowerCase();
+    
+            for (const token of queryTokens) {
+                const index = lowerCaseText.indexOf(token);
+                if (index !== -1) {
+                    bestIndex = index;
+                    break; 
+                }
+            }
+            
+            if (bestIndex === -1) {
+                 return text.substring(0, 120) + (text.length > 120 ? '...' : '');
+            }
+    
+            const snippetLength = 120;
+            const start = Math.max(0, bestIndex - Math.round(snippetLength / 4));
+            const end = Math.min(text.length, start + snippetLength);
+            
+            let snippet = text.substring(start, end);
+            if (start > 0) snippet = '... ' + snippet;
+            if (end < text.length) snippet = snippet + ' ...';
+    
+            return snippet;
+        },
+
+        highlight(snippet, query, lang) {
+            const queryTokens = this.tokenize(query, lang);
+            if (queryTokens.length === 0) return snippet;
+            const regex = new RegExp(`(${queryTokens.join('|')})`, 'gi');
+            return snippet.replace(regex, '<strong>$1</strong>');
+        }
     };
 
+    async function buildUsefulInfoSearchIndex(progressBar, progressText) {
+        if (isUsefulInfoIndexBuilt || usefulInfoFiles.length === 0) return;
+
+        let filesLoaded = 0;
+        const totalFiles = usefulInfoFiles.length;
+
+        const indexPromises = usefulInfoFiles.map(async (file) => {
+            try {
+                const response = await fetch(file.download_url);
+                if (!response.ok) return;
+                const htmlContent = await response.text();
+                const tempDiv = document.createElement('div');
+                tempDiv.innerHTML = htmlContent;
+
+                let fallbackTitleEN = file.name.replace(/\.html$/, '').replace(/^\d+_/, '').replace(/_/g, ' ');
+                let fallbackTitleGR = fallbackTitleEN;
+
+                const titleRegex = /(.+?)_\((.+?)\)/;
+                const match = file.name.match(titleRegex);
+
+                if (match && match[1] && match[2]) {
+                    fallbackTitleEN = match[1].replace(/_/g, ' ').trim();
+                    fallbackTitleGR = match[2].replace(/_/g, ' ').trim();
+                }
+
+                const titlesContainer = tempDiv.querySelector('#article-titles');
+                const titleEN = titlesContainer?.querySelector('[data-lang="en"]')?.textContent.trim() || fallbackTitleEN;
+                const titleGR = titlesContainer?.querySelector('[data-lang="gr"]')?.textContent.trim() || fallbackTitleGR;
+
+                tempDiv.querySelectorAll('[data-lang-section]').forEach(section => {
+                    const lang = section.dataset.langSection;
+                    const articleTitle = lang === 'gr' ? titleGR : titleEN;
+                    section.querySelectorAll('h3, h4, p, li, b, code').forEach(el => {
+                        const text = el.textContent.trim().replace(/\s\s+/g, ' ');
+                        if (text.length > 5) {
+                            const item = {
+                                lang,
+                                title: articleTitle,
+                                text,
+                                url: file.download_url,
+                                weight: (el.tagName === 'H3' ? 5 : 1)
+                            };
+                            usefulInfoSearchIndex.push(SearchEngine.preprocessItem(item));
+                        }
+                    });
+                });
+            } catch (e) {
+                console.error(`Failed to index file: ${file.name}`, e);
+            } finally {
+                filesLoaded++;
+                const progress = (filesLoaded / totalFiles) * 100;
+                progressBar.style.width = `${progress}%`;
+                progressText.textContent = `${Math.round(progress)}%`;
+            }
+        });
+
+        await Promise.all(indexPromises);
+        SearchEngine.calculateIdf('usefulInfo', usefulInfoSearchIndex);
+        isUsefulInfoIndexBuilt = true;
+    }
+
+    function updateUsefulInfoButtonTitles() {
+        const titleMap = new Map();
+        const currentLang = localStorage.getItem('language') || 'en';
+
+        usefulInfoSearchIndex.forEach(item => {
+            if (!titleMap.has(item.url)) {
+                titleMap.set(item.url, {});
+            }
+            const langTitles = titleMap.get(item.url);
+            if (!langTitles[item.lang]) {
+                langTitles[item.lang] = item.title;
+            }
+        });
+
+        document.querySelectorAll('#useful-information-nav .app-icon[data-url]').forEach(button => {
+            const url = button.dataset.url;
+            const titles = titleMap.get(url);
+            if (titles) {
+                const buttonSpan = button.querySelector('span');
+                if(buttonSpan) {
+                   buttonSpan.setAttribute('data-en', titles.en || '');
+                   buttonSpan.setAttribute('data-gr', titles.gr || titles.en || '');
+                   buttonSpan.textContent = (currentLang === 'gr' ? titles.gr : titles.en) || titles.en || buttonSpan.textContent;
+                }
+            }
+        });
+    }
+
+    function initializeUsefulInfoSearch() {
+        const searchInput = document.getElementById('useful-info-search-input');
+        const resultsContainer = document.getElementById('useful-info-results-container');
+        const navContainer = document.getElementById('useful-information-nav');
+        if (!searchInput || !resultsContainer || !navContainer) return;
+
+        const progressBarContainer = document.createElement('div');
+        progressBarContainer.className = 'progress-bar-container';
+        
+        const progressBar = document.createElement('div');
+        progressBar.className = 'progress-bar';
+
+        const progressText = document.createElement('span');
+        progressText.className = 'progress-bar-text';
+        progressText.textContent = '0%';
+
+        progressBarContainer.appendChild(progressBar);
+        progressBarContainer.appendChild(progressText);
+        navContainer.parentNode.insertBefore(progressBarContainer, navContainer);
+
+
+        const showNav = (shouldShow) => {
+            navContainer.querySelectorAll('.app-icon').forEach(article => {
+                article.style.display = shouldShow ? 'flex' : 'none';
+            });
+        };
+
+        searchInput.addEventListener('focus', async () => {
+            if (isUsefulInfoIndexBuilt) return;
+            const currentLang = localStorage.getItem('language') || 'en';
+
+            searchInput.placeholder = currentLang === 'gr' ? 'Ευρετηρίαση άρθρων...' : 'Indexing articles...';
+            searchInput.disabled = true;
+
+            progressBarContainer.style.display = 'block';
+            progressBar.style.width = '0%';
+
+            await buildUsefulInfoSearchIndex(progressBar, progressText);
+            
+            updateUsefulInfoButtonTitles();
+
+            setTimeout(() => {
+                progressBarContainer.style.display = 'none';
+            }, 500);
+
+            searchInput.disabled = false;
+            searchInput.placeholder = currentLang === 'gr' ? 'Αναζήτηση άρθρων...' : 'Search articles...';
+            searchInput.focus();
+        }, { once: true });
+
+        searchInput.addEventListener('input', () => {
+            const query = searchInput.value.trim();
+            resultsContainer.innerHTML = '';
+            const currentLang = localStorage.getItem('language') || 'en';
+
+            if (!isUsefulInfoIndexBuilt || query.length < 2) {
+                resultsContainer.classList.add('hidden');
+                showNav(true);
+                return;
+            }
+            
+            showNav(false);
+
+            const results = SearchEngine.search(query, usefulInfoSearchIndex, currentLang, 'usefulInfo');
+
+            if (results.length > 0) {
+                results.slice(0, 7).forEach(result => {
+                    const itemEl = document.createElement('div');
+                    itemEl.classList.add('search-result-item');
+                    const snippet = SearchEngine.generateSnippet(result.text, query, currentLang);
+                    const highlightedSnippet = SearchEngine.highlight(snippet, query, currentLang);
+
+                    itemEl.innerHTML = `${highlightedSnippet} <small>${result.title}</small>`;
+                    itemEl.addEventListener('click', () => {
+                        searchInput.value = '';
+                        resultsContainer.classList.add('hidden');
+                        loadInformationContent(result.url, result.title, result.text);
+                    });
+                    resultsContainer.appendChild(itemEl);
+                });
+                resultsContainer.classList.remove('hidden');
+            } else {
+                resultsContainer.classList.add('hidden');
+                showNav(true);
+            }
+        });
+    }
+
+    async function fetchUsefulInformation() {
+        if (usefulInformationLoaded || isFetchingUsefulInfo) return;
+        isFetchingUsefulInfo = true;
+        const navContainer = document.getElementById('useful-information-nav');
+        const GITHUB_API_URL = 'https://api.github.com/repos/dedsec1121fk/dedsec1121fk.github.io/contents/Useful_Information';
+        const currentLang = localStorage.getItem('language') || 'en';
+        navContainer.innerHTML = `<p>${currentLang === 'gr' ? 'Φόρτωση...' : 'Loading...'}</p>`;
+        
+        try {
+            const response = await fetch(GITHUB_API_URL);
+            if (!response.ok) throw new Error(`GitHub API error: ${response.status}`);
+            const files = await response.json();
+            usefulInfoFiles = files.filter(file => file.type === 'file' && file.name.endsWith('.html'));
+            
+            navContainer.innerHTML = '';
+            if (usefulInfoFiles.length === 0) {
+                 navContainer.innerHTML = `<p>${currentLang === 'gr' ? 'Δεν βρέθηκαν πληροφορίες.' : 'No information found.'}</p>`;
+                 return;
+            }
+            
+            usefulInfoFiles.forEach(file => {
+                let titleEN = file.name.replace(/\.html$/, '').replace(/^\d+_/, '').replace(/_/g, ' ');
+                let titleGR = titleEN; 
+    
+                const titleRegex = /(.+?)_\((.+?)\)/;
+                const match = file.name.match(titleRegex);
+    
+                if (match && match[1] && match[2]) {
+                    titleEN = match[1].replace(/_/g, ' ').trim();
+                    titleGR = match[2].replace(/_/g, ' ').trim();
+                }
+    
+                const button = document.createElement('button');
+                button.className = 'app-icon';
+                button.dataset.url = file.download_url;
+                
+                const initialTitle = currentLang === 'gr' ? titleGR : titleEN;
+                button.innerHTML = `<i class="fas fa-book-open"></i><span data-en="${titleEN}" data-gr="${titleGR}">${initialTitle}</span>`;
+                
+                button.addEventListener('click', () => {
+                    const span = button.querySelector('span');
+                    const modalTitle = (currentLang === 'gr' ? span.getAttribute('data-gr') : span.getAttribute('data-en')) || titleEN;
+                    loadInformationContent(file.download_url, modalTitle);
+                });
+                navContainer.appendChild(button);
+            });
+            usefulInformationLoaded = true;
+        } catch (error) {
+            console.error('Failed to fetch useful information:', error);
+            navContainer.innerHTML = `<p style="color: var(--nm-danger);">${currentLang === 'gr' ? 'Αποτυχία φόρτωσης.' : 'Failed to load.'}</p>`;
+        } finally {
+            isFetchingUsefulInfo = false;
+        }
+    }
+
+    function createAndShowArticleModal(title, htmlContent, textToHighlight = null) {
+        document.querySelectorAll('.article-modal-overlay').forEach(modal => modal.remove());
+        const modalOverlay = document.createElement('div');
+        modalOverlay.className = 'modal-overlay article-modal-overlay'; 
+        modalOverlay.innerHTML = `
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>${title}</h2>
+                    <button class="close-modal">&times;</button>
+                </div>
+                <div class="modal-body">${htmlContent}</div>
+            </div>`;
+        document.body.appendChild(modalOverlay);
+
+        // Attach copy button listeners
+        let dynamicCodeIdCounter = 0;
+        const codeContainers = modalOverlay.querySelectorAll('.code-container');
+        codeContainers.forEach(container => {
+            const copyBtn = container.querySelector('.copy-btn');
+            const codeEl = container.querySelector('code');
+
+            if (copyBtn && codeEl) {
+                if (!codeEl.id) {
+                    const uniqueId = `dynamic-code-${Date.now()}-${dynamicCodeIdCounter++}`;
+                    codeEl.id = uniqueId;
+                }
+                
+                // Add event listener to the button
+                copyBtn.addEventListener('click', () => {
+                    // Call the globally available copyToClipboard function
+                    window.copyToClipboard(copyBtn, codeEl.id);
+                });
+            }
+        });
+        
+        setTimeout(() => modalOverlay.classList.add('visible'), 10);
+        
+        // Use global changeLanguage
+        if (window.changeLanguage) {
+            window.changeLanguage(localStorage.getItem('language') || 'en');
+        }
+    
+        if (textToHighlight) {
+            setTimeout(() => {
+                const modalBody = modalOverlay.querySelector('.modal-body');
+                const allElements = modalBody.querySelectorAll('p, li, h3, h4, b, code, .tip, .note');
+                const targetElement = Array.from(allElements).find(el => el.textContent.trim().replace(/\s\s+/g, ' ') === textToHighlight.trim());
+                if (targetElement) {
+                    modalBody.scrollTo({ top: targetElement.offsetTop - 50, behavior: 'smooth' });
+                    targetElement.classList.add('content-highlight');
+                    setTimeout(() => targetElement.classList.remove('content-highlight'), 2500);
+                }
+            }, 150);
+        }
+        
+        const closeModal = () => {
+            modalOverlay.classList.remove('visible');
+            modalOverlay.addEventListener('transitionend', () => modalOverlay.remove(), { once: true });
+            
+            const searchInput = document.getElementById('useful-info-search-input');
+            if (searchInput) searchInput.value = '';
+            
+            const navContainer = document.getElementById('useful-information-nav');
+            if (navContainer) {
+                navContainer.querySelectorAll('.app-icon').forEach(article => {
+                    article.style.display = 'flex';
+                });
+            }
+        };
+
+        modalOverlay.addEventListener('click', (e) => {
+            if (e.target === modalOverlay) closeModal();
+        });
+        modalOverlay.querySelector('.close-modal').addEventListener('click', closeModal);
+    }
+
+    async function loadInformationContent(url, title, textToHighlight = null) {
+        try {
+            const response = await fetch(url);
+            if (!response.ok) throw new Error(`Fetch failed: ${response.status}`);
+            const htmlContent = await response.text();
+            createAndShowArticleModal(title, htmlContent, textToHighlight);
+        } catch (error) {
+            console.error('Failed to load content:', error);
+        }
+    }
+
+    // --- END: USEFUL INFORMATION FUNCTIONS ---
+
+
+    // --- MODAL AND PAGE INITIALIZATION (FROM old script.js) ---
+    
+    // This function is needed for this page's modals
+    window.openModalAndHighlight = (modalId, highlightText = null) => {
+        const disclaimerModal = document.getElementById('disclaimer-modal');
+        const installationModal = document.getElementById('installation-modal');
+
+         if (modalId === 'installation' && !localStorage.getItem('disclaimerAccepted') && disclaimerModal) {
+             showModal(disclaimerModal); // USES GLOBAL
+             return; 
+         }
+
+        const modal = document.getElementById(`${modalId}-modal`);
+        if (modal) {
+             const languageModalCloseBtn = document.querySelector('#language-selection-modal .close-modal');
+            if (modalId === 'language-selection' && languageModalCloseBtn) {
+                 languageModalCloseBtn.style.display = '';
+            }
+            showModal(modal); // USES GLOBAL
+            
+            if (modalId === 'useful-information' && !usefulInformationLoaded) {
+                fetchUsefulInformation();
+            }
+            
+            if (highlightText) {
+                setTimeout(() => highlightModalContent(modal, highlightText), 100);
+            }
+        } else {
+            console.warn(`Modal with ID "${modalId}-modal" not found.`);
+        }
+    };
+
+    // This is a helper for the above
+    const highlightModalContent = (modal, text) => {
+        const modalBody = modal.querySelector('.modal-body');
+        if (!modalBody) return;
+        
+         const treeWalker = document.createTreeWalker(modalBody, NodeFilter.SHOW_TEXT);
+         let targetNode = null;
+         while (treeWalker.nextNode()) {
+             if (treeWalker.currentNode.textContent.includes(text)) {
+                 targetNode = treeWalker.currentNode.parentElement; 
+                 break;
+             }
+         }
+
+        if (!targetNode) {
+            const allElements = modalBody.querySelectorAll('h3, h4, p, li, b, code, span, .note, .tip, .modal-disclaimer');
+             targetNode = Array.from(allElements).find(el => el.textContent.trim().replace(/\s\s+/g, ' ') === text.trim());
+        }
+
+        if (targetNode) {
+             targetNode.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            targetNode.classList.add('content-highlight');
+            setTimeout(() => {
+                 targetNode.classList.remove('content-highlight');
+             }, 2500);
+        } else {
+            console.warn(`Highlight text "${text}" not found in modal.`);
+        }
+    };
+    
+    // Attach modal openers
+    document.querySelectorAll('button.app-wrapper[data-modal]').forEach(wrapper => {
+        wrapper.addEventListener('click', () => openModalAndHighlight(wrapper.dataset.modal));
+    });
+
+    // Setup modal close behavior
+    document.querySelectorAll('.modal-overlay').forEach(modal => {
+        // Skip language modal, it's handled by common.js
+        if (modal.id === 'language-selection-modal') return; 
+
+        const closeModalBtn = modal.querySelector('.close-modal');
+
+        const closeModal = () => {
+            hideModal(modal); // USES GLOBAL
+            
+            if (modal.id === 'useful-information-modal') {
+                const searchInput = document.getElementById('useful-info-search-input');
+                if (searchInput) searchInput.value = '';
+                const resultsContainer = document.getElementById('useful-info-results-container');
+                if (resultsContainer) resultsContainer.classList.add('hidden');
+                
+                const navContainer = document.getElementById('useful-information-nav');
+                if (navContainer) {
+                    navContainer.querySelectorAll('.app-icon').forEach(article => {
+                        article.style.display = 'flex';
+                    });
+                }
+            }
+             modal.querySelectorAll('.content-highlight').forEach(el => el.classList.remove('content-highlight'));
+        };
+        
+        modal.addEventListener('click', e => {
+            if (e.target === modal) {
+                 closeModal();
+            }
+        });
+        
+        if (closeModalBtn) {
+             closeModalBtn.addEventListener('click', closeModal);
+        }
+    });
+
+    // Initialize Gym Carousel if present
+    const carousel = document.querySelector('.gym-carousel');
+    if (carousel) {
+        const images = carousel.querySelectorAll('.gym-clothing-images img');
+        const prevBtn = carousel.querySelector('.carousel-btn.prev');
+        const nextBtn = carousel.querySelector('.carousel-btn.next');
+        if (images.length > 0 && prevBtn && nextBtn) { 
+            let currentIndex = 0;
+            const showImage = (index) => {
+                 images.forEach((img, i) => img.classList.toggle('active', i === index));
+            };
+            
+            prevBtn.addEventListener('click', () => {
+                currentIndex = (currentIndex > 0) ? currentIndex - 1 : images.length - 1;
+                showImage(currentIndex);
+            });
+            nextBtn.addEventListener('click', () => {
+                currentIndex = (currentIndex < images.length - 1) ? currentIndex + 1 : 0;
+                showImage(currentIndex);
+            });
+            showImage(0); 
+        }
+    }
+    
+    // --- Initialize Core Features ---
+    initializeWebSearchSuggestions(); 
+    initializeUsefulInfoSearch(); 
+    initializeCertificateFeature(); 
+    
+    // --- Web Search Suggestions ---
     function initializeWebSearchSuggestions() {
         const searchInput = document.getElementById('main-search-input');
         const suggestionsContainer = document.getElementById('search-suggestions-container');
         const searchForm = document.getElementById('main-search-form');
         if (!searchInput || !suggestionsContainer || !searchForm) return;
 
-        // Function to fetch and display suggestions
+         const debounce = (func, delay) => {
+             let timeoutId;
+             return (...args) => {
+                 clearTimeout(timeoutId);
+                 timeoutId = setTimeout(() => {
+                     func.apply(this, args);
+                 }, delay);
+             };
+         };
+
         const fetchSuggestions = (query) => {
-            // Remove any existing script tag to prevent multiple callbacks
             const oldScript = document.getElementById('jsonp-script');
             if (oldScript) {
                 oldScript.remove();
             }
 
-            // Create new script tag for JSONP request
             const script = document.createElement('script');
             script.id = 'jsonp-script';
-            const currentLanguage = localStorage.getItem('language') || 'en';
-            script.src = `https://suggestqueries.google.com/complete/search?client=chrome&q=${encodeURIComponent(query)}&hl=${currentLanguage}&callback=handleGoogleSuggestions`;
+            const currentLang = localStorage.getItem('language') || 'en';
+            script.src = `https://suggestqueries.google.com/complete/search?client=chrome&q=${encodeURIComponent(query)}&hl=${currentLang}&callback=handleGoogleSuggestions`;
             
             script.onerror = () => {
                 console.error("Error loading Google suggestions. Network issue or ad-blocker likely.");
                 suggestionsContainer.classList.add('hidden');
-                suggestionsContainer.innerHTML = ''; // Clear stale suggestions on error
+                suggestionsContainer.innerHTML = ''; 
             };
             
             document.head.appendChild(script);
         };
 
-        // Debounced version of the fetch function
-         const debouncedFetchSuggestions = debounce(fetchSuggestions, 250); // 250ms delay
+         const debouncedFetchSuggestions = debounce(fetchSuggestions, 250); 
 
-        // Global callback function for JSONP
         window.handleGoogleSuggestions = (data) => {
-            suggestionsContainer.innerHTML = ''; // Clear previous suggestions
-            const suggestions = data[1]; // Suggestions are usually in the second element
+            suggestionsContainer.innerHTML = ''; 
+            const suggestions = data[1]; 
 
             if (suggestions && Array.isArray(suggestions) && suggestions.length > 0) {
-                suggestions.slice(0, 5).forEach(suggestion => { // Limit to 5 suggestions
+                suggestions.slice(0, 5).forEach(suggestion => { 
                     const itemEl = document.createElement('div');
                     itemEl.classList.add('search-result-item');
                     itemEl.textContent = suggestion;
                     
-                    // Event listener for clicking a suggestion
                     itemEl.addEventListener('click', () => {
-                        searchInput.value = suggestion; // Fill input with suggestion
-                        suggestionsContainer.classList.add('hidden'); // Hide container
-                        searchForm.submit(); // Submit the form
+                        searchInput.value = suggestion; 
+                        suggestionsContainer.classList.add('hidden'); 
+                        searchForm.submit(); 
                         
-                        // Clear input slightly after submission allows form data to be sent
                         setTimeout(() => { searchInput.value = ''; }, 100); 
                     });
                     suggestionsContainer.appendChild(itemEl);
                 });
-                suggestionsContainer.classList.remove('hidden'); // Show container
+                suggestionsContainer.classList.remove('hidden'); 
             } else {
-                suggestionsContainer.classList.add('hidden'); // Hide if no suggestions
+                suggestionsContainer.classList.add('hidden'); 
             }
         };
 
-        // Input event listener
         searchInput.addEventListener('input', () => {
             const query = searchInput.value.trim();
 
-            if (query.length < 1) { // Hide suggestions if input is empty
+            if (query.length < 1) { 
                 suggestionsContainer.classList.add('hidden');
-                suggestionsContainer.innerHTML = ''; // Clear content
+                suggestionsContainer.innerHTML = ''; 
                 return;
             }
             
-            debouncedFetchSuggestions(query); // Call the debounced fetch function
+            debouncedFetchSuggestions(query); 
         });
 
-        // Click outside listener to hide suggestions
         document.addEventListener('click', (e) => {
-            if (!searchForm.contains(e.target)) { // If click is outside the search form
+            if (!searchForm.contains(e.target)) { 
                 suggestionsContainer.classList.add('hidden');
             }
         });
 
-         // Optional: Hide on Escape key press
          searchInput.addEventListener('keydown', (e) => {
              if (e.key === 'Escape') {
                  suggestionsContainer.classList.add('hidden');
@@ -392,7 +971,4 @@ document.addEventListener('DOMContentLoaded', () => {
          });
     }
 
-    // --- Initialize the page-specific features ---
-    initializeCertificateFeature();
-    initializeWebSearchSuggestions();
 });
