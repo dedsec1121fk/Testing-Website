@@ -43,17 +43,11 @@
             <main class="home-screen">
                 <div class="main-header-container">
                     <h1 data-en="DedSec Project" data-gr="DedSec Project">DedSec Project</h1>
-                    
-                    <div class="search-and-info-wrapper">
-                        <div class="search-container">
-                            <form action="https://www.google.com/search" method="get" target="_blank" style="width: 100%;" id="main-search-form">
-                                <input type="text" name="q" id="main-search-input" placeholder="Search the Web..." data-en="Search the Web..." data-gr="Αναζήτηση στο διαδίκτυο..." autocomplete="off">
-                            </form>
-                            <div id="search-suggestions-container" class="hidden"></div>
-                        </div>
-                        <button class="info-button" data-modal="useful-information" aria-label="Useful Information">
-                            <i class="fas fa-lightbulb"></i>
-                        </button>
+                    <div class="search-container">
+                        <form action="https://www.google.com/search" method="get" target="_blank" style="width: 100%;" id="main-search-form">
+                            <input type="text" name="q" id="main-search-input" placeholder="Search the Web..." data-en="Search the Web..." data-gr="Αναζήτηση στο διαδίκτυο..." autocomplete="off">
+                        </form>
+                        <div id="search-suggestions-container" class="hidden"></div>
                     </div>
                 </div>
 
@@ -82,36 +76,30 @@
 
                 <h4 class="grid-heading" data-en="Explore the Toolkit" data-gr="Εξερευνήστε την Εργαλειοθήκη">Explore the Toolkit</h4>
                 <div class="app-grid">
-                    <button class="app-wrapper" data-modal="scripts">
-                        <div class="app-icon"><i class="fas fa-shield-alt"></i></div>
-                        <span class="app-label" data-en="Understand What The DedSec Project Does" data-gr="Κατανοήστε Τι Κάνει Το DedSec Project">Understand What The DedSec Project Does</span>
+                    <button class="app-wrapper" data-modal="basic-tools">
+                        <div class="app-icon"><i class="fas fa-tools"></i></div>
+                        <span class="app-label" data-en="Basic Tools" data-gr="Βασικά Εργαλεία">Basic Tools</span>
                     </button>
-                    
+
+                    <button class="app-wrapper" data-modal="mods">
+                        <div class="app-icon"><i class="fas fa-cogs"></i></div>
+                        <span class="app-label" data-en="Mods" data-gr="Mods">Mods</span>
+                    </button>
+
+                    <button class="app-wrapper" data-modal="phishing-demos">
+                        <div class="app-icon"><i class="fas fa-user-secret"></i></div>
+                        <span class="app-label" data-en="Phishing Demonstrations" data-gr="Επιδείξεις Phishing">Phishing Demonstrations</span>
+                    </button>
                     <button class="app-wrapper" data-modal="installation">
                         <div class="app-icon"><i class="fas fa-download"></i></div>
                         <span class="app-label" data-en="How To Install And Setup The DedSec Project" data-gr="Πώς Να Εγκαταστήσετε Και Να Ρυθμίσετε Το DedSec Project">How To Install And Setup The DedSec Project</span>
                     </button>
 
-                    <button class="app-wrapper" data-modal="basic-tools">
-                        <div class="app-icon"><i class="fas fa-wrench"></i></div>
-                        <span class="app-label" data-en="Basic Tools" data-gr="Βασικά Εργαλεία">Basic Tools</span>
+                    <button class="app-wrapper" data-modal="useful-information">
+                        <div class="app-icon"><i class="fas fa-lightbulb"></i></div>
+                        <span class="app-label" data-en="Useful Information" data-gr="Χρήσιμες Πληροφορίες">Useful Information</span>
                     </button>
-                    
-                    <button class="app-wrapper" data-modal="mods">
-                        <div class="app-icon"><i class="fas fa-code-branch"></i></div>
-                        <span class="app-label" data-en="Mods" data-gr="Mods">Mods</span>
-                    </button>
-
-                    <button class="app-wrapper" data-modal="social-media-fake-pages">
-                        <div class="app-icon"><i class="fas fa-clone"></i></div>
-                        <span class="app-label" data-en="Social Media Fake Pages" data-gr="Ψεύτικες Σελίδες Social Media">Social Media Fake Pages</span>
-                    </button>
-
-                    <button class="app-wrapper" data-modal="personal-info-capture">
-                        <div class="app-icon"><i class="fas fa-camera"></i></div>
-                        <span class="app-label" data-en="Personal Information Capture" data-gr="Καταγραφή Προσωπικών Πληροφοριών">Personal Information Capture</span>
-                    </button>
-                    </div>
+                </div>
 
                 <h4 class="grid-heading" data-en="About & Community" data-gr="Σχετικά & Κοινότητα">About & Community</h4>
                 <div class="app-grid">
@@ -268,102 +256,212 @@
             <button class="close-modal" aria-label="Close">×</button>
           </div>
           <div class="modal-body modal-body-centered">
-            <button class="language-button" data-lang="en" aria-label="Change language to English">English</button>
-            <button class="language-button" data-lang="gr" aria-label="Change language to Greek">Ελληνικά</button>
+              <button class="language-button" data-lang="en" aria-label="Change language to English">English</button>
+              <button class="language-button" data-lang="gr" aria-label="Change language to Greek">Ελληνικά</button>
           </div>
       </div>
     </div>
 
     <div id="disclaimer-modal" class="modal-overlay">
+      <div class="modal-content">
+          <div class="modal-header"><h2 data-en="Disclaimer & Terms of Use" data-gr="Αποποίηση Ευθύνης & Όροι Χρήσης">Disclaimer & Terms of Use</h2></div>
+          <div class="modal-body" data-lang-section="en">
+            <div class="note">
+                <p><strong>PLEASE READ CAREFULLY BEFORE PROCEEDING.</strong></p>
+                <p><strong>Trademark Disclaimer:</strong> The "DedSec" name and logo used in this project are for thematic and inspirational purposes only. This is an independent, fan-made project created for educational purposes and has no official connection to the "Watch Dogs" franchise. It is not associated with, endorsed by, or affiliated with Ubisoft Entertainment S.A. All trademarks and copyrights for "Watch Dogs" and "DedSec" as depicted in the games belong to their respective owners, Ubisoft Entertainment S.A.</p>
+                <p>This project, including all associated tools, scripts, and documentation ("the Software"), is provided strictly for educational, research, and ethical security testing purposes. It is intended for use exclusively in controlled, authorized environments by users who have obtained explicit, prior written permission from the owners of any systems they intend to test.</p>
+                <p><strong>1. Assumption of Risk and Responsibility:</strong> By accessing or using the Software, you acknowledge and agree that you are doing so at your own risk. You are solely and entirely responsible for your actions and for any consequences that may arise from the use or misuse of this Software. This includes, but is not limited to, compliance with all applicable local, state, national, and international laws and regulations related to cybersecurity, data privacy, and electronic communications.</p>
+                <p><strong>2. Prohibited Activities:</strong> Any use of the Software for unauthorized or malicious activities is strictly prohibited. This includes, without limitation: accessing systems, systems, or data without authorization; performing denial-of-service attacks; data theft; fraud; spreading malware; or any other activity that violates applicable laws. Engaging in such activities may result in severe civil and criminal penalties.</p>
+                <p><strong>3. No Warranty:</strong> The Software is provided "AS IS," without any warranty of any kind, express or implied. This includes, but is not to, the implied warranties of merchantability, fitness for a particular purpose, and non-infringement. The developers and contributors make no guarantee that the Software will be error-free, secure, or uninterrupted.</p>
+                <p><strong>4. Limitation of Liability:</strong> In no event shall the developers, contributors, or distributors of the Software be liable for any claim, damages, or other liability, whether in an action of contract, tort, or otherwise, arising from, out of, or in connection with the Software or the use or other dealings in the Software. This includes any direct, indirect, incidental, special, exemplary, or consequential damages (including, but not to, procurement of substitute goods or services; loss of use, data, or profits; or business interruption).</p>
+            </div>
+            <hr class="modal-divider">
+            <h3 class="text-center">Privacy Policy Summary</h3>
+            <div class="privacy-policy-embed">
+                <p>We are committed to protecting your privacy. We do not store or transmit your personal data. We use third-party services like Google AdSense, which may use cookies for advertising. Please review their policies. By using our service, you agree to our full Privacy Policy.</p>
+            </div>
+            <div class="note"><p><strong>By clicking "Accept," you confirm that you have read, understood, and agree to be bound by all the terms and conditions outlined in this disclaimer and our full Privacy Policy. If you do not agree with these terms, you must click "Decline" and cease all use of the Software immediately.</strong></p></div>
+          </div>
+          <div class="modal-body hidden-by-default" data-lang-section="gr">
+            <div class="note">
+                <p><strong>ΠΑΡΑΚΑΛΩ ΔΙΑΒΑΣΤΕ ΠΡΟΣΕΚΤΙΚΑ ΠΡΙΝ ΣΥΝΕΧΙΣΕΤΕ.</strong></p>
+                <p><strong>Αποποίηση Ευθύνης Εμπορικού Σήματος:</strong> Το όνομα και το λογότυπο "DedSec" που χρησιμοποιούνται σε αυτό το έργο είναι μόνο για θεματικούς και εμπνευστικούς σκοπούς. Πρόκειται για ένα ανεξάρτητο, fan-made έργο που δημιουργήθηκε για εκπαιδευτικούς σκοπούς και δεν έχει καμία επίσημη σύνδεση με το franchise "Watch Dogs". Δεν συνδέεται, δεν υποστηρίζεται από, ούτε σχετίζεται με την Ubisoft Entertainment S.A. Όλα τα εμπορικά σήματα και τα πνευματικά δικαιώματα για το "Watch Dogs" και το "DedSec" όπως απεικονίζονται στα παιχνίδια ανήκουν στους αντίστοιχους κατόχους τους, την Ubisoft Entertainment S.A.</p>
+                <p>Αυτό το έργο, συμπεριλαμβανομένων όλων των σχετικών εργαλείων, σεναρίων και τεκμηρίωσης («το Λογισμικό»), παρέχεται αυστηρά για εκπαιδευτικούς, ερευνητικούς και ηθικούς σκοπούς δοκιμών ασφαλείας. Προορίζεται για χρήση αποκλειστικά σε ελεγχόμενα, εξουσιοδοτημένα περιβάλλοντα από χρήστες που έχουν λάβει ρητή, προηγούμενη γραπτή άδεια από τους ιδιοκτήτες οποιωνδήποτε συστημάτων σκοπεύουν να δοκιμάσουν.</p>
+                <p><strong>1. Ανάληψη Κινδύνου και Ευθύνης:</strong> Με την πρόσβαση ή τη χρήση του Λογισμικού, αναγνωρίζετε και συμφωνείτε ότι το κάνετε με δική σας ευθύνη. Είστε αποκλειστικά και εξ ολοκλήρου υπεύθυνοι για τις ενέργειές σας και για τυχόν συνέπειες που μπορεί να προκύψουν από τη χρήση ή κακή χρήση αυτού του Λογισμικού. Αυτό περιλαμβάνει, ενδεικτικά, τη συμμόρφωση με όλους τους ισχύοντες τοπικούς, πολιτειακούς, εθνικούς και διεθνείς νόμους και κανονισμούς που σχετίζονται με την κυβερνοασφάλεια, την προστασία δεδομένων και τις ηλεκτρονικές επικοινωνίες.</p>
+                <p><strong>2. Απαγορευμένες Δραστηριότητες:</strong> Απαγορεύεται αυστηρά οποιαδήποτε χρήση του Λογισμικού για μη εξουσιοδοτημένες ή κακόβουλες δραστηριότητες. Αυτό περιλαμβάνει, χωρίς περιορισμό: πρόσβαση σε συστήματα ή δεδομένα χωρίς εξουσιοδοτημένη πρόσβαση, εκτέλεση επιθέσεων άρνησης υπηρεσίας (denial-of-service), κλοπή δεδομένων, απάτη, διάδοση κακόβουλου λογισμικού ή οποιαδήποτε άλλη δραστηριότητα που παραβιάζει την ισχύουσα νομοθεσία. Η συμμετοχή σε τέτοιες δραστηριότητες μπορεί να οδηγήσει σε σοβαρές αστικές και ποινικές κυρώσεις.</p>
+                <p><strong>3. Καμία Εγγύηση:</strong> Το Λογισμικό παρέχεται "ΩΣ ΕΧΕΙ", χωρίς καμία εγγύηση οποιουδήποτε είδους, ρητή ή σιωπηρή. Αυτό περιλαμβάνει, ενδεικτικά, τις σιωπηρές εγγυήσεις εμπορευσιμότητας, καταλληλότητας για συγκεκριμένο σκοπό και μη παραβίασης. Οι προγραμματιστές και οι συντελεστές δεν παρέχουν καμία εγγύηση ότι το Λογισμικό θα είναι απαλλαγμένο από σφάλματα, ασφαλές ή αδιάλειπτο.</p>
+                <p><strong>4. Περιορισμός Ευθύνης:</strong> Σε καμία περίπτωση οι προγραμματιστές, οι συντελεστές ή οι διανομείς του Λογισμικού δεν φέρουν ευθύνη για οποιαδήποτε αξίμη, ζημιές ή άλλη ευθύνη, είτε πρόκειται για αγωγή σύμβασης, αδικοπραξίας ή άλλως, που προκύπτει από, ή σε σχέση με το Λογισμικό ή τη χρήση ή άλλες συναλλαγές με το Λογισμικό. Αυτό περιλαμβάνει τυχόν άμεσες, έμμεσες, τυχαίες, ειδικές, παραδειγματικές ή επακόλουθες ζημιές (συμπεριλαμβανομένης, αλλά όχι μόνο, της προμήθειας υποκατάστατων αγαθών ή υπηρεσιών, απώλειας χρήσης, δεδομένων ή κερδών ή διακοπής εργασιών).</p>
+            </div>
+            <hr class="modal-divider">
+            <h3 class="text-center">Περίληψη Πολιτικής Απορήτου</h3>
+            <div class="privacy-policy-embed">
+                <p>Δεσμευόμαστε να προστατεύουμε το απόρρητό σας. Δεν αποθηκεύουμε ή μεταδίδουμε τα προσωπικά σας δεδομένα. Χρησιμοποιούμε υπηρεσίες τρίτων όπως το Google AdSense, οι οποίες ενδέχεται να χρησιμοποιούν cookies για διαφημίσεις. Παρακαλούμε ελέγξτε τις πολιτικές τους. Με τη χρήση της υπηρεσίας μας, συμφωνείτε με την πλήρη Πολιτική Απορήτου μας.</p>
+            </div>
+            <div class="note"><p><strong>Με το κλικ στο "Αποδοχή", επιβεβαιώνετε ότι διαβάσατε, κατανοήσατε και συμφωνείτε να δεσμεύεστε από όλους τους όρους και τις προϋποθέσεις που περιγράφονται σε αυτήν την αποποίηση ευθύνης και την πλήρη Πολιτική Απορήτου μας. Εάν δεν συμφωνείτε με αυτούς τους όρους, πρέπει να κάνετε κλικ στο "Απόρριψη" και να διακόψετε αμέσως κάθε χρήση του Λογισμικού.</strong></p></div>
+          </div>
+          <div class="modal-footer">
+            <button id="decline-disclaimer" class="decline-btn" data-en="Decline" data-gr="Απόρριψη">Decline</button>
+            <button id="accept-disclaimer" class="accept-btn" data-en="Accept" data-gr="Αποδοχή">Accept</button>
+          </div>
+      </div>
+    </div>
+    
+    <div id="installation-modal" class="modal-overlay">
         <div class="modal-content">
-            <div class="modal-header"><h2 data-en="Disclaimer & Terms of Use" data-gr="Αποποίηση Ευθύνης & Όροι Χρήσης">Disclaimer & Terms of Use</h2><button class="close-modal" aria-label="Close">×</button></div>
+            <div class="modal-header"><h2 data-en="How To Install And Setup The DedSec Project" data-gr="Πώς Να Εγκαταστήσετε Και Να Ρυθμίσετε Το DedSec Project">How To Install And Setup The DedSec Project</h2><button class="close-modal" aria-label="Close">×</button></div>
             <div class="modal-body" data-lang-section="en">
-                <div class="note">
-                    <p><strong>PLEASE READ CAREFULLY BEFORE PROCEEDING.</strong></p>
-                    <p><strong>Trademark Disclaimer:</strong> The "DedSec" name and logo used in this project are for thematic and inspirational purposes only. This is an independent, fan-made project created for educational purposes and has no official connection to the "Watch Dogs" franchise. It is not associated with, endorsed by, or affiliated with Ubisoft Entertainment S.A. All trademarks and copyrights for "Watch Dogs" and "DedSec" as depicted in the games belong to their respective owners, Ubisoft Entertainment S.A.</p>
-                    <p>This project, including all associated tools, scripts, and documentation ("the Software"), is provided strictly for educational, research, and ethical security testing purposes. It is intended for use exclusively in controlled, authorized environments by users who have obtained explicit, prior written permission from the owners of any systems they intend to test.</p>
-                    <p><strong>1. Assumption of Risk and Responsibility:</strong> By accessing or using the Software, you acknowledge and agree that you are doing so at your own risk. You are solely and entirely responsible for your actions and for any consequences that may arise from the use or misuse of this Software. This project and its creators (DedSec Project Team) are not responsible for any damage, loss of data, or legal issues that may result from the improper or unauthorized use of the Software.</p>
-                    <p><strong>2. Compliance with Laws:</strong> You are responsible for complying with all local, national, and international laws, treaties, and regulations applicable to your use of the Software. You must not use the Software to violate the privacy or rights of others, or for any illegal, unethical, or malicious activity.</p>
-                    <p><strong>3. Educational Use Only:</strong> The techniques, scripts, and tools demonstrated are for educational purposes only. Unauthorized access to computer systems, networks, or data is illegal. Always obtain written permission before testing any system.</p>
-                    <p><strong>4. No Warranty:</strong> The Software is provided "AS IS" without warranty of any kind, express or implied, including but not limited to the warranties of merchantability, fitness for a particular purpose, and non-infringement.</p>
-                    <p>By proceeding, you explicitly agree to these terms. If you do not agree, please close this page immediately.</p>
-                </div>
-                <div class="modal-footer">
-                    <button class="decline-btn close-modal" data-en="Decline" data-gr="Απόρριψη">Decline</button>
-                    <button class="accept-btn close-modal" data-en="Accept" data-gr="Αποδοχή">Accept</button>
-                </div>
+                <h3>Requirements</h3><ul><li><b>Device:</b> Android with <a href="https://f-droid.org/" target="_blank">Termux</a> installed.</li><li><b>Storage:</b> Min <b>8GB</b> free. <span class="sub-item">(Images and recordings also consume space.)</span></li><li><b>RAM:</b> Min <b>2GB</b>.</li></ul><h3>Step-by-Step Installation</h3><ol><li><b>Install Termux & Add-Ons</b><div class="tip"><p><b>Note:</b> To install APKs (e.g., F-Droid), ensure you:<br>- Enable unknown sources (Settings > Security > <b>Install Unknown Apps</b>).<br>- Download F-Droid, then get Termux from <a href="https://f-droid.org/">F-Droid</a>.<br>- Install add-ons: Termux:API, Termux:Styling.<br>- Allow the <code>fdroid</code> process when prompted.</p></div></li><li><b>Update Packages & Install Git</b><div class="note note-warning"><b>Important:</b> Open the Termux application on your device before copying and pasting the command below.</div><div class="code-container"><button class="copy-btn" onclick="copyToClipboard(this, 'pkg_cmd_en')">Copy</button><code id="pkg_cmd_en">pkg update -y && pkg upgrade -y && pkg install git nano -y && termux-setup-storage</code></div></li><li><b>Clone the Repository</b><div class="code-container"><button class="copy-btn" onclick="copyToClipboard(this, 'clone_cmd_en')">Copy</button><code id="clone_cmd_en">git clone https://github.com/dedsec1121fk/DedSec</code></div></li><li><b>Run the Setup Script</b><div class="code-container"><button class="copy-btn" onclick="copyToClipboard(this, 'setup_cmd_en')">Copy</button><code id="setup_cmd_en">cd DedSec && bash Setup.sh</code></div><div class="tip"><p>The script will handle the complete installation. After the process, you will see a settings menu, you must choose Change Menu Style and then choose a menu style: list or grid.<br>After that close Termux from notifications and reopen it.</p></div></li></ol><div class="tip" style="margin-top: 20px;"><p><b>Tip:</b> After setup, you can quickly open the menu by typing <code>e</code> (for the English version) or <code>g</code> (for the Greek version) in Termux.</p></div>
+                <div class="modal-disclaimer"><p><strong>Legal Disclaimer:</strong> All tools and information presented here are for educational and ethical research purposes only. Use them exclusively on systems you own or have explicit, written permission to test. Unauthorized use is illegal. The user is solely responsible for all actions taken, and the creators of this project assume no liability for any misuse or damage.</p><p><strong>Trademark Disclaimer:</strong> The "DedSec" name and logo used in this project are for thematic and inspirational purposes only. This is an independent, fan-made project created for educational purposes and has no official connection to the "Watch Dogs" franchise. It is not associated with, endorsed by, or affiliated with Ubisoft Entertainment S.A. All trademarks and copyrights for "Watch Dogs" and "DedSec" as depicted in the games belong to their respective owners, Ubisoft Entertainment S.A.</p></div>
             </div>
             <div class="modal-body hidden-by-default" data-lang-section="gr">
-                <div class="note">
-                    <p><strong>ΠΑΡΑΚΑΛΩ ΔΙΑΒΑΣΤΕ ΠΡΟΣΕΚΤΙΚΑ ΠΡΙΝ ΠΡΟΧΩΡΗΣΕΤΕ.</strong></p>
-                    <p><strong>Αποποίηση Ευθύνης Εμπορικού Σήματος:</strong> Το όνομα και το λογότυπο "DedSec" που χρησιμοποιούνται σε αυτό το έργο είναι μόνο για θεματικούς και εμπνευσμένους σκοπούς. Πρόκειται για ένα ανεξάρτητο έργο που δημιουργήθηκε από θαυμαστές για εκπαιδευτικούς σκοπούς και δεν έχει καμία επίσημη σύνδεση με το franchise "Watch Dogs". Δεν συνδέεται, δεν υποστηρίζεται ούτε συνδέεται με την Ubisoft Entertainment S.A. Όλα τα εμπορικά σήματα και τα πνευματικά δικαιώματα για το "Watch Dogs" και το "DedSec" όπως απεικονίζονται στα παιχνίδια ανήκουν στους αντίστοιχους ιδιοκτήτες τους, την Ubisoft Entertainment S.A.</p>
-                    <p>Αυτό το έργο, συμπεριλαμβανομένων όλων των σχετικών εργαλείων, σεναρίων και τεκμηρίωσης («το Λογισμικό»), παρέχεται αυστηρά για σκοπούς εκπαιδευτικής, ερευνητικής και ηθικής δοκιμής ασφάλειας. Προορίζεται για χρήση αποκλειστικά σε ελεγχόμενα, εξουσιοδοτημένα περιβάλλοντα από χρήστες που έχουν λάβει ρητή, προηγούμενη γραπτή άδεια από τους ιδιοκτήτες οποιωνδήποτε συστημάτων σκοπεύουν να δοκιμάσουν.</p>
-                    <p><strong>1. Ανάληψη Κινδύνου και Ευθύνης:</strong> Με την πρόσβαση ή τη χρήση του Λογισμικού, αναγνωρίζετε και συμφωνείτε ότι το κάνετε με δική σας ευθύνη. Είστε αποκλειστικά και εξ ολοκλήρου υπεύθυνοι για τις ενέργειές σας και για τυχόν συνέπειες που μπορεί να προκύψουν από τη χρήση ή κακή χρήση αυτού του Λογισμικού. Αυτό το έργο και οι δημιουργοί του (Ομάδα DedSec Project) δεν είναι υπεύθυνοι για οποιαδήποτε ζημιά, απώλεια δεδομένων ή νομικά ζητήματα που μπορεί να προκύψουν από την ακατάλληλη ή μη εξουσιοδοτημένη χρήση του Λογισμικού.</p>
-                    <p><strong>2. Συμμόρφωση με τους Νόμους:</strong> Είστε υπεύθυνοι για τη συμμόρφωση με όλους τους τοπικούς, εθνικούς και διεθνείς νόμους, συνθήκες και κανονισμούς που ισχύουν για τη χρήση του Λογισμικού. Δεν πρέπει να χρησιμοποιείτε το Λογισμικό για να παραβιάζετε την ιδιωτικότητα ή τα δικαιώματα άλλων, ή για οποιαδήποτε παράνομη, ανήθικη ή κακόβουλη δραστηριότητα.</p>
-                    <p><strong>3. Μόνο για Εκπαιδευτική Χρήση:</strong> Οι τεχνικές, τα σενάρια και τα εργαλεία που επιδεικνύονται είναι μόνο για εκπαιδευτικούς σκοπούς. Η μη εξουσιοδοτημένη πρόσβαση σε συστήματα υπολογιστών, δίκτυα ή δεδομένα είναι παράνομη. Πάντα να λαμβάνετε γραπτή άδεια πριν δοκιμάσετε οποιοδήποτε σύστημα.</p>
-                    <p><strong>4. Χωρίς Εγγύηση:</strong> Το Λογισμικό παρέχεται «ΩΣ ΕΧΕΙ» χωρίς καμία εγγύηση, ρητή ή σιωπηρή, συμπεριλαμβανομένων, ενδεικτικά, των εγγυήσεων εμπορευσιμότητας, καταλληλότητας για συγκεκριμένο σκοπό και μη παραβίασης.</p>
-                    <p>Συνεχίζοντας, συμφωνείτε ρητά με αυτούς τους όρους. Εάν δεν συμφωνείτε, παρακαλούμε κλείστε αυτή τη σελίδα αμέσως.</p>
-                </div>
-                <div class="modal-footer">
-                    <button class="decline-btn close-modal" data-en="Decline" data-gr="Απόρριψη">Decline</button>
-                    <button class="accept-btn close-modal" data-en="Accept" data-gr="Αποδοχή">Accept</button>
-                </div>
+                <h3>Απαιτήσεις</h3><ul><li><b>Συσκευή:</b> Android με εγκατεστημένο το <a href="https://f-droid.org/" target="_blank">Termux</a>.</li><li><b>Αποθηκευτικός Χώρος:</b> Ελάχιστος <b>8GB</b> ελεύθερος.<span class="sub-item">(Οι εικόνες και οι ηχογραφήσεις καταναλώνουν επίσης χώρο.)</span></li><li><b>RAM:</b> Ελάχ. <b>2GB</b>.</li></ul><h3>Βήμα-Βήμα Εγκατάσταση</h3><ol><li><b>Εγκατάσταση του Termux & Πρόσθετων</b><div class="tip"><p><b>Σημείωση:</b> Για την εγκατάσταση APKs (π.χ. F-Droid), βεβαιωθείτε ότι έχετε:<br/>- Ενεργοποίηση άγνωστων πηγών (Ρυθμίσεις > Ασφάλεια > <b>Εγκατάσταση άγνωστων εφαρμογών</b>).<br/>- Κατεβάστε το F-Droid και, στη συνέχεια, εγκαταστήστε το Termux μέσω του <a href="https://f-droid.org/">F-Droid</a>.<br/>- Επιτρέψτε τη διαδικασία <code>fdroid</code> όταν σας ζητηθεί。</p></div></li><li><b>Ενημέρωση Πακέτων & Εγκατάσταση Git</b><div class="note note-warning"><b>Σημαντικό:</b> Ανοίξτε την εφαρμογή Termux στη συσκευή σας πριν αντιγράψετε και επικολλήσετε την παρακάτω εντολή.</div><div class="code-container"><button class="copy-btn" onclick="copyToClipboard(this, 'pkg_cmd_gr')">Αντιγραφή</button><code id="pkg_cmd_gr">pkg update -y && pkg upgrade -y && pkg install git nano -y && termux-setup-storage</code></div></li><li><b>Κλωνοποιήστε το αποθετήριο</b><div class="code-container"><button class="copy-btn" onclick="copyToClipboard(this, 'clone_cmd_gr')">Αντιγραφή</button><code id="clone_cmd_gr">git clone https://github.com/dedsec1121fk/DedSec</code></div></li><li><b>Εκτελέστε το Script Εγκατάστασης</b><div class="code-container"><button class="copy-btn" onclick="copyToClipboard(this, 'setup_cmd_gr')">Αντιγραφή</button><code id="setup_cmd_gr">cd DedSec && bash Setup.sh</code></div><div class="tip"><p>Το script θα αναλάβει την πλήρη εγκατάσταση. Μετά τη διαδικασία, θα δείτε ένα μενού ρυθμίσεων, πρέπει να επιλέξετε 'Change Menu Style' και στη συνέχεια να επιλέξετε ένα στυλ μενού: list or grid.<br>Μετά από αυτό, κλείστε το Termux από τις ειδοποιήσεις και ανοίξτε το ξανά.</p></div></li></ol><div class="tip" style="margin-top: 20px;"><p><b>Συμβουλή:</b> Μετά την εγκατάσταση, μπορείτε να ανοίξετε γρήγορα το μενού πληκτρολογώντας <code>e</code> (για την Αγγλική έκδοση) ή <code>g</code> (για την Ελληνική έκδοση) στο Termux。</p></div>
+                <div class="modal-disclaimer"><p><strong>Νομική Αποποίηση Ευθύνης:</strong> Όλα τα εργαλεία και οι πληροφορίες που παρουσιάζονται εδώ προορίζονται αποκλειστικά για εκπαιδευτικούς και ηθικούς ερευνητικούς σκοπούς. Χρησιμοποιήστε τα αποκλειστικά σε συστήματα που σας ανήκουν ή για τα οποία έχετε ρητή, γραπτή άδεια να δοκιμάσετε. Η μη εξουσιοδοτημένη χρήση είναι παράνομη. Ο χρήστης είναι αποκλειστικά υπεύθυνος για όλες τις ενέργειες που πραγματοποιεί, και οι δημιουργοί αυτού του έργου δεν αναλαμβάνουν καμία ευθύνη για οποιαδήποτε κακή χρήση ή ζημία.</p><p><strong>Αποποίηση Ευθύνης Εμπορικού Σήματος:</strong> Το όνομα και το λογότυπο "DedSec" που χρησιμοποιούνται σε αυτό το έργο είναι μόνο για θεματικούς και εμπνευστικούς σκοπούς. Αυτό είναι ένα ανεξάρτητο, fan-made έργο που δημιουργήθηκε για εκπαιδευτικούς σκοπούς και δεν έχει καμία επίσημη σύνδεση με το franchise "Watch Dogs". Δεν συνδέεται, δεν υποστηρίζεται από, ούτε σχετίζεται με την Ubisoft Entertainment S.A. Όλα τα εμπορικά σήματα και τα πνευματικά δικαιώματα για το "Watch Dogs" και το "DedSec" όπως απεικονίζονται στα παιχνίδια ανήκουν στους αντίστοιχους κατόχους τους, την Ubisoft Entertainment S.A.</p></div>
             </div>
         </div>
     </div>
 
     <div id="basic-tools-modal" class="modal-overlay">
-        <div class="modal-content modal-content-auto-height">
+        <div class="modal-content">
             <div class="modal-header"><h2 data-en="Basic Tools" data-gr="Βασικά Εργαλεία">Basic Tools</h2><button class="close-modal" aria-label="Close">×</button></div>
             <div class="modal-body">
-                <p data-en="Content for Basic Tools goes here." data-gr="Το περιεχόμενο για τα Βασικά Εργαλεία θα μπει εδώ."></p>
+                <p data-en="Content for Basic Tools goes here. This replaces the old 'scripts' content." data-gr="Το περιεχόμενο για τα Βασικά Εργαλεία θα εισαχθεί εδώ. Αυτό αντικαθιστά το παλιό περιεχόμενο των 'scripts'.">Content for Basic Tools goes here. This replaces the old 'scripts' content.</p>
             </div>
         </div>
     </div>
 
     <div id="mods-modal" class="modal-overlay">
-        <div class="modal-content modal-content-auto-height">
+        <div class="modal-content">
             <div class="modal-header"><h2 data-en="Mods" data-gr="Mods">Mods</h2><button class="close-modal" aria-label="Close">×</button></div>
             <div class="modal-body">
-                <p data-en="Content for Mods goes here." data-gr="Το περιεχόμενο για τα Mods θα μπει εδώ."></p>
+                <p data-en="Content for Mods goes here." data-gr="Το περιεχόμενο για τα Mods θα εισαχθεί εδώ.">Content for Mods goes here.</p>
             </div>
         </div>
     </div>
 
-    <div id="social-media-fake-pages-modal" class="modal-overlay">
+    <div id="phishing-demos-modal" class="modal-overlay">
         <div class="modal-content">
-            <div class="modal-header"><h2 data-en="Social Media Fake Pages" data-gr="Ψεύτικες Σελίδες Social Media">Social Media Fake Pages</h2><button class="close-modal" aria-label="Close">×</button></div>
+            <div class="modal-header"><h2 data-en="Phishing Demonstrations" data-gr="Επιδείξεις Phishing">Phishing Demonstrations</h2><button class="close-modal" aria-label="Close">×</button></div>
             <div class="modal-body">
-                <p data-en="These scripts can create fake pages for famous Social Medias and not only. Their saves can be found in folders inside your internal storage Downloads folder." 
-                   data-gr="Αυτά τα σενάρια μπορούν να δημιουργήσουν ψεύτικες σελίδες για διάσημα Social Media και όχι μόνο. Οι αποθηκεύσεις τους μπορούν να βρεθούν σε φακέλους μέσα στον φάκελο Downloads του εσωτερικού σας αποθηκευτικού χώρου.">
-                    These scripts can create fake pages for famous Social Medias and not only.
-                    Their saves can be found in folders inside your internal storage Downloads folder.
-                </p>
+                <p data-en="Content for Phishing Demonstrations goes here. This was one of the old 'scripts' items." data-gr="Το περιεχόμενο για τις Επιδείξεις Phishing θα εισαχθεί εδώ. Αυτό ήταν ένα από τα παλιά στοιχεία των 'scripts'.">Content for Phishing Demonstrations goes here. This was one of the old 'scripts' items.</p>
             </div>
         </div>
     </div>
 
-    <div id="personal-info-capture-modal" class="modal-overlay">
+    <div id="contact-credits-modal" class="modal-overlay">
         <div class="modal-content">
-            <div class="modal-header"><h2 data-en="Personal Information Capture" data-gr="Καταγραφή Προσωπικών Πληροφοριών">Personal Information Capture</h2><button class="close-modal" aria-label="Close">×</button></div>
-            <div class="modal-body">
-                <p data-en="These scripts can catch camera (front or back) photos, microphone recordings, location and not only. Their saves can be found in folders inside your internal storage Downloads folder." 
-                   data-gr="Αυτά τα σενάρια μπορούν να καταγράψουν φωτογραφίες κάμερας (μπροστινής ή πίσω), ηχογραφήσεις μικροφώνου, τοποθεσία και όχι μόνο. Οι αποθηκεύσεις τους μπορούν να βρεθούν σε φακέλους μέσα στον φάκελο Downloads του εσωτερικού σας αποθηκευτικού χώρου.">
-                    These scripts can catch camera (front or back) photos, microphone recordings, location and not only.
-                    Their saves can be found in folders inside your internal storage Downloads folder.
-                </p>
+            <div class="modal-header"><h2 data-en="Contact Us & Credits" data-gr="Επικοινωνία & Συντελεστές">Contact Us & Credits</h2><button class="close-modal" aria-label="Close">×</button></div>
+            <div class="modal-body" data-lang-section="en">
+                <h3 data-en="Contact Us" data-gr="Επικοινωνία">Contact Us</h3><div class="contact-grid"><a href="https://wa.me/37257263676" target="_blank" class="app-icon"><i class="fab fa-whatsapp"></i><span data-en="WhatsApp" data-gr="WhatsApp">WhatsApp</span></a><a href="https://www.instagram.com/dedsec_project_official" target="_blank" class="app-icon"><i class="fab fa-instagram"></i><span data-en="Instagram" data-gr="Instagram">Instagram</span></a><a href="https://t.me/dedsecproject" target="_blank" class="app-icon"><i class="fab fa-telegram"></i><span data-en="Telegram" data-gr="Telegram">Telegram</span></a></div><hr class="modal-divider"><h3 data-en="Credits" data-gr="Συντελεστές">Credits</h3><p><b>Creator:</b> dedsec1121fk</p><p><b>Artwork:</b> Christina Chatzidimitriou</p><p><b>Voice-overs:</b> Dimitra Isxuropoulou</p><p><b>Technical Help:</b> lamprouil, UKI_hunter, apoloco</p>
+            </div>
+            <div class="modal-body hidden-by-default" data-lang-section="gr">
+                <h3 data-en="Contact Us" data-gr="Επικοινωνία">Επικοινωνία</h3><div class="contact-grid"><a href="https://wa.me/37257263676" target="_blank" class="app-icon"><i class="fab fa-whatsapp"></i><span data-en="WhatsApp" data-gr="WhatsApp">WhatsApp</span></a><a href="https://www.instagram.com/dedsec_project_official" target="_blank" class="app-icon"><i class="fab fa-instagram"></i><span data-en="Instagram" data-gr="Instagram">Instagram</span></a><a href="https://t.me/dedsecproject" target="_blank" class="app-icon"><i class="fab fa-telegram"></i><span data-en="Telegram" data-gr="Telegram">Telegram</span></a></div><hr class="modal-divider"><h3 data-en="Credits" data-gr="Συντελεστές">Συντελεστές</h3><p><b>Δημιουργός:</b> dedsec1121fk</p><p><b>Καλλιτεχνική Επιμέλεια:</b> Χριστίνα Χατζηδημητρίου</p><p><b>Αφηγήσεις:</b> Δήμητρα Ισχυροπούλου</p><p><b>Τεχνική Βοήθεια:</b> lamprouil, UKI_hunter, apoloco</p>
             </div>
         </div>
     </div>
+    
+    <div id="portfolio-github-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header"><h2 data-en="Portfolio & GitHub Info" data-gr="Portfolio & GitHub Info">Portfolio & GitHub Info</h2><button class="close-modal" aria-label="Close">×</button></div>
+            <div class="modal-body">
+                <h3 data-en="Portfolio" data-gr="Portfolio">Portfolio</h3>
+                <div class="contact-grid">
+                    <a href="https://www.ded-sec.space" target="_blank" class="app-icon"><i class="fas fa-project-diagram"></i><span data-en="DedSec Project" data-gr="DedSec Project">DedSec Project</span></a>
+                    <a href="https://www.ded-sec.space/Zepo-And-Xan-Project/" target="_blank" class="app-icon"><i class="fas fa-project-diagram"></i><span data-en="Zepo And Xan Project" data-gr="Zepo And Xan Project">Zepo And Xan Project</span></a>
+                    <a href="https://www.ded-sec.space/ICE-Project/" target="_blank" class="app-icon"><i class="fas fa-project-diagram"></i><span data-en="ICE Project" data-gr="ICE Project">ICE Project</span></a>
+                    <a href="https://www.ded-sec.space/Scav-Project" target="_blank" class="app-icon"><i class="fas fa-project-diagram"></i><span data-en="Scav Project" data-gr="Scav Project">Scav Project</span></a>
+                    <a href="https://www.ded-sec.space/KuNuPi-Project/" target="_blank" class="app-icon"><i class="fas fa-project-diagram"></i><span data-en="KuNuPi Project" data-gr="KuNuPi Project">KuNuPi Project</span></a>
+                </div>
+                <hr class="modal-divider">
+                <h3 data-en="Repositories" data-gr="Αποθετήρια">Repositories</h3>
+                <div class="contact-grid">
+                    <a href="https://github.com/dedsec1121fk/DedSec" target="_blank" class="app-icon"><i class="fab fa-github"></i><span data-en="DedSec (The Official Project)" data-gr="DedSec (Το Επίσημο Έργο)">DedSec (The Official Project)</span></a>
+                </div>
+                <hr class="modal-divider">
+                <h3 data-en="Statistics" data-gr="Στατιστικά">Statistics</h3>
+                <div class="github-stats">
+                    <img src="https://github-readme-stats.vercel.app/api?username=dedsec1121fk&show_icons=true&theme=transparent&border_color=9966ff&text_color=d0d8e0&title_color=9966ff&icon_color=e6d9ff" alt="GitHub Stats">
+                    <img src="https://streak-stats.demolab.com/?user=dedsec1121fk&theme=transparent&border=9966ff&ring=9966ff&fire=9966ff&currStreakLabel=9966ff" alt="GitHub Streak Stats">
+                    <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=dedsec1121fk&layout=compact&theme=transparent&border_color=9966ff&text_color=d0d8e0&title_color=9966ff&icon_color=e6d9ff" alt="Top Languages">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="collaborations-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header"><h2 data-en="Collaborations" data-gr="Συνεργασίες">Collaborations</h2><button class="close-modal" aria-label="Close">×</button></div>
+            <div class="modal-body" data-lang-section="en">
+                <h3 data-en="Python Gym Clothing" data-gr="Python Gym Clothing">Python Gym Clothing</h3><div class="content-section-modal"><div class="tip"><p><strong>Discount Code:</strong> Use the following code at checkout for a 10% discount!</p></div><div class="code-container"><button class="copy-btn" onclick="copyToClipboard(this, 'coupon-code-en')">Copy</button><code id="coupon-code-en">dedsec</code></div><p class="store-link"><a href="https://pythongymclothing.com/" target="_blank" rel="noopener noreferrer" data-en="Visit The Official Store" data-gr="Επισκεφθείτε Το Επίσημο Κατάστημα">Visit The Official Store</a></p><div class="gym-carousel"><div class="gym-clothing-images"><img src="https://raw.githubusercontent.com/dedsec1121fk/dedsec1121fk.github.io/fb8392bf97e6813816b2a0b4d3b81699ca5dee8a/Assets/Images/Python%20Gym%20Clothing/Image%201.jpg" alt="Python Gym Clothing Image 1" class="active"><img src="https://raw.githubusercontent.com/dedsec1121fk/dedsec1121fk.github.io/fb8392bf97e6813816b2a0b4d3b81699ca5dee8a/Assets/Images/Python%20Gym%20Clothing/Image%202.jpg" alt="Python Gym Clothing Image 2"><img src="https://raw.githubusercontent.com/dedsec1121fk/dedsec1121fk.github.io/fb8392bf97e6813816b2a0b4d3b81699ca5dee8a/Assets/Images/Python%20Gym%20Clothing/Image%203.jpg" alt="Python Gym Clothing Image 3"><img src="https://raw.githubusercontent.com/dedsec1121fk/dedsec1121fk.github.io/fb8392bf97e6813816b2a0b4d3b81699ca5dee8a/Assets/Images/Python%20Gym%20Clothing/Image%204.jpg" alt="Python Gym Clothing Image 4"><img src="https://raw.githubusercontent.com/dedsec1121fk/dedsec1121fk.github.io/fb8392bf97e6813816b2a0b4d3b81699ca5dee8a/Assets/Images/Python%20Gym%20Clothing/Image%205.jpg" alt="Python Gym Clothing Image 5"></div><button class="carousel-btn prev" aria-label="Previous Image">&lt;</button><button class="carousel-btn next" aria-label="Next Image">&gt;</button></div></div><hr class="modal-divider"><h3 data-en="AdGen" data-gr="AdGen">AdGen</h3><div class="content-section-modal"><p>With AdGen you can now create customized ads for your product using AI!</p><img class="ad-image" src="https://raw.githubusercontent.com/dedsec1121fk/dedsec1121fk.github.io/fb8392bf97e6813816b2a0b4d3b81699ca5dee8a/Assets/Images/AdGen/AdGen.png" alt="AdGen AI Ad Creation"><p class="store-link"><a href="https://adgenai.space/main.php" target="_blank" rel="noopener noreferrer" data-en="Create Your Ad" data-gr="Δημιουργήστε τη διαφήμισή σας">Create Your Ad</a></p></div>
+            </div>
+            <div class="modal-body hidden-by-default" data-lang-section="gr">
+                <h3 data-en="Python Gym Clothing" data-gr="Python Gym Clothing">Python Gym Clothing</h3><div class="content-section-modal"><div class="tip"><p><strong>Κωδικός Έκπτωσης:</strong> Χρησιμοποιήστε τον παρακάτω κωδικό στο ταμείο για έκπτωση 10%!</p></div><div class="code-container"><button class="copy-btn" onclick="copyToClipboard(this, 'coupon-code-gr')">Αντιγραφή</button><code id="coupon-code-gr">dedsec</code></div><p class="store-link"><a href="https://pythongymclothing.com/" target="_blank" rel="noopener noreferrer" data-en="Visit The Official Store" data-gr="Επισκεφθείτε Το Επίσημο Κατάστημα">Επισκεφθείτε Το Επίσημο Κατάστημα</a></p><div class="gym-carousel"><div class="gym-clothing-images"><img src="https://raw.githubusercontent.com/dedsec1121fk/dedsec1121fk.github.io/fb8392bf97e6813816b2a0b4d3b81699ca5dee8a/Assets/Images/Python%20Gym%20Clothing/Image%201.jpg" alt="Python Gym Clothing Image 1" class="active"><img src="https://raw.githubusercontent.com/dedsec1121fk/dedsec1121fk.github.io/fb8392bf97e6813816b2a0b4d3b81699ca5dee8a/Assets/Images/Python%20Gym%20Clothing/Image%202.jpg" alt="Python Gym Clothing Image 2"><img src="https://raw.githubusercontent.com/dedsec1121fk/dedsec1121fk.github.io/fb8392bf97e6813816b2a0b4d3b81699ca5dee8a/Assets/Images/Python%20Gym%20Clothing/Image%203.jpg" alt="Python Gym Clothing Image 3"><img src="https://raw.githubusercontent.com/dedsec1121fk/dedsec1121fk.github.io/fb8392bf97e6813816b2a0b4d3b81699ca5dee8a/Assets/Images/Python%20Gym%20Clothing/Image%204.jpg" alt="Python Gym Clothing Image 4"><img src="https://raw.githubusercontent.com/dedsec1121fk/dedsec1121fk.github.io/fb8392bf97e6813816b2a0b4d3b81699ca5dee8a/Assets/Images/Python%20Gym%20Clothing/Image%205.jpg" alt="Python Gym Clothing Image 5"></div><button class="carousel-btn prev" aria-label="Previous Image">&lt;</button><button class="carousel-btn next" aria-label="Next Image">&gt;</button></div></div><hr class="modal-divider"><h3 data-en="AdGen" data-gr="AdGen">AdGen</h3><div class="content-section-modal"><p>Με το AdGen μπορείτε τώρα να δημιουργήσετε προσαρμοσμένες διαφημίσεις για το προϊόν σας χρησιμοποιώντας AI!</p><img class="ad-image" src="https://raw.githubusercontent.com/dedsec1121fk/dedsec1121fk.github.io/fb8392bf97e6813816b2a0b4d3b81699ca5dee8a/Assets/Images/AdGen/AdGen.png" alt="AdGen AI Ad Creation"><p class="store-link"><a href="https://adgenai.space/main.php" target="_blank" rel="noopener noreferrer" data-en="Create Your Ad" data-gr="Δημιουργήστε τη διαφήμισή σας">Δημιουργήστε τη διαφήμισή σας</a></p></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="privacy-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header"><h2 data-en="Privacy Policy" data-gr="Πολιτική Απορρήτου">Privacy Policy</h2><button class="close-modal" aria-label="Close">×</button></div>
+            <div class="modal-body" data-lang-section="en">
+                <h3>Last Updated: October 6, 2025</h3>
+                <p>This Privacy Policy explains how we handle information in connection with the DedSec Project website ("Service"). Your access to and use of the Service is conditioned on your acceptance of and compliance with this Policy.</p>
+                <h4>1. Information Collection and Use</h4>
+                <p>We are committed to protecting your privacy. Our Service is designed to be used without the need for you to submit personal data. However, certain features may involve the collection of limited information:</p>
+                <ul>
+                    <li><strong>Third-Party Services:</strong> We may use third-party services that collect information. These include:
+                        <ul>
+                            <li><strong>Google AdSense:</strong> To serve advertisements on our site, Google and its partners may use cookies (such as the DoubleClick cookie) to serve ads based on your visit to this site and/or other sites on the Internet. You can opt out of personalized advertising by visiting <a href="https://www.google.com/settings/ads" target="_blank">Google's Ads Settings</a>.</li>
+                            <li><strong>External Links:</strong> Our Service contains links to other sites (e.g., GitHub, Gumroad, social media). If you click on a third-party link, you will be directed to that site. We strongly advise you to review the Privacy Policy of every site you visit. We have no control over and assume no responsibility for the content, privacy policies, or practices of any third-party sites or services.</li>
+                        </ul>
+                    </li>
+                </ul>
+                <h4>2. Cookies</h4>
+                <p>Cookies are files with a small amount of data that are commonly used as anonymous unique identifiers. Our Service may use cookies as part of third-party integrations like Google AdSense. You have the option to either accept or refuse these cookies and know when a cookie is being sent to your device through your browser settings.</p>
+                <h4>3. Data Security</h4>
+                <p>We value your trust in providing us with any information. While we strive to use commercially acceptable means of protecting it, remember that no method of transmission over the internet or method of electronic storage is 100% secure and reliable, and we cannot guarantee its absolute security. As noted, personally identifiable information is not transmitted.</p>
+                <h4>4. Children's Privacy</h4>
+                <p>This Service does not address anyone under the age of of 13. We do not knowingly collect personally identifiable information from children under 13.</p>
+                <h4>5. Changes to This Privacy Policy</h4>
+                <p>We may update our Privacy Policy from time to time. Thus, we advise you to review this page periodically for any changes. We will notify you of any changes by posting the new Privacy Policy on this page. These changes are effective immediately after they are posted.</p>
+                <h4>6. Contact Us</h4>
+                <p>If you have any questions or suggestions about our Privacy Policy, do not hesitate to contact us through the methods provided on our "Contact Us" page.</p>
+            </div>
+            <div class="modal-body hidden-by-default" data-lang-section="gr">
+                <h3>Τελευταία Ενημέρωση: 6 Οκτωβρίου 2025</h3>
+                <p>Αυτή η Πολιτική Απορρήτου εξηγεί πώς διαχειριζόμαστε τις πληροφορίες σε σχέση με τον ιστότοπο του DedSec Project («Υπηρεσία»). Η πρόσβαση και η χρήση της Υπηρεσίας από εσάς εξαρτάται από την αποδοχή και τη συμμόρφωσή σας με αυτήν την Πολιτική.</p>
+                <h4>1. Συλλογή και Χρήση Πληροφοριών</h4>
+                <p>Δεσμευόμαστε να προστατεύουμε το απόρρητό σας. Η Υπηρεσία μας έχει σχεδιαστεί για να χρησιμοποιείται χωρίς να χρειάζεται να υποβάλετε προσωπικά δεδομένα. Ωστόσο, ορισμένες λειτουργίες μπορεί να περιλαμβάνουν τη συλλογή περιορισμένων πληροφοριών:</p>
+                <ul>
+                    <li><strong>Υπηρεσίες Τρίτων:</strong> Ενδέχεται να χρησιμοποιούμε υπηρεσίες τρίτων που συλλέγουν πληροφορίες. Αυτές περιλαμβάνουν:
+                        <ul>
+                            <li><strong>Google AdSense:</strong> Για την προβολή διαφημίσεων στον ιστότοπό μας, η Google και οι συνεργάτες της ενδέχεται να χρησιμοποιούν cookies (όπως το cookie DoubleClick) για την προβολή διαφημίσεων με βάση την επίσκεψή σας σε αυτόν τον ιστότοπο ή/και σε άλλους ιστότοπους στο Διαδίκτυο. Μπορείτε να εξαιρεθείτε από την εξατομικευμένη διαφήμιση μεταβαίνοντας στις <a href="https://www.google.com/settings/ads" target="_blank">Ρυθμίσεις διαφημίσεων της Google</a>.</li>
+                            <li><strong>Εξωτερικοί Σύνδεσμοι:</strong> Η Υπηρεσία μας περιέχει συνδέσμους προς άλλους ιστότοπους (π.χ. GitHub, Gumroad, μέσα κοινωνικής δικτύωσης). Εάν κάνετε κλικ σε έναν σύνδεσμο τρίτου μέρους, θα κατευθυνθείτε σε αυτόν τον ιστότοπο. Σας συμβουλεύουμε να ελέγχετε την Πολιτική Απορρήτου κάθε ιστότοπου που επισκέπτεστε. Δεν έχουμε κανέναν έλεγχο και δεν αναλαμβάνουμε καμία ευθύνη για το περιεχόμενο, τις πολιτικές απορρήτου ή τις πρακτικές οποιωνδήποτε ιστότοπων ή υπηρεσιών τρίτων.</li>
+                        </ul>
+                    </li>
+                </ul>
+                <h4>2. Cookies</h4>
+                <p>Τα cookies είναι αρχεία με μικρή ποσότητα δεδομένων που χρησιμοποιούνται συνήθως ως ανώνυμα μοναδικά αναγνωριστικά. Η Υπηρεσία μας ενδέχεται να χρησιμοποιεί cookies ως μέρος ενσωματώσεων τρίτων, όπως το Google AdSense. Έχετε την επιλογή να αποδεχτείτε ή να απορρίψετε αυτά τα cookies και να γνωρίζετε πότε ένα cookie αποστέλλεται στη συσκευή σας μέσω των ρυθμίσεων του περιηγητή σας.</p>
+                <h4>3. Ασφάλεια Δεδομένων</h4>
+                <p>Εκτιμούμε την εμπιστοσύνη σας στην παροχή οποιωνδήποτε πληροφοριών. Ενώ προσπαθούμε να χρησιμοποιούμε εμπορικά αποδεκτά μέσα για την προστασία τους, να θυμάστε ότι καμία μέθοδος μετάδοσης μέσω του διαδικτύου ή μέθοδος ηλεκτρονικής αποθήκευσης δεν είναι 100% ασφαλής και αξιόπιστη, και δεν μπορούμε να εγγυηθούμε την απόλυτη ασφάλειά της. Όπως σημειώνεται, προσωπικά αναγνωρίσιμες πληροφορίες δεν μεταδίδονται.</p>
+                <h4>4. Απόρρητο Παιδιών</h4>
+                <p>Αυτή η Υπηρεσία δεν απευθύνεται σε άτομα κάτω των 13 ετών. Δεν συλλέγουμε εν γνώσει μας προσωπικά αναγνωρίσιμες πληροφορίες από παιδιά κάτω των 13 ετών.</p>
+                <h4>5. Αλλαγές σε Αυτή την Πολιτική Απορρήτου</h4>
+                <p>Ενδέχεται να ενημερώνουμε την Πολιτική Απορρήτου μας κατά διαστήματα. Επομένως, σας συμβουλεύουμε να ελέγχετε περιοδικά αυτή τη σελίδα για τυχόν αλλαγές. Θα σας ειδοποιήσουμε για τυχόν αλλαγές δημοσιεύοντας τη νέα Πολιτική Απορήτου σε αυτή τη σελίδα. Αυτές οι αλλαγές ισχύουν αμέσως μετά τη δημοσίευσή τους.</p>
+                <h4>6. Επικοινωνήστε μαζί μας</h4>
+                <p>Εάν έχετε οποιεσδήποτε ερωτήσεις ή προτάσεις σχετικά με την Πολιτική Απορρήτου μας, μη διστάσετε να επικοινωνήσετε μαζί μας μέσω των μεθόδων που παρέχονται στη σελίδα «Επικοινωνία».</p>
+            </div>
+        </div>
+    </div>
+
     <div id="useful-information-modal" class="modal-overlay">
         <div class="modal-content">
             <div class="modal-header"><h2 data-en="Useful Information" data-gr="Χρήσιμες Πληροφορίες">Useful Information</h2><button class="close-modal" aria-label="Close">×</button></div>
-            <div class="modal-body"><div class="search-container modal-search-container"><input type="text" id="useful-info-search-input" placeholder="Search articles..." data-en="Search articles..." data-gr="Αναζήτηση άρθρων..."><div id="useful-info-results-container" class="hidden"></div></div><p id="useful-info-prompt" data-en="Please select an entry from the list below to view its content." data-gr="Παρακαλώ επιλέξτε μια καταχώρηση από την παρακάτω λίστα για να δείτε το περιεχόμενο της.">Please select an entry from the list below to view its content.</p><div id="useful-information-nav" class="app-grid"></div><hr class="modal-divider"><div id="useful-information-content"></div></div>
+            <div class="modal-body"><div class="search-container modal-search-container"><input type="text" id="useful-info-search-input" placeholder="Search articles..." data-en="Search articles..." data-gr="Αναζήτηση άρθρων..."><div id="useful-info-results-container" class="hidden"></div></div><p id="useful-info-prompt" data-en="Please select an entry from the list below to view its content." data-gr="Παρακαλώ επιλέξτε μια καταχώρηση από την παρακάτω λίστα για να δείτε το περιεχομένο της.\">Please select an entry from the list below to view its content.</p><div id="useful-information-nav" class="app-grid"></div><hr class="modal-divider"><div id="useful-information-content"></div></div>
         </div>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <script src="script.js"></script>
+    <script src="script.js" defer></script>
 </body>
 </html>
