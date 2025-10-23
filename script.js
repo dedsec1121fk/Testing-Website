@@ -1,11 +1,15 @@
 document.addEventListener('DOMContentLoaded', () => {
     // --- GLOBAL PORTFOLIO STATE ---
     let currentLanguage = 'en';
+    
     let usefulInfoSearchIndex = []; // Dedicated index for the modal, BUILT ON DEMAND
     let usefulInfoFiles = []; // Stores the list of files to avoid re-fetching
     let isUsefulInfoIndexBuilt = false; // Flag to check if the full index is ready
     let usefulInformationLoaded = false;
     let isFetchingUsefulInfo = false;
+
+    let scriptsSearchIndex = []; // NEW: Index for the 'Learn The Tools' modal
+    let isScriptsIndexBuilt = false; // NEW: Flag for the tools index
 
     // --- CERTIFICATE TRANSLATIONS ---
     const certificateTranslations = {
@@ -928,6 +932,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (modalId === 'useful-information' && !usefulInformationLoaded) {
                     fetchUsefulInformation(); // This call now points to the old function
                 }
+
+                // NEW: Build scripts index only when that modal is opened
+                if (modalId === 'scripts' && !isScriptsIndexBuilt) {
+                    buildScriptsSearchIndex();
+                }
                 
                 // Highlight content after modal is visible
                 if (highlightText) {
@@ -997,17 +1006,21 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
                  // --- END OLD SCRIPT BLOCK ---
 
-                 // --- ADDED: Reset for scripts modal search ---
+                 // --- MODIFIED: Reset for scripts modal search ---
                  if (modal.id === 'scripts-modal') {
                     modal.querySelectorAll('.scripts-search-input').forEach(input => {
                         input.value = ''; // Clear search field
+                    });
+                    modal.querySelectorAll('#scripts-results-container-en, #scripts-results-container-gr').forEach(container => {
+                        container.classList.add('hidden'); // Hide results dropdown
+                        container.innerHTML = '';
                     });
                     // Reset visibility of all li elements
                     modal.querySelectorAll('ol > li').forEach(li => {
                         li.style.display = '';
                     });
                  }
-                 // --- END ADDED SCRIPT ---
+                 // --- END MODIFIED SCRIPT ---
 
                  // Remove any lingering highlights
                 modal.querySelectorAll('.content-highlight').forEach(el => el.classList.remove('content-highlight'));
@@ -1078,7 +1091,7 @@ document.addEventListener('DOMContentLoaded', () => {
         initializeWebSearchSuggestions(); 
         initializeUsefulInfoSearch(); // This call now points to the old function
         initializeCertificateFeature(); 
-        initializeScriptsSearch(); // ADDED
+        initializeScriptsSearch(); // MODIFIED
         
         // --- Initial Setup ---
         // Hide language modal close button initially
@@ -1192,7 +1205,41 @@ document.addEventListener('DOMContentLoaded', () => {
          });
     }
 
-    // --- ADDED: Search for "Learn The Tools" Modal ---
+    // --- NEW: Function to build the 'Learn The Tools' search index ---
+    function buildScriptsSearchIndex() {
+        if (isScriptsIndexBuilt) return;
+
+        const modal = document.getElementById('scripts-modal');
+        if (!modal) return;
+
+        ['en', 'gr'].forEach(lang => {
+            const body = modal.querySelector(`.modal-body[data-lang-section="${lang}"]`);
+            if (!body) return;
+
+            const list = body.querySelector('ol');
+            if (!list) return;
+
+            list.querySelectorAll('li').forEach(li => {
+                const title = li.querySelector('b')?.textContent || 'No Title';
+                const text = li.innerText; // Get all text content of the list item
+                
+                const item = {
+                    lang: lang,
+                    title: title,
+                    text: text,
+                    element: li, // Store a direct reference to the <li> element
+                    weight: 1.5 // Give tool titles a high weight
+                };
+                scriptsSearchIndex.push(SearchEngine.preprocessItem(item));
+            });
+        });
+
+        SearchEngine.calculateIdf('scripts', scriptsSearchIndex);
+        isScriptsIndexBuilt = true;
+    }
+
+
+    // --- MODIFIED: Search for "Learn The Tools" Modal ---
     function initializeScriptsSearch() {
         const modal = document.getElementById('scripts-modal');
         if (!modal) return;
@@ -1203,27 +1250,58 @@ document.addEventListener('DOMContentLoaded', () => {
             input.addEventListener('input', () => {
                 const query = input.value.toLowerCase().trim();
                 const lang = input.id.includes('-gr') ? 'gr' : 'en';
+                
+                const resultsContainerId = `scripts-results-container-${lang}`;
+                const resultsContainer = document.getElementById(resultsContainerId);
+                
                 const modalBody = modal.querySelector(`.modal-body[data-lang-section="${lang}"]`);
-                
-                // Find the <ol> that contains the tool list. 
-                // It's the only <ol> in this modal body.
                 const toolList = modalBody.querySelector('ol');
-                
-                if (!toolList) {
-                    console.warn('Could not find tool list <ol> to filter.');
+                const allTools = toolList.querySelectorAll('li');
+
+                resultsContainer.innerHTML = ''; // Clear previous results
+
+                if (query.length < 2) {
+                    resultsContainer.classList.add('hidden');
+                    allTools.forEach(li => li.style.display = ''); // Show all tools
                     return;
                 }
 
-                const tools = toolList.querySelectorAll('li');
-                
-                tools.forEach(tool => {
-                    const toolText = tool.textContent.toLowerCase();
-                    if (toolText.includes(query)) {
-                        tool.style.display = ''; // Show
-                    } else {
-                        tool.style.display = 'none'; // Hide
-                    }
-                });
+                const results = SearchEngine.search(query, scriptsSearchIndex, lang, 'scripts');
+
+                if (results.length > 0) {
+                    allTools.forEach(li => li.style.display = 'none'); // Hide all tools
+
+                    results.slice(0, 7).forEach(result => {
+                        const itemEl = document.createElement('div');
+                        itemEl.classList.add('search-result-item');
+                        
+                        const snippet = SearchEngine.generateSnippet(result.text, query, lang);
+                        const highlightedSnippet = SearchEngine.highlight(snippet, query, lang);
+
+                        itemEl.innerHTML = `${highlightedSnippet} <small>${result.title}</small>`;
+                        
+                        itemEl.addEventListener('click', () => {
+                            input.value = '';
+                            resultsContainer.classList.add('hidden');
+                            allTools.forEach(li => li.style.display = ''); // Show all tools again
+
+                            // Scroll to and highlight the original <li> element
+                            const targetElement = result.element;
+                            if (targetElement) {
+                                targetElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                                targetElement.classList.add('content-highlight');
+                                setTimeout(() => {
+                                    targetElement.classList.remove('content-highlight');
+                                }, 2500);
+                            }
+                        });
+                        resultsContainer.appendChild(itemEl);
+                    });
+                    resultsContainer.classList.remove('hidden');
+                } else {
+                    resultsContainer.classList.add('hidden');
+                    allTools.forEach(li => li.style.display = ''); // Show all tools
+                }
             });
         });
     }
