@@ -77,7 +77,7 @@
                 <div class="app-grid">
                     <button class="app-wrapper" data-modal="scripts">
                         <div class="app-icon"><i class="fas fa-shield-alt"></i></div>
-                        <span class="app-label" data-en="Understand What The DedSec Project Does" data-gr="Κατανοήστε Τι Κάνει Το DedSec Project">Understand What The DedSec Project Does</span>
+                        <span class="app-label" data-en="Learn The Tools" data-gr="Μάθετε Τα Εργαλεία">Learn The Tools</span>
                     </button>
 
                     <button class="app-wrapper" data-modal="installation">
@@ -281,8 +281,17 @@
 
     <div id="scripts-modal" class="modal-overlay">
     <div class="modal-content">
-        <div class="modal-header"><h2 data-en="Understand What The DedSec Project Does" data-gr="Κατανοήστε Τι Κάνει Το DedSec Project">Understand What The DedSec Project Does</h2><button class="close-modal" aria-label="Close">×</button></div>
+        <div class="modal-header"><h2 data-en="Learn The Tools" data-gr="Μάθετε Τα Εργαλεία">Learn The Tools</h2><button class="close-modal" aria-label="Close">×</button></div>
         <div class="modal-body" data-lang-section="en">
+            <div class="search-container modal-search-container">
+                <input type="text" 
+                       id="scripts-search-input-en" 
+                       class="scripts-search-input" 
+                       placeholder="Search tools..." 
+                       data-en="Search tools..." 
+                       data-gr="Αναζήτηση εργαλείων..."
+                       autocomplete="off">
+            </div>
             <h3>⚠️ Understanding Threats: Educational Demonstrations</h3>
             <div class="note note-danger"><p><strong>CRITICAL NOTICE:</strong> The following scripts are included for <strong>educational and defensive purposes ONLY</strong>. Their function is to demonstrate how common attacks work, so you can learn to recognize and protect yourself against them. They should only be used in a controlled environment, <strong>on your own devices and accounts</strong>, for self-testing.</p></div>
             <hr class="modal-divider"><h3>Toolkit Summary</h3>
@@ -306,6 +315,15 @@
             <div class="modal-disclaimer"><p><strong>Legal Disclaimer:</strong> All tools and information presented here are for educational and ethical research purposes only. Use them exclusively on systems you own or have explicit, written permission to test. Unauthorized use is illegal. The user is solely responsible for all actions taken, and the creators of this project assume no liability for any misuse or damage.</p></div>
         </div>
         <div class="modal-body hidden-by-default" data-lang-section="gr">
+            <div class="search-container modal-search-container">
+                <input type="text" 
+                       id="scripts-search-input-gr" 
+                       class="scripts-search-input" 
+                       placeholder="Αναζήτηση εργαλείων..." 
+                       data-en="Search tools..." 
+                       data-gr="Αναζήτηση εργαλείων..."
+                       autocomplete="off">
+            </div>
             <h3>⚠️ Κατανόηση Απειλών: Εκπαιδευτικές Επιδείξεις</h3>
             <div class="note note-danger"><p><strong>ΚΡΙΣΙΜΗ ΣΗΜΕΙΩΣΗ:</strong> Τα παρακάτω σενάρια περιλαμβάνονται <strong>ΑΠΟΚΛΕΙΣΤΙΚΑ για εκπαιδευτικούς και αμυντικούς σκοπούς</strong>. Η λειτουργία τους είναι να επιδεικνύουν πώς λειτουργούν οι συνήθεις επιθέσεις, ώστε να μπορείτε να μάθετε να τις αναγνωρίζετε και να προστατεύεστε από αυτές. Πρέπει να χρησιμοποιούνται μόνο σε ελεγχόμενο περιβάλλον, <strong>στις δικές σας συσκευές και λογαριασμούς</strong>, για αυτο-έλεγχο.</p></div>
             <hr class="modal-divider"><h3>Περίληψης Εργαλείων (Απαιτείται Μετάφραση)</h3>
@@ -346,7 +364,7 @@
     <div id="useful-information-modal" class="modal-overlay">
         <div class="modal-content">
             <div class="modal-header"><h2 data-en="Useful Information" data-gr="Χρήσιμες Πληροφορίες">Useful Information</h2><button class="close-modal" aria-label="Close">×</button></div>
-            <div class="modal-body"><div class="search-container modal-search-container"><input type="text" id="useful-info-search-input" placeholder="Search articles..." data-en="Search articles..." data-gr="Αναζήτηση άρθρων..."><div id="useful-info-results-container" class="hidden"></div></div><p id="useful-info-prompt" data-en="Please select an entry from the list below to view its content." data-gr="Παρακαλώ επιλέξτε μια καταχώρηση από την παρακάτω λίστα για να δείτε το περιεχομένο της.">Please select an entry from the list below to view its content.</p><div id="useful-information-nav" class="app-grid"></div><hr class="modal-divider"><div id="useful-information-content"></div></div>
+            <div class="modal-body"><div class="search-container modal-search-container"><input type="text" id="useful-info-search-input" placeholder="Search articles..." data-en="Search articles..." data-gr="Αναζήτηση άρθρων..."><div id="useful-info-results-container" class="hidden"></div></div><p id="useful-info-prompt" data-en="Please select an entry from the list below to view its content." data-gr="Παρακαλώ επιλέξτε μια καταχώρηση από την παρακάτω λίστα για να δείτε το περιεχόμενό της.">Please select an entry from the list below to view its content.</p><div id="useful-information-nav" class="app-grid"></div><hr class="modal-divider"><div id="useful-information-content"></div></div>
         </div>
     </div>
 

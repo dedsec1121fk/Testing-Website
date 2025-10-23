@@ -997,6 +997,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
                  // --- END OLD SCRIPT BLOCK ---
 
+                 // --- ADDED: Reset for scripts modal search ---
+                 if (modal.id === 'scripts-modal') {
+                    modal.querySelectorAll('.scripts-search-input').forEach(input => {
+                        input.value = ''; // Clear search field
+                    });
+                    // Reset visibility of all li elements
+                    modal.querySelectorAll('ol > li').forEach(li => {
+                        li.style.display = '';
+                    });
+                 }
+                 // --- END ADDED SCRIPT ---
+
                  // Remove any lingering highlights
                 modal.querySelectorAll('.content-highlight').forEach(el => el.classList.remove('content-highlight'));
             };
@@ -1066,6 +1078,7 @@ document.addEventListener('DOMContentLoaded', () => {
         initializeWebSearchSuggestions(); 
         initializeUsefulInfoSearch(); // This call now points to the old function
         initializeCertificateFeature(); 
+        initializeScriptsSearch(); // ADDED
         
         // --- Initial Setup ---
         // Hide language modal close button initially
@@ -1177,6 +1190,42 @@ document.addEventListener('DOMContentLoaded', () => {
                  suggestionsContainer.classList.add('hidden');
              }
          });
+    }
+
+    // --- ADDED: Search for "Learn The Tools" Modal ---
+    function initializeScriptsSearch() {
+        const modal = document.getElementById('scripts-modal');
+        if (!modal) return;
+
+        const searchInputs = modal.querySelectorAll('.scripts-search-input');
+        
+        searchInputs.forEach(input => {
+            input.addEventListener('input', () => {
+                const query = input.value.toLowerCase().trim();
+                const lang = input.id.includes('-gr') ? 'gr' : 'en';
+                const modalBody = modal.querySelector(`.modal-body[data-lang-section="${lang}"]`);
+                
+                // Find the <ol> that contains the tool list. 
+                // It's the only <ol> in this modal body.
+                const toolList = modalBody.querySelector('ol');
+                
+                if (!toolList) {
+                    console.warn('Could not find tool list <ol> to filter.');
+                    return;
+                }
+
+                const tools = toolList.querySelectorAll('li');
+                
+                tools.forEach(tool => {
+                    const toolText = tool.textContent.toLowerCase();
+                    if (toolText.includes(query)) {
+                        tool.style.display = ''; // Show
+                    } else {
+                        tool.style.display = 'none'; // Hide
+                    }
+                });
+            });
+        });
     }
 
     // --- Initialize the entire portfolio ---
