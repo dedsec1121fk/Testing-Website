@@ -73,17 +73,6 @@ function initializeBurgerMenu() {
                 navOverlay.classList.remove('active');
             });
         });
-        
-        // Close menu when clicking on the burger icon when active (X)
-        document.addEventListener('click', function(e) {
-            if (burgerIcon.classList.contains('active') && 
-                !navMenu.contains(e.target) && 
-                !burgerIcon.contains(e.target)) {
-                burgerIcon.classList.remove('active');
-                navMenu.classList.remove('active');
-                navOverlay.classList.remove('active');
-            }
-        });
     }
 }
 

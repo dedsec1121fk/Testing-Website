@@ -143,14 +143,11 @@
     max-width: 800px;
     margin: 0 auto;
     padding: 20px 15px;
-    padding-top: 60px; /* Added padding to avoid burger menu */
 }
 
 .page-header {
     text-align: center;
     margin-bottom: 30px;
-    padding-left: 40px; /* Added padding to shift titles left */
-    padding-right: 40px; /* Balance padding */
 }
 
 .page-header h1 {
@@ -179,14 +176,12 @@
     font-family: 'Orbitron', sans-serif;
     margin-bottom: 15px;
     font-size: 1.3rem;
-    padding-left: 10px; /* Added padding to shift titles left */
 }
 
 .content-section h3 {
     color: var(--nm-accent);
     margin: 20px 0 10px 0;
     font-size: 1.1rem;
-    padding-left: 10px; /* Added padding to shift titles left */
 }
 
 .content-section p {
@@ -208,11 +203,6 @@
 }
 
 /* Light theme adjustments */
-body.light-theme {
-    --nm-text: #000000; /* Ultra black text in light theme */
-    --nm-text-muted: #333333; /* Darker muted text */
-}
-
 body.light-theme .nav-menu {
     background: var(--nm-container);
     border-left: 1px solid var(--nm-border);
