@@ -148,16 +148,16 @@
 .page-content {
     max-width: 800px;
     margin: 0 auto;
-    /* Reduced top padding slightly since we move the header down */
+    /* Retain general padding */
     padding: 20px 15px; 
 }
 
 .page-header {
     text-align: center;
     margin-bottom: 30px;
-    /* *** FIX FOR OVERLAP *** */
-    margin-top: 55px; 
-    /* ********************** */
+    /* *** CRITICAL FIX: Increased margin-top to guarantee clearance from fixed menu *** */
+    margin-top: 80px; 
+    /* ******************************************************************************** */
     box-sizing: border-box; 
 }
 
