@@ -17,21 +17,18 @@
     z-index: 1001;
 }
 
-/* === MODIFIED: Changed to purple circle, removed black background, reduced size by 10% === */
 .burger-icon {
-    width: 27px; /* 10% reduction from 30px base */
-    height: 27px; /* Made square for perfect circle */
+    width: 31.5px; /* 30px * 1.05 = 31.5px */
+    height: 26.25px; /* 25px * 1.05 = 26.25px */
     position: relative;
     cursor: pointer;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    background: transparent; /* REMOVED black background */
+    background: #000000;
     padding: 6px;
-    border-radius: 50%; /* CHANGED to circle */
-    border: 2px solid var(--nm-accent); /* ADDED purple border for visibility */
-    transform: none; /* Removed previous scale */
-    transition: all 0.3s ease;
+    border-radius: 4px;
+    transform: scale(1.05); /* 5% bigger */
     z-index: 1002;
 }
 
@@ -148,17 +145,14 @@
 .page-content {
     max-width: 800px;
     margin: 0 auto;
-    /* Retain general padding */
-    padding: 20px 15px; 
+    padding: 20px 15px;
 }
 
 .page-header {
     text-align: center;
     margin-bottom: 30px;
-    /* *** CRITICAL FIX: Increased margin-top to guarantee clearance from fixed menu *** */
-    margin-top: 80px; 
-    /* ******************************************************************************** */
-    box-sizing: border-box; 
+    /* FIXED: Removed padding-right: 60px; to allow proper centering */
+    box-sizing: border-box; /* Ensures padding is calculated correctly */
 }
 
 /* === UPDATED: Reposition page titles to be more left === */
@@ -168,6 +162,7 @@
     font-size: 2rem;
     margin-bottom: 10px;
     text-transform: uppercase;
+    /* margin-right: 60px; /* FIXED: Removed this rule. It breaks centering. */
 }
 
 .page-header p {
@@ -178,7 +173,7 @@
 .content-section {
     margin-bottom: 30px;
     padding: 20px;
-    background: var(--nm-container-bg); 
+    background: var(--nm-container-bg); /* FIXED: Use RGBA var for opacity */
     border: 1px solid var(--nm-border);
     border-radius: 20px;
 }
@@ -366,7 +361,7 @@ body.light-theme .nav-control-btn:hover {
     display: flex;
     align-items: center;
     padding: 15px;
-    background: var(--nm-darkest-bg); 
+    background: var(--nm-darkest-bg); /* FIXED: Use RGBA var for opacity */
     border: 1px solid var(--nm-border);
     border-radius: 20px;
     text-decoration: none;
@@ -396,7 +391,7 @@ body.light-theme .nav-control-btn:hover {
 
 /* Collaboration specific styles */
 .collaboration-card {
-    background: var(--nm-darkest-bg); 
+    background: var(--nm-darkest-bg); /* FIXED: Use RGBA var for opacity */
     border: 1px solid var(--nm-border);
     border-radius: 20px;
     padding: 20px;
@@ -452,7 +447,7 @@ body.light-theme .nav-control-btn:hover {
     flex-direction: column;
     align-items: center;
     padding: 20px;
-    background: var(--nm-darkest-bg); 
+    background: var(--nm-darkest-bg); /* FIXED: Use RGBA var for opacity */
     border: 1px solid var(--nm-border);
     border-radius: 20px;
     text-decoration: none;
@@ -474,7 +469,7 @@ body.light-theme .nav-control-btn:hover {
 
 /* Credits list */
 .credits-list {
-    background: var(--nm-darkest-bg); 
+    background: var(--nm-darkest-bg); /* FIXED: Use RGBA var for opacity */
     border: 1px solid var(--nm-border);
     border-radius: 20px;
     padding: 20px;
@@ -493,7 +488,7 @@ body.light-theme .nav-control-btn:hover {
 
 /* Article cards */
 .article-card {
-    background: var(--nm-darkest-bg); 
+    background: var(--nm-darkest-bg); /* FIXED: Use RGBA var for opacity */
     border: 1px solid var(--nm-border);
     border-radius: 20px;
     padding: 20px;
@@ -527,7 +522,7 @@ body.light-theme .nav-control-btn:hover {
 /* Code container styles */
 .code-container {
     position: relative;
-    background: var(--nm-darkest-bg); 
+    background: var(--nm-darkest-bg); /* FIXED: Use RGBA var for opacity */
     border: 1px solid var(--nm-border);
     padding: 15px;
     margin: 1em 0;
@@ -565,7 +560,7 @@ body.light-theme .nav-control-btn:hover {
 
 /* Note and tip styles */
 .note {
-    background: var(--nm-dark-bg); 
+    background: var(--nm-dark-bg); /* FIXED: Use RGBA var for opacity */
     border-left: 4px solid var(--nm-warning);
     padding: 15px;
     margin: 15px 0;
@@ -574,16 +569,16 @@ body.light-theme .nav-control-btn:hover {
 
 .note-danger {
     border-left-color: var(--nm-danger);
-    background: var(--danger-bg); 
+    background: var(--danger-bg); /* Already RGBA */
 }
 
 .note-warning {
     border-left-color: var(--nm-warning);
-    background: var(--warning-bg); 
+    background: var(--warning-bg); /* Already RGBA */
 }
 
 .tip {
-    background: var(--nm-dark-bg); 
+    background: var(--nm-dark-bg); /* FIXED: Use RGBA var for opacity */
     border-left: 4px solid var(--nm-success);
     padding: 15px;
     margin: 15px 0;
@@ -599,6 +594,8 @@ body.light-theme .nav-control-btn:hover {
     text-align: center;
     font-style: italic;
 }
+
+/* === FIXED: Removed opacity rule === */
 
 /* Responsive design */
 @media (max-width: 768px) {
@@ -616,6 +613,8 @@ body.light-theme .nav-control-btn:hover {
     }
 }
 
+/* === FIXED: Removed redundant forced color blocks === */
+
 /* === NEW: Styles for Collaboration & Portfolio Pages === */
 
 /* Collaboration Page - Carousel */
@@ -627,6 +626,7 @@ body.light-theme .nav-control-btn:hover {
     overflow: hidden;
     border-radius: 20px;
     border: 1px solid var(--nm-border);
+    /* FIXED: Removed opacity: 0.85; */
 }
 
 .gym-clothing-images {
@@ -637,12 +637,12 @@ body.light-theme .nav-control-btn:hover {
 .gym-clothing-images img {
     width: 100%;
     height: auto;
-    display: none; 
+    display: none; /* Hide all by default */
     vertical-align: middle;
 }
 
 .gym-clothing-images img.active {
-    display: block; 
+    display: block; /* Show only active */
     animation: fadeIn 0.5s ease;
 }
 
@@ -796,6 +796,7 @@ body.light-theme .nav-control-btn:hover {
     flex-direction: column;
     gap: 15px;
     align-items: center;
+    /* FIXED: Removed opacity: 0.85; */
 }
 
 .github-stats img {
