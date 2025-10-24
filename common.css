@@ -155,9 +155,9 @@
     font-size: 0.9rem;
 }
 
-/* Page content styles */
+/* === UPDATED: Page content styles for full width usage === */
 .page-content {
-    max-width: 800px;
+    max-width: 100%; /* Changed from 800px to use full width */
     margin: 0 auto;
     padding: 20px 15px;
     width: 100%;
@@ -458,11 +458,11 @@ body.light-theme .nav-control-btn:hover {
     color: var(--nm-accent);
 }
 
-/* Contact grid styles */
+/* === UPDATED: Contact grid styles for better portfolio layout === */
 .contact-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 15px;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
     margin: 20px 0;
     width: 100%;
 }
@@ -471,7 +471,7 @@ body.light-theme .nav-control-btn:hover {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 20px 15px;
+    padding: 25px 20px;
     background: var(--nm-darkest-bg);
     border: 1px solid var(--nm-border);
     border-radius: 20px;
@@ -479,7 +479,7 @@ body.light-theme .nav-control-btn:hover {
     color: var(--nm-text);
     transition: all 0.3s ease;
     text-align: center;
-    min-height: 80px;
+    min-height: 100px;
     justify-content: center;
     box-sizing: border-box;
 }
@@ -491,14 +491,13 @@ body.light-theme .nav-control-btn:hover {
 }
 
 .contact-grid .app-icon i {
-    font-size: 2rem;
-    margin-bottom: 10px;
+    font-size: 2.5rem;
+    margin-bottom: 15px;
 }
 
 .contact-grid .app-icon span {
-    font-size: 0.85rem;
-    line-height: 1.3;
-    margin-top: 8px;
+    font-size: 0.9rem;
+    line-height: 1.4;
     word-break: break-word;
     overflow-wrap: break-word;
 }
@@ -657,9 +656,14 @@ body.light-theme .nav-control-btn:hover {
     .burger-icon span {
         height: 18px;
     }
+    
+    .contact-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
 }
 
-/* === Fix for learn page text overflow === */
+/* === Fix for learn page text overflow and full width usage === */
 .content-section .tool-details {
     word-wrap: break-word;
     overflow-wrap: break-word;
@@ -695,6 +699,8 @@ body.light-theme .nav-control-btn:hover {
     background: var(--nm-dark-bg);
     border-radius: 15px;
     border-left: 3px solid var(--nm-accent);
+    width: 100%;
+    box-sizing: border-box;
 }
 
 /* === NEW: Styles for Collaboration & Portfolio Pages === */
