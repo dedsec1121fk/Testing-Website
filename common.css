@@ -2,14 +2,16 @@
 .burger-menu {
     position: fixed;
     top: 0;
-    right: 0;
-    z-index: 1000;
+    /* Move to top left to avoid titles, and increase z-index to fix 'X' close issue. */
+    left: 0; 
+    z-index: 1002; 
 }
 
-/* === UPDATED: Burger menu exactly at top right corner and 5% bigger === */
+/* === UPDATED: Burger menu positioning and container styles === */
 .burger-icon-container {
     display: flex;
-    justify-content: flex-end;
+    /* Align icon to the left for the new position */
+    justify-content: flex-start; 
     padding: 15px;
 }
 
@@ -337,200 +339,106 @@ body.light-theme .nav-control-btn:hover {
     color: white;
     font-size: 0.7rem;
     font-weight: bold;
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6);
 }
 
-/* Useful Information app grid */
-#useful-information-nav.app-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 15px;
+/* Modal styles */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
     width: 100%;
-    max-width: 500px;
-    margin: 0 auto;
-}
-
-#useful-information-nav .app-icon {
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    z-index: 10000;
     display: flex;
+    justify-content: center;
     align-items: center;
-    padding: 15px;
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s 0.3s, opacity 0.3s ease;
+}
+
+.modal-overlay.visible {
+    visibility: visible;
+    opacity: 1;
+    transition: visibility 0s, opacity 0.3s ease;
+}
+
+.modal-content {
     background: var(--nm-darkest);
-    border: 1px solid var(--nm-border);
+    border: 2px solid var(--nm-accent);
     border-radius: 20px;
-    text-decoration: none;
-    color: var(--nm-text);
-    transition: all 0.3s ease;
-    width: 100%;
-    box-sizing: border-box;
+    padding: 30px;
+    max-width: 90%;
+    max-height: 90%;
+    overflow-y: auto;
+    position: relative;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    transform: scale(0.9);
+    transition: transform 0.3s ease;
 }
 
-#useful-information-nav .app-icon:hover {
-    background: var(--nm-accent);
-    color: var(--nm-darkest);
-    transform: translateY(-2px);
+.modal-overlay.visible .modal-content {
+    transform: scale(1);
 }
 
-#useful-information-nav .app-icon i {
+.close-modal {
+    position: absolute;
+    top: 10px;
+    right: 15px;
     font-size: 1.5rem;
-    margin-right: 15px;
-    flex-shrink: 0;
+    color: var(--nm-text-muted);
+    cursor: pointer;
+    transition: color 0.3s ease;
 }
 
-#useful-information-nav .app-icon span {
-    font-size: 0.9rem;
-    font-weight: 500;
-    line-height: 1.3;
+.close-modal:hover {
+    color: var(--nm-accent);
 }
 
-/* Responsive design */
-@media (max-width: 768px) {
-    .nav-menu {
-        width: 250px;
-    }
-    
-    .page-header h1 {
-        font-size: 1.5rem;
-    }
-    
-    .content-section {
-        padding: 15px;
-        margin-bottom: 20px;
-    }
-}
-
-/* Collaboration specific styles */
-.collaboration-card {
-    background: var(--nm-darkest);
-    border: 1px solid var(--nm-border);
-    border-radius: 20px;
+/* Certificate modal specific styles */
+#certificate-modal .modal-content {
     padding: 20px;
-    margin-bottom: 20px;
+    width: 100%;
+    max-width: 400px;
+    background: var(--nm-container);
 }
 
-.collab-header {
-    display: flex;
-    align-items: center;
-    gap: 15px;
+#certificate-form .form-group {
     margin-bottom: 15px;
 }
 
-.collab-header i {
-    font-size: 2rem;
-    color: var(--nm-accent);
-}
-
-.collab-features {
-    margin: 20px 0;
-}
-
-.features-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 15px;
-    margin-top: 15px;
-}
-
-.feature-item {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 10px;
-    background: var(--nm-container);
-    border-radius: 10px;
-}
-
-.feature-item i {
-    color: var(--nm-accent);
-}
-
-/* Contact grid styles */
-.contact-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 15px;
-    margin: 20px 0;
-}
-
-.contact-grid .app-icon {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px;
-    background: var(--nm-darkest);
-    border: 1px solid var(--nm-border);
-    border-radius: 20px;
-    text-decoration: none;
+#certificate-form label {
+    display: block;
+    margin-bottom: 5px;
     color: var(--nm-text);
-    transition: all 0.3s ease;
-    text-align: center;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.9rem;
 }
 
-.contact-grid .app-icon:hover {
-    background: var(--nm-accent);
-    color: var(--nm-darkest);
-    transform: translateY(-2px);
-}
-
-.contact-grid .app-icon i {
-    font-size: 2rem;
-    margin-bottom: 10px;
-}
-
-/* Credits list */
-.credits-list {
-    background: var(--nm-darkest);
+#certificate-form input {
+    width: 100%;
+    padding: 10px;
     border: 1px solid var(--nm-border);
-    border-radius: 20px;
-    padding: 20px;
-}
-
-.credit-item {
-    display: flex;
-    justify-content: space-between;
-    padding: 10px 0;
-    border-bottom: 1px solid var(--nm-border);
-}
-
-.credit-item:last-child {
-    border-bottom: none;
-}
-
-/* Article cards */
-.article-card {
     background: var(--nm-darkest);
-    border: 1px solid var(--nm-border);
-    border-radius: 20px;
-    padding: 20px;
-    text-align: center;
-    transition: all 0.3s ease;
+    color: var(--nm-text);
+    border-radius: 10px;
+    box-sizing: border-box;
+    font-family: 'Roboto Mono', monospace;
 }
 
-.article-card:hover {
-    transform: translateY(-5px);
+#certificate-form input:focus {
+    outline: none;
     border-color: var(--nm-accent);
 }
 
-.article-card i {
-    font-size: 2.5rem;
-    color: var(--nm-accent);
-    margin-bottom: 15px;
-}
-
-.article-card h3 {
-    color: var(--nm-text);
-    margin-bottom: 10px;
-}
-
-.featured-articles {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 20px;
+.form-actions {
     margin-top: 20px;
+    text-align: center;
 }
 
-/* REMOVED: Tips grid styles */
-
-/* Code container styles */
+/* Code block styles */
 .code-container {
     position: relative;
     background: var(--nm-darkest);
@@ -580,28 +488,9 @@ body.light-theme .nav-control-btn:hover {
 
 .note-danger {
     border-left-color: var(--nm-danger);
-    background: rgba(255, 0, 0, 0.1);
 }
 
-.note-warning {
-    border-left-color: var(--nm-warning);
-    background: rgba(255, 255, 0, 0.1);
-}
-
-.tip {
-    background: var(--nm-dark);
-    border-left: 4px solid var(--nm-success);
-    padding: 15px;
-    margin: 15px 0;
-    border-radius: 0 20px 20px 0;
-}
-
-.modal-disclaimer {
-    margin-top: 2rem;
-    padding-top: 1rem;
-    border-top: 1px solid var(--nm-border);
-    font-size: 0.8em;
-    color: var(--nm-text-muted);
-    text-align: center;
-    font-style: italic;
+.note p {
+    margin: 0;
+    font-size: 0.95rem;
 }
