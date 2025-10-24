@@ -42,7 +42,7 @@ body.light-theme {
     --nm-container: #ffffff;
     --nm-border: #cccccc;
     --nm-text: #000000;
-    --nm-text-muted: #555555;
+    --nm-text-muted: #000000; /* Changed to ultra black */
     --nm-warning: #9966FF; 
     --glow-color: rgba(var(--glow-rgb), 0.3);
 }
@@ -126,17 +126,24 @@ body {
     overflow: hidden; 
 }
 
-/* === UPDATED: 80% opacity for all overlay elements === */
+/* === UPDATED: 85% opacity for all overlay elements === */
 .main-header-container,
 .anniversary-banner,
 .hero-section,
 .main-footer,
 .page-content,
 .content-section,
-.modal-content,
+.modal-content {
+    opacity: 0.85;
+}
+
+/* === UPDATED: 100% opacity for search, burger menu, and certificate button === */
+.search-container,
 .burger-icon-container,
-.nav-menu {
-    opacity: 0.80;
+.nav-menu,
+.certificate-btn,
+#generate-certificate {
+    opacity: 1 !important;
 }
 
 .home-screen {
@@ -183,6 +190,7 @@ body.light-theme ::-webkit-scrollbar-thumb {
     box-sizing: border-box;
 }
 
+/* === UPDATED: Reposition title to be more left to fit burger menu === */
 .main-header-container h1 {
     margin: 0;
     text-align: center;
@@ -198,6 +206,7 @@ body.light-theme ::-webkit-scrollbar-thumb {
         0 0 20px var(--nm-accent),
         0 0 30px var(--nm-accent),
         0 0 40px var(--nm-accent-hover);
+    margin-right: 60px; /* Added to make space for burger menu */
 }
 
 /* Search styles */

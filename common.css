@@ -11,6 +11,10 @@
     display: flex;
     justify-content: flex-end;
     padding: 15px;
+    position: fixed;
+    top: 0;
+    right: 0;
+    z-index: 1001;
 }
 
 .burger-icon {
@@ -25,7 +29,7 @@
     padding: 6px;
     border-radius: 4px;
     transform: scale(1.05); /* 5% bigger */
-    z-index: 1001;
+    z-index: 1002;
 }
 
 .burger-icon span {
@@ -150,12 +154,14 @@
     margin-bottom: 30px;
 }
 
+/* === UPDATED: Reposition page titles to be more left === */
 .page-header h1 {
     color: var(--nm-accent);
     font-family: 'Orbitron', sans-serif;
     font-size: 2rem;
     margin-bottom: 10px;
     text-transform: uppercase;
+    margin-right: 60px; /* Added to make space for burger menu */
 }
 
 .page-header p {
