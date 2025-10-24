@@ -141,13 +141,12 @@
     font-size: 0.9rem;
 }
 
-/* === FIXED: Page content properly centered === */
+/* Page content styles */
 .page-content {
     width: 100%;
     max-width: 800px;
     margin: 0 auto;
     padding: 20px 15px;
-    box-sizing: border-box;
 }
 
 .page-header {
@@ -155,15 +154,14 @@
     margin-bottom: 30px;
 }
 
-/* === FIXED: Page titles properly centered with burger menu space === */
+/* === UPDATED: Removed margin-right to center page titles properly === */
 .page-header h1 {
     color: var(--nm-accent);
     font-family: 'Orbitron', sans-serif;
     font-size: 2rem;
     margin-bottom: 10px;
     text-transform: uppercase;
-    padding-right: 60px; /* Changed from margin-right to padding-right for better centering */
-    padding-left: 60px; /* Added for balance */
+    /* margin-right: 60px; REMOVED to center the title */
 }
 
 .page-header p {
@@ -177,7 +175,6 @@
     background: var(--nm-container);
     border: 1px solid var(--nm-border);
     border-radius: 20px;
-    box-sizing: border-box;
 }
 
 .content-section h2 {
@@ -238,13 +235,12 @@ body.light-theme .nav-control-btn:hover {
     color: var(--nm-darkest);
 }
 
-/* === FIXED: Search containers with higher z-index to overlay content === */
+/* Useful Information search styles */
 .modal-search-container {
     position: relative;
     width: 100%;
     max-width: 500px;
     margin: 0 auto 20px auto;
-    z-index: 100; /* Added higher z-index */
 }
 
 .modal-search-container input {
@@ -278,7 +274,6 @@ body.light-theme .nav-control-btn:hover {
     pointer-events: none;
 }
 
-/* === FIXED: Search results with higher z-index to overlay everything === */
 #useful-info-results-container {
     position: absolute;
     top: 105%;
@@ -288,7 +283,7 @@ body.light-theme .nav-control-btn:hover {
     border: 1px solid var(--nm-search-green);
     max-height: 300px;
     overflow-y: auto;
-    z-index: 1000; /* Increased z-index to overlay all content */
+    z-index: 100;
     border-radius: 20px;
 }
 
@@ -401,8 +396,6 @@ body.light-theme .nav-control-btn:hover {
     
     .page-header h1 {
         font-size: 1.5rem;
-        padding-right: 50px; /* Adjusted for mobile */
-        padding-left: 50px; /* Adjusted for mobile */
     }
     
     .content-section {
