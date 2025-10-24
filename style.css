@@ -560,3 +560,33 @@ body.light-theme .modal-content {
         max-width: 900px;
     }
 }
+
+/* === ADDED: Force all text to white in dark mode === */
+body:not(.light-theme) .main-header-container h1,
+body:not(.light-theme) .hero-text,
+body:not(.light-theme) .main-footer,
+body:not(.light-theme) .modal-header h2,
+body:not(.light-theme) .close-modal,
+body:not(.light-theme) .form-group label,
+body:not(.light-theme) .search-container::before,
+body:not(.light-theme) .search-container::after,
+body:not(.light-theme) .anniversary-text h3,
+body:not(.light-theme) .anniversary-text p,
+body:not(.light-theme) .anniversary-icon {
+    color: #FFFFFF;
+}
+
+/* === ADDED: Force all text to black in light mode === */
+body.light-theme .main-header-container h1,
+body.light-theme .hero-text,
+body.light-theme .main-footer,
+body.light-theme .modal-header h2,
+body.light-theme .close-modal,
+body.light-theme .form-group label,
+body.light-theme .search-container::before,
+body.light-theme .search-container::after,
+body.light-theme .anniversary-text h3,
+body.light-theme .anniversary-text p,
+body.light-theme .anniversary-icon {
+    color: #000000;
+}

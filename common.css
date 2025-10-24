@@ -619,3 +619,54 @@ body.light-theme .nav-control-btn:hover {
         margin-bottom: 20px;
     }
 }
+
+/* === ADDED: Force all text to white in dark mode === */
+body:not(.light-theme) .page-header h1,
+body:not(.light-theme) .page-header p,
+body:not(.light-theme) .content-section h2,
+body:not(.light-theme) .content-section h3,
+body:not(.light-theme) .content-section p,
+body:not(.light-theme) .modal-search-container::before,
+body:not(.light-theme) #useful-info-results-container .search-result-item small,
+body:not(.light-theme) .collab-header i,
+body:not(.light-theme) .feature-item i,
+body:not(.light-theme) .article-card i,
+body:not(.light-theme) .article-card h3,
+body:not(.light-theme) .modal-disclaimer,
+body:not(.light-theme) .nav-item,
+body:not(.light-theme) .nav-control-btn,
+body:not(.light-theme) .code-container code {
+    color: #FFFFFF;
+}
+
+/* === ADDED: Force all text to black in light mode === */
+body.light-theme .page-header h1,
+body.light-theme .page-header p,
+body.light-theme .content-section h2,
+body.light-theme .content-section h3,
+body.light-theme .content-section p,
+body.light-theme .modal-search-container::before,
+body.light-theme #useful-info-results-container .search-result-item small,
+body.light-theme .collab-header i,
+body.light-theme .feature-item i,
+body.light-theme .article-card i,
+body.light-theme .article-card h3,
+body.light-theme .modal-disclaimer,
+body.light-theme .nav-item,
+body.light-theme .nav-control-btn,
+body.light-theme .code-container code {
+    color: #000000;
+}
+
+/* Re-apply hover colors so navigation is still usable */
+body:not(.light-theme) .nav-item:hover,
+body:not(.light-theme) .nav-control-btn:hover,
+body:not(.light-theme) .nav-item:hover,
+body:not(.light-theme) .nav-control-btn:hover {
+    color: var(--nm-darkest);
+}
+
+body.light-theme .nav-item:hover,
+body.light-theme .nav-control-btn:hover {
+    color: var(--nm-darkest);
+}
