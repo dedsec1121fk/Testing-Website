@@ -1,43 +1,44 @@
 /* Common styles for all pages */
 .burger-menu {
     position: fixed;
-    top: 15px;
-    right: 15px;
+    top: 0;
+    right: 0;
     z-index: 1000;
 }
 
+/* === UPDATED: Burger menu exactly at top right corner and 5% bigger === */
 .burger-icon-container {
     display: flex;
     justify-content: flex-end;
-    padding: 10px;
+    padding: 15px;
 }
 
-/* === UPDATED: Burger menu with purple lines, black background, and 15% smaller === */
 .burger-icon {
-    width: 25.5px; /* 30px * 0.85 = 25.5px */
-    height: 21.25px; /* 25px * 0.85 = 21.25px */
+    width: 31.5px; /* 30px * 1.05 = 31.5px */
+    height: 26.25px; /* 25px * 1.05 = 26.25px */
     position: relative;
     cursor: pointer;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    background: #000000; /* Black background */
-    padding: 5px;
+    background: #000000;
+    padding: 6px;
     border-radius: 4px;
-    transform: scale(0.85); /* 15% smaller */
+    transform: scale(1.05); /* 5% bigger */
+    z-index: 1001;
 }
 
 .burger-icon span {
     display: block;
     height: 3px;
     width: 100%;
-    background-color: var(--nm-accent); /* Purple lines */
+    background-color: var(--nm-accent);
     border-radius: 3px;
     transition: all 0.3s ease;
 }
 
 .burger-icon.active span:nth-child(1) {
-    transform: rotate(45deg) translate(6px, 6px);
+    transform: rotate(45deg) translate(7px, 7px);
 }
 
 .burger-icon.active span:nth-child(2) {
@@ -45,7 +46,7 @@
 }
 
 .burger-icon.active span:nth-child(3) {
-    transform: rotate(-45deg) translate(6px, -6px);
+    transform: rotate(-45deg) translate(7px, -7px);
 }
 
 .nav-menu {
@@ -60,10 +61,31 @@
     transition: right 0.3s ease;
     overflow-y: auto;
     box-shadow: -5px 0 15px rgba(0,0,0,0.3);
+    z-index: 1000;
 }
 
 .nav-menu.active {
     right: 0;
+}
+
+/* === ADDED: Close overlay for burger menu === */
+.nav-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0s 0.3s;
+}
+
+.nav-overlay.active {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.3s ease;
 }
 
 .nav-item {
@@ -109,7 +131,7 @@
     color: var(--nm-darkest);
 }
 
-/* === UPDATED: Language switcher text === */
+/* Language switcher text */
 #lang-switcher-btn span {
     font-family: 'Roboto Mono', monospace;
     font-size: 0.9rem;
@@ -207,7 +229,7 @@ body.light-theme .nav-control-btn:hover {
     color: var(--nm-darkest);
 }
 
-/* === ADDED: Useful Information search styles === */
+/* Useful Information search styles */
 .modal-search-container {
     position: relative;
     width: 100%;
@@ -316,6 +338,48 @@ body.light-theme .nav-control-btn:hover {
     font-size: 0.7rem;
     font-weight: bold;
     text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
+}
+
+/* Useful Information app grid */
+#useful-information-nav.app-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 15px;
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+#useful-information-nav .app-icon {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    background: var(--nm-darkest);
+    border: 1px solid var(--nm-border);
+    border-radius: 20px;
+    text-decoration: none;
+    color: var(--nm-text);
+    transition: all 0.3s ease;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+#useful-information-nav .app-icon:hover {
+    background: var(--nm-accent);
+    color: var(--nm-darkest);
+    transform: translateY(-2px);
+}
+
+#useful-information-nav .app-icon i {
+    font-size: 1.5rem;
+    margin-right: 15px;
+    flex-shrink: 0;
+}
+
+#useful-information-nav .app-icon span {
+    font-size: 0.9rem;
+    font-weight: 500;
+    line-height: 1.3;
 }
 
 /* Responsive design */
@@ -464,26 +528,7 @@ body.light-theme .nav-control-btn:hover {
     margin-top: 20px;
 }
 
-.tips-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 15px;
-    margin-top: 20px;
-}
-
-.tip-item {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 10px;
-    background: var(--nm-darkest);
-    border: 1px solid var(--nm-border);
-    border-radius: 10px;
-}
-
-.tip-item i {
-    color: var(--nm-success);
-}
+/* REMOVED: Tips grid styles */
 
 /* Code container styles */
 .code-container {

@@ -53,7 +53,7 @@
                     </div>
 
                     <div class="content-section">
-                        <!-- === UPDATED: Fixed search functionality === -->
+                        <!-- Working search functionality -->
                         <div class="search-container modal-search-container">
                             <input type="text" id="useful-info-search-input" placeholder="Search articles..." data-en="Search articles..." data-gr="Αναζήτηση άρθρων...">
                             <div id="useful-info-results-container" class="hidden"></div>
@@ -61,65 +61,13 @@
                         
                         <p id="useful-info-prompt" data-en="Please select an article from the list below to view its content." data-gr="Παρακαλώ επιλέξτε ένα άρθρο από την παρακάτω λίστα για να δείτε το περιεχόμενό του.">Please select an article from the list below to view its content.</p>
                         
+                        <!-- Dynamic articles from GitHub -->
                         <div id="useful-information-nav" class="app-grid">
                             <div class="loading-message" data-en="Loading articles..." data-gr="Φόρτωση άρθρων...">Loading articles...</div>
                         </div>
                     </div>
 
-                    <div class="content-section">
-                        <h2 data-en="Featured Articles" data-gr="Προτεινόμενα Άρθρα">Featured Articles</h2>
-                        
-                        <div class="featured-articles">
-                            <div class="article-card">
-                                <i class="fas fa-shield-alt"></i>
-                                <h3 data-en="Cybersecurity Basics" data-gr="Βασικές Αρχές Κυβερνοασφάλειας">Cybersecurity Basics</h3>
-                                <p data-en="Learn the fundamental concepts of cybersecurity and how to protect yourself online." data-gr="Μάθετε τις βασικές έννοιες της κυβερνοασφάλειας και πώς να προστατεύεστε online.">Learn the fundamental concepts of cybersecurity and how to protect yourself online.</p>
-                            </div>
-                            
-                            <div class="article-card">
-                                <i class="fas fa-lock"></i>
-                                <h3 data-en="Password Security" data-gr="Ασφάλεια Κωδικών">Password Security</h3>
-                                <p data-en="Best practices for creating and managing secure passwords and authentication methods." data-gr="Καλές πρακτικές για τη δημιουργία και διαχείριση ασφαλών κωδικών και μεθόδων πιστοποίησης.">Best practices for creating and managing secure passwords and authentication methods.</p>
-                            </div>
-                            
-                            <div class="article-card">
-                                <i class="fas fa-network-wired"></i>
-                                <h3 data-en="Network Security" data-gr="Ασφάλεια Δικτύου">Network Security</h3>
-                                <p data-en="Understanding network vulnerabilities and how to secure your home and business networks." data-gr="Κατανόηση των ευπαθειών δικτύου και πώς να ασφαλίσετε τα οικιακά και επιχειρηματικά δίκτυά σας.">Understanding network vulnerabilities and how to secure your home and business networks.</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="content-section">
-                        <h2 data-en="Quick Tips" data-gr="Γρήγορες Συμβουλές">Quick Tips</h2>
-                        
-                        <div class="tips-grid">
-                            <div class="tip-item">
-                                <i class="fas fa-check-circle"></i>
-                                <span data-en="Always use two-factor authentication" data-gr="Χρησιμοποιήστε πάντα διπλή πιστοποίηση">Always use two-factor authentication</span>
-                            </div>
-                            <div class="tip-item">
-                                <i class="fas fa-check-circle"></i>
-                                <span data-en="Keep your software updated" data-gr="Κρατήστε το λογισμικό σας ενημερωμένο">Keep your software updated</span>
-                            </div>
-                            <div class="tip-item">
-                                <i class="fas fa-check-circle"></i>
-                                <span data-en="Be cautious with email attachments" data-gr="Να είστε προσεκτικοί με τα συνημμένα email">Be cautious with email attachments</span>
-                            </div>
-                            <div class="tip-item">
-                                <i class="fas fa-check-circle"></i>
-                                <span data-en="Use a VPN on public Wi-Fi" data-gr="Χρησιμοποιήστε VPN σε δημόσια Wi-Fi">Use a VPN on public Wi-Fi</span>
-                            </div>
-                            <div class="tip-item">
-                                <i class="fas fa-check-circle"></i>
-                                <span data-en="Regularly backup your data" data-gr="Δημιουργήστε τακτικά αντίγραφα ασφαλείας">Regularly backup your data</span>
-                            </div>
-                            <div class="tip-item">
-                                <i class="fas fa-check-circle"></i>
-                                <span data-en="Learn to recognize phishing attempts" data-gr="Μάθετε να αναγνωρίζετε προσπάθειες phishing">Learn to recognize phishing attempts</span>
-                            </div>
-                        </div>
-                    </div>
+                    <!-- === REMOVED: Tips section completely === -->
 
                     <div class="content-section">
                         <div class="modal-disclaimer">
@@ -128,19 +76,6 @@
                     </div>
                 </div>
             </main>
-        </div>
-    </div>
-
-    <!-- Article Modal (for displaying article content) -->
-    <div id="article-modal" class="modal-overlay">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 id="article-modal-title"></h2>
-                <button class="close-modal" aria-label="Close">×</button>
-            </div>
-            <div class="modal-body" id="article-modal-content">
-                <!-- Article content will be loaded here -->
-            </div>
         </div>
     </div>
 

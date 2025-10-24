@@ -126,7 +126,7 @@ body {
     overflow: hidden; 
 }
 
-/* === ADDED: 77% opacity for all overlay elements === */
+/* === UPDATED: 80% opacity for all overlay elements === */
 .main-header-container,
 .anniversary-banner,
 .hero-section,
@@ -136,7 +136,7 @@ body {
 .modal-content,
 .burger-icon-container,
 .nav-menu {
-    opacity: 0.77;
+    opacity: 0.80;
 }
 
 .home-screen {
