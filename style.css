@@ -5,7 +5,7 @@
 */
 
 :root {
-    /* Digital Lavender Palette */
+    /* Color Palette */
     --nm-abyss-blue: #01040a; 
     --nm-darkest: #0B121C;    
     --nm-dark: #151E2A;       
@@ -16,28 +16,15 @@
     --nm-text: #FFFFFF;       
     --nm-text-muted: #7A8899;  
     --nm-danger: #FF0000;      
-    --nm-danger-hover: #FF0000; 
     --nm-success: #00FF00;     
     --nm-warning: #FFFF00;     
     
-    --glow-rgb: 153, 102, 255;
-    --glow-color: rgba(var(--glow-rgb), 0.0); 
-    --nm-search-green: var(--nm-accent); 
-    --glow-color-search: rgba(var(--glow-rgb), 0.0); 
-    --glow-color-danger: rgba(255, 0, 0, 0.0); 
-    --glow-color-warning: rgba(255, 255, 0, 0.8); 
-
-    --warning-bg: rgba(255, 255, 0, 0.1);
-    --danger-bg: rgba(255, 0, 0, 0.1);
-    
-    /* === ADDED: RGBA backgrounds for opacity effect === */
+    /* RGBA backgrounds for consistent semi-transparent effect */
     --nm-container-bg: rgba(31, 42, 56, 0.85);
     --nm-darkest-bg: rgba(11, 18, 28, 0.85);
     --nm-dark-bg: rgba(21, 30, 42, 0.85);
-
-    --safe-area-inset-bottom: env(safe-area-inset-bottom, 10px);
-    --shape-cut: 20px;
-    --clip-path-shape: none; 
+    --warning-bg: rgba(255, 255, 0, 0.1);
+    --danger-bg: rgba(255, 0, 0, 0.1);
 }
 
 body.light-theme {
@@ -47,20 +34,11 @@ body.light-theme {
     --nm-container: #ffffff;
     --nm-border: #cccccc;
     --nm-text: #000000;
-    --nm-text-muted: #000000; /* Changed to ultra black */
-    --nm-warning: #9966FF; 
-    --glow-color: rgba(var(--glow-rgb), 0.3);
+    --nm-text-muted: #555555;
     
-    /* === ADDED: RGBA backgrounds for opacity effect === */
     --nm-container-bg: rgba(255, 255, 255, 0.85);
     --nm-darkest-bg: rgba(240, 240, 240, 0.85);
     --nm-dark-bg: rgba(233, 233, 233, 0.85);
-}
-
-/* Light theme background logo */
-body.light-theme .screen::after {
-    background-image: url('https://raw.githubusercontent.com/dedsec1121fk/dedsec1121fk.github.io/6f776cd9772a079a6d26370dddab911bf7cde8cd/Assets/Images/Logos/Custom%20White%20Purple%20Fox%20Logo.jpg') !important;
-    opacity: 0.3;
 }
 
 /* Base styles */
@@ -87,9 +65,6 @@ body {
     height: 100%;
     background: var(--nm-darkest);
     position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     box-sizing: border-box;
     transition: background-color 0.3s ease, width 0.3s ease, height 0.3s ease, border-radius 0.3s ease;
 }
@@ -99,7 +74,6 @@ body {
     height: 100%;
     background-color: var(--nm-abyss-blue);
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 800 800' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3E/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-    background-size: cover, cover; 
     position: relative;
     overflow: hidden;
     display: flex;
@@ -112,10 +86,8 @@ body {
 .screen::after {
     content: '';
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
     background-image: url('https://raw.githubusercontent.com/dedsec1121fk/dedsec1121fk.github.io/5860edb8a7468d955336c9cf1d8b357597d6d645/Assets/Images/Logos/Custom%20Black%20Purple%20Fox%20Logo.png');
     background-size: contain;
     background-position: center;
@@ -125,23 +97,15 @@ body {
     transition: background-image 0.3s ease, opacity 0.3s ease;
 }
 
-.screen-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 1;
-    overflow: hidden; 
+body.light-theme .screen::after {
+    background-image: url('https://raw.githubusercontent.com/dedsec1121fk/dedsec1121fk.github.io/6f776cd9772a079a6d26370dddab911bf7cde8cd/Assets/Images/Logos/Custom%20White%20Purple%20Fox%20Logo.jpg') !important;
 }
 
 .home-screen {
     flex-grow: 1;
     overflow-y: auto;
     overflow-x: hidden;
-    min-height: 0;
-    padding: 0 15px 15px;
+    padding: 20px 15px 15px;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
@@ -149,26 +113,13 @@ body {
 }
 
 /* Custom scrollbar */
-::-webkit-scrollbar {
-    width: 10px;
-}
-::-webkit-scrollbar-track {
-    background: var(--nm-dark);
-}
-::-webkit-scrollbar-thumb {
-    background-color: var(--nm-accent);
-    border-radius: 10px;
-    border: 2px solid var(--nm-dark);
-}
-::-webkit-scrollbar-thumb:hover {
-    background-color: var(--nm-accent-hover);
-}
-body.light-theme ::-webkit-scrollbar-thumb {
-    background-color: #555555; 
-    border-color: var(--nm-dark);
-}
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: var(--nm-dark); }
+::-webkit-scrollbar-thumb { background-color: var(--nm-accent); border-radius: 10px; border: 2px solid var(--nm-dark); }
+::-webkit-scrollbar-thumb:hover { background-color: var(--nm-accent-hover); }
+body.light-theme ::-webkit-scrollbar-thumb { background-color: #555555; }
 
-/* Header styles */
+/* Header styles for index.html */
 .main-header-container {
     display: flex;
     flex-direction: column;
@@ -176,31 +127,24 @@ body.light-theme ::-webkit-scrollbar-thumb {
     width: 100%;
     gap: 15px;
     margin-bottom: 10px;
-    padding: 25px 15px 0 15px;
+    padding-top: 25px;
     box-sizing: border-box;
-    /* FIXED: Removed padding-right: 60px; to allow proper centering */
 }
 
-/* === UPDATED: Reposition title to be more left to fit burger menu === */
 .main-header-container h1 {
     margin: 0;
     text-align: center;
     white-space: nowrap;
-    font-size: clamp(7vw, 9vw, 4.0rem);
+    font-size: clamp(2.5rem, 9vw, 4.0rem);
     color: var(--nm-accent);
     text-shadow: 
-        -1px -1px 0 #000,  
-         1px -1px 0 #000,
-        -1px  1px 0 #000,
-         1px  1px 0 #000,
-        0 0 10px var(--nm-accent),
-        0 0 20px var(--nm-accent),
-        0 0 30px var(--nm-accent),
-        0 0 40px var(--nm-accent-hover);
-    /* margin-right: 60px; /* FIXED: Removed this rule. It breaks centering. */
+        -1px -1px 0 #000, 1px -1px 0 #000,
+        -1px  1px 0 #000, 1px  1px 0 #000,
+        0 0 10px var(--nm-accent), 0 0 20px var(--nm-accent),
+        0 0 30px var(--nm-accent), 0 0 40px var(--nm-accent-hover);
 }
 
-/* Search styles */
+/* Search styles for index.html */
 .search-container {
     position: relative;
     width: 100%;
@@ -212,11 +156,10 @@ body.light-theme ::-webkit-scrollbar-thumb {
     width: 100%;
     padding: 10px 45px;
     background-color: var(--nm-darkest);
-    border: 2px solid var(--nm-search-green);
+    border: 2px solid var(--nm-accent);
     color: var(--nm-text);
     font-family: 'Roboto Mono', monospace;
     font-size: 0.9rem;
-    transition: background-color 0.3s ease;
     border-radius: 50px; 
     box-sizing: border-box;
 }
@@ -232,28 +175,24 @@ body.light-theme ::-webkit-scrollbar-thumb {
     left: 0;
     width: 100%;
     background-color: var(--nm-dark);
-    border: 1px solid var(--nm-search-green);
+    border: 1px solid var(--nm-accent);
     max-height: 300px;
     overflow-y: auto;
     z-index: 100;
     border-radius: 20px;
 }
 
-#search-suggestions-container .search-result-item {
+.search-result-item { /* Shared class for search results */
     padding: 12px 15px;
     color: var(--nm-text);
     cursor: pointer;
     transition: all 0.2s ease;
     border-bottom: 1px solid var(--nm-border);
 }
-#search-suggestions-container .search-result-item:last-child {
-    border-bottom: none;
-}
-
-#search-suggestions-container .search-result-item:hover {
-    background-color: var(--nm-accent); 
-    color: var(--nm-darkest); 
-}
+.search-result-item:last-child { border-bottom: none; }
+.search-result-item:hover { background-color: var(--nm-accent); color: var(--nm-darkest); }
+.search-result-item small { display: block; font-size: 0.7rem; color: var(--nm-text-muted); }
+.search-result-item:hover small { color: rgba(0, 0, 0, 0.7); }
 
 /* Anniversary Banner */
 .anniversary-banner {
@@ -265,105 +204,40 @@ body.light-theme ::-webkit-scrollbar-thumb {
     max-width: 480px;
     width: 100%;
     box-shadow: 0 4px 15px rgba(153, 102, 255, 0.3);
-    position: relative;
-    z-index: 5;
-    box-sizing: border-box;
 }
-
-.anniversary-content {
-    display: flex;
-    align-items: flex-start;
-    gap: 15px;
-    margin-bottom: 15px;
-}
-
-.anniversary-icon {
-    font-size: 2rem;
-    color: var(--nm-text);
-    flex-shrink: 0;
-}
-
-.anniversary-text h3 {
-    margin: 0 0 10px 0;
-    color: var(--nm-text);
-    font-family: 'Orbitron', sans-serif;
-    font-size: 1.2rem;
-    text-align: center;
-    white-space: nowrap; 
-}
-
-.anniversary-text p {
-    margin: 0;
-    color: var(--nm-text);
-    font-size: 0.9rem;
-    line-height: 1.4;
-    text-align: left;
-}
-
+.anniversary-content { display: flex; align-items: flex-start; gap: 15px; margin-bottom: 15px; }
+.anniversary-icon { font-size: 2rem; }
+.anniversary-text h3 { margin: 0 0 10px; font-family: 'Orbitron', sans-serif; font-size: 1.2rem; }
+.anniversary-text p { margin: 0; font-size: 0.9rem; line-height: 1.4; }
 .certificate-btn {
     width: 100%;
     background: linear-gradient(135deg, #FFD700, #FF6B6B);
     border: 2px solid #FFD700;
-    color: #000000;
+    color: #000;
     padding: 12px 20px;
     border-radius: 20px;
     font-family: 'Orbitron', sans-serif;
     font-weight: 700;
-    font-size: 0.9rem;
     cursor: pointer;
     transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
+    display: flex; align-items: center; justify-content: center; gap: 10px;
     box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
 }
-
-.certificate-btn:hover {
-    background: linear-gradient(135deg, #FF6B6B, #FFD700);
-    border-color: #FF6B6B;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(255, 215, 0, 0.5);
-}
+.certificate-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(255, 215, 0, 0.5); }
 
 /* Hero Section */
-.hero-section {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    width: 100%;
-    max-width: 500px;
-    margin: 5px auto;
-    padding: 10px;
-    box-sizing: border-box;
-}
-
-.hero-text {
-    color: var(--nm-text-muted);
-    font-size: 0.9rem;
-    line-height: 1.6;
-    margin: 0 0 20px 0;
-}
+.hero-section { text-align: center; width: 100%; max-width: 500px; margin: 5px auto; }
+.hero-text { color: var(--nm-text-muted); font-size: 0.9rem; line-height: 1.6; }
 
 /* Footer */
-.main-footer {
-    text-align: center;
-    padding: 1rem;
-    font-size: 0.7rem;
-    color: var(--nm-text-muted);
-    margin-top: 25px;
-}
+.main-footer { text-align: center; padding: 1rem; font-size: 0.7rem; color: var(--nm-text-muted); margin-top: 25px; }
 
 /* Modal styles */
 .modal-overlay {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
     background: rgba(1, 8, 17, 0.8);
-    -webkit-backdrop-filter: blur(10px); 
     backdrop-filter: blur(10px); 
     display: flex;
     justify-content: center;
@@ -373,175 +247,64 @@ body.light-theme ::-webkit-scrollbar-thumb {
     visibility: hidden;
     transition: opacity 0.3s ease, visibility 0s 0.3s;
 }
-
-body.light-theme .modal-overlay {
-    background: rgba(255, 255, 255, 0.7);
-}
-
-.modal-overlay.visible {
-    opacity: 1;
-    visibility: visible;
-    transition: opacity 0.3s ease;
-}
-
+body.light-theme .modal-overlay { background: rgba(255, 255, 255, 0.7); }
+.modal-overlay.visible { opacity: 1; visibility: visible; transition: opacity 0.3s ease; }
 .modal-content {
     background: var(--nm-dark);
     width: 95%;
     max-width: 800px;
-    height: 85%;
-    max-height: 800px;
+    max-height: 85dvh; /* Use dynamic viewport height */
     border: 1px solid var(--nm-accent); 
     display: flex;
     flex-direction: column;
-    overflow: hidden;
     transform: translateY(20px);
     transition: all 0.3s ease;
     border-radius: 20px;
 }
-
-.modal-content-auto-height { 
-    height: auto;
-}
-
-body.light-theme .modal-content {
-     box-shadow: 0 5px 25px rgba(0,0,0,0.1);
-     border: 1px solid var(--nm-border);
-}
-
-.modal-overlay.visible .modal-content {
-    transform: translateY(0);
-}
-
+.modal-content-auto-height { height: auto; }
+.modal-overlay.visible .modal-content { transform: translateY(0); }
 .modal-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 12px 20px;
-    background: rgba(11, 18, 28, 0.5);
+    background: var(--nm-darkest-bg);
     border-bottom: 1px solid var(--nm-border);
-    transition: background-color 0.3s ease;
     flex-shrink: 0;
 }
-
-.modal-header h2 {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 1.1rem;
-    margin: 0;
-    color: var(--nm-text);
-    text-transform: uppercase;
-}
-
-.close-modal {
-    background: none;
-    border: none;
-    color: var(--nm-text-muted);
-    font-size: 1.5rem;
-    cursor: pointer;
-    transition: color 0.2s;
-    padding: 0;
-    line-height: 1;
-}
-
-.close-modal:hover {
-    color: var(--nm-danger);
-}
-
-.modal-body {
-    padding: 25px;
-    overflow-y: auto;
-    flex-grow: 1;
-    line-height: 1.7;
-    min-height: 0;
-}
+.modal-header h2 { font-family: 'Orbitron', sans-serif; font-size: 1.1rem; margin: 0; }
+.close-modal { background: none; border: none; color: var(--nm-text-muted); font-size: 1.5rem; cursor: pointer; transition: color 0.2s; }
+.close-modal:hover { color: var(--nm-danger); }
+.modal-body { padding: 25px; overflow-y: auto; flex-grow: 1; line-height: 1.7; }
 
 /* Certificate form styles */
-.certificate-form-container {
-    max-width: 500px;
-    margin: 0 auto;
-}
-
-.form-group {
-    margin-bottom: 20px;
-}
-
-.form-group label {
-    display: block;
-    margin-bottom: 8px;
-    color: var(--nm-text);
-    font-weight: bold;
-    font-family: 'Roboto Mono', monospace;
-}
-
+.form-group { margin-bottom: 20px; }
+.form-group label { display: block; margin-bottom: 8px; font-weight: bold; }
 .form-group input {
     width: 100%;
     padding: 12px 15px;
     background-color: var(--nm-darkest);
     border: 2px solid var(--nm-border);
     color: var(--nm-text);
-    border-radius: 20px;
+    border-radius: 10px;
     font-family: 'Roboto Mono', monospace;
-    font-size: 0.9rem;
     transition: all 0.3s ease;
     box-sizing: border-box;
 }
-
-.form-group input:focus {
-    outline: none;
-    border-color: var(--nm-accent);
-    background-color: var(--nm-dark);
-}
-
-.form-actions {
-    text-align: center;
-    margin-top: 30px;
-}
-
+.form-group input:focus { outline: none; border-color: var(--nm-accent); background-color: var(--nm-dark); }
+.form-actions { text-align: center; margin-top: 30px; }
 #generate-certificate {
-    background: linear-gradient(135deg, var(--nm-success), #00CC00);
-    border: 2px solid var(--nm-success);
-    color: #000000;
+    background: var(--nm-success);
+    border: none;
+    color: #000;
     padding: 15px 30px;
-    border-radius: 20px;
+    border-radius: 10px;
     font-family: 'Orbitron', sans-serif;
     font-weight: 700;
-    font-size: 1rem;
     cursor: pointer;
     transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    margin: 0 auto;
 }
-
-#generate-certificate:hover {
-    background: linear-gradient(135deg, #00CC00, var(--nm-success));
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(0, 255, 0, 0.3);
-}
-
-/* Search bar icons */
-.search-container::before,
-.search-container::after {
-    font-family: 'Font Awesome 5 Free', 'FontAwesome';
-    font-weight: 900;
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    color: var(--nm-text-muted);
-    z-index: 2;
-    pointer-events: none;
-}
-
-.search-container::before {
-    content: '\f002';
-    left: 20px;
-}
-
-.search-container::after {
-    content: '\f0ac';
-    right: 20px;
-}
+#generate-certificate:hover { background: #00DD00; transform: translateY(-2px); }
 
 /* Responsive design */
 @media (min-width: 768px) {
@@ -554,31 +317,5 @@ body.light-theme .modal-content {
         box-shadow: 0 10px 40px rgba(0,0,0,0.5);
         border: 4px solid var(--nm-darkest);
     }
-
-    .search-container,
-    .hero-section {
-        max-width: 700px;
-    }
-
-    .main-header-container h1 {
-        font-size: clamp(2.5rem, 4vw, 3.5rem);
-    }
-}
-
-@media (min-width: 1200px) {
-    .search-container,
-    .hero-section {
-        max-width: 900px;
-    }
-}
-
-/* === FIXED: Removed redundant forced color blocks === */
-
-/* Re-apply hover colors for search results */
-#search-suggestions-container .search-result-item:hover {
-    color: var(--nm-darkest);
-}
-
-#search-suggestions-container .search-result-item:hover small {
-    color: rgba(0, 0, 0, 0.7);
+    .main-header-container h1 { font-size: clamp(2.5rem, 4vw, 3.5rem); }
 }
