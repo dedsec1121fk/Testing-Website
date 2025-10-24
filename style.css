@@ -29,6 +29,11 @@
 
     --warning-bg: rgba(255, 255, 0, 0.1);
     --danger-bg: rgba(255, 0, 0, 0.1);
+    
+    /* === ADDED: RGBA backgrounds for opacity effect === */
+    --nm-container-bg: rgba(31, 42, 56, 0.85);
+    --nm-darkest-bg: rgba(11, 18, 28, 0.85);
+    --nm-dark-bg: rgba(21, 30, 42, 0.85);
 
     --safe-area-inset-bottom: env(safe-area-inset-bottom, 10px);
     --shape-cut: 20px;
@@ -45,6 +50,11 @@ body.light-theme {
     --nm-text-muted: #000000; /* Changed to ultra black */
     --nm-warning: #9966FF; 
     --glow-color: rgba(var(--glow-rgb), 0.3);
+    
+    /* === ADDED: RGBA backgrounds for opacity effect === */
+    --nm-container-bg: rgba(255, 255, 255, 0.85);
+    --nm-darkest-bg: rgba(240, 240, 240, 0.85);
+    --nm-dark-bg: rgba(233, 233, 233, 0.85);
 }
 
 /* Light theme background logo */
@@ -168,7 +178,7 @@ body.light-theme ::-webkit-scrollbar-thumb {
     margin-bottom: 10px;
     padding: 25px 15px 0 15px;
     box-sizing: border-box;
-    padding-right: 60px; /* FIXED: Added padding to container for burger menu */
+    /* FIXED: Removed padding-right: 60px; to allow proper centering */
 }
 
 /* === UPDATED: Reposition title to be more left to fit burger menu === */
@@ -562,32 +572,13 @@ body.light-theme .modal-content {
     }
 }
 
-/* === ADDED: Force all text to white in dark mode === */
-body:not(.light-theme) .main-header-container h1,
-body:not(.light-theme) .hero-text,
-body:not(.light-theme) .main-footer,
-body:not(.light-theme) .modal-header h2,
-body:not(.light-theme) .close-modal,
-body:not(.light-theme) .form-group label,
-body:not(.light-theme) .search-container::before,
-body:not(.light-theme) .search-container::after,
-body:not(.light-theme) .anniversary-text h3,
-body:not(.light-theme) .anniversary-text p,
-body:not(.light-theme) .anniversary-icon {
-    color: #FFFFFF;
+/* === FIXED: Removed redundant forced color blocks === */
+
+/* Re-apply hover colors for search results */
+#search-suggestions-container .search-result-item:hover {
+    color: var(--nm-darkest);
 }
 
-/* === ADDED: Force all text to black in light mode === */
-body.light-theme .main-header-container h1,
-body.light-theme .hero-text,
-body.light-theme .main-footer,
-body.light-theme .modal-header h2,
-body.light-theme .close-modal,
-body.light-theme .form-group label,
-body.light-theme .search-container::before,
-body.light-theme .search-container::after,
-body.light-theme .anniversary-text h3,
-body.light-theme .anniversary-text p,
-body.light-theme .anniversary-icon {
-    color: #000000;
+#search-suggestions-container .search-result-item:hover small {
+    color: rgba(0, 0, 0, 0.7);
 }

@@ -151,7 +151,7 @@
 .page-header {
     text-align: center;
     margin-bottom: 30px;
-    padding-right: 60px; /* FIXED: Added padding to container for burger menu */
+    /* FIXED: Removed padding-right: 60px; to allow proper centering */
     box-sizing: border-box; /* Ensures padding is calculated correctly */
 }
 
@@ -173,7 +173,7 @@
 .content-section {
     margin-bottom: 30px;
     padding: 20px;
-    background: var(--nm-container);
+    background: var(--nm-container-bg); /* FIXED: Use RGBA var for opacity */
     border: 1px solid var(--nm-border);
     border-radius: 20px;
 }
@@ -361,7 +361,7 @@ body.light-theme .nav-control-btn:hover {
     display: flex;
     align-items: center;
     padding: 15px;
-    background: var(--nm-darkest);
+    background: var(--nm-darkest-bg); /* FIXED: Use RGBA var for opacity */
     border: 1px solid var(--nm-border);
     border-radius: 20px;
     text-decoration: none;
@@ -391,7 +391,7 @@ body.light-theme .nav-control-btn:hover {
 
 /* Collaboration specific styles */
 .collaboration-card {
-    background: var(--nm-darkest);
+    background: var(--nm-darkest-bg); /* FIXED: Use RGBA var for opacity */
     border: 1px solid var(--nm-border);
     border-radius: 20px;
     padding: 20px;
@@ -447,7 +447,7 @@ body.light-theme .nav-control-btn:hover {
     flex-direction: column;
     align-items: center;
     padding: 20px;
-    background: var(--nm-darkest);
+    background: var(--nm-darkest-bg); /* FIXED: Use RGBA var for opacity */
     border: 1px solid var(--nm-border);
     border-radius: 20px;
     text-decoration: none;
@@ -469,7 +469,7 @@ body.light-theme .nav-control-btn:hover {
 
 /* Credits list */
 .credits-list {
-    background: var(--nm-darkest);
+    background: var(--nm-darkest-bg); /* FIXED: Use RGBA var for opacity */
     border: 1px solid var(--nm-border);
     border-radius: 20px;
     padding: 20px;
@@ -488,7 +488,7 @@ body.light-theme .nav-control-btn:hover {
 
 /* Article cards */
 .article-card {
-    background: var(--nm-darkest);
+    background: var(--nm-darkest-bg); /* FIXED: Use RGBA var for opacity */
     border: 1px solid var(--nm-border);
     border-radius: 20px;
     padding: 20px;
@@ -522,7 +522,7 @@ body.light-theme .nav-control-btn:hover {
 /* Code container styles */
 .code-container {
     position: relative;
-    background: var(--nm-darkest);
+    background: var(--nm-darkest-bg); /* FIXED: Use RGBA var for opacity */
     border: 1px solid var(--nm-border);
     padding: 15px;
     margin: 1em 0;
@@ -560,7 +560,7 @@ body.light-theme .nav-control-btn:hover {
 
 /* Note and tip styles */
 .note {
-    background: var(--nm-dark);
+    background: var(--nm-dark-bg); /* FIXED: Use RGBA var for opacity */
     border-left: 4px solid var(--nm-warning);
     padding: 15px;
     margin: 15px 0;
@@ -569,16 +569,16 @@ body.light-theme .nav-control-btn:hover {
 
 .note-danger {
     border-left-color: var(--nm-danger);
-    background: rgba(255, 0, 0, 0.1);
+    background: var(--danger-bg); /* Already RGBA */
 }
 
 .note-warning {
     border-left-color: var(--nm-warning);
-    background: rgba(255, 255, 0, 0.1);
+    background: var(--warning-bg); /* Already RGBA */
 }
 
 .tip {
-    background: var(--nm-dark);
+    background: var(--nm-dark-bg); /* FIXED: Use RGBA var for opacity */
     border-left: 4px solid var(--nm-success);
     padding: 15px;
     margin: 15px 0;
@@ -595,16 +595,7 @@ body.light-theme .nav-control-btn:hover {
     font-style: italic;
 }
 
-/* === ADDED: Opacity for content boxes === */
-.content-section,
-.collaboration-card,
-.credits-list,
-.article-card,
-.code-container,
-.note,
-.tip {
-    opacity: 0.85;
-}
+/* === FIXED: Removed opacity rule === */
 
 /* Responsive design */
 @media (max-width: 768px) {
@@ -622,56 +613,7 @@ body.light-theme .nav-control-btn:hover {
     }
 }
 
-/* === ADDED: Force all text to white in dark mode === */
-body:not(.light-theme) .page-header h1,
-body:not(.light-theme) .page-header p,
-body:not(.light-theme) .content-section h2,
-body:not(.light-theme) .content-section h3,
-body:not(.light-theme) .content-section p,
-body:not(.light-theme) .modal-search-container::before,
-body:not(.light-theme) #useful-info-results-container .search-result-item small,
-body:not(.light-theme) .collab-header i,
-body:not(.light-theme) .feature-item i,
-body:not(.light-theme) .article-card i,
-body:not(.light-theme) .article-card h3,
-body:not(.light-theme) .modal-disclaimer,
-body:not(.light-theme) .nav-item,
-body:not(.light-theme) .nav-control-btn,
-body:not(.light-theme) .code-container code {
-    color: #FFFFFF;
-}
-
-/* === ADDED: Force all text to black in light mode === */
-body.light-theme .page-header h1,
-body.light-theme .page-header p,
-body.light-theme .content-section h2,
-body.light-theme .content-section h3,
-body.light-theme .content-section p,
-body.light-theme .modal-search-container::before,
-body.light-theme #useful-info-results-container .search-result-item small,
-body.light-theme .collab-header i,
-body.light-theme .feature-item i,
-body.light-theme .article-card i,
-body.light-theme .article-card h3,
-body.light-theme .modal-disclaimer,
-body.light-theme .nav-item,
-body.light-theme .nav-control-btn,
-body.light-theme .code-container code {
-    color: #000000;
-}
-
-/* Re-apply hover colors so navigation is still usable */
-body:not(.light-theme) .nav-item:hover,
-body:not(.light-theme) .nav-control-btn:hover,
-body:not(.light-theme) .nav-item:hover,
-body:not(.light-theme) .nav-control-btn:hover {
-    color: var(--nm-darkest);
-}
-
-body.light-theme .nav-item:hover,
-body.light-theme .nav-control-btn:hover {
-    color: var(--nm-darkest);
-}
+/* === FIXED: Removed redundant forced color blocks === */
 
 /* === NEW: Styles for Collaboration & Portfolio Pages === */
 
@@ -684,7 +626,7 @@ body.light-theme .nav-control-btn:hover {
     overflow: hidden;
     border-radius: 20px;
     border: 1px solid var(--nm-border);
-    opacity: 0.85; /* Match other content boxes */
+    /* FIXED: Removed opacity: 0.85; */
 }
 
 .gym-clothing-images {
@@ -854,11 +796,24 @@ body.light-theme .nav-control-btn:hover {
     flex-direction: column;
     gap: 15px;
     align-items: center;
-    opacity: 0.85; /* Match other content boxes */
+    /* FIXED: Removed opacity: 0.85; */
 }
 
 .github-stats img {
     width: 100%;
     max-width: 600px;
     height: auto;
+}
+
+/* Re-apply hover colors */
+.nav-item:hover,
+.nav-control-btn:hover,
+.contact-grid .app-icon:hover,
+#useful-information-nav .app-icon:hover,
+#useful-info-results-container .search-result-item:hover {
+    color: var(--nm-darkest);
+}
+
+#useful-info-results-container .search-result-item:hover small {
+    color: rgba(0, 0, 0, 0.7);
 }
