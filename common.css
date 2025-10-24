@@ -1,17 +1,17 @@
 /* Common styles for all pages */
 .burger-menu {
-    position: fixed;
+    position: absolute;
     top: 0;
     right: 0;
     z-index: 1000;
 }
 
-/* === UPDATED: Burger menu fixed at top right corner and doesn't scroll === */
+/* === UPDATED: Burger menu positioned relative to page content === */
 .burger-icon-container {
     display: flex;
     justify-content: flex-end;
     padding: 15px;
-    position: fixed;
+    position: absolute;
     top: 0;
     right: 0;
     z-index: 1001;
@@ -147,21 +147,23 @@
     max-width: 800px;
     margin: 0 auto;
     padding: 20px 15px;
+    position: relative; /* Added for burger menu positioning */
 }
 
 .page-header {
     text-align: center;
     margin-bottom: 30px;
+    position: relative; /* Added for burger menu positioning */
 }
 
-/* === UPDATED: Reposition page titles to be more left === */
+/* === UPDATED: Page titles with proper spacing for burger menu === */
 .page-header h1 {
     color: var(--nm-accent);
     font-family: 'Orbitron', sans-serif;
     font-size: 2rem;
     margin-bottom: 10px;
     text-transform: uppercase;
-    margin-right: 60px; /* Added to make space for burger menu */
+    padding-right: 60px; /* Changed from margin-right to padding-right for better spacing */
 }
 
 .page-header p {
