@@ -6,7 +6,7 @@
     z-index: 1000;
 }
 
-/* === UPDATED: Burger menu exactly at top right corner and 5% bigger === */
+/* === UPDATED: Burger menu fixed at top right corner and doesn't scroll === */
 .burger-icon-container {
     display: flex;
     justify-content: flex-end;
