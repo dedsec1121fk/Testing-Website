@@ -1,17 +1,17 @@
 /* Common styles for all pages */
 .burger-menu {
-    position: fixed;
+    position: absolute; /* FIXED: Changed from fixed to absolute */
     top: 0;
     right: 0;
     z-index: 1000;
 }
 
-/* === UPDATED: Circular burger menu without black background === */
+/* === UPDATED: Circular burger menu without black background - POSITIONING FIXED === */
 .burger-icon-container {
     display: flex;
     justify-content: flex-end;
     padding: 15px;
-    position: fixed;
+    position: absolute; /* FIXED: Changed from fixed to absolute */
     top: 0;
     right: 0;
     z-index: 1001;
@@ -67,12 +67,13 @@
     height: 25px;
 }
 
+/* === Navigation Menu - POSITIONING AND HEIGHT FIXED === */
 .nav-menu {
-    position: fixed;
+    position: absolute; /* FIXED: Changed from fixed to absolute */
     top: 0;
     right: -300px;
     width: 280px;
-    height: 100vh;
+    height: 100%; /* FIXED: Changed from 100vh to 100% */
     background: var(--nm-dark);
     border-left: 1px solid var(--nm-border);
     padding: 80px 20px 20px;
@@ -86,9 +87,9 @@
     right: 0;
 }
 
-/* === ADDED: Close overlay for burger menu === */
+/* === ADDED: Close overlay for burger menu - POSITIONING FIXED === */
 .nav-overlay {
-    position: fixed;
+    position: absolute; /* FIXED: Changed from fixed to absolute */
     top: 0;
     left: 0;
     width: 100%;
