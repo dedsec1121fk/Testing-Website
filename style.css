@@ -560,8 +560,3 @@ body.light-theme .modal-content {
         max-width: 900px;
     }
 }
-
-/* === ADDED: Force 100% opacity for all elements === */
-* {
-    opacity: 1 !important;
-}
