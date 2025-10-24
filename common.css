@@ -2,16 +2,17 @@
 .burger-menu {
     position: fixed;
     top: 0;
-    /* Move to top left to avoid titles, and increase z-index to fix 'X' close issue. */
-    left: 0; 
-    z-index: 1002; 
+    /* Change: Move from 'right: 0;' to 'left: 0;' */
+    left: 0;
+    /* Change: Increase z-index for better clickability of the 'X' */
+    z-index: 1002;
 }
 
 /* === UPDATED: Burger menu positioning and container styles === */
 .burger-icon-container {
     display: flex;
-    /* Align icon to the left for the new position */
-    justify-content: flex-start; 
+    /* Change: Align icon to the left for the new position */
+    justify-content: flex-start;
     padding: 15px;
 }
 
@@ -27,7 +28,8 @@
     padding: 6px;
     border-radius: 4px;
     transform: scale(1.05); /* 5% bigger */
-    z-index: 1001;
+    /* Change: Ensure it's on top of everything for 'X' to be clickable */
+    z-index: 1003; 
 }
 
 .burger-icon span {
@@ -275,11 +277,13 @@ body.light-theme .nav-control-btn:hover {
     top: 105%;
     left: 0;
     width: 100%;
-    background-color: var(--nm-dark);
+    /* Fix: Change to darkest background for a full black look */
+    background-color: var(--nm-darkest);
     border: 1px solid var(--nm-search-green);
     max-height: 300px;
     overflow-y: auto;
-    z-index: 100;
+    /* Fix: Increase z-index to ensure it overlays all page content */
+    z-index: 1010;
     border-radius: 20px;
 }
 
@@ -339,106 +343,198 @@ body.light-theme .nav-control-btn:hover {
     color: white;
     font-size: 0.7rem;
     font-weight: bold;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6);
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
 }
 
-/* Modal styles */
-.modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
+/* Useful Information app grid */
+#useful-information-nav.app-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 15px;
     width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.85);
-    z-index: 10000;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+#useful-information-nav .app-icon {
     display: flex;
-    justify-content: center;
     align-items: center;
-    visibility: hidden;
-    opacity: 0;
-    transition: visibility 0s 0.3s, opacity 0.3s ease;
-}
-
-.modal-overlay.visible {
-    visibility: visible;
-    opacity: 1;
-    transition: visibility 0s, opacity 0.3s ease;
-}
-
-.modal-content {
+    padding: 15px;
     background: var(--nm-darkest);
-    border: 2px solid var(--nm-accent);
+    border: 1px solid var(--nm-border);
     border-radius: 20px;
-    padding: 30px;
-    max-width: 90%;
-    max-height: 90%;
-    overflow-y: auto;
-    position: relative;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-    transform: scale(0.9);
-    transition: transform 0.3s ease;
-}
-
-.modal-overlay.visible .modal-content {
-    transform: scale(1);
-}
-
-.close-modal {
-    position: absolute;
-    top: 10px;
-    right: 15px;
-    font-size: 1.5rem;
-    color: var(--nm-text-muted);
-    cursor: pointer;
-    transition: color 0.3s ease;
-}
-
-.close-modal:hover {
-    color: var(--nm-accent);
-}
-
-/* Certificate modal specific styles */
-#certificate-modal .modal-content {
-    padding: 20px;
+    text-decoration: none;
+    color: var(--nm-text);
+    transition: all 0.3s ease;
     width: 100%;
-    max-width: 400px;
-    background: var(--nm-container);
+    box-sizing: border-box;
 }
 
-#certificate-form .form-group {
+#useful-information-nav .app-icon:hover {
+    background: var(--nm-accent);
+    color: var(--nm-darkest);
+    transform: translateY(-2px);
+}
+
+#useful-information-nav .app-icon i {
+    font-size: 1.5rem;
+    margin-right: 15px;
+    flex-shrink: 0;
+}
+
+#useful-information-nav .app-icon span {
+    font-size: 0.9rem;
+    font-weight: 500;
+    line-height: 1.3;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .nav-menu {
+        width: 250px;
+    }
+    
+    .page-header h1 {
+        font-size: 1.5rem;
+    }
+    
+    .content-section {
+        padding: 15px;
+        margin-bottom: 20px;
+    }
+}
+
+/* Collaboration specific styles */
+.collaboration-card {
+    background: var(--nm-darkest);
+    border: 1px solid var(--nm-border);
+    border-radius: 20px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.collab-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
     margin-bottom: 15px;
 }
 
-#certificate-form label {
-    display: block;
-    margin-bottom: 5px;
-    color: var(--nm-text);
-    font-family: 'Orbitron', sans-serif;
-    font-size: 0.9rem;
+.collab-header i {
+    font-size: 2rem;
+    color: var(--nm-accent);
 }
 
-#certificate-form input {
-    width: 100%;
+.collab-features {
+    margin: 20px 0;
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.feature-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
     padding: 10px;
-    border: 1px solid var(--nm-border);
-    background: var(--nm-darkest);
-    color: var(--nm-text);
+    background: var(--nm-container);
     border-radius: 10px;
-    box-sizing: border-box;
-    font-family: 'Roboto Mono', monospace;
 }
 
-#certificate-form input:focus {
-    outline: none;
-    border-color: var(--nm-accent);
+.feature-item i {
+    color: var(--nm-accent);
 }
 
-.form-actions {
-    margin-top: 20px;
+/* Contact grid styles */
+.contact-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 15px;
+    margin: 20px 0;
+}
+
+.contact-grid .app-icon {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    background: var(--nm-darkest);
+    border: 1px solid var(--nm-border);
+    border-radius: 20px;
+    text-decoration: none;
+    color: var(--nm-text);
+    transition: all 0.3s ease;
     text-align: center;
 }
 
-/* Code block styles */
+.contact-grid .app-icon:hover {
+    background: var(--nm-accent);
+    color: var(--nm-darkest);
+    transform: translateY(-2px);
+}
+
+.contact-grid .app-icon i {
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+
+/* Credits list */
+.credits-list {
+    background: var(--nm-darkest);
+    border: 1px solid var(--nm-border);
+    border-radius: 20px;
+    padding: 20px;
+}
+
+.credit-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--nm-border);
+}
+
+.credit-item:last-child {
+    border-bottom: none;
+}
+
+/* Article cards */
+.article-card {
+    background: var(--nm-darkest);
+    border: 1px solid var(--nm-border);
+    border-radius: 20px;
+    padding: 20px;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.article-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--nm-accent);
+}
+
+.article-card i {
+    font-size: 2.5rem;
+    color: var(--nm-accent);
+    margin-bottom: 15px;
+}
+
+.article-card h3 {
+    color: var(--nm-text);
+    margin-bottom: 10px;
+}
+
+.featured-articles {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+/* Code container styles */
 .code-container {
     position: relative;
     background: var(--nm-darkest);
@@ -488,9 +584,28 @@ body.light-theme .nav-control-btn:hover {
 
 .note-danger {
     border-left-color: var(--nm-danger);
+    background: rgba(255, 0, 0, 0.1);
 }
 
-.note p {
-    margin: 0;
-    font-size: 0.95rem;
+.note-warning {
+    border-left-color: var(--nm-warning);
+    background: rgba(255, 255, 0, 0.1);
+}
+
+.tip {
+    background: var(--nm-dark);
+    border-left: 4px solid var(--nm-success);
+    padding: 15px;
+    margin: 15px 0;
+    border-radius: 0 20px 20px 0;
+}
+
+.modal-disclaimer {
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--nm-border);
+    font-size: 0.8em;
+    color: var(--nm-text-muted);
+    text-align: center;
+    font-style: italic;
 }
