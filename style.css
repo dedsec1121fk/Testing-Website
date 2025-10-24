@@ -179,7 +179,7 @@ body.light-theme ::-webkit-scrollbar-thumb {
     width: 100%;
     gap: 15px;
     margin-bottom: 10px;
-    /* FIX: Increased right padding (from 15px to 70px) to move titles left and prevent overlap with the fixed burger menu */
+    /* GLOBAL FIX: Increased right padding (from 15px to 70px) to move titles left and prevent overlap with the fixed burger menu on ALL pages */
     padding: 25px 70px 0 15px;
     box-sizing: border-box;
 }
@@ -207,8 +207,8 @@ body.light-theme ::-webkit-scrollbar-thumb {
     width: 100%;
     max-width: 500px; 
     margin: 0 auto; 
-    /* NEW FIX: Ensure this container has a high stacking context to overlay the banner */
-    z-index: 1015;
+    /* FINAL FIX: Increased z-index to 1100 to absolutely ensure it overlays the banner */
+    z-index: 1100;
 }
 
 #main-search-input {
@@ -239,8 +239,8 @@ body.light-theme ::-webkit-scrollbar-thumb {
     border: 1px solid var(--nm-search-green);
     max-height: 300px;
     overflow-y: auto;
-    /* FIX: Increased z-index to ensure it overlays all page content */
-    z-index: 1016;
+    /* FINAL FIX: Increased z-index to 1100 to absolutely ensure it overlays the banner */
+    z-index: 1100;
     border-radius: 20px;
 }
 
@@ -271,7 +271,8 @@ body.light-theme ::-webkit-scrollbar-thumb {
     width: 100%;
     box-shadow: 0 4px 15px rgba(153, 102, 255, 0.3);
     position: relative;
-    z-index: 5;
+    /* Ensure z-index is lower than search bar (1100) */
+    z-index: 5; 
     box-sizing: border-box;
 }
 

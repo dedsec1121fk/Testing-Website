@@ -235,6 +235,8 @@ body.light-theme .nav-control-btn:hover {
     width: 100%;
     max-width: 500px;
     margin: 0 auto 20px auto;
+    /* NEW FIX: Ensure container size is correct for all pages */
+    box-sizing: border-box; 
 }
 
 .modal-search-container input {
@@ -278,8 +280,8 @@ body.light-theme .nav-control-btn:hover {
     border: 1px solid var(--nm-search-green);
     max-height: 300px;
     overflow-y: auto;
-    /* FIX: Increased z-index to ensure it overlays all page content, including the anniversary banner */
-    z-index: 1016; 
+    /* FINAL FIX: Increased z-index to 1100 to ensure it overlays everything */
+    z-index: 1100; 
     border-radius: 20px;
 }
 
