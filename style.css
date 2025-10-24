@@ -82,6 +82,7 @@ body {
     align-items: center;
     box-sizing: border-box;
     transition: background-color 0.3s ease, width 0.3s ease, height 0.3s ease, border-radius 0.3s ease;
+    opacity: 0.85;
 }
 
 .screen {
@@ -96,6 +97,7 @@ body {
     flex-direction: column;
     transition: background-color 0.3s ease;
     z-index: 0;
+    opacity: 0.85;
 }
 
 /* Background logo */
@@ -126,7 +128,40 @@ body {
     overflow: hidden; 
 }
 
-/* === REMOVED: 85% opacity rules - everything now 100% === */
+/* === UPDATED: 85% opacity for all overlay elements === */
+.main-header-container,
+.anniversary-banner,
+.hero-section,
+.main-footer,
+.page-content,
+.content-section,
+.modal-content,
+.modal-header,
+.modal-body,
+.certificate-form-container,
+.form-group,
+.form-group label,
+.form-group input,
+.form-actions,
+.hero-text,
+.anniversary-text h3,
+.anniversary-text p,
+.main-footer p {
+    opacity: 0.85;
+}
+
+/* === UPDATED: 100% opacity for search, burger menu, and certificate button === */
+.search-container,
+.burger-icon-container,
+.nav-menu,
+.certificate-btn,
+#generate-certificate,
+#main-search-input,
+#search-suggestions-container,
+.modal-search-container input,
+#useful-info-results-container {
+    opacity: 1 !important;
+}
 
 .home-screen {
     flex-grow: 1;
@@ -172,7 +207,7 @@ body.light-theme ::-webkit-scrollbar-thumb {
     box-sizing: border-box;
 }
 
-/* === UPDATED: Removed margin-right to center the title properly === */
+/* === UPDATED: Reposition title to be more left to fit burger menu === */
 .main-header-container h1 {
     margin: 0;
     text-align: center;
@@ -188,7 +223,7 @@ body.light-theme ::-webkit-scrollbar-thumb {
         0 0 20px var(--nm-accent),
         0 0 30px var(--nm-accent),
         0 0 40px var(--nm-accent-hover);
-    /* margin-right: 60px; REMOVED to center the title */
+    margin-right: 60px; /* Added to make space for burger menu */
 }
 
 /* Search styles */
