@@ -47,7 +47,7 @@ body.light-theme {
     --nm-container: #ffffff;
     --nm-border: #cccccc;
     --nm-text: #000000;
-    --nm-text-muted: #000000;
+    --nm-text-muted: #000000; /* Changed to ultra black */
     --nm-warning: #9966FF; 
     --glow-color: rgba(var(--glow-rgb), 0.3);
     
@@ -84,7 +84,7 @@ body {
 
 .phone-container {
     width: 100%;
-    height: 100vh;
+    height: 100%;
     background: var(--nm-darkest);
     position: relative;
     display: flex;
@@ -178,8 +178,10 @@ body.light-theme ::-webkit-scrollbar-thumb {
     margin-bottom: 10px;
     padding: 25px 15px 0 15px;
     box-sizing: border-box;
+    /* FIXED: Removed padding-right: 60px; to allow proper centering */
 }
 
+/* === UPDATED: Reposition title to be more left to fit burger menu === */
 .main-header-container h1 {
     margin: 0;
     text-align: center;
@@ -195,6 +197,7 @@ body.light-theme ::-webkit-scrollbar-thumb {
         0 0 20px var(--nm-accent),
         0 0 30px var(--nm-accent),
         0 0 40px var(--nm-accent-hover);
+    /* margin-right: 60px; /* FIXED: Removed this rule. It breaks centering. */
 }
 
 /* Search styles */
@@ -284,7 +287,7 @@ body.light-theme ::-webkit-scrollbar-thumb {
     margin: 0 0 10px 0;
     color: var(--nm-text);
     font-family: 'Orbitron', sans-serif;
-    font-size: clamp(1rem, 4vw, 1.2rem);
+    font-size: 1.2rem;
     text-align: center;
     white-space: nowrap; 
 }
@@ -455,12 +458,10 @@ body.light-theme .modal-content {
 .certificate-form-container {
     max-width: 500px;
     margin: 0 auto;
-    width: 100%;
 }
 
 .form-group {
     margin-bottom: 20px;
-    width: 100%;
 }
 
 .form-group label {
@@ -511,9 +512,6 @@ body.light-theme .modal-content {
     justify-content: center;
     gap: 10px;
     margin: 0 auto;
-    width: 100%;
-    max-width: 300px;
-    box-sizing: border-box;
 }
 
 #generate-certificate:hover {
@@ -565,10 +563,6 @@ body.light-theme .modal-content {
     .main-header-container h1 {
         font-size: clamp(2.5rem, 4vw, 3.5rem);
     }
-    
-    .anniversary-banner {
-        max-width: 600px;
-    }
 }
 
 @media (min-width: 1200px) {
@@ -576,11 +570,9 @@ body.light-theme .modal-content {
     .hero-section {
         max-width: 900px;
     }
-    
-    .anniversary-banner {
-        max-width: 700px;
-    }
 }
+
+/* === FIXED: Removed redundant forced color blocks === */
 
 /* Re-apply hover colors for search results */
 #search-suggestions-container .search-result-item:hover {
@@ -589,30 +581,4 @@ body.light-theme .modal-content {
 
 #search-suggestions-container .search-result-item:hover small {
     color: rgba(0, 0, 0, 0.7);
-}
-
-/* Print styles */
-@media print {
-    .burger-menu,
-    .anniversary-banner,
-    .nav-controls {
-        display: none !important;
-    }
-    
-    .phone-container {
-        width: 100%;
-        height: auto;
-        border-radius: 0;
-        box-shadow: none;
-    }
-    
-    .screen {
-        background: white;
-        color: black;
-    }
-    
-    .content-section {
-        break-inside: avoid;
-        border: 1px solid #ccc;
-    }
 }
