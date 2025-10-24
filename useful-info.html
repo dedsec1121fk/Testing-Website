@@ -11,35 +11,25 @@
 </head>
 <body class="dark-theme">
     <!-- Burger Menu -->
-    <div class="burger-menu">
-        <div class="burger-icon-container">
-            <div class="burger-icon" id="burger-icon">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
-        </div>
-        <div class="nav-menu" id="nav-menu">
-            <a href="index.html" class="nav-item" data-en="Home" data-gr="Αρχική">Home</a>
-            <a href="learn.html" class="nav-item" data-en="Learn About The Tools" data-gr="Μάθετε για τα Εργαλεία">Learn About The Tools</a>
-            <a href="installation.html" class="nav-item" data-en="Installation" data-gr="Εγκατάσταση">Installation</a>
-            <a href="useful-info.html" class="nav-item" data-en="Useful Information" data-gr="Χρήσιμες Πληροφορίες">Useful Information</a>
-            <a href="collaborations.html" class="nav-item" data-en="Collaborations" data-gr="Συνεργασίες">Collaborations</a>
-            <a href="portfolio.html" class="nav-item" data-en="Portfolio" data-gr="Portfolio">Portfolio</a>
-            <a href="contact.html" class="nav-item" data-en="Contact" data-gr="Επικοινωνία">Contact</a>
-            <a href="privacy.html" class="nav-item" data-en="Privacy" data-gr="Απόρρητο">Privacy</a>
-            <div class="nav-controls">
-                <button id="theme-switcher-btn" class="nav-control-btn">
-                    <i class="fas fa-moon"></i>
-                    <span data-en="Theme" data-gr="Θέμα">Theme</span>
-                </button>
-                <button id="lang-switcher-btn" class="nav-control-btn">
-                    <i class="fas fa-globe"></i>
-                    <span data-en="Change Language" data-gr="Αλλάξτε Γλώσσα">Change Language</span>
-                </button>
-            </div>
+<div class="burger-menu">
+    <div class="burger-icon-container">
+        <div class="burger-icon" id="burger-icon">
+            <span></span>
+            <span></span>
+            <span></span>
         </div>
     </div>
+    <div class="nav-menu" id="nav-menu">
+        <a href="index.html" class="nav-item" data-en="Home" data-gr="Αρχική">Home</a>
+        <a href="learn.html" class="nav-item" data-en="Learn About The Tools" data-gr="Μάθετε για τα Εργαλεία">Learn About The Tools</a>
+        <a href="installation.html" class="nav-item" data-en="Installation" data-gr="Εγκατάσταση">Installation</a>
+        <a href="useful-info.html" class="nav-item" data-en="Useful Information" data-gr="Χρήσιμες Πληροφορίες">Useful Information</a>
+        <a href="collaborations.html" class="nav-item" data-en="Collaborations" data-gr="Συνεργασίες">Collaborations</a>
+        <a href="portfolio.html" class="nav-item" data-en="Portfolio" data-gr="Portfolio">Portfolio</a>
+        <a href="contact.html" class="nav-item" data-en="Contact" data-gr="Επικοινωνία">Contact</a>
+        <a href="privacy.html" class="nav-item" data-en="Privacy" data-gr="Απόρρητο">Privacy</a>
+    </div>
+</div>
 
     <div class="phone-container">
         <div class="screen">
@@ -49,29 +39,21 @@
                 <div class="page-content">
                     <div class="page-header">
                         <h1 data-en="Useful Information" data-gr="Χρήσιμες Πληροφορίες">Useful Information</h1>
-                        <p data-en="Educational articles and guides for cybersecurity and ethical hacking" data-gr="Εκπαιδευτικά άρθρα και οδηγοί για κυβερνοασφάλεια και ηθικό hacking">Educational articles and guides for cybersecurity and ethical hacking</p>
+                        <p data-en="Educational articles and guides about cybersecurity and ethical hacking" data-gr="Εκπαιδευτικά άρθρα και οδηγοί για την κυβερνοασφάλεια και το ηθικό hacking">Educational articles and guides about cybersecurity and ethical hacking</p>
                     </div>
 
-                    <div class="content-section">
-                        <!-- Working search functionality -->
-                        <div class="search-container modal-search-container">
-                            <input type="text" id="useful-info-search-input" placeholder="Search articles..." data-en="Search articles..." data-gr="Αναζήτηση άρθρων...">
-                            <div id="useful-info-results-container" class="hidden"></div>
-                        </div>
-                        
-                        <p id="useful-info-prompt" data-en="Please select an article from the list below to view its content." data-gr="Παρακαλώ επιλέξτε ένα άρθρο από την παρακάτω λίστα για να δείτε το περιεχόμενό του.">Please select an article from the list below to view its content.</p>
-                        
-                        <!-- Dynamic articles from GitHub -->
-                        <div id="useful-information-nav" class="app-grid">
-                            <div class="loading-message" data-en="Loading articles..." data-gr="Φόρτωση άρθρων...">Loading articles...</div>
-                        </div>
+                    <div class="modal-search-container">
+                        <input type="text" id="useful-info-search-input" placeholder="Search articles..." data-en="Search articles..." data-gr="Αναζήτηση άρθρων..." autocomplete="off">
+                        <div id="useful-info-results-container" class="hidden"></div>
                     </div>
 
-                    <!-- === REMOVED: Tips section completely === -->
+                    <div id="useful-information-nav" class="app-grid">
+                        <!-- Articles will be loaded dynamically -->
+                    </div>
 
                     <div class="content-section">
                         <div class="modal-disclaimer">
-                            <p data-en="Educational Purpose: All information provided here is for educational and defensive security purposes only. Use this knowledge responsibly and only on systems you own or have explicit permission to test." data-gr="Εκπαιδευτικός Σκοπός: Όλες οι πληροφορίες που παρέχονται εδώ είναι μόνο για εκπαιδευτικούς και αμυντικούς σκοπούς ασφαλείας. Χρησιμοποιήστε αυτή τη γνώση υπεύθυνα και μόνο σε συστήματα που σας ανήκουν ή έχετε ρητή άδεια να δοκιμάσετε.">Educational Purpose: All information provided here is for educational and defensive security purposes only.</p>
+                            <p data-en="Legal Disclaimer: All tools and information presented here are for educational and ethical research purposes only. Use them exclusively on systems you own or have explicit, written permission to test. Unauthorized use is illegal." data-gr="Νομική Αποποίηση Ευθύνης: Όλα τα εργαλεία και οι πληροφορίες που παρουσιάζονται εδώ προορίζονται αποκλειστικά για εκπαιδευτικούς και ηθικούς ερευνητικούς σκοπούς. Χρησιμοποιήστε τα αποκλειστικά σε συστήματα που σας ανήκουν ή για τα οποία έχετε ρητή, γραπτή άδεια να δοκιμάσετε. Η μη εξουσιοδοτημένη χρήση είναι παράνομη.">Legal Disclaimer: All tools and information presented here are for educational purposes only.</p>
                         </div>
                     </div>
                 </div>

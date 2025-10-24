@@ -176,66 +176,48 @@ function createCertificateHTML(firstName, lastName, age, country, city) {
         width: 1123px;
         height: 794px;
         background: linear-gradient(135deg, #1a1a2e, #16213e);
-        border: 4px solid #FFD700;
-        border-radius: 15px;
-        padding: 40px 30px;
+        border: 20px solid #8A2BE2;
         color: #ffffff;
-        font-family: 'Noto Serif', serif;
+        font-family: 'Orbitron', 'Arial', sans-serif;
+        padding: 60px;
         text-align: center;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
         box-sizing: border-box;
+        z-index: 10000;
     `;
 
     certificateDiv.innerHTML = `
-        <div style="margin-bottom: 30px;">
-            <div style="font-size: 3rem; color: #FFD700; margin-bottom: 15px;">
-                <i class="fas fa-shield-alt"></i>
-            </div>
-            <h1 style="font-size: 2.2rem; color: #FFD700; margin: 0 0 10px 0; font-weight: bold; text-transform: uppercase; letter-spacing: 2px; font-family: 'Noto Serif', serif;">
-                ${translations.title}
-            </h1>
-            <h2 style="font-size: 1.5rem; color: #9966FF; margin: 0; font-weight: normal; font-style: italic; font-family: 'Noto Serif', serif;">
-                ${translations.subtitle}
-            </h2>
-        </div>
-        
-        <div style="margin: 30px 0;">
-            <p style="font-size: 1.1rem; margin: 15px 0; line-height: 1.6; font-family: 'Noto Serif', serif;">
-                ${translations.certifies}
+        <div style="position: relative; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+            <!-- Decorative elements -->
+            <div style="position: absolute; top: 40px; left: 40px; right: 40px; bottom: 40px; border: 3px solid #8A2BE2; pointer-events: none;"></div>
+            <div style="position: absolute; top: 80px; left: 80px; right: 80px; bottom: 80px; border: 2px solid #9966FF; pointer-events: none;"></div>
+            
+            <!-- Header -->
+            <h1 style="font-size: 48px; color: #8A2BE2; margin-bottom: 20px; text-shadow: 0 0 10px rgba(138, 43, 226, 0.5);">${translations.title}</h1>
+            <h2 style="font-size: 24px; color: #9966FF; margin-bottom: 60px; font-weight: 500;">${translations.subtitle}</h2>
+            
+            <!-- Main content -->
+            <p style="font-size: 24px; margin-bottom: 40px; line-height: 1.6;">
+                ${translations.certifies}<br>
+                <strong style="color: #8A2BE2; font-size: 32px; display: block; margin: 20px 0;">${fullName}</strong>
+                ${translations.participated}<br>
+                <em style="color: #cccccc; font-size: 18px; display: block; margin-top: 20px;">${translations.event}</em>
             </p>
-            <div style="font-size: 2.5rem; font-weight: bold; color: #FFD700; margin: 20px 0; padding: 10px; border-bottom: 2px solid #FFD700; border-top: 2px solid #FFD700; font-family: 'Noto Serif', serif; text-transform: uppercase; letter-spacing: 1px;">
-                ${fullName}
-            </div>
-            <p style="font-size: 1.1rem; margin: 15px 0; line-height: 1.6; font-family: 'Noto Serif', serif;">
-                ${translations.participated}
-            </p>
-            <p style="font-size: 1.1rem; margin: 15px 0; line-height: 1.6; font-family: 'Noto Serif', serif;">
-                ${translations.event}
-            </p>
-        </div>
-        
-        <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-top: 40px; padding-top: 20px; border-top: 1px solid #3A4A5E;">
-            <div style="text-align: left;">
-                <div style="margin: 8px 0; font-size: 0.9rem;">
-                    <span style="font-weight: bold; color: #FFD700;">${translations.issuedTo}:</span> ${fullName}
+            
+            <!-- User details -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin: 40px 0; width: 80%;">
+                <div style="text-align: left;">
+                    <p><strong>${translations.issuedTo}:</strong><br>${fullName}</p>
+                    <p><strong>${translations.age}:</strong><br>${age}</p>
                 </div>
-                <div style="margin: 8px 0; font-size: 0.9rem;">
-                    <span style="font-weight: bold; color: #FFD700;">${translations.age}:</span> ${age}
-                </div>
-                <div style="margin: 8px 0; font-size: 0.9rem;">
-                    <span style="font-weight: bold; color: #FFD700;">${translations.location}:</span> ${city}, ${country}
+                <div style="text-align: right;">
+                    <p><strong>${translations.location}:</strong><br>${city}, ${country}</p>
+                    <p><strong>${translations.dateIssued}:</strong><br>${today}</p>
                 </div>
             </div>
-            <div style="text-align: right;">
-                <div style="margin: 8px 0; font-size: 0.9rem;">
-                    <span style="font-weight: bold; color: #FFD700;">${translations.dateIssued}:</span> ${today}
-                </div>
-                <div style="text-align: center; margin-top: 10px;">
-                    <div style="width: 200px; height: 1px; background: #ffffff; margin: 0 auto 10px auto;"></div>
-                    <span style="font-style: italic; color: #7A8899; font-family: 'Noto Serif', serif;">
-                        ${translations.team}
-                    </span>
-                </div>
+            
+            <!-- Footer -->
+            <div style="margin-top: 60px; border-top: 2px solid #8A2BE2; padding-top: 20px; width: 80%;">
+                <p style="font-size: 18px; color: #9966FF;">${translations.team}</p>
             </div>
         </div>
     `;
@@ -244,27 +226,48 @@ function createCertificateHTML(firstName, lastName, age, country, city) {
 }
 
 function showCertificateSuccess(firstName) {
-    const generateBtn = document.getElementById('generate-certificate');
-    const originalHTML = generateBtn.innerHTML;
-    
-    generateBtn.innerHTML = `
-        <i class="fas fa-check"></i>
-        <span data-en="Certificate Downloaded!" data-gr="Το Πιστοποιητικό Λήφθηκε!">Certificate Downloaded!</span>
-    `;
-    
-    generateBtn.style.background = '#FFFFFF';
-    generateBtn.style.borderColor = 'var(--nm-accent)';
-    generateBtn.style.color = 'var(--nm-accent)';
-    
-    // Update language for success message
+    const generateCertificateBtn = document.getElementById('generate-certificate');
     const currentLanguage = localStorage.getItem('language') || 'en';
-    changeLanguage(currentLanguage);
     
-    setTimeout(() => {
-        generateBtn.innerHTML = originalHTML;
-        generateBtn.style.background = 'linear-gradient(135deg, var(--nm-accent), var(--nm-accent-hover))';
-        generateBtn.style.borderColor = 'var(--nm-accent)';
-        generateBtn.style.color = '#000000';
-        changeLanguage(currentLanguage);
-    }, 3000);
+    if (generateCertificateBtn) {
+        // Store original content
+        const originalHTML = generateCertificateBtn.innerHTML;
+        const originalBackground = generateCertificateBtn.style.background;
+        const originalBorder = generateCertificateBtn.style.borderColor;
+        const originalColor = generateCertificateBtn.style.color;
+        
+        // Update button to show success
+        generateCertificateBtn.innerHTML = `<i class="fas fa-check"></i><span>${currentLanguage === 'gr' ? 'Λήφθηκε!' : 'Downloaded!'}</span>`;
+        generateCertificateBtn.style.background = 'linear-gradient(135deg, #00ff00, #00cc00)';
+        generateCertificateBtn.style.borderColor = '#00ff00';
+        generateCertificateBtn.style.color = '#000000';
+        generateCertificateBtn.disabled = true;
+        
+        // Show success message
+        setTimeout(() => {
+            const successMessage = currentLanguage === 'gr' 
+                ? `Το πιστοποιητικό για τον/την ${firstName} λήφθηκε με επιτυχία!`
+                : `Certificate for ${firstName} downloaded successfully!`;
+            
+            alert(successMessage);
+            
+            // Reset button after delay
+            setTimeout(() => {
+                generateCertificateBtn.innerHTML = originalHTML;
+                generateCertificateBtn.style.background = originalBackground;
+                generateCertificateBtn.style.borderColor = originalBorder;
+                generateCertificateBtn.style.color = originalColor;
+                generateCertificateBtn.disabled = false;
+                
+                // Close modal
+                closeModal('certificate-modal');
+                
+                // Reset form
+                const certificateForm = document.getElementById('certificate-form');
+                if (certificateForm) {
+                    certificateForm.reset();
+                }
+            }, 2000);
+        }, 1000);
+    }
 }
