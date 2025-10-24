@@ -141,120 +141,41 @@
     font-size: 0.9rem;
 }
 
-/* === FIXED: Global layout fixes for all pages === */
-.phone-container {
-    width: 100%;
-    height: 100%;
-    background: var(--nm-darkest);
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    box-sizing: border-box;
-    transition: background-color 0.3s ease, width 0.3s ease, height 0.3s ease, border-radius 0.3s ease;
-    overflow: hidden;
-}
-
-.screen {
-    width: 100%;
-    height: 100%;
-    background-color: var(--nm-abyss-blue);
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 800 800' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3E/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-    background-size: cover, cover; 
-    position: relative;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    transition: background-color 0.3s ease;
-    z-index: 0;
-}
-
-/* Background logo - FIXED positioning and centering */
-.screen::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 80%;
-    height: 80%;
-    background-image: url('https://raw.githubusercontent.com/dedsec1121fk/dedsec1121fk.github.io/5860edb8a7468d955336c9cf1d8b357597d6d645/Assets/Images/Logos/Custom%20Black%20Purple%20Fox%20Logo.png');
-    background-size: contain;
-    background-position: center;
-    background-repeat: no-repeat;
-    opacity: 0.3; 
-    z-index: -1;
-    transition: background-image 0.3s ease, opacity 0.3s ease;
-}
-
-.screen-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 1;
-    overflow: hidden; 
-}
-
-/* === FIXED: Home screen layout for all pages === */
-.home-screen {
-    flex-grow: 1;
-    overflow-y: auto;
-    overflow-x: hidden;
-    min-height: 0;
-    padding: 0;
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    height: 100%;
-}
-
-/* Page content styles - FIXED layout */
+/* Page content styles */
 .page-content {
     max-width: 800px;
     margin: 0 auto;
     padding: 20px 15px;
-    width: 100%;
-    box-sizing: border-box;
-    flex: 1;
-    overflow-y: auto;
 }
 
 .page-header {
     text-align: center;
     margin-bottom: 30px;
-    box-sizing: border-box;
-    width: 100%;
+    /* FIXED: Removed padding-right: 60px; to allow proper centering */
+    box-sizing: border-box; /* Ensures padding is calculated correctly */
 }
 
-/* === FIXED: Page titles centering === */
+/* === UPDATED: Reposition page titles to be more left === */
 .page-header h1 {
     color: var(--nm-accent);
     font-family: 'Orbitron', sans-serif;
     font-size: 2rem;
     margin-bottom: 10px;
     text-transform: uppercase;
-    text-align: center;
-    width: 100%;
+    /* margin-right: 60px; /* FIXED: Removed this rule. It breaks centering. */
 }
 
 .page-header p {
     color: var(--nm-text-muted);
     font-size: 1rem;
-    text-align: center;
 }
 
 .content-section {
     margin-bottom: 30px;
     padding: 20px;
-    background: var(--nm-container-bg);
+    background: var(--nm-container-bg); /* FIXED: Use RGBA var for opacity */
     border: 1px solid var(--nm-border);
     border-radius: 20px;
-    width: 100%;
-    box-sizing: border-box;
 }
 
 .content-section h2 {
@@ -313,12 +234,6 @@ body.light-theme .nav-control-btn {
 body.light-theme .nav-control-btn:hover {
     background: var(--nm-accent);
     color: var(--nm-darkest);
-}
-
-/* Light theme background logo */
-body.light-theme .screen::after {
-    background-image: url('https://raw.githubusercontent.com/dedsec1121fk/dedsec1121fk.github.io/6f776cd9772a079a6d26370dddab911bf7cde8cd/Assets/Images/Logos/Custom%20White%20Purple%20Fox%20Logo.jpg') !important;
-    opacity: 0.3;
 }
 
 /* Useful Information search styles */
@@ -446,7 +361,7 @@ body.light-theme .screen::after {
     display: flex;
     align-items: center;
     padding: 15px;
-    background: var(--nm-darkest-bg);
+    background: var(--nm-darkest-bg); /* FIXED: Use RGBA var for opacity */
     border: 1px solid var(--nm-border);
     border-radius: 20px;
     text-decoration: none;
@@ -476,7 +391,7 @@ body.light-theme .screen::after {
 
 /* Collaboration specific styles */
 .collaboration-card {
-    background: var(--nm-darkest-bg);
+    background: var(--nm-darkest-bg); /* FIXED: Use RGBA var for opacity */
     border: 1px solid var(--nm-border);
     border-radius: 20px;
     padding: 20px;
@@ -532,7 +447,7 @@ body.light-theme .screen::after {
     flex-direction: column;
     align-items: center;
     padding: 20px;
-    background: var(--nm-darkest-bg);
+    background: var(--nm-darkest-bg); /* FIXED: Use RGBA var for opacity */
     border: 1px solid var(--nm-border);
     border-radius: 20px;
     text-decoration: none;
@@ -554,7 +469,7 @@ body.light-theme .screen::after {
 
 /* Credits list */
 .credits-list {
-    background: var(--nm-darkest-bg);
+    background: var(--nm-darkest-bg); /* FIXED: Use RGBA var for opacity */
     border: 1px solid var(--nm-border);
     border-radius: 20px;
     padding: 20px;
@@ -573,7 +488,7 @@ body.light-theme .screen::after {
 
 /* Article cards */
 .article-card {
-    background: var(--nm-darkest-bg);
+    background: var(--nm-darkest-bg); /* FIXED: Use RGBA var for opacity */
     border: 1px solid var(--nm-border);
     border-radius: 20px;
     padding: 20px;
@@ -607,7 +522,7 @@ body.light-theme .screen::after {
 /* Code container styles */
 .code-container {
     position: relative;
-    background: var(--nm-darkest-bg);
+    background: var(--nm-darkest-bg); /* FIXED: Use RGBA var for opacity */
     border: 1px solid var(--nm-border);
     padding: 15px;
     margin: 1em 0;
@@ -645,7 +560,7 @@ body.light-theme .screen::after {
 
 /* Note and tip styles */
 .note {
-    background: var(--nm-dark-bg);
+    background: var(--nm-dark-bg); /* FIXED: Use RGBA var for opacity */
     border-left: 4px solid var(--nm-warning);
     padding: 15px;
     margin: 15px 0;
@@ -654,16 +569,16 @@ body.light-theme .screen::after {
 
 .note-danger {
     border-left-color: var(--nm-danger);
-    background: var(--danger-bg);
+    background: var(--danger-bg); /* Already RGBA */
 }
 
 .note-warning {
     border-left-color: var(--nm-warning);
-    background: var(--warning-bg);
+    background: var(--warning-bg); /* Already RGBA */
 }
 
 .tip {
-    background: var(--nm-dark-bg);
+    background: var(--nm-dark-bg); /* FIXED: Use RGBA var for opacity */
     border-left: 4px solid var(--nm-success);
     padding: 15px;
     margin: 15px 0;
@@ -680,6 +595,8 @@ body.light-theme .screen::after {
     font-style: italic;
 }
 
+/* === FIXED: Removed opacity rule === */
+
 /* Responsive design */
 @media (max-width: 768px) {
     .nav-menu {
@@ -694,12 +611,9 @@ body.light-theme .screen::after {
         padding: 15px;
         margin-bottom: 20px;
     }
-    
-    .screen::after {
-        width: 90%;
-        height: 90%;
-    }
 }
+
+/* === FIXED: Removed redundant forced color blocks === */
 
 /* === NEW: Styles for Collaboration & Portfolio Pages === */
 
@@ -712,6 +626,7 @@ body.light-theme .screen::after {
     overflow: hidden;
     border-radius: 20px;
     border: 1px solid var(--nm-border);
+    /* FIXED: Removed opacity: 0.85; */
 }
 
 .gym-clothing-images {
@@ -722,12 +637,12 @@ body.light-theme .screen::after {
 .gym-clothing-images img {
     width: 100%;
     height: auto;
-    display: none;
+    display: none; /* Hide all by default */
     vertical-align: middle;
 }
 
 .gym-clothing-images img.active {
-    display: block;
+    display: block; /* Show only active */
     animation: fadeIn 0.5s ease;
 }
 
@@ -774,6 +689,7 @@ body.light-theme .screen::after {
     margin-top: 20px;
 }
 
+/* Style for <p class="store-link"><a>...</a></p> in portfolio.html */
 .store-link a {
     color: var(--nm-accent);
     text-decoration: none;
@@ -785,6 +701,7 @@ body.light-theme .screen::after {
     text-decoration: underline;
 }
 
+/* Style for <a class="visit-store-btn">...</a> in collaborations.html */
 .visit-store-btn {
     display: inline-flex;
     align-items: center;
@@ -806,6 +723,7 @@ body.light-theme .screen::after {
     box-shadow: 0 4px 10px rgba(var(--glow-rgb), 0.3);
 }
 
+/* Style for <a class="contact-link-btn">...</a> in collaborations.html */
 .contact-link-btn {
     display: inline-flex;
     align-items: center;
@@ -822,7 +740,7 @@ body.light-theme .screen::after {
 }
 
 .contact-link-btn:hover {
-    background: #00FF00;
+    background: #00FF00; /* Lighter success */
     transform: translateY(-2px);
     box-shadow: 0 4px 10px rgba(0, 255, 0, 0.3);
 }
@@ -853,7 +771,7 @@ body.light-theme .screen::after {
 }
 
 .collaboration-info li::before {
-    content: '\f00c';
+    content: '\f00c'; /* Font Awesome check icon */
     font-family: 'Font Awesome 5 Free', 'FontAwesome';
     font-weight: 900;
     position: absolute;
@@ -871,12 +789,14 @@ body.light-theme .screen::after {
     margin-bottom: 15px;
 }
 
+
 /* Portfolio Page - GitHub Stats */
 .github-stats {
     display: flex;
     flex-direction: column;
     gap: 15px;
     align-items: center;
+    /* FIXED: Removed opacity: 0.85; */
 }
 
 .github-stats img {
@@ -896,26 +816,4 @@ body.light-theme .screen::after {
 
 #useful-info-results-container .search-result-item:hover small {
     color: rgba(0, 0, 0, 0.7);
-}
-
-/* === FIXED: Custom scrollbar for all pages === */
-.home-screen::-webkit-scrollbar {
-    width: 8px;
-}
-
-.home-screen::-webkit-scrollbar-track {
-    background: var(--nm-dark);
-}
-
-.home-screen::-webkit-scrollbar-thumb {
-    background-color: var(--nm-accent);
-    border-radius: 10px;
-}
-
-.home-screen::-webkit-scrollbar-thumb:hover {
-    background-color: var(--nm-accent-hover);
-}
-
-body.light-theme .home-screen::-webkit-scrollbar-thumb {
-    background-color: #555555;
 }
