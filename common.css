@@ -17,18 +17,21 @@
     z-index: 1001;
 }
 
+/* === MODIFIED: Changed to purple circle, removed black background, reduced size by 10% === */
 .burger-icon {
-    width: 31.5px; /* 30px * 1.05 = 31.5px */
-    height: 26.25px; /* 25px * 1.05 = 26.25px */
+    width: 27px; /* 10% reduction from 30px base */
+    height: 27px; /* Made square for perfect circle */
     position: relative;
     cursor: pointer;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    background: #000000;
+    background: transparent; /* REMOVED black background */
     padding: 6px;
-    border-radius: 4px;
-    transform: scale(1.05); /* 5% bigger */
+    border-radius: 50%; /* CHANGED to circle */
+    border: 2px solid var(--nm-accent); /* ADDED purple border for visibility */
+    transform: none; /* Removed previous scale */
+    transition: all 0.3s ease;
     z-index: 1002;
 }
 
@@ -145,7 +148,7 @@
 .page-content {
     max-width: 800px;
     margin: 0 auto;
-    padding: 20px 15px;
+    padding: 70px 15px 20px 15px; /* FIXED: Increased top padding to 70px to prevent overlap with the fixed burger menu and header. */
 }
 
 .page-header {
@@ -595,8 +598,6 @@ body.light-theme .nav-control-btn:hover {
     font-style: italic;
 }
 
-/* === FIXED: Removed opacity rule === */
-
 /* Responsive design */
 @media (max-width: 768px) {
     .nav-menu {
@@ -612,8 +613,6 @@ body.light-theme .nav-control-btn:hover {
         margin-bottom: 20px;
     }
 }
-
-/* === FIXED: Removed redundant forced color blocks === */
 
 /* === NEW: Styles for Collaboration & Portfolio Pages === */
 
