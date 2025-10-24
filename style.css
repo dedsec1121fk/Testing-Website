@@ -207,6 +207,8 @@ body.light-theme ::-webkit-scrollbar-thumb {
     width: 100%;
     max-width: 500px; 
     margin: 0 auto; 
+    /* NEW FIX: Ensure this container has a high stacking context to overlay the banner */
+    z-index: 1015;
 }
 
 #main-search-input {
@@ -238,7 +240,7 @@ body.light-theme ::-webkit-scrollbar-thumb {
     max-height: 300px;
     overflow-y: auto;
     /* FIX: Increased z-index to ensure it overlays all page content */
-    z-index: 1010;
+    z-index: 1016;
     border-radius: 20px;
 }
 

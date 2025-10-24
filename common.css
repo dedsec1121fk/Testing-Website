@@ -278,8 +278,8 @@ body.light-theme .nav-control-btn:hover {
     border: 1px solid var(--nm-search-green);
     max-height: 300px;
     overflow-y: auto;
-    /* FIX: Increased z-index to ensure it overlays all page content */
-    z-index: 1010;
+    /* FIX: Increased z-index to ensure it overlays all page content, including the anniversary banner */
+    z-index: 1016; 
     border-radius: 20px;
 }
 
