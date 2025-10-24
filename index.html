@@ -61,7 +61,8 @@
                 </button>
                 <button id="lang-switcher-btn" class="nav-control-btn">
                     <i class="fas fa-globe"></i>
-                    <span>Language / Γλώσσα</span>
+                    <!-- === UPDATED: Language button text === -->
+                    <span data-en="Change Language" data-gr="Αλλάξτε Γλώσσα">Change Language</span>
                 </button>
             </div>
         </div>
@@ -95,7 +96,7 @@
                             </p>
                         </div>
                     </div>
-                    <button class="certificate-btn" data-modal="certificate">
+                    <button class="certificate-btn" onclick="openModal('certificate-modal')">
                         <i class="fas fa-certificate"></i>
                         <span data-en="Get Anniversary Certificate" data-gr="Λήψη Πιστοποιητικού Επετείου">Get Anniversary Certificate</span>
                     </button>
@@ -166,52 +167,6 @@
                             </button>
                         </div>
                     </form>
-                </div>
-                
-                <div id="certificate-preview" class="certificate-preview hidden">
-                    <div class="certificate">
-                        <div class="certificate-header">
-                            <div class="certificate-logo">
-                                <i class="fas fa-shield-alt"></i>
-                            </div>
-                            <h1 data-en="Certificate of Participation" data-gr="Πιστοποιητικό Συμμετοχής">Certificate of Participation</h1>
-                            <h2 data-en="1 Year Anniversary" data-gr="1 Χρόνος Επέτειος">1 Year Anniversary</h2>
-                        </div>
-                        
-                        <div class="certificate-body">
-                            <p data-en="This certifies that" data-gr="Το παρόν πιστοποιεί ότι">This certifies that</p>
-                            <div class="recipient-name" id="preview-name"></div>
-                            <p data-en="has participated in the DedSec Project 1-Year Anniversary Celebration" 
-                               data-gr="συμμετείχε στη γιορτή 1ης επετείου του DedSec Project">
-                               has participated in the DedSec Project 1-Year Anniversary Celebration
-                            </p>
-                            <p data-en="held from October 20 to October 31, 2025" 
-                               data-gr="που πραγματοποιήθηκε από 20 Οκτωβρίου έως 31 Οκτωβρίου 2025">
-                               held from October 20 to October 31, 2025
-                            </p>
-                        </div>
-                        
-                        <div class="certificate-footer">
-                            <div class="certificate-details">
-                                <div class="detail-item">
-                                    <span data-en="Age" data-gr="Ηλικία">Age:</span>
-                                    <span id="preview-age"></span>
-                                </div>
-                                <div class="detail-item">
-                                    <span data-en="Location" data-gr="Τοποθεσία">Location:</span>
-                                    <span id="preview-location"></span>
-                                </div>
-                                <div class="detail-item">
-                                    <span data-en="Date" data-gr="Ημερομηνία">Date:</span>
-                                    <span id="preview-date"></span>
-                                </div>
-                            </div>
-                            <div class="signature">
-                                <div class="signature-line"></div>
-                                <span data-en="DedSec Project Team" data-gr="Ομάδα DedSec Project">DedSec Project Team</span>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>

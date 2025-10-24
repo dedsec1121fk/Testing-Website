@@ -17,6 +17,11 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Set initial language
     setInitialLanguage();
+    
+    // Initialize search functionality for useful info page
+    if (document.getElementById('useful-info-search-input')) {
+        initializeUsefulInfoSearch();
+    }
 });
 
 // Burger menu functionality
@@ -109,6 +114,11 @@ function initializeLanguageSwitcher() {
     const langSwitcher = document.getElementById('lang-switcher-btn');
     
     if (langSwitcher) {
+        // === UPDATED: Language button text ===
+        const langSpan = langSwitcher.querySelector('span');
+        langSpan.setAttribute('data-en', 'Change Language');
+        langSpan.setAttribute('data-gr', 'Αλλάξτε Γλώσσα');
+        
         langSwitcher.addEventListener('click', function() {
             const currentLanguage = localStorage.getItem('language') || 'en';
             const newLanguage = currentLanguage === 'en' ? 'gr' : 'en';
@@ -160,6 +170,11 @@ function changeLanguage(lang) {
     const searchInput = document.getElementById('main-search-input');
     if (searchInput) {
         searchInput.placeholder = lang === 'gr' ? 'Αναζήτηση στο διαδίκτυο...' : 'Search the Web...';
+    }
+    
+    const usefulInfoSearchInput = document.getElementById('useful-info-search-input');
+    if (usefulInfoSearchInput) {
+        usefulInfoSearchInput.placeholder = lang === 'gr' ? 'Αναζήτηση άρθρων...' : 'Search articles...';
     }
     
     // Update document language
@@ -290,6 +305,171 @@ function initializeSearch() {
             }
         });
     }
+}
+
+// === ADDED: Useful Information Search Functionality ===
+function initializeUsefulInfoSearch() {
+    const searchInput = document.getElementById('useful-info-search-input');
+    const resultsContainer = document.getElementById('useful-info-results-container');
+    const navContainer = document.getElementById('useful-information-nav');
+    
+    if (!searchInput || !resultsContainer || !navContainer) return;
+
+    let usefulInfoSearchIndex = [];
+    let isUsefulInfoIndexBuilt = false;
+    let usefulInfoFiles = [];
+
+    // Simple search utility
+    const SearchEngine = {
+        tokenize(text) {
+            if (!text) return [];
+            return text
+                .toLowerCase()
+                .replace(/[.,/#!$%\^&\*;:{}=\-_`~()]/g, "")
+                .split(/\s+/)
+                .filter(word => word.length > 1);
+        },
+
+        search(query, index, lang) {
+            const queryTokens = this.tokenize(query);
+            if (queryTokens.length === 0) return [];
+
+            const scoredResults = index
+                .filter(item => item.lang === lang)
+                .map(item => {
+                    let score = 0;
+                    const itemTokens = [...this.tokenize(item.title), ...this.tokenize(item.text)];
+                    
+                    queryTokens.forEach(qToken => {
+                        if (itemTokens.includes(qToken)) {
+                            score += 10;
+                        }
+                        
+                        // Partial matches
+                        itemTokens.forEach(iToken => {
+                            if (iToken.includes(qToken) || qToken.includes(iToken)) {
+                                score += 5;
+                            }
+                        });
+                    });
+
+                    return { ...item, score };
+                });
+
+            return scoredResults
+                .filter(item => item.score > 0)
+                .sort((a, b) => b.score - a.score);
+        },
+
+        generateSnippet(text, query) {
+            const queryTokens = this.tokenize(query);
+            if (queryTokens.length === 0) return text.substring(0, 120) + (text.length > 120 ? '...' : '');
+
+            const lowerCaseText = text.toLowerCase();
+            let bestIndex = -1;
+
+            for (const token of queryTokens) {
+                const index = lowerCaseText.indexOf(token);
+                if (index !== -1) {
+                    bestIndex = index;
+                    break;
+                }
+            }
+
+            if (bestIndex === -1) {
+                return text.substring(0, 120) + (text.length > 120 ? '...' : '');
+            }
+
+            const snippetLength = 120;
+            const start = Math.max(0, bestIndex - Math.round(snippetLength / 4));
+            const end = Math.min(text.length, start + snippetLength);
+            
+            let snippet = text.substring(start, end);
+            if (start > 0) snippet = '... ' + snippet;
+            if (end < text.length) snippet = snippet + ' ...';
+
+            return snippet;
+        },
+
+        highlight(snippet, query) {
+            const queryTokens = this.tokenize(query);
+            if (queryTokens.length === 0) return snippet;
+            
+            let highlighted = snippet;
+            queryTokens.forEach(token => {
+                const regex = new RegExp(`(${token})`, 'gi');
+                highlighted = highlighted.replace(regex, '<strong>$1</strong>');
+            });
+            return highlighted;
+        }
+    };
+
+    searchInput.addEventListener('input', () => {
+        const query = searchInput.value.trim();
+        resultsContainer.innerHTML = '';
+
+        if (!isUsefulInfoIndexBuilt || query.length < 2) {
+            resultsContainer.classList.add('hidden');
+            return;
+        }
+
+        const currentLanguage = localStorage.getItem('language') || 'en';
+        const results = SearchEngine.search(query, usefulInfoSearchIndex, currentLanguage);
+
+        if (results.length > 0) {
+            results.slice(0, 7).forEach(result => {
+                const itemEl = document.createElement('div');
+                itemEl.classList.add('search-result-item');
+                const snippet = SearchEngine.generateSnippet(result.text, query);
+                const highlightedSnippet = SearchEngine.highlight(snippet, query);
+
+                itemEl.innerHTML = `${highlightedSnippet} <small>${result.title}</small>`;
+                itemEl.addEventListener('click', () => {
+                    searchInput.value = '';
+                    resultsContainer.classList.add('hidden');
+                    // In a real implementation, you would load the article content here
+                    alert(`Loading article: ${result.title}`);
+                });
+                resultsContainer.appendChild(itemEl);
+            });
+            resultsContainer.classList.remove('hidden');
+        } else {
+            resultsContainer.classList.add('hidden');
+        }
+    });
+
+    // Hide results when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!searchInput.contains(e.target) && !resultsContainer.contains(e.target)) {
+            resultsContainer.classList.add('hidden');
+        }
+    });
+
+    // Sample data - in a real implementation, this would come from an API
+    usefulInfoSearchIndex = [
+        {
+            lang: 'en',
+            title: 'Cybersecurity Basics',
+            text: 'Learn the fundamental concepts of cybersecurity and how to protect yourself online. This guide covers essential security practices and common threats.'
+        },
+        {
+            lang: 'gr',
+            title: 'Βασικές Αρχές Κυβερνοασφάλειας',
+            text: 'Μάθετε τις βασικές έννοιες της κυβερνοασφάλειας και πώς να προστατεύεστε online. Αυτός ο οδηγός καλύπτει βασικές πρακτικές ασφαλείας και κοινούς κινδύνους.'
+        },
+        {
+            lang: 'en',
+            title: 'Password Security',
+            text: 'Best practices for creating and managing secure passwords and authentication methods. Learn about password managers and two-factor authentication.'
+        },
+        {
+            lang: 'gr',
+            title: 'Ασφάλεια Κωδικών',
+            text: 'Καλές πρακτικές για τη δημιουργία και διαχείριση ασφαλών κωδικών και μεθόδων πιστοποίησης. Μάθετε για τους διαχειριστές κωδικών και την διπλή πιστοποίηση.'
+        }
+    ];
+
+    isUsefulInfoIndexBuilt = true;
 }
 
 // Global callback for Google suggestions

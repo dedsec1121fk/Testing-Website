@@ -126,6 +126,19 @@ body {
     overflow: hidden; 
 }
 
+/* === ADDED: 77% opacity for all overlay elements === */
+.main-header-container,
+.anniversary-banner,
+.hero-section,
+.main-footer,
+.page-content,
+.content-section,
+.modal-content,
+.burger-icon-container,
+.nav-menu {
+    opacity: 0.77;
+}
+
 .home-screen {
     flex-grow: 1;
     overflow-y: auto;
@@ -251,7 +264,6 @@ body.light-theme ::-webkit-scrollbar-thumb {
     margin: 15px auto;
     max-width: 480px;
     width: 100%;
-    opacity: 0.85;
     box-shadow: 0 4px 15px rgba(153, 102, 255, 0.3);
     position: relative;
     z-index: 5;
@@ -304,7 +316,6 @@ body.light-theme ::-webkit-scrollbar-thumb {
     align-items: center;
     justify-content: center;
     gap: 10px;
-    opacity: 0.85;
     box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
 }
 
