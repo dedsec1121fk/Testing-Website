@@ -82,7 +82,6 @@ body {
     align-items: center;
     box-sizing: border-box;
     transition: background-color 0.3s ease, width 0.3s ease, height 0.3s ease, border-radius 0.3s ease;
-    opacity: 0.85;
 }
 
 .screen {
@@ -97,7 +96,6 @@ body {
     flex-direction: column;
     transition: background-color 0.3s ease;
     z-index: 0;
-    opacity: 0.85;
 }
 
 /* Background logo */
@@ -126,41 +124,6 @@ body {
     pointer-events: none;
     z-index: 1;
     overflow: hidden; 
-}
-
-/* === UPDATED: 85% opacity for all overlay elements === */
-.main-header-container,
-.anniversary-banner,
-.hero-section,
-.main-footer,
-.page-content,
-.content-section,
-.modal-content,
-.modal-header,
-.modal-body,
-.certificate-form-container,
-.form-group,
-.form-group label,
-.form-group input,
-.form-actions,
-.hero-text,
-.anniversary-text h3,
-.anniversary-text p,
-.main-footer p {
-    opacity: 0.85;
-}
-
-/* === UPDATED: 100% opacity for search, burger menu, and certificate button === */
-.search-container,
-.burger-icon-container,
-.nav-menu,
-.certificate-btn,
-#generate-certificate,
-#main-search-input,
-#search-suggestions-container,
-.modal-search-container input,
-#useful-info-results-container {
-    opacity: 1 !important;
 }
 
 .home-screen {
@@ -596,4 +559,9 @@ body.light-theme .modal-content {
     .hero-section {
         max-width: 900px;
     }
+}
+
+/* === ADDED: Force 100% opacity for all elements === */
+* {
+    opacity: 1 !important;
 }
