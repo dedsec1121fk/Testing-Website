@@ -168,6 +168,7 @@ body.light-theme ::-webkit-scrollbar-thumb {
     margin-bottom: 10px;
     padding: 25px 15px 0 15px;
     box-sizing: border-box;
+    padding-right: 60px; /* FIXED: Added padding to container */
 }
 
 /* === UPDATED: Reposition title to be more left to fit burger menu === */
@@ -186,7 +187,7 @@ body.light-theme ::-webkit-scrollbar-thumb {
         0 0 20px var(--nm-accent),
         0 0 30px var(--nm-accent),
         0 0 40px var(--nm-accent-hover);
-    margin-right: 60px; /* Added to make space for burger menu */
+    /* margin-right: 60px; /* This was the problem */
 }
 
 /* Search styles */
