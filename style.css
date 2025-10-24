@@ -42,8 +42,7 @@ body.light-theme {
     --nm-container: #ffffff;
     --nm-border: #cccccc;
     --nm-text: #000000;
-    /* Change: to ultra black as requested */
-    --nm-text-muted: #000000;
+    --nm-text-muted: #555555;
     --nm-warning: #9966FF; 
     --glow-color: rgba(var(--glow-rgb), 0.3);
 }
@@ -127,7 +126,7 @@ body {
     overflow: hidden; 
 }
 
-/* === UPDATED: 85% opacity for all overlay elements (was 80%) === */
+/* === UPDATED: 80% opacity for all overlay elements === */
 .main-header-container,
 .anniversary-banner,
 .hero-section,
@@ -137,8 +136,7 @@ body {
 .modal-content,
 .burger-icon-container,
 .nav-menu {
-    /* Change: from 0.80 to 0.85 */
-    opacity: 0.85;
+    opacity: 0.80;
 }
 
 .home-screen {
@@ -181,7 +179,8 @@ body.light-theme ::-webkit-scrollbar-thumb {
     width: 100%;
     gap: 15px;
     margin-bottom: 10px;
-    padding: 25px 15px 0 15px;
+    /* FIX: Increased right padding (from 15px to 70px) to move titles left and prevent overlap with the fixed burger menu */
+    padding: 25px 70px 0 15px;
     box-sizing: border-box;
 }
 
@@ -233,12 +232,12 @@ body.light-theme ::-webkit-scrollbar-thumb {
     top: 105%;
     left: 0;
     width: 100%;
-    /* Fix: Change to darkest background for a full black look */
+    /* FIX: Changed to darkest background for a full black look */
     background-color: var(--nm-darkest);
     border: 1px solid var(--nm-search-green);
     max-height: 300px;
     overflow-y: auto;
-    /* Fix: Increase z-index to ensure it overlays all page content */
+    /* FIX: Increased z-index to ensure it overlays all page content */
     z-index: 1010;
     border-radius: 20px;
 }

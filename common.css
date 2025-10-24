@@ -2,17 +2,14 @@
 .burger-menu {
     position: fixed;
     top: 0;
-    /* Change: Move from 'right: 0;' to 'left: 0;' */
-    left: 0;
-    /* Change: Increase z-index for better clickability of the 'X' */
-    z-index: 1002;
+    right: 0;
+    z-index: 1000;
 }
 
-/* === UPDATED: Burger menu positioning and container styles === */
+/* === UPDATED: Burger menu exactly at top right corner and 5% bigger === */
 .burger-icon-container {
     display: flex;
-    /* Change: Align icon to the left for the new position */
-    justify-content: flex-start;
+    justify-content: flex-end;
     padding: 15px;
 }
 
@@ -28,8 +25,7 @@
     padding: 6px;
     border-radius: 4px;
     transform: scale(1.05); /* 5% bigger */
-    /* Change: Ensure it's on top of everything for 'X' to be clickable */
-    z-index: 1003; 
+    z-index: 1001;
 }
 
 .burger-icon span {
@@ -277,12 +273,12 @@ body.light-theme .nav-control-btn:hover {
     top: 105%;
     left: 0;
     width: 100%;
-    /* Fix: Change to darkest background for a full black look */
+    /* FIX: Changed to darkest background for a full black look */
     background-color: var(--nm-darkest);
     border: 1px solid var(--nm-search-green);
     max-height: 300px;
     overflow-y: auto;
-    /* Fix: Increase z-index to ensure it overlays all page content */
+    /* FIX: Increased z-index to ensure it overlays all page content */
     z-index: 1010;
     border-radius: 20px;
 }
