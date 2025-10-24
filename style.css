@@ -169,6 +169,7 @@ body.light-theme ::-webkit-scrollbar-thumb {
     padding: 25px 15px 0 15px;
     box-sizing: border-box;
     padding-right: 60px; /* FIXED: Added padding to container for burger menu */
+    padding-left: 60px; /* FIXED: Ensures symmetrical centering */
 }
 
 /* === UPDATED: Reposition title to be more left to fit burger menu === */
