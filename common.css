@@ -1057,3 +1057,130 @@ pre, code, .monospace, .console-output {
 }
 
 /* End AGGRESSIVE OVERRIDES v2 */
+
+
+
+/* RESPONSIVE MASTER PATCH v3 - explicit fixes for Portfolio and Learn pages */
+/* Ensures autosizing on mobile & desktop; prevents overflow; scales cards & text */
+
+html, body, #app, .app, .site-wrapper, .page, .main-wrapper {
+  box-sizing: border-box !important;
+  -webkit-box-sizing: border-box !important;
+  -moz-box-sizing: border-box !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow-x: hidden !important;
+  background-color: #000 !important;
+  color: #fff !important;
+  font-family: "Courier New", Courier, monospace !important;
+}
+
+/* Universal text wrapping */
+* { word-wrap: break-word !important; word-break: break-word !important; hyphens: auto !important; }
+p, li, span, a, h1, h2, h3, h4, h5, h6 { overflow-wrap: break-word !important; }
+/* Prevent fixed-width typography from pushing out layout */
+pre, code, .code-block, .monospace {
+  white-space: pre-wrap !important;
+  overflow-wrap: anywhere !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+/* Images and svgs scale inside cards */
+img, svg, picture, .project-image, .card-image {
+  max-width: 100% !important;
+  height: auto !important;
+  display: block !important;
+}
+
+/* Portfolio page specific overrides */
+.portfolio-page, body.portfolio, .portfolio, #portfolio, .projects-column, .portfolio-container {
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 auto !important;
+  padding-left: 1rem !important;
+  padding-right: 1rem !important;
+  box-sizing: border-box !important;
+}
+
+/* Make portfolio cards stacked on small screens and fluid on desktop */
+.portfolio .cards, .projects-column, .cards-column {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0.8rem !important;
+  align-items: stretch !important;
+  width: 100% !important;
+}
+@media (min-width: 900px) {
+  .portfolio .cards { flex-direction: row !important; flex-wrap: wrap !important; }
+  .portfolio .card { flex: 1 1 320px !important; max-width: 33% !important; }
+}
+
+/* Learn page specific: ensure boxes don't overflow and text wraps */
+.learn-page, body.learn, .learn, .learn-container, .useful-info, .lesson {
+  width: 100% !important;
+  max-width: 100% !important;
+  padding-left: 1rem !important;
+  padding-right: 1rem !important;
+  box-sizing: border-box !important;
+}
+.learn .lesson-box, .learn .notice, .disclaimer-card, .info-card {
+  width: 100% !important;
+  max-width: 100% !important;
+  overflow: visible !important;
+  padding: 1rem 1.1rem !important;
+  margin: 0.6rem 0 !important;
+  border-radius: 14px !important;
+}
+
+/* Ensure borders don't clip content */
+.card, .card-content, .panel, .box {
+  overflow: visible !important;
+  min-height: 1px !important;
+}
+
+/* Ensure the main content column is centered and uses available width */
+.main, main, .primary, .content {
+  margin: 0 auto !important;
+  width: 100% !important;
+  max-width: 1200px !important;
+  padding-left: 1rem !important;
+  padding-right: 1rem !important;
+  box-sizing: border-box !important;
+}
+
+/* Tighter typography scaling for desktop */
+@media (min-width: 1025px) {
+  body { font-size: 16px !important; }
+  h1 { font-size: 2.6rem !important; }
+  .hero-title { font-size: 3.2rem !important; }
+}
+
+/* Mobile friendly typography */
+@media (max-width: 700px) {
+  body { font-size: 14px !important; }
+  .hero-title, .page-title, h1 { font-size: clamp(1.4rem, 7vw, 2.4rem) !important; }
+  .subtitle, .lead, p { font-size: clamp(0.95rem, 4vw, 1.05rem) !important; line-height: 1.45 !important; }
+  .card { padding: 0.9rem !important; }
+  .card .title { font-size: 1.05rem !important; }
+  .project-card .project-title { font-size: 1.05rem !important; }
+}
+
+/* Specific safety: if a container uses transform to center, remove transforms on mobile */
+@media (max-width: 900px) {
+  [style*="transform: translate"], [style*="translate("], .translate-center { transform: none !important; left: auto !important; right: auto !important; }
+}
+
+/* Remove ghost overlays and ensure pointer-events pass through background decorative elements */
+.background-decor, .background-overlay, .hero-decor, .ghost-scroll, .bg-mask {
+  pointer-events: none !important;
+  user-select: none !important;
+}
+
+/* Final fallback - make everything in-flow and visible */
+*:not(html):not(body) { position: static !important; }
+
+/* End RESPONSIVE MASTER PATCH v3 */
