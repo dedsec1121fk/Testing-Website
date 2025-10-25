@@ -146,13 +146,6 @@ body.light-theme::before {
     to { opacity: 1; transform: translateY(0); }
 }
 
-/* --- Text Overflow and Wrapping Fixes --- */
-/* ADDED: Ensures long text strings/URLs break within their containers to fix 'text goes out' */
-.nav-title h1, .page-header p, .hero-text, .tool-features li, .contact-grid .app-icon span {
-    word-break: break-word;
-    hyphens: auto; /* Optional, but helps with nicer wrapping */
-}
-
 /* --- NAVIGATION STYLES --- */
 .main-nav {
     position: fixed;
@@ -207,7 +200,7 @@ body.light-theme .nav-title h1::after {
 }
 
 .burger-menu {
-    display: flex; /* MODIFIED: Changed from 'none' to 'flex' to be visible on all screens (PC/mobile) */
+    display: none;
     flex-direction: column;
     background: none;
     border: none;
@@ -227,31 +220,10 @@ body.light-theme .nav-title h1::after {
 .burger-menu.active span:nth-child(2) { opacity: 0; }
 .burger-menu.active span:nth-child(3) { transform: rotate(-45deg) translate(6px, -6px); }
 
-/* MODIFIED: Replaced the original desktop inline menu styles with the 
-    off-canvas mobile styles so the menu is hidden by default on all screen sizes,
-    requiring the burger menu to open it.
-*/
 .nav-menu {
-    position: fixed;
-    top: 70px;
-    right: 0;
-    width: 80%;
-    max-width: 300px;
-    height: calc(100vh - 70px);
-    background: var(--nm-darkest);
-    flex-direction: column;
-    padding: 20px;
-    box-shadow: -4px 0 15px rgba(0, 0, 0, 0.3);
-    transform: translateX(100%);
-    opacity: 1;
-    visibility: visible;
-    transition: transform 0.3s var(--ease-out-cubic);
-    overflow-y: auto;
-    z-index: 999; 
-}
-
-.nav-menu.active { 
-    transform: translateX(0); 
+    display: flex;
+    align-items: center;
+    gap: 20px;
 }
 
 .nav-link {
@@ -265,12 +237,6 @@ body.light-theme .nav-title h1::after {
     /* MODIFIED: Premium transition */
     transition: transform 0.25s var(--ease-out-cubic), background-color 0.25s ease, color 0.25s ease, box-shadow 0.25s var(--ease-out-cubic), border-color 0.25s ease;
     will-change: transform, box-shadow;
-}
-
-/* ADDED: Styles for links inside the burger menu to ensure vertical stacking and centering */
-.nav-menu .nav-link {
-    margin-bottom: 10px;
-    text-align: center;
 }
 
 .nav-link:hover,
@@ -427,6 +393,12 @@ body.light-theme .tool-card {
     border-color: var(--nm-accent);
     transform: translateY(-3px);
     box-shadow: var(--shadow-glow-accent);
+}
+
+.tool-card h4 {
+    color: var(--nm-accent);
+    margin-bottom: 10px;
+    font-family: 'Orbitron', sans-serif;
 }
 
 /* --- TOOL FEATURES BULLET STYLES --- */
@@ -1362,6 +1334,10 @@ body.light-theme #useful-information-nav .app-icon {
 }
 #useful-info-results-container .search-result-item:hover small { color: rgba(0, 0, 0, 0.7); }
 
+body.light-theme #useful-info-results-container .search-result-item {
+    color: #000000;
+}
+
 /* Modal Search Container */
 .modal-search-container {
     position: relative;
@@ -1454,9 +1430,37 @@ body.light-theme #useful-information-nav .app-icon {
     .modal-body { padding: 15px; }
 }
 
-/* --- Mobile & Small Tablets --- */
+/* --- Mobile & Small Tablets (FIXED BURGER MENU) --- */
 @media (max-width: 768px) {
-    .nav-menu.active { transform: translateX(0); }
+    .burger-menu { display: flex; }
+    .nav-menu {
+        position: fixed;
+        top: 70px;
+        right: 0;
+        width: 80%;
+        max-width: 300px;
+        height: calc(100vh - 70px);
+        background: var(--nm-darkest);
+        flex-direction: column;
+        padding: 20px;
+        box-shadow: -4px 0 15px rgba(0, 0, 0, 0.3);
+        transform: translateX(100%);
+        
+        /* FIX: Should start hidden and transition visibility after closing */
+        opacity: 0; 
+        visibility: hidden; 
+        transition: transform 0.3s var(--ease-out-cubic), opacity 0.3s ease, visibility 0s 0.3s;
+
+        overflow-y: auto;
+    }
+    .nav-menu.active { 
+        transform: translateX(0); 
+        
+        /* FIX: Should be fully visible when active and transition visibility immediately */
+        opacity: 1; 
+        visibility: visible; 
+        transition: transform 0.3s var(--ease-out-cubic), opacity 0.3s ease, visibility 0s;
+    }
     .nav-actions {
         margin-left: 0;
         margin-top: 20px;
@@ -1495,34 +1499,6 @@ body.light-theme #useful-information-nav .app-icon {
 @media (min-width: 769px) and (max-width: 991px) {
     .content-grid { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
     .page-header h1 { font-size: 2.2rem; }
-}
-
-/* =================================================================
-    PC/DESKTOP LAYOUT FIXES (min-width: 992px)
-    =================================================================
-*/
-@media (min-width: 992px) {
-    /* FIX: Center the title (h1) while keeping the burger menu absolutely positioned on the right */
-    .nav-container {
-        justify-content: center; /* Centers the .nav-title block */
-        position: relative;      /* Establishes positioning context for the burger menu */
-    }
-
-    .nav-title {
-        /* ADDED: Use flex properties to center the h1 element itself */
-        display: flex;
-        justify-content: center;
-        
-        text-align: center; /* Ensures the h1 and its content are centered in its flex-grown space */
-        flex-grow: 1;       /* Ensures .nav-title takes up the maximum space for centering */
-    }
-
-    .burger-menu {
-        position: absolute;
-        right: 15px; /* Aligns with the main-nav's horizontal padding */
-        top: 50%;
-        transform: translateY(-50%); /* Vertically centers the burger menu */
-    }
 }
 
 /* --- Standard Desktops --- */
