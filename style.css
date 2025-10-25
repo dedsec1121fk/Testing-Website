@@ -1264,6 +1264,45 @@ body.light-theme .modal-content {
     transition: background-color 1s ease;
 }
 
+/* Cookie Consent Modal Specific Styles */
+#cookie-consent-modal .modal-content {
+    max-width: 500px;
+    margin: 20px;
+}
+
+#cookie-consent-modal .modal-body {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+#cookie-consent-modal .modal-body ul {
+    margin: 15px 0;
+    padding-left: 20px;
+}
+
+#cookie-consent-modal .modal-body li {
+    margin-bottom: 8px;
+    line-height: 1.4;
+}
+
+#cookie-consent-modal .modal-body strong {
+    color: var(--nm-accent);
+}
+
+.modal-footer {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    padding: 20px;
+    border-top: 1px solid var(--nm-border);
+    flex-shrink: 0;
+}
+
+/* Ensure the cookie modal appears above other modals */
+#cookie-consent-modal {
+    z-index: 2000;
+}
+
 /* --- RESPONSIVE DESIGN --- */
 @media (max-width: 768px) {
     .burger-menu {

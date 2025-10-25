@@ -171,7 +171,68 @@ document.addEventListener('DOMContentLoaded', () => {
             const text = usefulInfoPrompt.getAttribute(`data-${lang}`) || usefulInfoPrompt.textContent;
             usefulInfoPrompt.textContent = text;
         }
+
+        // Update cookie consent buttons
+        const cookieAcceptBtn = document.getElementById('cookie-accept-btn');
+        const cookieDeclineBtn = document.getElementById('cookie-decline-btn');
+        
+        if (cookieAcceptBtn) {
+            const acceptText = cookieAcceptBtn.getAttribute(`data-${lang}`) || cookieAcceptBtn.textContent;
+            cookieAcceptBtn.textContent = acceptText;
+        }
+        
+        if (cookieDeclineBtn) {
+            const declineText = cookieDeclineBtn.getAttribute(`data-${lang}`) || cookieDeclineBtn.textContent;
+            cookieDeclineBtn.textContent = declineText;
+        }
     };
+
+    // --- COOKIE CONSENT FUNCTIONALITY ---
+    function initializeCookieConsent() {
+        const cookieModal = document.getElementById('cookie-consent-modal');
+        const acceptBtn = document.getElementById('cookie-accept-btn');
+        const declineBtn = document.getElementById('cookie-decline-btn');
+
+        // Check if user has already made a choice
+        const cookieConsent = localStorage.getItem('cookieConsent');
+        
+        if (!cookieConsent) {
+            // Show cookie modal after a short delay (2 seconds)
+            setTimeout(() => {
+                if (cookieModal) {
+                    cookieModal.classList.add('visible');
+                }
+            }, 2000);
+        }
+
+        // Handle accept button
+        acceptBtn?.addEventListener('click', () => {
+            localStorage.setItem('cookieConsent', 'accepted');
+            if (cookieModal) {
+                cookieModal.classList.remove('visible');
+            }
+            // You can add additional code here for analytics, tracking, etc.
+            console.log('Cookies accepted');
+        });
+
+        // Handle decline button
+        declineBtn?.addEventListener('click', () => {
+            localStorage.setItem('cookieConsent', 'declined');
+            if (cookieModal) {
+                cookieModal.classList.remove('visible');
+            }
+            // You can add additional code here to disable non-essential cookies
+            console.log('Cookies declined');
+        });
+
+        // Close modal when clicking outside (optional)
+        cookieModal?.addEventListener('click', (e) => {
+            if (e.target === cookieModal) {
+                // Don't close when clicking outside - force user to make a choice
+                // cookieModal.classList.remove('visible');
+            }
+        });
+    }
 
     // --- CERTIFICATE FUNCTIONALITY ---
     const certificateTranslations = {
@@ -1122,6 +1183,7 @@ document.addEventListener('DOMContentLoaded', () => {
         initializeModals();
         initializeCarousels();
         initializeCopyButtons();
+        initializeCookieConsent(); // Add cookie consent initialization
 
         // Initialize tool categories if on the tools page
         if (document.querySelector('.categories-container')) {
