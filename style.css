@@ -38,8 +38,8 @@
     --clip-path-shape: none; 
 }
 
-/* FIX: Moved light theme variables to HTML tag */
-html.light-theme {
+/* FIX: Moved light theme variables back to body.light-theme */
+body.light-theme {
     --nm-abyss-blue: #ffffff;
     --nm-darkest: #f0f0f0;
     --nm-dark: #e9e9e9;
@@ -62,29 +62,21 @@ body.light-theme #useful-information-nav .app-icon {
     color: var(--nm-text);        /* Is black (correct for light theme) */
 }
 
-/* FIX: Moved background color to HTML tag for stability */
-html {
-    position: relative;
-    background-color: var(--nm-abyss-blue);
-    transition: background-color 0.3s ease;
-}
-
-
 /* --- BACKGROUND IMAGE STYLES (Applied to ALL pages via body) --- */
 body {
     margin: 0;
     padding: 0;
-    /* FIX: Body is now transparent, HTML provides the base color */
-    background-color: transparent;
+    /* FIX: Background color restored to body */
+    background-color: var(--nm-abyss-blue);
     font-family: 'Roboto Mono', monospace;
     color: var(--nm-text);
-    /* FIX: Removed background-color transition */
-    transition: color 0.3s ease;
-    /* FIX: Removed position: relative */
+    /* FIX: Full transition restored to body */
+    transition: background-color 0.3s ease, color 0.3s ease;
+    position: relative;
 }
 
-/* FIX: Moved background logo to HTML::before for scroll stability */
-html::before {
+/* FIX: Background logo moved back to body::before */
+body::before {
     content: '';
     position: fixed;
     top: 0;
@@ -107,10 +99,13 @@ html::before {
     
     /* ADDED: Transition for light/dark theme logo swap */
     transition: background-image 0.3s ease;
+    
+    /* ADDED: Fix for scrolling judder */
+    transform: translateZ(0);
 }
 
-/* FIX: Moved noise filter to HTML::after for scroll stability */
-html::after {
+/* FIX: Noise filter moved back to body::after */
+body::after {
     content: '';
     position: fixed;
     top: 0;
@@ -124,11 +119,14 @@ html::after {
     /* z-index is -1 (above logo, behind content) */
     z-index: -1;
     pointer-events: none;
+
+    /* ADDED: Fix for scrolling judder */
+    transform: translateZ(0);
 }
 
 
-/* FIX: Changed selector to target HTML::before */
-html.light-theme::before {
+/* FIX: Changed selector to target body.light-theme::before */
+body.light-theme::before {
     background-image: url('https://raw.githubusercontent.com/dedsec1121fk/dedsec1121fk.github.io/6f776cd9772a079a6d26370dddab911bf7cde8cd/Assets/Images/Logos/Custom%20White%20Purple%20Fox%20Logo.jpg');
 }
 
