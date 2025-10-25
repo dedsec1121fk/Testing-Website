@@ -267,6 +267,12 @@ body.light-theme .nav-title h1::after {
     will-change: transform, box-shadow;
 }
 
+/* ADDED: Styles for links inside the burger menu to ensure vertical stacking and centering */
+.nav-menu .nav-link {
+    margin-bottom: 10px;
+    text-align: center;
+}
+
 .nav-link:hover,
 .nav-link.active {
     background: var(--nm-accent);
@@ -1356,10 +1362,6 @@ body.light-theme #useful-information-nav .app-icon {
 }
 #useful-info-results-container .search-result-item:hover small { color: rgba(0, 0, 0, 0.7); }
 
-body.light-theme #useful-info-results-container .search-result-item {
-    color: #000000;
-}
-
 /* Modal Search Container */
 .modal-search-container {
     position: relative;
@@ -1507,6 +1509,10 @@ body.light-theme #useful-info-results-container .search-result-item {
     }
 
     .nav-title {
+        /* ADDED: Use flex properties to center the h1 element itself */
+        display: flex;
+        justify-content: center;
+        
         text-align: center; /* Ensures the h1 and its content are centered in its flex-grown space */
         flex-grow: 1;       /* Ensures .nav-title takes up the maximum space for centering */
     }
