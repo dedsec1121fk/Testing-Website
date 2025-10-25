@@ -133,11 +133,19 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        // Update active nav link
+        // Update navigation links
         document.querySelectorAll('.nav-link').forEach(link => {
             const text = link.getAttribute(`data-${lang}`) || link.textContent;
             if (link.getAttribute('data-en')) {
                 link.textContent = text;
+            }
+        });
+
+        // Update navigation action buttons
+        document.querySelectorAll('.nav-action-btn span').forEach(span => {
+            const text = span.getAttribute(`data-${lang}`) || span.textContent;
+            if (span.getAttribute('data-en')) {
+                span.textContent = text;
             }
         });
 
@@ -155,6 +163,13 @@ document.addEventListener('DOMContentLoaded', () => {
             } else {
                 usefulInfoSearchInput.placeholder = lang === 'gr' ? 'Αναζήτηση άρθρων...' : 'Search articles...';
             }
+        }
+
+        // Update useful info prompt
+        const usefulInfoPrompt = document.getElementById('useful-info-prompt');
+        if (usefulInfoPrompt) {
+            const text = usefulInfoPrompt.getAttribute(`data-${lang}`) || usefulInfoPrompt.textContent;
+            usefulInfoPrompt.textContent = text;
         }
     };
 
