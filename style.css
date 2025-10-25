@@ -46,7 +46,7 @@ body.light-theme {
     --glow-color: rgba(var(--glow-rgb), 0.3);
 }
 
-/* --- BACKGROUND IMAGE STYLES (Applied to all pages) --- */
+/* --- BACKGROUND IMAGE STYLES (Applied to ALL pages via body) --- */
 body {
     margin: 0;
     padding: 0;
@@ -54,53 +54,36 @@ body {
     font-family: 'Roboto Mono', monospace;
     color: var(--nm-text);
     transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-.phone-container {
-    width: 100%;
-    height: calc(100vh - 80px);
-    background: var(--nm-darkest);
+    /* Add background to ALL pages */
+    background-image: 
+        url("data:image/svg+xml,%3Csvg viewBox='0 0 800 800' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3E/ffilter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E"),
+        url('https://raw.githubusercontent.com/dedsec1121fk/dedsec1121fk.github.io/5860edb8a7468d955336c9cf1d8b357597d6d645/Assets/Images/Logos/Custom%20Black%20Purple%20Fox%20Logo.png');
+    background-size: cover, contain;
+    background-position: center, center;
+    background-repeat: no-repeat, no-repeat;
     position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    box-sizing: border-box;
-    margin-top: 80px;
 }
 
-.screen {
-    width: 100%;
-    height: 100%;
-    background-color: var(--nm-abyss-blue);
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 800 800' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3E/ffilter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-    background-size: cover, cover;
-    position: relative;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    transition: background-color 0.3s ease;
-    z-index: 0;
-}
-
-.screen::after {
+body::after {
     content: '';
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: url('https://raw.githubusercontent.com/dedsec1121fk/dedsec1121fk.github.io/5860edb8a7468d955336c9cf1d8b357597d6d645/Assets/Images/Logos/Custom%20Black%20Purple%20Fox%20Logo.png');
-    background-size: contain;
-    background-position: center;
-    background-repeat: no-repeat;
+    background: inherit;
     opacity: 0.3;
     z-index: -1;
-    transition: background-image 0.3s ease, opacity 0.3s ease;
+    pointer-events: none;
 }
 
-body.light-theme .screen::after {
-    background-image: url('https://raw.githubusercontent.com/dedsec1121fk/dedsec1121fk.github.io/6f776cd9772a079a6d26370dddab911bf7cde8cd/Assets/Images/Logos/Custom%20White%20Purple%20Fox%20Logo.jpg') !important;
-    opacity: 0.3;
+body.light-theme {
+    background-image: 
+        url("data:image/svg+xml,%3Csvg viewBox='0 0 800 800' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3E/ffilter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E"),
+        url('https://raw.githubusercontent.com/dedsec1121fk/dedsec1121fk.github.io/6f776cd9772a079a6d26370dddab911bf7cde8cd/Assets/Images/Logos/Custom%20White%20Purple%20Fox%20Logo.jpg');
+    background-size: cover, contain;
+    background-position: center, center;
+    background-repeat: no-repeat, no-repeat;
 }
 
 /* --- NAVIGATION STYLES --- */
@@ -331,6 +314,30 @@ body.light-theme .tool-features li {
 
 body.light-theme .tool-features li::before {
     color: #8a2be2;
+}
+
+.phone-container {
+    width: 100%;
+    height: calc(100vh - 80px);
+    background: transparent; /* Changed to transparent to show body background */
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    margin-top: 80px;
+}
+
+.screen {
+    width: 100%;
+    height: 100%;
+    background-color: transparent; /* Transparent to show body background */
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: background-color 0.3s ease;
+    z-index: 0;
 }
 
 .home-screen {
