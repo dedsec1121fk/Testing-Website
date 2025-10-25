@@ -600,19 +600,27 @@ document.addEventListener('DOMContentLoaded', () => {
     function initializeToolCategories() {
         console.log('Initializing tool categories...');
         
+        // Close all categories and tool items by default
+        document.querySelectorAll('.category, .tool-item').forEach(item => {
+            item.classList.remove('active');
+        });
+        
         // Category toggle functionality
         document.querySelectorAll('.category-header').forEach(header => {
             header.addEventListener('click', function() {
                 console.log('Category header clicked');
                 const category = this.parentElement;
-                category.classList.toggle('active');
+                const wasActive = category.classList.contains('active');
                 
-                // Close all other categories when opening one (optional)
-                // document.querySelectorAll('.category').forEach(otherCategory => {
-                //     if (otherCategory !== category) {
-                //         otherCategory.classList.remove('active');
-                //     }
-                // });
+                // Close all categories first
+                document.querySelectorAll('.category').forEach(otherCategory => {
+                    otherCategory.classList.remove('active');
+                });
+                
+                // Open the clicked category if it was not active
+                if (!wasActive) {
+                    category.classList.add('active');
+                }
             });
         });
         
@@ -624,22 +632,26 @@ document.addEventListener('DOMContentLoaded', () => {
                 e.stopPropagation();
                 
                 const toolItem = this.parentElement;
-                toolItem.classList.toggle('active');
+                const wasActive = toolItem.classList.contains('active');
                 
-                // Close all other tool items when opening one (optional)
-                // document.querySelectorAll('.tool-item').forEach(otherTool => {
-                //     if (otherTool !== toolItem) {
-                //         otherTool.classList.remove('active');
-                //     }
-                // });
+                // Close all other tool items in the same category
+                const category = toolItem.closest('.category');
+                if (category) {
+                    category.querySelectorAll('.tool-item').forEach(otherTool => {
+                        if (otherTool !== toolItem) {
+                            otherTool.classList.remove('active');
+                        }
+                    });
+                }
+                
+                // Toggle the clicked tool item
+                if (!wasActive) {
+                    toolItem.classList.add('active');
+                } else {
+                    toolItem.classList.remove('active');
+                }
             });
         });
-
-        // Make sure the first category is expanded by default
-        const firstCategory = document.querySelector('.category');
-        if (firstCategory && !firstCategory.classList.contains('active')) {
-            firstCategory.classList.add('active');
-        }
     }
 
     // --- USEFUL INFORMATION FUNCTIONALITY ---
