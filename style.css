@@ -1308,19 +1308,19 @@ body.light-theme .modal-content {
     z-index: 2001; /* Higher than disclaimer modal */
 }
 
-/* Disclaimer Modal Buttons - 3x Larger */
+/* Disclaimer Modal Buttons - Reduced to Half Size */
 #disclaimer-modal .modal-footer {
-    padding: 30px 20px; /* Increase padding to accommodate larger buttons */
+    padding: 20px 20px; /* Reduced padding */
 }
 
 #disclaimer-modal .decline-btn,
 #disclaimer-modal .accept-btn {
-    font-size: 2rem; /* 3x larger font */
-    padding: 25px 40px; /* 3x larger padding */
-    min-height: 80px; /* Ensure minimum height */
-    min-width: 180px; /* Ensure minimum width */
-    border-radius: 30px; /* Slightly larger border radius */
-    margin: 0 15px; /* More spacing between buttons */
+    font-size: 1rem; /* Reduced from 2rem to 1rem */
+    padding: 12px 20px; /* Reduced from 25px 40px */
+    min-height: 40px; /* Reduced from 80px */
+    min-width: 90px; /* Reduced from 180px */
+    border-radius: 20px; /* Standard border radius */
+    margin: 0 10px; /* Reduced spacing */
 }
 
 /* Make the language selection button in disclaimer more prominent */
@@ -1410,16 +1410,16 @@ body.light-theme .modal-content {
     /* Responsive styles for disclaimer modal buttons */
     #disclaimer-modal .modal-footer {
         flex-direction: column;
-        gap: 20px;
-        padding: 20px;
+        gap: 15px;
+        padding: 15px;
     }
     
     #disclaimer-modal .decline-btn,
     #disclaimer-modal .accept-btn {
-        font-size: 1.5rem;
-        padding: 20px 30px;
-        min-height: 60px;
-        min-width: 140px;
+        font-size: 0.9rem;
+        padding: 10px 15px;
+        min-height: 35px;
+        min-width: 80px;
         margin: 0;
     }
 }
