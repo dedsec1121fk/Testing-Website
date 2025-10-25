@@ -596,6 +596,28 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // --- TOOL CATEGORIES FUNCTIONALITY ---
+    function initializeToolCategories() {
+        // Category toggle functionality
+        document.querySelectorAll('.category-header').forEach(header => {
+            header.addEventListener('click', function() {
+                const category = this.parentElement;
+                category.classList.toggle('active');
+            });
+        });
+        
+        // Tool item toggle functionality
+        document.querySelectorAll('.tool-header').forEach(header => {
+            header.addEventListener('click', function(e) {
+                // Prevent the category from closing when clicking on a tool
+                e.stopPropagation();
+                
+                const toolItem = this.parentElement;
+                toolItem.classList.toggle('active');
+            });
+        });
+    }
+
     // --- USEFUL INFORMATION FUNCTIONALITY ---
     const SearchEngine = {
         idfMaps: {},
@@ -1064,6 +1086,7 @@ document.addEventListener('DOMContentLoaded', () => {
         initializeModals();
         initializeCarousels();
         initializeCopyButtons();
+        initializeToolCategories(); // NEW: Initialize tool categories functionality
 
         // Initialize useful information if on that page
         if (document.getElementById('useful-information-nav')) {
