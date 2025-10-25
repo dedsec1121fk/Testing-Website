@@ -14,7 +14,7 @@
     --nm-accent: #9966FF;      /* Digital Lavender */
     --nm-accent-hover: #9933FF; 
     --nm-text: #FFFFFF;        
-    --nm-text-muted: #7A8899;  
+    --nm-text-muted: #FFFFFF;  /* CHANGED: Grey text now white in dark theme */
     --nm-danger: #FF0000;      
     --nm-danger-hover: #FF0000; 
     --nm-success: #00FF00;     
@@ -41,7 +41,7 @@ body.light-theme {
     --nm-container: #ffffff;
     --nm-border: #cccccc;
     --nm-text: #000000;
-    --nm-text-muted: #555555;
+    --nm-text-muted: #000000;  /* CHANGED: Grey text now black in light theme */
     --nm-warning: #9966FF; 
     --glow-color: rgba(var(--glow-rgb), 0.3);
 }
@@ -224,7 +224,7 @@ body.light-theme {
 }
 
 .page-header p {
-    color: var(--nm-text-muted);
+    color: var(--nm-text); /* CHANGED: from text-muted to text for maximum visibility */
     font-size: 1.1rem;
     max-width: 600px;
     margin: 0 auto;
@@ -288,7 +288,7 @@ body.light-theme {
 .tool-features li {
     margin-bottom: 8px;
     line-height: 1.5;
-    color: rgba(255, 255, 255, 0.7);
+    color: var(--nm-text); /* CHANGED: from rgba to solid text color */
     position: relative;
     padding-left: 5px;
 }
@@ -304,7 +304,7 @@ body.light-theme {
 
 /* For light theme */
 body.light-theme .tool-features li {
-    color: rgba(0, 0, 0, 0.7);
+    color: var(--nm-text); /* CHANGED: from rgba to solid text color */
 }
 
 body.light-theme .tool-features li::before {
@@ -513,7 +513,7 @@ body.light-theme .tool-features li::before {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    color: var(--nm-text-muted);
+    color: var(--nm-text); /* CHANGED: from text-muted to text for visibility */
     z-index: 2;
     pointer-events: none;
 }
@@ -596,7 +596,7 @@ body.light-theme .tool-features li::before {
 }
 
 .hero-text {
-    color: var(--nm-text-muted);
+    color: var(--nm-text); /* CHANGED: from text-muted to text for maximum visibility */
     font-size: 0.9rem;
     line-height: 1.6;
     margin: 0 0 20px 0;
@@ -607,7 +607,7 @@ body.light-theme .tool-features li::before {
     text-align: center;
     padding: 1rem;
     font-size: 0.7rem;
-    color: var(--nm-text-muted);
+    color: var(--nm-text); /* CHANGED: from text-muted to text for maximum visibility */
     margin-top: 25px;
 }
 
@@ -693,7 +693,7 @@ body.light-theme .modal-content {
 .close-modal {
     background: none;
     border: none;
-    color: var(--nm-text-muted);
+    color: var(--nm-text); /* CHANGED: from text-muted to text for visibility */
     font-size: 1.5rem;
     cursor: pointer;
     transition: color 0.2s, text-shadow 0.2s;
@@ -853,7 +853,7 @@ body.light-theme .modal-content {
 
 .note.note-warning {
     background-color: var(--warning-bg);
-    color: white;
+    color: var(--nm-text); /* CHANGED: from white to text color */
     font-weight: bold;
     border-left: 4px solid var(--nm-warning);
     padding: 1rem;
@@ -1178,7 +1178,7 @@ body.light-theme .modal-content {
 #useful-info-results-container .search-result-item small {
     display: block;
     font-size: 0.7rem;
-    color: var(--nm-text-muted);
+    color: var(--nm-text); /* CHANGED: from text-muted to text for visibility */
     margin-top: 4px;
 }
 
@@ -1202,7 +1202,7 @@ body.light-theme .modal-content {
     left: 20px;
     top: 50%;
     transform: translateY(-50%);
-    color: var(--nm-text-muted);
+    color: var(--nm-text); /* CHANGED: from text-muted to text for visibility */
     z-index: 2;
 }
 
