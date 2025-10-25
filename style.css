@@ -50,6 +50,18 @@ body.light-theme {
     --glow-color: rgba(var(--glow-rgb), 0.3);
 }
 
+/*
+    =================================================================
+    LIGHT THEME OVERRIDES FOR BLACK BUTTONS
+    =================================================================
+*/
+body.light-theme .contact-grid .app-icon,
+body.light-theme #useful-information-nav .app-icon {
+    background: var(--nm-darkest); /* Was black, now light gray */
+    color: var(--nm-text);        /* Is black (correct for light theme) */
+}
+
+
 /* --- BACKGROUND IMAGE STYLES (Applied to ALL pages via body) --- */
 body {
     margin: 0;
@@ -119,7 +131,28 @@ body.light-theme {
         1px 1px 0 #000,
         0 0 10px var(--nm-accent),
         0 0 20px var(--nm-accent);
+    
+    /* ADDED: Flex properties to align text and new logo */
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
+
+/* ADDED: New rule for the logo */
+.nav-title h1::after {
+    content: '';
+    display: block;
+    width: 2.5rem;
+    height: 2.5rem;
+    /* UPDATED: Using raw image URL */
+    background-image: url('https://raw.githubusercontent.com/dedsec1121fk/dedsec1121fk.github.io/9254ed6bf953c497074005b0da02e819aba18487/Assets/Images/Logos/Custom%20Black%20Purple%20Fox%20Logo.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    /* This ensures the logo doesn't get the h1's text-shadow */
+    text-shadow: none; 
+}
+
 
 .burger-menu {
     display: none;
@@ -1399,6 +1432,13 @@ body.light-theme .modal-content {
     
     .nav-title h1 {
         font-size: 1.5rem;
+        gap: 8px; /* ADDED: Responsive gap */
+    }
+
+    /* ADDED: Responsive logo size */
+    .nav-title h1::after {
+        width: 2rem;
+        height: 2rem;
     }
     
     #useful-information-nav {
