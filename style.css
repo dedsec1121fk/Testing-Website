@@ -1,3 +1,5 @@
+[file name]: style.css
+[file content begin]
 /*
     =================================================================
     DEDSEC PROJECT MULTI-PAGE STYLES
@@ -126,6 +128,8 @@ body.light-theme {
     border-radius: 20px;
     transition: all 0.3s ease;
     border: 1px solid transparent;
+    /* ADDED: Colorful border animation */
+    animation: multiColorBorder 15s infinite linear;
 }
 
 .nav-link:hover,
@@ -133,6 +137,8 @@ body.light-theme {
     background: var(--nm-accent);
     color: var(--nm-darkest);
     border-color: var(--nm-accent-hover);
+    /* ADDED: Stop animation on hover/active */
+    animation: none;
 }
 
 .nav-actions {
@@ -154,11 +160,15 @@ body.light-theme {
     display: flex;
     align-items: center;
     gap: 5px;
+    /* ADDED: Colorful border animation */
+    animation: multiColorBorder 15s infinite linear;
 }
 
 .nav-action-btn:hover {
     background: var(--nm-accent);
     color: var(--nm-darkest);
+    /* ADDED: Stop animation on hover */
+    animation: none;
 }
 
 /* --- PAGE CONTENT STYLES --- */
@@ -231,11 +241,15 @@ body.light-theme {
     border-radius: 15px;
     padding: 20px;
     transition: all 0.3s ease;
+    /* ADDED: Colorful border animation */
+    animation: multiColorBorder 15s infinite linear;
 }
 
 .tool-card:hover {
     border-color: var(--nm-accent);
     transform: translateY(-2px);
+    /* ADDED: Stop animation on hover */
+    animation: none;
 }
 
 .tool-card h4 {
@@ -269,7 +283,8 @@ body {
 .screen {
     width: 100%;
     height: 100%;
-    background-color: var(--nm-abyss-blue);
+    /* MODIFIED: Semi-transparent background for better logo visibility */
+    background-color: rgba(1, 4, 10, 0.8);
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 800 800' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3E/ffilter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
     background-size: cover, cover;
     position: relative;
@@ -291,14 +306,15 @@ body {
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
-    opacity: 0.3;
+    /* INCREASED: Better logo visibility */
+    opacity: 0.5;
     z-index: -1;
     transition: background-image 0.3s ease, opacity 0.3s ease;
 }
 
 body.light-theme .screen::after {
     background-image: url('https://raw.githubusercontent.com/dedsec1121fk/dedsec1121fk.github.io/6f776cd9772a079a6d26370dddab911bf7cde8cd/Assets/Images/Logos/Custom%20White%20Purple%20Fox%20Logo.jpg') !important;
-    opacity: 0.3;
+    opacity: 0.5;
 }
 
 .home-screen {
@@ -378,6 +394,8 @@ body.light-theme .screen::after {
     gap: 10px;
     opacity: 0.85;
     box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+    /* ADDED: Colorful border animation */
+    animation: multiColorBorder 15s infinite linear;
 }
 
 .certificate-btn:hover {
@@ -385,6 +403,8 @@ body.light-theme .screen::after {
     border-color: #FF6B6B;
     transform: translateY(-2px);
     box-shadow: 0 6px 20px rgba(255, 215, 0, 0.5);
+    /* ADDED: Stop animation on hover */
+    animation: none;
 }
 
 /* Certificate Form Styles */
@@ -416,12 +436,16 @@ body.light-theme .screen::after {
     font-size: 0.9rem;
     transition: all 0.3s ease;
     box-sizing: border-box;
+    /* ADDED: Colorful border animation */
+    animation: multiColorBorder 15s infinite linear;
 }
 
 .form-group input:focus {
     outline: none;
     border-color: var(--nm-accent);
     background-color: var(--nm-dark);
+    /* ADDED: Stop animation on focus */
+    animation: none;
 }
 
 .form-actions {
@@ -445,12 +469,16 @@ body.light-theme .screen::after {
     justify-content: center;
     gap: 10px;
     margin: 0 auto;
+    /* ADDED: Colorful border animation */
+    animation: multiColorBorder 15s infinite linear;
 }
 
 #generate-certificate:hover {
     background: linear-gradient(135deg, #00CC00, var(--nm-success));
     transform: translateY(-2px);
     box-shadow: 0 6px 20px rgba(0, 255, 0, 0.3);
+    /* ADDED: Stop animation on hover */
+    animation: none;
 }
 
 /* Search Styles */
@@ -666,11 +694,15 @@ body.light-theme .modal-content {
     transition: color 0.2s, text-shadow 0.2s;
     padding: 0;
     line-height: 1;
+    /* ADDED: Colorful border animation */
+    animation: multiColorBorder 15s infinite linear;
 }
 
 .close-modal:hover {
     color: var(--nm-danger);
     text-shadow: none; 
+    /* ADDED: Stop animation on hover */
+    animation: none;
 }
 
 .modal-body {
@@ -704,6 +736,8 @@ body.light-theme .modal-content {
     clip-path: none;
     border-radius: 20px;
     box-shadow: none; 
+    /* ADDED: Colorful border animation */
+    animation: multiColorBorder 15s infinite linear;
 }
 
 .language-button:hover,
@@ -712,6 +746,8 @@ body.light-theme .modal-content {
     background-color: var(--nm-accent);
     border-color: var(--nm-accent-hover);
     box-shadow: none; 
+    /* ADDED: Stop animation on hover/selected */
+    animation: none;
 }
 
 /* Utility Classes */
@@ -726,6 +762,8 @@ body.light-theme .modal-content {
 /* Accept/Decline Buttons */
 .decline-btn, .accept-btn {
     color: var(--nm-darkest) !important;
+    /* ADDED: Colorful border animation */
+    animation: multiColorBorder 15s infinite linear;
 }
 
 .accept-btn {
@@ -741,11 +779,15 @@ body.light-theme .modal-content {
 .accept-btn:hover {
     box-shadow: none !important; 
     opacity: 0.9;
+    /* ADDED: Stop animation on hover */
+    animation: none;
 }
 
 .decline-btn:hover {
     box-shadow: none !important; 
     opacity: 0.9;
+    /* ADDED: Stop animation on hover */
+    animation: none;
 }
 
 /* Code Container */
@@ -788,6 +830,8 @@ body.light-theme .modal-content {
     transition: all 0.2s ease;
     clip-path: none;
     border-radius: 20px;
+    /* ADDED: Colorful border animation */
+    animation: multiColorBorder 15s infinite linear;
 }
 
 .copy-btn:hover {
@@ -795,6 +839,8 @@ body.light-theme .modal-content {
     color: var(--nm-darkest);
     box-shadow: none; 
     border-color: var(--nm-accent-hover);
+    /* ADDED: Stop animation on hover */
+    animation: none;
 }
 
 /* Tip and Note Styles */
@@ -806,6 +852,8 @@ body.light-theme .modal-content {
     padding: 0.8em 1em;
     border-radius: 0 20px 20px 0;
     transition: all 0.3s ease;
+    /* ADDED: Colorful border animation */
+    animation: multiColorBorder 15s infinite linear;
 }
 
 .note {
@@ -816,6 +864,8 @@ body.light-theme .modal-content {
     padding: 0.8em 1em;
     border-radius: 0 20px 20px 0;
     transition: all 0.3s ease;
+    /* ADDED: Colorful border animation */
+    animation: multiColorBorder 15s infinite linear;
 }
 
 .note.note-warning {
@@ -865,12 +915,16 @@ body.light-theme .modal-content {
     text-decoration: none;
     box-sizing: border-box;
     position: relative;
+    /* ADDED: Colorful border animation */
+    animation: multiColorBorder 15s infinite linear;
 }
 
 .contact-grid .app-icon:hover {
     background: var(--nm-accent);
     border-color: var(--nm-accent-hover);
     color: var(--nm-darkest);
+    /* ADDED: Stop animation on hover */
+    animation: none;
 }
 
 .contact-grid .app-icon i {
@@ -943,6 +997,8 @@ body.light-theme .modal-content {
     font-size: 1.5rem;
     z-index: 10;
     margin: 0 10px;
+    /* ADDED: Colorful border animation */
+    animation: multiColorBorder 15s infinite linear;
 }
 
 .carousel-btn.prev {
@@ -955,6 +1011,8 @@ body.light-theme .modal-content {
 
 .carousel-btn:hover {
     background-color: rgba(0, 0, 0, 0.8);
+    /* ADDED: Stop animation on hover */
+    animation: none;
 }
 
 /* GitHub Stats */
@@ -995,12 +1053,16 @@ body.light-theme .modal-content {
     line-height: 1.4;
     clip-path: none;
     border-radius: 20px;
+    /* ADDED: Colorful border animation */
+    animation: multiColorBorder 15s infinite linear;
 }
 
 .store-link a:hover {
     background-color: var(--nm-accent-hover);
     border-color: var(--nm-accent);
     color: var(--nm-darkest);
+    /* ADDED: Stop animation on hover */
+    animation: none;
 }
 
 /* Modal Divider */
@@ -1242,27 +1304,37 @@ body.light-theme .modal-content {
     .nav-menu {
         position: fixed;
         top: 70px;
-        left: 0;
-        width: 100%;
+        right: 0; /* Changed from left: 0 */
+        width: 300px; /* Set a specific width for the sidebar */
+        height: calc(100vh - 70px); /* Full height minus nav */
         background: var(--nm-darkest);
         flex-direction: column;
         padding: 20px;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-        transform: translateY(-100%);
-        opacity: 0;
-        visibility: hidden;
-        transition: all 0.3s ease;
+        box-shadow: -4px 0 15px rgba(0, 0, 0, 0.3); /* Shadow on the left side */
+        transform: translateX(100%); /* Start off-screen to the right */
+        opacity: 1; /* Keep opacity at 1 */
+        visibility: visible; /* Keep visibility visible */
+        transition: transform 0.3s ease; /* Only transition transform */
+        align-items: flex-start;
+        gap: 15px;
+        overflow-y: auto;
     }
     
     .nav-menu.active {
-        transform: translateY(0);
-        opacity: 1;
-        visibility: visible;
+        transform: translateX(0); /* Slide in from right */
     }
     
     .nav-actions {
         margin-left: 0;
         margin-top: 20px;
+        justify-content: flex-start;
+        width: 100%;
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .nav-action-btn {
+        width: 100%;
         justify-content: center;
     }
     
@@ -1314,3 +1386,4 @@ body.light-theme .modal-content {
         padding: 10px 20px;
     }
 }
+[file content end]
