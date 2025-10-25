@@ -1086,7 +1086,7 @@ document.addEventListener('DOMContentLoaded', () => {
         initializeModals();
         initializeCarousels();
         initializeCopyButtons();
-        initializeToolCategories(); // NEW: Initialize tool categories functionality
+        initializeToolCategories(); // Add this line
 
         // Initialize useful information if on that page
         if (document.getElementById('useful-information-nav')) {
