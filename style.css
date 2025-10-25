@@ -20,6 +20,10 @@
     --nm-success: #00FF00;     
     --nm-warning: #FFFF00;     
     
+    /* FIXED: Added constant colors for button text */
+    --nm-text-on-accent: #FFFFFF;  /* Always-white text for purple/dark backgrounds */
+    --nm-text-on-status: #0B121C;  /* Always-dark text for bright green/red backgrounds */
+    
     --glow-rgb: 153, 102, 255;
     --glow-color: rgba(var(--glow-rgb), 0.0); 
     --nm-search-green: var(--nm-accent); 
@@ -166,7 +170,7 @@ body.light-theme {
 .nav-link:hover,
 .nav-link.active {
     background: var(--nm-accent);
-    color: var(--nm-darkest);
+    color: var(--nm-text-on-accent); /* FIXED: from --nm-darkest */
     border-color: var(--nm-accent-hover);
 }
 
@@ -193,7 +197,7 @@ body.light-theme {
 
 .nav-action-btn:hover {
     background: var(--nm-accent);
-    color: var(--nm-darkest);
+    color: var(--nm-text-on-accent); /* FIXED: from --nm-darkest */
 }
 
 /* --- PAGE CONTENT STYLES --- */
@@ -579,7 +583,7 @@ body.light-theme .tool-features li::before {
 
 #search-suggestions-container .search-result-item:hover {
     background-color: var(--nm-accent); 
-    color: var(--nm-darkest); 
+    color: var(--nm-text-on-accent); /* FIXED: from --nm-darkest */
 }
 
 /* Hero Section */
@@ -741,7 +745,7 @@ body.light-theme .modal-content {
 
 .language-button:hover,
 .language-button.selected {
-    color: var(--nm-darkest);
+    color: var(--nm-text-on-accent); /* FIXED: from --nm-darkest */
     background-color: var(--nm-accent);
     border-color: var(--nm-accent-hover);
     box-shadow: none; 
@@ -758,7 +762,7 @@ body.light-theme .modal-content {
 
 /* Accept/Decline Buttons */
 .decline-btn, .accept-btn {
-    color: var(--nm-darkest) !important;
+    color: var(--nm-text-on-status) !important; /* FIXED: from --nm-darkest */
 }
 
 .accept-btn {
@@ -825,7 +829,7 @@ body.light-theme .modal-content {
 
 .copy-btn:hover {
     background: var(--nm-accent);
-    color: var(--nm-darkest);
+    color: var(--nm-text-on-accent); /* FIXED: from --nm-darkest */
     box-shadow: none; 
     border-color: var(--nm-accent-hover);
 }
@@ -903,7 +907,7 @@ body.light-theme .modal-content {
 .contact-grid .app-icon:hover {
     background: var(--nm-accent);
     border-color: var(--nm-accent-hover);
-    color: var(--nm-darkest);
+    color: var(--nm-text-on-accent); /* FIXED: from --nm-darkest */
 }
 
 .contact-grid .app-icon i {
@@ -918,7 +922,7 @@ body.light-theme .modal-content {
 }
 
 .contact-grid .app-icon:hover i {
-    color: var(--nm-darkest); 
+    color: var(--nm-text-on-accent); /* FIXED: from --nm-darkest */
     text-shadow: none;
 }
 
@@ -1087,7 +1091,7 @@ body.light-theme .modal-content {
 #useful-information-nav .app-icon:hover {
     background: var(--nm-accent);
     border-color: var(--nm-accent-hover);
-    color: var(--nm-darkest);
+    color: var(--nm-text-on-accent); /* FIXED: from --nm-darkest */
     animation: none;
 }
 
@@ -1172,7 +1176,7 @@ body.light-theme .modal-content {
 
 #useful-info-results-container .search-result-item:hover {
     background-color: var(--nm-accent);
-    color: var(--nm-darkest);
+    color: var(--nm-text-on-accent); /* FIXED: from --nm-darkest */
 }
 
 #useful-info-results-container .search-result-item small {
