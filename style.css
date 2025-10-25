@@ -38,7 +38,8 @@
     --clip-path-shape: none; 
 }
 
-body.light-theme {
+/* FIX: Moved light theme variables to HTML tag */
+html.light-theme {
     --nm-abyss-blue: #ffffff;
     --nm-darkest: #f0f0f0;
     --nm-dark: #e9e9e9;
@@ -61,39 +62,73 @@ body.light-theme #useful-information-nav .app-icon {
     color: var(--nm-text);        /* Is black (correct for light theme) */
 }
 
+/* FIX: Moved background color to HTML tag for stability */
+html {
+    position: relative;
+    background-color: var(--nm-abyss-blue);
+    transition: background-color 0.3s ease;
+}
+
 
 /* --- BACKGROUND IMAGE STYLES (Applied to ALL pages via body) --- */
 body {
     margin: 0;
     padding: 0;
-    background-color: var(--nm-abyss-blue);
+    /* FIX: Body is now transparent, HTML provides the base color */
+    background-color: transparent;
     font-family: 'Roboto Mono', monospace;
     color: var(--nm-text);
-    transition: background-color 0.3s ease, color 0.3s ease;
-    /* Add background to ALL pages - SINGLE background image */
-    background-image: url('https://raw.githubusercontent.com/dedsec1121fk/dedsec1121fk.github.io/5860edb8a7468d955336c9cf1d8b357597d6d645/Assets/Images/Logos/Custom%20Black%20Purple%20Fox%20Logo.png');
-    background-size: contain;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    position: relative;
+    /* FIX: Removed background-color transition */
+    transition: color 0.3s ease;
+    /* FIX: Removed position: relative */
 }
 
-body::before {
+/* FIX: Moved background logo to HTML::before for scroll stability */
+html::before {
     content: '';
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
+    
+    /* This layer now holds the main logo */
+    background-image: url('https://raw.githubusercontent.com/dedsec1121fk/dedsec1121fk.github.io/5860edb8a7468d955336c9cf1d8b357597d6d645/Assets/Images/Logos/Custom%20Black%20Purple%20Fox%20Logo.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    
+    /* Added low opacity to make logo a faint watermark for readability */
+    opacity: 0.15;
+    
+    /* z-index is -2 (bottom layer) */
+    z-index: -2;
+    pointer-events: none;
+    
+    /* ADDED: Transition for light/dark theme logo swap */
+    transition: background-image 0.3s ease;
+}
+
+/* FIX: Moved noise filter to HTML::after for scroll stability */
+html::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* This is the noise filter */
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 800 800' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3E/ffilter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
     background-size: cover;
     opacity: 0.3;
+    /* z-index is -1 (above logo, behind content) */
     z-index: -1;
     pointer-events: none;
 }
 
-body.light-theme {
+
+/* FIX: Changed selector to target HTML::before */
+html.light-theme::before {
     background-image: url('https://raw.githubusercontent.com/dedsec1121fk/dedsec1121fk.github.io/6f776cd9772a079a6d26370dddab911bf7cde8cd/Assets/Images/Logos/Custom%20White%20Purple%20Fox%20Logo.jpg');
 }
 
@@ -579,7 +614,7 @@ body.light-theme .tool-features li::before {
     clip-path: none; 
     border-radius: 50px; 
     box-sizing: border-box;
-    animation: none;
+    /* animation: none; */ /* MODIFIED: Removed, will be handled by group selector */
 }
 
 #main-search-input:focus {
@@ -800,22 +835,28 @@ body.light-theme .modal-content {
 
 .accept-btn {
     background-color: var(--nm-success) !important; 
-    border-color: var(--nm-success) !important;
+    /* FIX: Removed !important from border-color to allow animation */
+    border-color: var(--nm-success);
 }
 
 .decline-btn {
     background-color: var(--nm-danger) !important; 
-    border-color: var(--nm-danger) !important;
+    /* FIX: Removed !important from border-color to allow animation */
+    border-color: var(--nm-danger);
 }
 
 .accept-btn:hover {
     box-shadow: none !important; 
     opacity: 0.9;
+    /* ADDED: Re-set border color on hover */
+    border-color: var(--nm-success) !important;
 }
 
 .decline-btn:hover {
     box-shadow: none !important; 
     opacity: 0.9;
+    /* ADDED: Re-set border color on hover */
+    border-color: var(--nm-danger) !important;
 }
 
 /* Code Container */
@@ -1261,7 +1302,58 @@ body.light-theme .modal-content {
     background-color: var(--nm-dark);
 }
 
-/* Multi-color Border Animation */
+/* =================================================================
+    ADDED: ANIMATED BORDERS
+    =================================================================
+*/
+
+/* --- ADDED: Multi-color border animation to all boxes/buttons --- */
+.nav-link,
+.nav-action-btn,
+.tool-card,
+.certificate-btn,
+#generate-certificate,
+#main-search-input,
+.language-button,
+.copy-btn,
+.contact-grid .app-icon,
+.store-link a,
+.modal-search-container input,
+.accept-btn,
+.decline-btn,
+.anniversary-banner,
+.form-group input,
+.content-section,
+.modal-content {
+    /* Exclude the original one which has a 2px border */
+    /* Note: .accept-btn, .decline-btn, #generate-certificate, .certificate-btn, 
+       #main-search-input, .modal-search-container input, .form-group input 
+       already have 2px borders, which is good. */
+    animation: multiColorBorder 15s infinite linear;
+}
+
+/* --- ADDED: Disable animation on hover/focus --- */
+.nav-link:hover,
+.nav-action-btn:hover,
+.tool-card:hover,
+.certificate-btn:hover,
+#generate-certificate:hover,
+#main-search-input:focus,
+.language-button:hover,
+.copy-btn:hover,
+.contact-grid .app-icon:hover,
+.store-link a:hover,
+.modal-search-container input:focus,
+.accept-btn:hover,
+.decline-btn:hover,
+.anniversary-banner:hover,
+.form-group input:focus,
+.content-section:hover,
+.modal-content:hover {
+    animation: none;
+}
+
+/* --- Multi-color Border Animation (Original) --- */
 @keyframes multiColorBorder {
     0% { border-color: #FF0000; }
     3.33% { border-color: #FF3300; }
