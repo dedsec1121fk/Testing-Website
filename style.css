@@ -688,8 +688,7 @@ body.light-theme .tool-card {
 }
 
 body.light-theme #search-suggestions-container .search-result-item {
-    /* FIXED: Removed hardcoded #000000 to rely on var(--nm-text) for consistency */
-    color: var(--nm-text);
+    color: #000000;
 }
 
 /* Hero Section */
@@ -1187,8 +1186,7 @@ body.light-theme .store-link a {
 .store-link a:hover {
     background-color: var(--nm-accent-hover);
     border-color: var(--nm-accent);
-    /* FIXED: Changed to theme-aware text for proper contrast on accent background in both themes */
-    color: var(--nm-text-on-accent); 
+    color: var(--nm-darkest);
     transform: translateY(-3px);
     box-shadow: var(--shadow-glow-accent);
 }
@@ -1334,12 +1332,10 @@ body.light-theme #useful-information-nav .app-icon {
     color: var(--nm-text);
     margin-top: 4px;
 }
-/* FIXED: Removed hardcoded color that broke both themes on hover. It will now inherit the correct theme-on-accent color. */
-/* #useful-info-results-container .search-result-item:hover small { color: rgba(0, 0, 0, 0.7); } */
+#useful-info-results-container .search-result-item:hover small { color: rgba(0, 0, 0, 0.7); }
 
 body.light-theme #useful-info-results-container .search-result-item {
-    /* FIXED: Removed hardcoded #000000 to rely on var(--nm-text) for consistency */
-    color: var(--nm-text);
+    color: #000000;
 }
 
 /* Modal Search Container */
