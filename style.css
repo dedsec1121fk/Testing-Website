@@ -161,12 +161,20 @@ body.light-theme::before {
 
 .nav-container {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end; /* MODIFIED: Was space-between, to push burger right */
     align-items: center;
     max-width: 1200px;
     margin: 0 auto;
     padding: 10px 0;
     transition: max-width 0.3s ease;
+    position: relative; /* ADDED: For absolute centering of title */
+}
+
+.nav-title {
+    /* ADDED: Absolute centering for title */
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
 .nav-title h1 {
@@ -200,7 +208,7 @@ body.light-theme .nav-title h1::after {
 }
 
 .burger-menu {
-    display: none;
+    display: flex; /* MODIFIED: Was 'none', now always flex */
     flex-direction: column;
     background: none;
     border: none;
@@ -221,9 +229,30 @@ body.light-theme .nav-title h1::after {
 .burger-menu.active span:nth-child(3) { transform: rotate(-45deg) translate(6px, -6px); }
 
 .nav-menu {
+    /* MODIFIED: Replaced desktop inline styles with mobile slide-out styles */
     display: flex;
+    position: fixed;
+    top: 70px;
+    right: 0;
+    width: 80%;
+    max-width: 300px;
+    height: calc(100vh - 70px);
+    background: var(--nm-darkest);
+    flex-direction: column;
+    padding: 20px;
+    box-shadow: -4px 0 15px rgba(0, 0, 0, 0.3);
+    transform: translateX(100%);
+    opacity: 1;
+    visibility: visible;
+    transition: transform 0.3s var(--ease-out-cubic);
+    overflow-y: auto;
     align-items: center;
     gap: 20px;
+}
+
+/* ADDED: Moved from media query to global */
+.nav-menu.active {
+    transform: translateX(0);
 }
 
 .nav-link {
@@ -257,8 +286,13 @@ body.light-theme .nav-title h1::after {
 
 .nav-actions {
     display: flex;
+    /* MODIFIED: Replaced desktop inline styles with mobile column styles */
+    margin-left: 0;
+    margin-top: 20px;
+    justify-content: center;
+    flex-direction: column;
+    width: 100%;
     gap: 10px;
-    margin-left: 20px;
 }
 
 .nav-action-btn {
@@ -1430,44 +1464,16 @@ body.light-theme #useful-info-results-container .search-result-item {
     .modal-body { padding: 15px; }
 }
 
-/* --- Mobile & Small Tablets (FIXED BURGER MENU) --- */
+/* --- Mobile & Small Tablets --- */
 @media (max-width: 768px) {
-    .burger-menu { display: flex; }
-    .nav-menu {
-        position: fixed;
-        top: 70px;
-        right: 0;
-        width: 80%;
-        max-width: 300px;
-        height: calc(100vh - 70px);
-        background: var(--nm-darkest);
-        flex-direction: column;
-        padding: 20px;
-        box-shadow: -4px 0 15px rgba(0, 0, 0, 0.3);
-        transform: translateX(100%);
-        
-        /* FIX: Should start hidden and transition visibility after closing */
-        opacity: 0; 
-        visibility: hidden; 
-        transition: transform 0.3s var(--ease-out-cubic), opacity 0.3s ease, visibility 0s 0.3s;
-
-        overflow-y: auto;
-    }
-    .nav-menu.active { 
-        transform: translateX(0); 
-        
-        /* FIX: Should be fully visible when active and transition visibility immediately */
-        opacity: 1; 
-        visibility: visible; 
-        transition: transform 0.3s var(--ease-out-cubic), opacity 0.3s ease, visibility 0s;
-    }
-    .nav-actions {
-        margin-left: 0;
-        margin-top: 20px;
-        justify-content: center;
-        flex-direction: column;
-        width: 100%;
-    }
+    /* DELETED: .burger-menu { display: flex; } (Now global) */
+    
+    /* DELETED: .nav-menu { ... } (Now global) */
+    
+    /* DELETED: .nav-menu.active { transform: translateX(0); } (Now global) */
+    
+    /* DELETED: .nav-actions { ... } (Now global) */
+    
     .nav-action-btn { width: 100%; justify-content: center; }
     .phone-container { height: calc(100vh - 70px); margin-top: 70px; }
     .page-content { margin-top: 70px; padding: 15px; }
