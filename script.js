@@ -598,24 +598,48 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- TOOL CATEGORIES FUNCTIONALITY ---
     function initializeToolCategories() {
+        console.log('Initializing tool categories...');
+        
         // Category toggle functionality
         document.querySelectorAll('.category-header').forEach(header => {
             header.addEventListener('click', function() {
+                console.log('Category header clicked');
                 const category = this.parentElement;
                 category.classList.toggle('active');
+                
+                // Close all other categories when opening one (optional)
+                // document.querySelectorAll('.category').forEach(otherCategory => {
+                //     if (otherCategory !== category) {
+                //         otherCategory.classList.remove('active');
+                //     }
+                // });
             });
         });
         
         // Tool item toggle functionality
         document.querySelectorAll('.tool-header').forEach(header => {
             header.addEventListener('click', function(e) {
+                console.log('Tool header clicked');
                 // Prevent the category from closing when clicking on a tool
                 e.stopPropagation();
                 
                 const toolItem = this.parentElement;
                 toolItem.classList.toggle('active');
+                
+                // Close all other tool items when opening one (optional)
+                // document.querySelectorAll('.tool-item').forEach(otherTool => {
+                //     if (otherTool !== toolItem) {
+                //         otherTool.classList.remove('active');
+                //     }
+                // });
             });
         });
+
+        // Make sure the first category is expanded by default
+        const firstCategory = document.querySelector('.category');
+        if (firstCategory && !firstCategory.classList.contains('active')) {
+            firstCategory.classList.add('active');
+        }
     }
 
     // --- USEFUL INFORMATION FUNCTIONALITY ---
@@ -1086,7 +1110,12 @@ document.addEventListener('DOMContentLoaded', () => {
         initializeModals();
         initializeCarousels();
         initializeCopyButtons();
-        initializeToolCategories(); // Add this line
+
+        // Initialize tool categories if on the tools page
+        if (document.querySelector('.categories-container')) {
+            console.log('Tools page detected, initializing tool categories...');
+            initializeToolCategories();
+        }
 
         // Initialize useful information if on that page
         if (document.getElementById('useful-information-nav')) {
