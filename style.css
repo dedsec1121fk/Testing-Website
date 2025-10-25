@@ -69,6 +69,75 @@ body.light-theme {
     /* FIXED: Ensure proper contrast for light theme */
     --warning-bg: rgba(153, 102, 255, 0.1);
     --danger-bg: rgba(255, 0, 0, 0.1);
+    
+    /* ADDED FIXES FOR TEXT CONTRAST IN LIGHT THEME */
+    
+    /* Fix for search suggestions */
+    #search-suggestions-container .search-result-item,
+    #useful-info-results-container .search-result-item {
+        color: #333333 !important;
+    }
+    
+    /* Fix for code text */
+    .code-container code {
+        color: #333333;
+    }
+    
+    /* Fix for tool features text */
+    .tool-features li {
+        color: #333333;
+    }
+    
+    /* Fix for modal body text */
+    .modal-body {
+        color: #333333;
+    }
+    
+    /* Fix for content section text */
+    .content-section {
+        color: #333333;
+    }
+    
+    /* Fix for hero text */
+    .hero-text {
+        color: #333333;
+    }
+    
+    /* Fix for footer text */
+    .main-footer {
+        color: #666666;
+    }
+    
+    /* Fix for page header paragraph */
+    .page-header p {
+        color: #333333;
+    }
+    
+    /* Fix for content section headings */
+    .content-section h3 {
+        color: #333333;
+    }
+    
+    /* Fix for note and tip text */
+    .tip, .note {
+        color: #333333;
+    }
+    
+    /* Fix for modal header text */
+    .modal-header h2 {
+        color: #333333;
+    }
+    
+    /* Fix for form labels */
+    .form-group label {
+        color: #333333;
+    }
+    
+    /* Fix for progress bar text */
+    .progress-bar-text {
+        color: #333333;
+        text-shadow: 1px 1px 2px rgba(255,255,255,0.7);
+    }
 }
 
 /*
