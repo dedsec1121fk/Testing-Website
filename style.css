@@ -1303,6 +1303,36 @@ body.light-theme .modal-content {
     z-index: 2000;
 }
 
+/* Language Selection Modal Z-Index */
+#language-selection-modal {
+    z-index: 2001; /* Higher than disclaimer modal */
+}
+
+/* Disclaimer Modal Buttons - 3x Larger */
+#disclaimer-modal .modal-footer {
+    padding: 30px 20px; /* Increase padding to accommodate larger buttons */
+}
+
+#disclaimer-modal .decline-btn,
+#disclaimer-modal .accept-btn {
+    font-size: 2rem; /* 3x larger font */
+    padding: 25px 40px; /* 3x larger padding */
+    min-height: 80px; /* Ensure minimum height */
+    min-width: 180px; /* Ensure minimum width */
+    border-radius: 30px; /* Slightly larger border radius */
+    margin: 0 15px; /* More spacing between buttons */
+}
+
+/* Make the language selection button in disclaimer more prominent */
+#disclaimer-lang-btn {
+    font-size: 1.1rem;
+    padding: 12px 20px;
+}
+
+#disclaimer-lang-btn i {
+    font-size: 1.3rem;
+}
+
 /* --- RESPONSIVE DESIGN --- */
 @media (max-width: 768px) {
     .burger-menu {
@@ -1375,6 +1405,22 @@ body.light-theme .modal-content {
     
     #useful-information-nav .app-icon span {
         font-size: 0.8rem;
+    }
+    
+    /* Responsive styles for disclaimer modal buttons */
+    #disclaimer-modal .modal-footer {
+        flex-direction: column;
+        gap: 20px;
+        padding: 20px;
+    }
+    
+    #disclaimer-modal .decline-btn,
+    #disclaimer-modal .accept-btn {
+        font-size: 1.5rem;
+        padding: 20px 30px;
+        min-height: 60px;
+        min-width: 140px;
+        margin: 0;
     }
 }
 
