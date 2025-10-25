@@ -58,7 +58,7 @@ body.light-theme {
     --nm-dark: var(--nm-dark-light);
     --nm-container: var(--nm-container-light);
     --nm-border: var(--nm-border-light);
-    --nm-text: #000000;
+    --nm-text: var(--nm-accent-hover); /* MODIFIED: Was #000000, now dark purple */
     --nm-text-muted: var(--nm-text-muted-light);
     --nm-warning: #9966FF;
     --glow-color: rgba(var(--glow-rgb), 0.3);
