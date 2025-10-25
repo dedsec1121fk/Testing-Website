@@ -163,10 +163,11 @@ body.light-theme::before {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    max-width: 1200px;
+    max-width: 1200px; /* Kept max-width for centering on large screens, adjusted in media queries */
     margin: 0 auto;
     padding: 10px 0;
     transition: max-width 0.3s ease;
+    width: 100%; /* Ensure it uses the full width of the main-nav on smaller screens */
 }
 
 .nav-title h1 {
@@ -224,6 +225,8 @@ body.light-theme .nav-title h1::after {
     display: flex;
     align-items: center;
     gap: 20px;
+    /* FIX: Allow navigation links to wrap if they run out of space */
+    flex-wrap: wrap; 
 }
 
 .nav-link {
@@ -237,6 +240,7 @@ body.light-theme .nav-title h1::after {
     /* MODIFIED: Premium transition */
     transition: transform 0.25s var(--ease-out-cubic), background-color 0.25s ease, color 0.25s ease, box-shadow 0.25s var(--ease-out-cubic), border-color 0.25s ease;
     will-change: transform, box-shadow;
+    flex-shrink: 0; /* Prevent links from shrinking */
 }
 
 .nav-link:hover,
@@ -259,6 +263,7 @@ body.light-theme .nav-title h1::after {
     display: flex;
     gap: 10px;
     margin-left: 20px;
+    flex-shrink: 0; /* Prevent buttons from shrinking */
 }
 
 .nav-action-btn {
@@ -393,12 +398,6 @@ body.light-theme .tool-card {
     border-color: var(--nm-accent);
     transform: translateY(-3px);
     box-shadow: var(--shadow-glow-accent);
-}
-
-.tool-card h4 {
-    color: var(--nm-accent);
-    margin-bottom: 10px;
-    font-family: 'Orbitron', sans-serif;
 }
 
 /* --- TOOL FEATURES BULLET STYLES --- */
@@ -1489,6 +1488,10 @@ body.light-theme #useful-info-results-container .search-result-item {
 @media (min-width: 769px) and (max-width: 991px) {
     .content-grid { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
     .page-header h1 { font-size: 2.2rem; }
+    
+    /* FIX: Allow navigation bar to use more width in landscape tablets */
+    .nav-container { max-width: 95%; } 
+    .nav-menu { gap: 15px; }
 }
 
 /* --- Standard Desktops --- */
@@ -1510,23 +1513,29 @@ body.light-theme #useful-info-results-container .search-result-item {
         opacity: 1;
         visibility: visible;
         overflow-y: visible;
+        flex-wrap: nowrap; /* Prevent wrapping on large screens */
     }
     .nav-link { margin: 0 5px; } /* Adding slight spacing between desktop links */
     .nav-actions { margin-left: 20px; flex-direction: row; }
     .nav-action-btn { width: auto; }
+    /* FIX: Remove max-width restriction on the nav container for better desktop layout */
+    .nav-container { max-width: 100%; padding: 10px 30px; } 
+    .page-content { max-width: 1200px; padding: 20px 30px; } /* Adjust padding for visual balance */
 }
 
 @media (min-width: 1200px) {
-    .nav-container { padding: 15px 0; }
+    .nav-container { padding: 15px 30px; }
     .nav-title h1 { font-size: 2rem; }
     .nav-link { font-size: 1rem; padding: 10px 20px; }
+    .page-content { max-width: 1200px; }
 }
 
 /* --- Large Desktops & TVs --- */
 @media (min-width: 1600px) {
-    .nav-container, .page-content { max-width: 1500px; }
+    /* FIX: Set a larger maximum width for the main content only to prevent excessive stretching */
+    .nav-container { max-width: 100%; } /* Stays full width */
+    .page-content { max-width: 1500px; } 
     body { font-size: 17px; }
     .page-header h1 { font-size: 3rem; }
     .content-section { padding: 40px; }
 }
-/* ADDED: Missing closing brace for media queries block */
