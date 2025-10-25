@@ -81,9 +81,17 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- LANGUAGE SWITCHER ---
     function initializeLanguageSwitcher() {
         const langBtn = document.getElementById('nav-lang-switcher');
+        const disclaimerLangBtn = document.getElementById('disclaimer-lang-btn');
         const languageModal = document.getElementById('language-selection-modal');
         
         langBtn?.addEventListener('click', () => {
+            if (languageModal) {
+                languageModal.classList.add('visible');
+            }
+        });
+
+        // Language selection button in disclaimer modal
+        disclaimerLangBtn?.addEventListener('click', () => {
             if (languageModal) {
                 languageModal.classList.add('visible');
             }
@@ -172,67 +180,16 @@ document.addEventListener('DOMContentLoaded', () => {
             usefulInfoPrompt.textContent = text;
         }
 
-        // Update cookie consent buttons
-        const cookieAcceptBtn = document.getElementById('cookie-accept-btn');
-        const cookieDeclineBtn = document.getElementById('cookie-decline-btn');
-        
-        if (cookieAcceptBtn) {
-            const acceptText = cookieAcceptBtn.getAttribute(`data-${lang}`) || cookieAcceptBtn.textContent;
-            cookieAcceptBtn.textContent = acceptText;
-        }
-        
-        if (cookieDeclineBtn) {
-            const declineText = cookieDeclineBtn.getAttribute(`data-${lang}`) || cookieDeclineBtn.textContent;
-            cookieDeclineBtn.textContent = declineText;
+        // Update disclaimer language button
+        const disclaimerLangBtn = document.getElementById('disclaimer-lang-btn');
+        if (disclaimerLangBtn) {
+            const span = disclaimerLangBtn.querySelector('span');
+            if (span) {
+                const text = span.getAttribute(`data-${lang}`) || span.textContent;
+                span.textContent = text;
+            }
         }
     };
-
-    // --- COOKIE CONSENT FUNCTIONALITY ---
-    function initializeCookieConsent() {
-        const cookieModal = document.getElementById('cookie-consent-modal');
-        const acceptBtn = document.getElementById('cookie-accept-btn');
-        const declineBtn = document.getElementById('cookie-decline-btn');
-
-        // Check if user has already made a choice
-        const cookieConsent = localStorage.getItem('cookieConsent');
-        
-        if (!cookieConsent) {
-            // Show cookie modal after a short delay (2 seconds)
-            setTimeout(() => {
-                if (cookieModal) {
-                    cookieModal.classList.add('visible');
-                }
-            }, 2000);
-        }
-
-        // Handle accept button
-        acceptBtn?.addEventListener('click', () => {
-            localStorage.setItem('cookieConsent', 'accepted');
-            if (cookieModal) {
-                cookieModal.classList.remove('visible');
-            }
-            // You can add additional code here for analytics, tracking, etc.
-            console.log('Cookies accepted');
-        });
-
-        // Handle decline button
-        declineBtn?.addEventListener('click', () => {
-            localStorage.setItem('cookieConsent', 'declined');
-            if (cookieModal) {
-                cookieModal.classList.remove('visible');
-            }
-            // You can add additional code here to disable non-essential cookies
-            console.log('Cookies declined');
-        });
-
-        // Close modal when clicking outside (optional)
-        cookieModal?.addEventListener('click', (e) => {
-            if (e.target === cookieModal) {
-                // Don't close when clicking outside - force user to make a choice
-                // cookieModal.classList.remove('visible');
-            }
-        });
-    }
 
     // --- DISCLAIMER FUNCTIONALITY ---
     function initializeDisclaimer() {
@@ -244,12 +201,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const disclaimerAccepted = localStorage.getItem('disclaimerAccepted');
 
         if (!disclaimerAccepted) {
-            // Show disclaimer modal after a short delay (1 second)
+            // Show disclaimer modal immediately on page load
             setTimeout(() => {
                 if (disclaimerModal) {
                     disclaimerModal.classList.add('visible');
                 }
-            }, 1000);
+            }, 500);
         }
 
         // Handle accept button
@@ -261,7 +218,7 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log('Disclaimer accepted');
         });
 
-        // Handle decline button
+        // Handle decline button - redirect to Google homepage
         declineBtn?.addEventListener('click', () => {
             window.location.href = 'https://www.google.com';
         });
@@ -1224,8 +1181,7 @@ document.addEventListener('DOMContentLoaded', () => {
         initializeModals();
         initializeCarousels();
         initializeCopyButtons();
-        initializeCookieConsent();
-        initializeDisclaimer(); // Added disclaimer initialization
+        initializeDisclaimer(); // Added disclaimer initialization (no cookie consent)
 
         // Initialize tool categories if on the tools page
         if (document.querySelector('.categories-container')) {

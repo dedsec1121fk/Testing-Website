@@ -189,7 +189,13 @@
     <!-- Disclaimer Modal -->
     <div id="disclaimer-modal" class="modal-overlay">
       <div class="modal-content">
-          <div class="modal-header"><h2 data-en="Disclaimer & Terms of Use" data-gr="Αποποίηση Ευθύνης & Όροι Χρήσης">Disclaimer & Terms of Use</h2></div>
+          <div class="modal-header">
+            <h2 data-en="Disclaimer & Terms of Use" data-gr="Αποποίηση Ευθύνης & Όροι Χρήσης">Disclaimer & Terms of Use</h2>
+            <button id="disclaimer-lang-btn" class="language-selection-btn">
+                <i class="fas fa-globe"></i>
+                <span data-en="Change Language" data-gr="Αλλαγή Γλώσσας">Change Language</span>
+            </button>
+          </div>
           <div class="modal-body" data-lang-section="en">
             <div class="note">
                 <p><strong>PLEASE READ CAREFULLY BEFORE PROCEEDING.</strong></p>
@@ -224,46 +230,11 @@
             </div>
             <div class="note"><p><strong>Με το κλικ στο "Αποδοχή", επιβεβαιώνετε ότι διαβάσατε, κατανοήσατε και συμφωνείτε να δεσμεύεστε από όλους τους όρους και τις προϋποθέσεις που περιγράφονται σε αυτήν την αποποίηση ευθύνης και την πλήρη Πολιτική Απορήτου μας. Εάν δεν συμφωνείτε με αυτούς τους όρους, πρέπει να κάνετε κλικ στο "Απόρριψη" και να διακόψετε αμέσως κάθε χρήση του Λογισμικού.</strong></p></div>
           </div>
-          <div class="modal-footer">
+          <div class="modal-footer disclaimer-footer">
             <button id="decline-disclaimer" class="decline-btn" data-en="Decline" data-gr="Απόρριψη">Decline</button>
             <button id="accept-disclaimer" class="accept-btn" data-en="Accept" data-gr="Αποδοχή">Accept</button>
           </div>
       </div>
-    </div>
-
-    <!-- Cookie Consent Modal -->
-    <div id="cookie-consent-modal" class="modal-overlay">
-        <div class="modal-content modal-content-auto-height">
-            <div class="modal-header">
-                <h2 data-en="Cookie Consent" data-gr="Συγκατάθεση Cookies">Cookie Consent</h2>
-            </div>
-            <div class="modal-body">
-                <div data-lang-section="en">
-                    <p>We use cookies to enhance your browsing experience, serve personalized content, and analyze our traffic. By clicking "Accept All", you consent to our use of cookies.</p>
-                    <p><strong>Cookie Policy:</strong></p>
-                    <ul>
-                        <li><strong>Essential:</strong> Necessary for the website to function properly</li>
-                        <li><strong>Preferences:</strong> Remember your settings and preferences</li>
-                        <li><strong>Analytics:</strong> Help us understand how visitors interact with our website</li>
-                        <li><strong>Marketing:</strong> Used to deliver relevant ads and marketing campaigns</li>
-                    </ul>
-                </div>
-                <div class="hidden-by-default" data-lang-section="gr">
-                    <p>Χρησιμοποιούμε cookies για να βελτιώσουμε την εμπειρία περιήγησής σας, να παρέχουμε εξατομικευμένο περιεχόμενο και να αναλύουμε την επισκεψιμότητά μας. Πατώντας "Αποδοχή Όλων", συναινείτε στη χρήση των cookies από εμάς.</p>
-                    <p><strong>Πολιτική Cookies:</strong></p>
-                    <ul>
-                        <li><strong>Απαραίτητα:</strong> Απαραίτητα για τη σωστή λειτουργία του ιστότοπου</li>
-                        <li><strong>Προτιμήσεις:</strong> Απομνημόνευση των ρυθμίσεων και των προτιμήσεών σας</li>
-                        <li><strong>Αναλυτικά:</strong> Μας βοηθούν να κατανοήσουμε πώς αλληλεπιδρούν οι επισκέπτες με τον ιστότοπό μας</li>
-                        <li><strong>Marketing:</strong> Χρησιμοποιούνται για την παροχή σχετικών διαφημίσεων και καμπανιών marketing</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button id="cookie-decline-btn" class="decline-btn" data-en="Decline" data-gr="Απόρριψη">Decline</button>
-                <button id="cookie-accept-btn" class="accept-btn" data-en="Accept All" data-gr="Αποδοχή Όλων">Accept All</button>
-            </div>
-        </div>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
