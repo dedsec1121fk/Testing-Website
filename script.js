@@ -234,6 +234,47 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // --- DISCLAIMER FUNCTIONALITY ---
+    function initializeDisclaimer() {
+        const disclaimerModal = document.getElementById('disclaimer-modal');
+        const acceptBtn = document.getElementById('accept-disclaimer');
+        const declineBtn = document.getElementById('decline-disclaimer');
+
+        // Check if user has already accepted the disclaimer
+        const disclaimerAccepted = localStorage.getItem('disclaimerAccepted');
+
+        if (!disclaimerAccepted) {
+            // Show disclaimer modal after a short delay (1 second)
+            setTimeout(() => {
+                if (disclaimerModal) {
+                    disclaimerModal.classList.add('visible');
+                }
+            }, 1000);
+        }
+
+        // Handle accept button
+        acceptBtn?.addEventListener('click', () => {
+            localStorage.setItem('disclaimerAccepted', 'true');
+            if (disclaimerModal) {
+                disclaimerModal.classList.remove('visible');
+            }
+            console.log('Disclaimer accepted');
+        });
+
+        // Handle decline button
+        declineBtn?.addEventListener('click', () => {
+            window.location.href = 'https://www.google.com';
+        });
+
+        // Prevent closing the disclaimer modal by clicking outside
+        disclaimerModal?.addEventListener('click', (e) => {
+            if (e.target === disclaimerModal) {
+                // Don't allow closing by clicking outside - force user to make a choice
+                return;
+            }
+        });
+    }
+
     // --- CERTIFICATE FUNCTIONALITY ---
     const certificateTranslations = {
         en: {
@@ -1183,7 +1224,8 @@ document.addEventListener('DOMContentLoaded', () => {
         initializeModals();
         initializeCarousels();
         initializeCopyButtons();
-        initializeCookieConsent(); // Add cookie consent initialization
+        initializeCookieConsent();
+        initializeDisclaimer(); // Added disclaimer initialization
 
         // Initialize tool categories if on the tools page
         if (document.querySelector('.categories-container')) {
