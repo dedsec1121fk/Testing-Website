@@ -146,6 +146,13 @@ body.light-theme::before {
     to { opacity: 1; transform: translateY(0); }
 }
 
+/* --- Text Overflow and Wrapping Fixes --- */
+/* ADDED: Ensures long text strings/URLs break within their containers to fix 'text goes out' */
+.nav-title h1, .page-header p, .hero-text, .tool-features li, .contact-grid .app-icon span {
+    word-break: break-word;
+    hyphens: auto; /* Optional, but helps with nicer wrapping */
+}
+
 /* --- NAVIGATION STYLES --- */
 .main-nav {
     position: fixed;
@@ -241,6 +248,10 @@ body.light-theme .nav-title h1::after {
     transition: transform 0.3s var(--ease-out-cubic);
     overflow-y: auto;
     z-index: 999; 
+}
+
+.nav-menu.active { 
+    transform: translateX(0); 
 }
 
 .nav-link {
@@ -410,12 +421,6 @@ body.light-theme .tool-card {
     border-color: var(--nm-accent);
     transform: translateY(-3px);
     box-shadow: var(--shadow-glow-accent);
-}
-
-.tool-card h4 {
-    color: var(--nm-accent);
-    margin-bottom: 10px;
-    font-family: 'Orbitron', sans-serif;
 }
 
 /* --- TOOL FEATURES BULLET STYLES --- */
@@ -1447,10 +1452,7 @@ body.light-theme #useful-info-results-container .search-result-item {
     .modal-body { padding: 15px; }
 }
 
-/* --- Mobile & Small Tablets --- 
-    The .burger-menu and .nav-menu styles are now global, 
-    so the redundant overrides are removed from this block.
-*/
+/* --- Mobile & Small Tablets --- */
 @media (max-width: 768px) {
     .nav-menu.active { transform: translateX(0); }
     .nav-actions {
@@ -1493,6 +1495,30 @@ body.light-theme #useful-info-results-container .search-result-item {
     .page-header h1 { font-size: 2.2rem; }
 }
 
+/* =================================================================
+    PC/DESKTOP LAYOUT FIXES (min-width: 992px)
+    =================================================================
+*/
+@media (min-width: 992px) {
+    /* FIX: Center the title (h1) while keeping the burger menu absolutely positioned on the right */
+    .nav-container {
+        justify-content: center; /* Centers the .nav-title block */
+        position: relative;      /* Establishes positioning context for the burger menu */
+    }
+
+    .nav-title {
+        text-align: center; /* Ensures the h1 and its content are centered in its flex-grown space */
+        flex-grow: 1;       /* Ensures .nav-title takes up the maximum space for centering */
+    }
+
+    .burger-menu {
+        position: absolute;
+        right: 15px; /* Aligns with the main-nav's horizontal padding */
+        top: 50%;
+        transform: translateY(-50%); /* Vertically centers the burger menu */
+    }
+}
+
 /* --- Standard Desktops --- */
 @media (min-width: 1200px) {
     .nav-container { padding: 15px 0; }
@@ -1506,5 +1532,4 @@ body.light-theme #useful-info-results-container .search-result-item {
     body { font-size: 17px; }
     .page-header h1 { font-size: 3rem; }
     .content-section { padding: 40px; }
-}
 }
