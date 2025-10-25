@@ -161,17 +161,17 @@ body.light-theme::before {
 
 .nav-container {
     display: flex;
-    justify-content: flex-end; /* MODIFIED: Was space-between, to push burger right */
+    justify-content: flex-end; /* MODIFIED: Default to flex-end for PC centered layout */
     align-items: center;
     max-width: 1200px;
     margin: 0 auto;
     padding: 10px 0;
     transition: max-width 0.3s ease;
-    position: relative; /* ADDED: For absolute centering of title */
+    position: relative; /* MODIFIED: Default for absolute centering of title */
 }
 
 .nav-title {
-    /* ADDED: Absolute centering for title */
+    /* MODIFIED: Default to absolute centering for PC */
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
@@ -208,7 +208,7 @@ body.light-theme .nav-title h1::after {
 }
 
 .burger-menu {
-    display: flex; /* MODIFIED: Was 'none', now always flex */
+    display: flex; /* MODIFIED: Always flex */
     flex-direction: column;
     background: none;
     border: none;
@@ -229,7 +229,7 @@ body.light-theme .nav-title h1::after {
 .burger-menu.active span:nth-child(3) { transform: rotate(-45deg) translate(6px, -6px); }
 
 .nav-menu {
-    /* MODIFIED: Replaced desktop inline styles with mobile slide-out styles */
+    /* MODIFIED: Global slide-out panel styles */
     display: flex;
     position: fixed;
     top: 70px;
@@ -250,7 +250,7 @@ body.light-theme .nav-title h1::after {
     gap: 20px;
 }
 
-/* ADDED: Moved from media query to global */
+/* MODIFIED: Global */
 .nav-menu.active {
     transform: translateX(0);
 }
@@ -286,7 +286,7 @@ body.light-theme .nav-title h1::after {
 
 .nav-actions {
     display: flex;
-    /* MODIFIED: Replaced desktop inline styles with mobile column styles */
+    /* MODIFIED: Global column styles */
     margin-left: 0;
     margin-top: 20px;
     justify-content: center;
@@ -1466,13 +1466,17 @@ body.light-theme #useful-info-results-container .search-result-item {
 
 /* --- Mobile & Small Tablets --- */
 @media (max-width: 768px) {
-    /* DELETED: .burger-menu { display: flex; } (Now global) */
-    
-    /* DELETED: .nav-menu { ... } (Now global) */
-    
-    /* DELETED: .nav-menu.active { transform: translateX(0); } (Now global) */
-    
-    /* DELETED: .nav-actions { ... } (Now global) */
+    /* ADDED: Revert nav container to space-between for mobile */
+    .nav-container {
+        justify-content: space-between;
+    }
+
+    /* ADDED: Revert nav title to static position for mobile */
+    .nav-title {
+        position: static;
+        left: auto;
+        transform: none;
+    }
     
     .nav-action-btn { width: 100%; justify-content: center; }
     .phone-container { height: calc(100vh - 70px); margin-top: 70px; }
