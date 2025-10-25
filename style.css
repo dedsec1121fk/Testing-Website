@@ -58,8 +58,8 @@ body.light-theme {
     --nm-dark: var(--nm-dark-light);
     --nm-container: var(--nm-container-light);
     --nm-border: var(--nm-border-light);
-    --nm-text: var(--nm-accent-hover); /* MODIFIED: Was #000000, now dark purple */
-    --nm-text-muted: var(--nm-text-muted-light);
+    --nm-text: #9933FF; /* MODIFIED: Set directly to dark purple */
+    --nm-text-muted: #666666; /* MODIFIED: Set directly to dark gray for readability */
     --nm-warning: #9966FF;
     --glow-color: rgba(var(--glow-rgb), 0.3);
     --nm-search-green: var(--nm-accent);
@@ -189,6 +189,14 @@ body.light-theme::before {
     display: flex;
     align-items: center;
     gap: 10px;
+}
+
+/* ADDED: Light theme shadow for nav title */
+body.light-theme .nav-title h1 {
+    text-shadow: 
+        -1px -1px 0 #fff, 1px -1px 0 #fff,
+        -1px 1px 0 #fff, 1px 1px 0 #fff,
+        0 0 10px var(--nm-accent);
 }
 
 .nav-title h1::after {
@@ -722,7 +730,7 @@ body.light-theme .tool-card {
 }
 
 body.light-theme #search-suggestions-container .search-result-item {
-    color: #000000;
+    color: var(--nm-text); /* MODIFIED: Was #000000 */
 }
 
 /* Hero Section */
@@ -1369,7 +1377,7 @@ body.light-theme #useful-information-nav .app-icon {
 #useful-info-results-container .search-result-item:hover small { color: rgba(0, 0, 0, 0.7); }
 
 body.light-theme #useful-info-results-container .search-result-item {
-    color: #000000;
+    color: var(--nm-text); /* MODIFIED: Was #000000 */
 }
 
 /* Modal Search Container */
