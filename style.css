@@ -688,7 +688,8 @@ body.light-theme .tool-card {
 }
 
 body.light-theme #search-suggestions-container .search-result-item {
-    color: #000000;
+    /* FIXED: Removed hardcoded #000000 to rely on var(--nm-text) for consistency */
+    color: var(--nm-text);
 }
 
 /* Hero Section */
@@ -778,8 +779,6 @@ body.light-theme .modal-content {
     background: rgba(248, 248, 248, 0.9);
     box-shadow: 0 5px 25px rgba(0,0,0,0.1);
     border: 1px solid var(--nm-border);
-    /* FIX: Force all text inside light theme modal content to be black */
-    color: #000000;
 }
 
 .modal-content-auto-height { height: auto; }
@@ -803,8 +802,6 @@ body.light-theme .modal-content {
 
 body.light-theme .modal-header {
     background: rgba(240, 240, 240, 0.5);
-    /* FIX: Ensure header text is black in light theme */
-    color: #000000; 
 }
 
 .modal-header h2 {
@@ -814,11 +811,6 @@ body.light-theme .modal-header {
     color: var(--nm-text);
     text-transform: uppercase;
     text-shadow: none; 
-}
-
-/* FIX: Explicitly set modal header elements to black text in light theme */
-body.light-theme .modal-header h2 {
-    color: #000000;
 }
 
 .close-modal {
@@ -833,11 +825,6 @@ body.light-theme .modal-header h2 {
     transition: color 0.2s, text-shadow 0.2s, transform 0.2s var(--ease-out-cubic);
 }
 
-/* FIX: Explicitly set close button to black in light theme */
-body.light-theme .close-modal {
-    color: #000000;
-}
-
 .close-modal:hover {
     color: var(--nm-danger);
     text-shadow: none; 
@@ -850,11 +837,6 @@ body.light-theme .close-modal {
     flex-grow: 1;
     line-height: 1.7;
     min-height: 0;
-}
-
-/* FIX: Ensure modal body text is black in light theme */
-body.light-theme .modal-body {
-    color: #000000;
 }
 
 .modal-body-centered { 
@@ -882,12 +864,6 @@ body.light-theme .modal-body {
     /* MODIFIED: Premium transition */
     transition: transform 0.25s var(--ease-out-cubic), background-color 0.25s ease, color 0.25s ease, box-shadow 0.25s var(--ease-out-cubic), border-color 0.25s ease;
     will-change: transform, box-shadow;
-}
-
-/* FIX: Ensure language button text is black in light theme when not selected/hovered */
-body.light-theme .language-button {
-    color: #000000;
-    border-color: var(--nm-border);
 }
 
 .language-button:hover,
@@ -980,11 +956,6 @@ body.light-theme .code-container {
     border-radius: 0;
 }
 
-/* FIX: Ensure code text is dark in light theme */
-body.light-theme .code-container code {
-    color: #000000;
-}
-
 .copy-btn {
     position: absolute;
     top: 8px;
@@ -1033,8 +1004,6 @@ body.light-theme .code-container code {
 body.light-theme .tip,
 body.light-theme .note {
     background: rgba(248, 248, 248, 0.9);
-    /* FIX: Ensure text inside notes/tips is dark in light theme */
-    color: #000000;
 }
 
 .note.note-warning {
@@ -1051,12 +1020,6 @@ body.light-theme .note {
     padding: 1rem;
     border-radius: 20px;
 }
-/* FIX: Ensure text inside warning/danger notes is dark in light theme */
-body.light-theme .note.note-warning,
-body.light-theme .note.note-danger {
-    color: #000000;
-}
-
 
 /*
     =================================================================
@@ -1224,7 +1187,8 @@ body.light-theme .store-link a {
 .store-link a:hover {
     background-color: var(--nm-accent-hover);
     border-color: var(--nm-accent);
-    color: var(--nm-darkest);
+    /* FIXED: Changed to theme-aware text for proper contrast on accent background in both themes */
+    color: var(--nm-text-on-accent); 
     transform: translateY(-3px);
     box-shadow: var(--shadow-glow-accent);
 }
@@ -1370,10 +1334,12 @@ body.light-theme #useful-information-nav .app-icon {
     color: var(--nm-text);
     margin-top: 4px;
 }
-#useful-info-results-container .search-result-item:hover small { color: rgba(0, 0, 0, 0.7); }
+/* FIXED: Removed hardcoded color that broke both themes on hover. It will now inherit the correct theme-on-accent color. */
+/* #useful-info-results-container .search-result-item:hover small { color: rgba(0, 0, 0, 0.7); } */
 
 body.light-theme #useful-info-results-container .search-result-item {
-    color: #000000;
+    /* FIXED: Removed hardcoded #000000 to rely on var(--nm-text) for consistency */
+    color: var(--nm-text);
 }
 
 /* Modal Search Container */
