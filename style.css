@@ -58,8 +58,9 @@ body.light-theme {
     --nm-dark: var(--nm-dark-light);
     --nm-container: var(--nm-container-light);
     --nm-border: var(--nm-border-light);
-    --nm-text: #9933FF; /* MODIFIED: Set directly to dark purple */
-    --nm-text-muted: #666666; /* MODIFIED: Set directly to dark gray for readability */
+    --nm-text: #9933FF;
+    --nm-text-muted: #666666;
+    --nm-text-muted-dark: #666666; /* THIS WAS THE FIX */
     --nm-warning: #9966FF;
     --glow-color: rgba(var(--glow-rgb), 0.3);
     --nm-search-green: var(--nm-accent);
