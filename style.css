@@ -1509,79 +1509,68 @@ body.light-theme #useful-info-results-container .search-result-item {
 /*
     =================================================================
     CUSTOM MODIFICATIONS FOR PC (Desktop / >= 769px)
-    Implementing Centered Title, No Outline, and Visible Burger Menu
+    Implementing Centered Title, No Outline, and Top-Right Burger Menu
     =================================================================
 */
 
 @media (min-width: 769px) {
-    /* 1. Make the burger menu visible on PC (Override mobile 'display: none')
-       Retain the same appearance as mobile. */
+    /* 1. Make the burger menu visible on PC and position it top-right */
     .burger-menu {
         display: flex; /* Make it visible */
-        flex-direction: column; 
-        background: none;
-        border: none;
-        cursor: pointer;
-        padding: 5px;
-        gap: 4px;
-        margin-left: 20px;
-        order: 3; /* Position it to the right of the centered menu */
+        position: absolute; /* Take it out of the main flex flow */
+        top: 50%; /* Align vertically with the navbar's height */
+        right: 15px; /* Align to the right edge */
+        transform: translateY(-50%); /* Perfect vertical centering */
+        z-index: 1001; /* Ensure it is above the title and everything else */
     }
 
     /* 2. Center the title and the logo on PC */
-    .nav-container {
-        /* This change is key for centering and separating the elements */
-        flex-direction: column;
-        align-items: center; /* Center items horizontally */
-        justify-content: center;
-        padding: 10px 0;
-    }
-
-    /* Adjust the logo/title container to center its content */
     .nav-title {
-        width: 100%;
+        /* Take the title out of the flow and center it absolutely */
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        margin: 0; /* Remove any previous margins */
         text-align: center;
-        margin-bottom: 10px; /* Space between title and main menu */
-        order: 1; /* Ensure it is at the top */
+        width: auto;
+        z-index: 999; /* Below the burger icon */
     }
 
     .nav-title h1 {
-        /* Center the h1 content (which includes the logo ::after) */
         justify-content: center;
+        margin: 0;
+        font-size: 2rem; /* Ensure size consistency for PC */
     }
-
-    /* Reset the navigation menu to a standard inline display */
+    
+    /* Ensure the main navigation links and actions are hidden, as the burger menu will control the side panel */
     .nav-menu {
-        order: 2; /* Position it below the title */
-        /* Overriding the mobile off-screen properties */
-        position: static;
-        width: auto;
-        max-width: none;
-        height: auto;
-        background: none;
-        flex-direction: row;
-        padding: 0;
-        box-shadow: none;
-        transform: translateX(0);
+        /* This reverts the menu to its off-screen mobile state by overriding any desktop row styles */
+        display: flex; /* Required to be visible when 'active' class is added */
+        flex-direction: column;
+        position: fixed;
+        top: 70px;
+        right: 0;
+        transform: translateX(100%); /* Menu is off-screen (closed) by default */
+        width: 80%;
+        max-width: 300px;
+        height: calc(100vh - 70px);
+        transition: transform 0.3s cubic-bezier(0.23, 1, 0.32, 1);
         opacity: 1;
         visibility: visible;
-        overflow-y: visible;
-        /* Ensure the menu items are centered */
-        justify-content: center;
+        overflow-y: auto;
+        padding: 20px;
+        box-shadow: -4px 0 15px rgba(0, 0, 0, 0.3);
     }
 
-    /* Ensure actions are positioned correctly relative to the new flex layout */
     .nav-actions {
-        order: 4; /* Place actions last */
-        margin-left: 0; /* Reset mobile override */
-        margin-top: 10px; /* Add space from menu/burger */
-        flex-direction: row;
+        /* Hide desktop-style actions if they were outside the nav-menu flow */
+        display: none; 
     }
-
 
     /* 3. Ensure no outlined text on pc (Remove text-shadow/outline from title) */
     .nav-title h1 {
-        /* KEEP the glow and REMOVE the outline strokes */
+        /* This removes the black outline strokes while keeping the glow */
         text-shadow: 
             0 0 10px var(--nm-accent), 
             0 0 20px var(--nm-accent);
