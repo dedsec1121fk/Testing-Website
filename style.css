@@ -199,8 +199,8 @@ body.light-theme .nav-title h1::after {
     background-image: url('https://raw.githubusercontent.com/dedsec1121fk/dedsec1121fk.github.io/6f776cd9772a079a6d26370dddab911bf7cde8cd/Assets/Images/Logos/Custom%20White%20Purple%20Fox%20Logo.jpg');
 }
 
+/* MODIFIED: BURGER MENU IS NOW VISIBLE GLOBALLY */
 .burger-menu {
-    /* MODIFIED: Removed 'display: none' to make it visible on all screens by default */
     display: flex;
     flex-direction: column;
     background: none;
@@ -221,10 +221,31 @@ body.light-theme .nav-title h1::after {
 .burger-menu.active span:nth-child(2) { opacity: 0; }
 .burger-menu.active span:nth-child(3) { transform: rotate(-45deg) translate(6px, -6px); }
 
+/* MODIFIED: NAV MENU IS NOW ALWAYS THE MOBILE/SIDEBAR MENU */
 .nav-menu {
-    display: flex;
-    align-items: center;
+    position: fixed;
+    top: 70px; /* Aligns below the fixed header */
+    right: 0;
+    width: 80%;
+    max-width: 300px;
+    height: calc(100vh - 70px);
+    background: var(--nm-darkest);
+    flex-direction: column;
+    padding: 20px;
+    box-shadow: -4px 0 15px rgba(0, 0, 0, 0.3);
+    transform: translateX(100%);
+    opacity: 1;
+    visibility: visible;
+    transition: transform 0.3s var(--ease-out-cubic);
+    overflow-y: auto;
+    /* Added display flex to ensure vertical alignment from original mobile styles */
+    display: flex; 
+    align-items: center; 
     gap: 20px;
+}
+
+.nav-menu.active { 
+    transform: translateX(0); 
 }
 
 .nav-link {
@@ -238,6 +259,10 @@ body.light-theme .nav-title h1::after {
     /* MODIFIED: Premium transition */
     transition: transform 0.25s var(--ease-out-cubic), background-color 0.25s ease, color 0.25s ease, box-shadow 0.25s var(--ease-out-cubic), border-color 0.25s ease;
     will-change: transform, box-shadow;
+    /* ADDED: Full width for menu item look */
+    width: 100%;
+    box-sizing: border-box;
+    text-align: center;
 }
 
 .nav-link:hover,
@@ -256,10 +281,15 @@ body.light-theme .nav-title h1::after {
     transition-duration: 0.1s;
 }
 
+/* MODIFIED: NAV ACTIONS STYLES FOR VERTICAL MENU */
 .nav-actions {
     display: flex;
     gap: 10px;
-    margin-left: 20px;
+    margin-left: 0; /* Removed desktop margin */
+    margin-top: 20px; /* Added spacing in vertical menu */
+    justify-content: center;
+    flex-direction: column; /* Stack buttons vertically */
+    width: 100%; /* Make actions take full width of menu */
 }
 
 .nav-action-btn {
@@ -277,6 +307,10 @@ body.light-theme .nav-title h1::after {
     /* MODIFIED: Premium transition */
     transition: transform 0.25s var(--ease-out-cubic), background-color 0.25s ease, color 0.25s ease, box-shadow 0.25s var(--ease-out-cubic), border-color 0.25s ease;
     will-change: transform, box-shadow;
+    /* ADDED: Full width for menu item look */
+    width: 100%; 
+    justify-content: center;
+    box-sizing: border-box;
 }
 
 .nav-action-btn:hover {
@@ -1433,33 +1467,7 @@ body.light-theme #useful-info-results-container .search-result-item {
 
 /* --- Mobile & Small Tablets --- */
 @media (max-width: 768px) {
-    /* The base .burger-menu is now display: flex; so we don't need this line anymore */
-    .nav-menu {
-        position: fixed;
-        top: 70px;
-        right: 0;
-        width: 80%;
-        max-width: 300px;
-        height: calc(100vh - 70px);
-        background: var(--nm-darkest);
-        flex-direction: column;
-        padding: 20px;
-        box-shadow: -4px 0 15px rgba(0, 0, 0, 0.3);
-        transform: translateX(100%);
-        opacity: 1;
-        visibility: visible;
-        transition: transform 0.3s var(--ease-out-cubic);
-        overflow-y: auto;
-    }
-    .nav-menu.active { transform: translateX(0); }
-    .nav-actions {
-        margin-left: 0;
-        margin-top: 20px;
-        justify-content: center;
-        flex-direction: column;
-        width: 100%;
-    }
-    .nav-action-btn { width: 100%; justify-content: center; }
+    /* All navigation-related styles are handled globally now, only adjust layout */
     .phone-container { height: calc(100vh - 70px); margin-top: 70px; }
     .page-content { margin-top: 70px; padding: 15px; }
     .content-section { padding: 20px; }
@@ -1486,13 +1494,6 @@ body.light-theme #useful-info-results-container .search-result-item {
     body.light-theme .modal-overlay { background: rgba(255, 255, 255, 0.95); }
 }
 
-/* ADDED: Hide the burger menu on desktop screens where full nav is shown */
-@media (min-width: 769px) {
-    .burger-menu {
-        display: none;
-    }
-}
-
 /* --- Tablets (Landscape) --- */
 @media (min-width: 769px) and (max-width: 991px) {
     .content-grid { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
@@ -1503,7 +1504,6 @@ body.light-theme #useful-info-results-container .search-result-item {
 @media (min-width: 1200px) {
     .nav-container { padding: 15px 0; }
     .nav-title h1 { font-size: 2rem; }
-    .nav-link { font-size: 1rem; padding: 10px 20px; }
 }
 
 /* --- Large Desktops & TVs --- */
