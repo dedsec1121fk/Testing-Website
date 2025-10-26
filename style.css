@@ -1505,3 +1505,85 @@ body.light-theme #useful-info-results-container .search-result-item {
     .page-header h1 { font-size: 3rem; }
     .content-section { padding: 40px; }
 }
+
+/*
+    =================================================================
+    CUSTOM MODIFICATIONS FOR PC (Desktop / >= 769px)
+    Implementing Centered Title, No Outline, and Visible Burger Menu
+    =================================================================
+*/
+
+@media (min-width: 769px) {
+    /* 1. Make the burger menu visible on PC (Override mobile 'display: none')
+       Retain the same appearance as mobile. */
+    .burger-menu {
+        display: flex; /* Make it visible */
+        flex-direction: column; 
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 5px;
+        gap: 4px;
+        margin-left: 20px;
+        order: 3; /* Position it to the right of the centered menu */
+    }
+
+    /* 2. Center the title and the logo on PC */
+    .nav-container {
+        /* This change is key for centering and separating the elements */
+        flex-direction: column;
+        align-items: center; /* Center items horizontally */
+        justify-content: center;
+        padding: 10px 0;
+    }
+
+    /* Adjust the logo/title container to center its content */
+    .nav-title {
+        width: 100%;
+        text-align: center;
+        margin-bottom: 10px; /* Space between title and main menu */
+        order: 1; /* Ensure it is at the top */
+    }
+
+    .nav-title h1 {
+        /* Center the h1 content (which includes the logo ::after) */
+        justify-content: center;
+    }
+
+    /* Reset the navigation menu to a standard inline display */
+    .nav-menu {
+        order: 2; /* Position it below the title */
+        /* Overriding the mobile off-screen properties */
+        position: static;
+        width: auto;
+        max-width: none;
+        height: auto;
+        background: none;
+        flex-direction: row;
+        padding: 0;
+        box-shadow: none;
+        transform: translateX(0);
+        opacity: 1;
+        visibility: visible;
+        overflow-y: visible;
+        /* Ensure the menu items are centered */
+        justify-content: center;
+    }
+
+    /* Ensure actions are positioned correctly relative to the new flex layout */
+    .nav-actions {
+        order: 4; /* Place actions last */
+        margin-left: 0; /* Reset mobile override */
+        margin-top: 10px; /* Add space from menu/burger */
+        flex-direction: row;
+    }
+
+
+    /* 3. Ensure no outlined text on pc (Remove text-shadow/outline from title) */
+    .nav-title h1 {
+        /* KEEP the glow and REMOVE the outline strokes */
+        text-shadow: 
+            0 0 10px var(--nm-accent), 
+            0 0 20px var(--nm-accent);
+    }
+}
