@@ -159,7 +159,7 @@ body.light-theme::before {
 
 .nav-container {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-between; /* Keeps logo left, menu right on mobile */
     align-items: center;
     max-width: 1200px;
     margin: 0 auto;
@@ -1511,30 +1511,30 @@ body.light-theme #useful-info-results-container .search-result-item {
     .page-header h1 { font-size: 2.2rem; }
 }
 
-/* MODIFIED: Centering logic for Desktops and larger screens */
+/* MODIFIED: Centering logic for Desktops and larger screens (>= 992px) */
 @media (min-width: 992px) { 
     .nav-container {
-        /* Align items to the right to ensure the burger menu is flush right */
+        /* Pushes the burger menu to the right */
         justify-content: flex-end; 
         position: relative; 
     }
 
     .nav-title {
-        /* Absolute position and transform to center the title regardless of other elements */
+        /* Centers the title/logo absolutely */
         position: absolute;
         left: 50%;
         transform: translateX(-50%);
-        max-width: calc(100% - 150px); /* Leave space for the burger menu and padding */
-        text-align: center; /* Center the text within the title box */
+        max-width: calc(100% - 150px); /* Ensures it doesn't overlap the menu */
+        text-align: center; 
     }
     
     .nav-title h1 {
-        /* Ensure the H1 is centered inside its absolutely positioned container */
+        /* Ensures the text and logo inside H1 are centered */
         justify-content: center;
     }
 
     .burger-menu {
-        /* Ensure burger menu remains on the far right */
+        /* Ensures burger menu remains on the far right */
         margin-left: auto;
         flex-shrink: 0;
     }
