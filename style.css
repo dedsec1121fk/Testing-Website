@@ -1,7 +1,7 @@
 /*
     =================================================================
     DEDSEC PROJECT MULTI-PAGE STYLES
-    VERSION: 2.4 (Cross-Device Glow Compatibility Fix)
+    VERSION: 2.6 (Final Text Glow Compatibility Fix)
     =================================================================
 */
 
@@ -102,28 +102,6 @@ body {
 ::-webkit-scrollbar-thumb:hover { background: var(--nm-accent); }
 
 /* --- BACKGROUND IMAGE STYLES --- */
-/* ADDED: Keyframe for subtle background breathing */
-@keyframes bg-breath {
-    0%, 100% {
-        transform: scale(1) rotate(-1deg);
-        opacity: 0.15;
-    }
-    50% {
-        transform: scale(1.03) rotate(1deg);
-        opacity: 0.12;
-    }
-}
-body.light-theme @keyframes bg-breath {
-     0%, 100% {
-        transform: scale(1) rotate(-1deg);
-        opacity: 0.1;
-    }
-    50% {
-        transform: scale(1.03) rotate(1deg);
-        opacity: 0.08;
-    }
-}
-
 body::before {
     content: '';
     position: fixed;
@@ -139,18 +117,7 @@ body::before {
     z-index: -2;
     pointer-events: none;
     transition: background-image 0.3s ease;
-    /* MODIFIED: Use transform for animation and add animation */
-    transform: scale(1) rotate(-1deg); /* Start state */
-    animation: bg-breath 20s ease-in-out infinite;
-}
-
-/* ADDED: Keyframe for background noise flicker */
-@keyframes noise-flicker {
-    0%, 100% { opacity: 0.3; }
-    20% { opacity: 0.28; }
-    40% { opacity: 0.32; }
-    60% { opacity: 0.3; }
-    80% { opacity: 0.29; }
+    transform: translateZ(0);
 }
 
 body::after {
@@ -166,31 +133,17 @@ body::after {
     z-index: -1;
     pointer-events: none;
     transform: translateZ(0);
-    /* ADDED: Flicker animation */
-    animation: noise-flicker 2s steps(1, end) infinite;
 }
 
 body.light-theme::before {
     background-image: url('https://raw.githubusercontent.com/dedsec1121fk/dedsec1121fk.github.io/6f776cd9772a079a6d26370dddab911bf7cde8cd/Assets/Images/Logos/Custom%20White%20Purple%20Fox%20Logo.jpg');
-    opacity: 0.1; /* This will be the base opacity for the animation */
+    opacity: 0.1; /* Reduced opacity for better readability */
 }
 
 /* ADDED: Page load fade-in */
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
-}
-
-/* REMOVED: Keyframe animation for a premium pulsing glow - CAUSES BUGS ON MOBILE */
-/* @keyframes pulse-glow { ... }
-body.light-theme @keyframes pulse-glow { ... }
-*/
-
-/* ADDED: Keyframe for gradient border animation */
-@keyframes animated-gradient-border {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
 }
 
 /* --- NAVIGATION STYLES --- */
@@ -200,33 +153,10 @@ body.light-theme @keyframes pulse-glow { ... }
     left: 0;
     width: 100%;
     background: var(--nm-darkest);
-    /* MODIFIED: Remove static border for animated one */
-    /* border-bottom: 2px solid var(--nm-accent); */
+    border-bottom: 2px solid var(--nm-accent);
     z-index: 1000;
     padding: 0 15px;
     box-sizing: border-box;
-    /* ADDED: Animated border */
-    position: relative; /* Needed for pseudo-element */
-}
-
-/* ADDED: Animated border pseudo-element */
-.main-nav::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 2px;
-    background: linear-gradient(
-        90deg, 
-        var(--nm-dark), 
-        var(--nm-accent), 
-        var(--nm-accent-hover),
-        var(--nm-accent),
-        var(--nm-dark)
-    );
-    background-size: 200% 100%;
-    animation: animated-gradient-border 6s ease-in-out infinite;
 }
 
 .nav-container {
@@ -253,10 +183,8 @@ body.light-theme @keyframes pulse-glow { ... }
     font-size: 2rem; 
     color: var(--nm-accent);
     font-family: 'Orbitron', sans-serif;
-    /* MODIFIED: Simplified text-shadow to a two-layer glow for cross-device compatibility */
-    text-shadow: 
-        0 0 5px var(--nm-accent),
-        0 0 15px var(--nm-accent-hover);
+    /* MODIFIED: Drastically simplified text-shadow to a single, minimal glow layer */
+    text-shadow: 0 0 8px var(--nm-accent-hover);
     display: flex;
     align-items: center;
     gap: 10px;
@@ -265,8 +193,12 @@ body.light-theme @keyframes pulse-glow { ... }
     text-overflow: ellipsis;
     white-space: nowrap;
     min-width: 0; /* ADDED: Fix for flex container truncation */
-    /* MODIFIED: Removed pulse animation */
-    /* animation: pulse-glow 2.5s ease-in-out infinite; */
+}
+
+/* ADDED: Explicit light-theme fix for nav-title h1 to remove black outlines and keep single glow */
+body.light-theme .nav-title h1 {
+    /* Ensure the single, minimal glow is used here as well, overriding any potential inheritance of outlines */
+    text-shadow: 0 0 8px var(--nm-accent-hover);
 }
 
 .nav-title h1::after {
@@ -284,14 +216,6 @@ body.light-theme @keyframes pulse-glow { ... }
 body.light-theme .nav-title h1::after {
     background-image: url('https://raw.githubusercontent.com/dedsec1121fk/dedsec1121fk.github.io/6f776cd9772a079a6d26370dddab911bf7cde8cd/Assets/Images/Logos/Custom%20White%20Purple%20Fox%20Logo.jpg');
 }
-
-/* ADDED: Light theme static glow fix, simplified for cross-device compatibility */
-body.light-theme .nav-title h1 {
-    text-shadow: 
-        0 0 5px var(--nm-accent),
-        0 0 15px var(--nm-accent-hover);
-}
-
 
 /* MODIFIED: BURGER MENU IS NOW VISIBLE GLOBALLY */
 .burger-menu {
@@ -443,19 +367,13 @@ body.light-theme .nav-title h1 {
     font-family: 'Orbitron', sans-serif;
     font-size: 2.5rem;
     margin-bottom: 10px;
-    /* MODIFIED: Removed pulse animation and replaced with simplified static glow */
-    /* animation: pulse-glow 2.5s ease-in-out infinite; */
-    text-shadow: 
-        0 0 5px var(--nm-accent),
-        0 0 15px var(--nm-accent-hover);
+    /* MODIFIED: Drastically simplified text-shadow to a single, minimal glow layer */
+    text-shadow: 0 0 8px var(--nm-accent-hover);
 }
 
 body.light-theme .page-header h1 {
-    /* MODIFIED: Removed animation, set simplified static glow for light theme */
-    /* animation: pulse-glow 2.5s ease-in-out infinite; */
-    text-shadow: 
-        0 0 5px var(--nm-accent),
-        0 0 15px var(--nm-accent-hover);
+    /* MODIFIED: Drastically simplified text-shadow to a single, minimal glow layer */
+    text-shadow: 0 0 8px var(--nm-accent-hover);
 }
 
 .page-header p {
@@ -526,6 +444,12 @@ body.light-theme .tool-card {
     box-shadow: var(--shadow-glow-accent);
 }
 
+.tool-card h4 {
+    color: var(--nm-accent);
+    margin-bottom: 10px;
+    font-family: 'Orbitron', sans-serif;
+}
+
 /* --- TOOL FEATURES BULLET STYLES --- */
 .tool-features ul { padding-left: 20px; margin: 0; }
 .tool-features li {
@@ -585,10 +509,7 @@ body.light-theme .tool-card {
 
 /* Anniversary Banner */
 .anniversary-banner {
-    /* MODIFIED: Animate the gradient */
-    background: linear-gradient(135deg, var(--nm-accent), var(--nm-accent-hover), #FFD700);
-    background-size: 200% 200%;
-    animation: animated-gradient-border 4s ease-in-out infinite;
+    background: linear-gradient(135deg, var(--nm-accent), var(--nm-accent-hover));
     border: 2px solid var(--nm-accent);
     border-radius: 20px;
     padding: 20px;
@@ -765,12 +686,6 @@ body.light-theme .tool-card {
 .search-container::before { content: '\f002'; left: 20px; }
 .search-container::after { content: '\f0ac'; right: 20px; }
 
-/* ADDED: Keyframe for search focus pulse */
-@keyframes search-focus-pulse {
-    0%, 100% { box-shadow: var(--shadow-glow-accent); }
-    50% { box-shadow: 0 0 25px 5px rgba(var(--glow-rgb), 0.7); }
-}
-
 #main-search-input {
     width: 100%;
     padding: 12px 45px;
@@ -790,9 +705,7 @@ body.light-theme .tool-card {
     outline: none;
     background-color: var(--nm-dark);
     border-color: var(--nm-accent-hover);
-    /* MODIFIED: Use animation instead of static shadow */
-    /* box-shadow: var(--shadow-glow-accent); */
-    animation: search-focus-pulse 1.5s ease-in-out infinite;
+    box-shadow: var(--shadow-glow-accent);
 }
 
 #search-suggestions-container {
@@ -1211,8 +1124,7 @@ body.light-theme .note {
 
 .contact-grid .app-icon i {
     color: var(--nm-text);
-    /* MODIFIED: Add transition */
-    transition: color 0.2s ease, transform 0.25s var(--ease-out-cubic);
+    transition: color 0.2s ease;
     font-size: 1.4rem;
     margin: 0;
     text-shadow: none; 
@@ -1220,12 +1132,7 @@ body.light-theme .note {
     display: flex;
     align-items: center;
 }
-.contact-grid .app-icon:hover i { 
-    color: var(--nm-text-on-accent); 
-    text-shadow: none; 
-    /* ADDED: Simple hover animation */
-    transform: scale(1.1) rotate(-5deg);
-}
+.contact-grid .app-icon:hover i { color: var(--nm-text-on-accent); text-shadow: none; }
 .contact-grid .app-icon span {
     font-size: 0.75rem;
     font-weight: 700;
@@ -1515,9 +1422,7 @@ body.light-theme #useful-info-results-container .search-result-item {
     outline: none;
     background-color: var(--nm-dark);
     border-color: var(--nm-accent-hover);
-    /* MODIFIED: Use animation instead of static shadow */
-    /* box-shadow: var(--shadow-glow-accent); */
-    animation: search-focus-pulse 1.5s ease-in-out infinite;
+    box-shadow: var(--shadow-glow-accent);
 }
 
 /* Content Highlight */
