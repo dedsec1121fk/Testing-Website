@@ -1,7 +1,7 @@
 /*
     =================================================================
     DEDSEC PROJECT MULTI-PAGE STYLES
-    VERSION: 2.3 (Premium Animation & Glow Bugfix)
+    VERSION: 2.4 (Cross-Device Glow Compatibility Fix)
     =================================================================
 */
 
@@ -253,13 +253,10 @@ body.light-theme @keyframes pulse-glow { ... }
     font-size: 2rem; 
     color: var(--nm-accent);
     font-family: 'Orbitron', sans-serif;
-    /* MODIFIED: Replaced animation with a stable, static multi-layer glow to fix mobile bug */
+    /* MODIFIED: Simplified text-shadow to a two-layer glow for cross-device compatibility */
     text-shadow: 
-        -1px -1px 0 #000, 1px -1px 0 #000,
-        -1px 1px 0 #000, 1px 1px 0 #000,
-        0 0 10px var(--nm-accent),
-        0 0 20px var(--nm-accent-hover),
-        0 0 30px var(--nm-accent-hover);
+        0 0 5px var(--nm-accent),
+        0 0 15px var(--nm-accent-hover);
     display: flex;
     align-items: center;
     gap: 10px;
@@ -288,14 +285,11 @@ body.light-theme .nav-title h1::after {
     background-image: url('https://raw.githubusercontent.com/dedsec1121fk/dedsec1121fk.github.io/6f776cd9772a079a6d26370dddab911bf7cde8cd/Assets/Images/Logos/Custom%20White%20Purple%20Fox%20Logo.jpg');
 }
 
-/* ADDED: Light theme static glow fix */
+/* ADDED: Light theme static glow fix, simplified for cross-device compatibility */
 body.light-theme .nav-title h1 {
     text-shadow: 
-        -1px -1px 0 #fff, 1px -1px 0 #fff,
-        -1px 1px 0 #fff, 1px 1px 0 #fff,
-        0 0 10px var(--nm-accent),
-        0 0 20px var(--nm-accent-hover),
-        0 0 30px var(--nm-accent-hover);
+        0 0 5px var(--nm-accent),
+        0 0 15px var(--nm-accent-hover);
 }
 
 
@@ -449,25 +443,19 @@ body.light-theme .nav-title h1 {
     font-family: 'Orbitron', sans-serif;
     font-size: 2.5rem;
     margin-bottom: 10px;
-    /* MODIFIED: Removed pulse animation and replaced with static glow */
+    /* MODIFIED: Removed pulse animation and replaced with simplified static glow */
     /* animation: pulse-glow 2.5s ease-in-out infinite; */
     text-shadow: 
-        -1px -1px 0 #000, 1px -1px 0 #000,
-        -1px 1px 0 #000, 1px 1px 0 #000,
-        0 0 10px var(--nm-accent),
-        0 0 20px var(--nm-accent-hover),
-        0 0 30px var(--nm-accent-hover);
+        0 0 5px var(--nm-accent),
+        0 0 15px var(--nm-accent-hover);
 }
 
 body.light-theme .page-header h1 {
-    /* MODIFIED: Removed animation, set static glow for light theme */
+    /* MODIFIED: Removed animation, set simplified static glow for light theme */
     /* animation: pulse-glow 2.5s ease-in-out infinite; */
     text-shadow: 
-        -1px -1px 0 #fff, 1px -1px 0 #fff,
-        -1px 1px 0 #fff, 1px 1px 0 #fff,
-        0 0 10px var(--nm-accent),
-        0 0 20px var(--nm-accent-hover),
-        0 0 30px var(--nm-accent-hover);
+        0 0 5px var(--nm-accent),
+        0 0 15px var(--nm-accent-hover);
 }
 
 .page-header p {
@@ -536,12 +524,6 @@ body.light-theme .tool-card {
     border-color: var(--nm-accent);
     transform: translateY(-3px);
     box-shadow: var(--shadow-glow-accent);
-}
-
-.tool-card h4 {
-    color: var(--nm-accent);
-    margin-bottom: 10px;
-    font-family: 'Orbitron', sans-serif;
 }
 
 /* --- TOOL FEATURES BULLET STYLES --- */
