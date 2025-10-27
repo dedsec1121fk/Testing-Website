@@ -194,6 +194,7 @@ body.light-theme::before {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    min-width: 0; /* ADDED: Fix for flex container truncation */
 }
 
 .nav-title h1::after {
