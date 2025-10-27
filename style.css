@@ -1,7 +1,7 @@
 /*
     =================================================================
     DEDSEC PROJECT MULTI-PAGE STYLES
-    VERSION: 2.2 (Premium Animation & Glow Update)
+    VERSION: 2.3 (Premium Animation & Glow Bugfix)
     =================================================================
 */
 
@@ -181,45 +181,10 @@ body.light-theme::before {
     to { opacity: 1; transform: translateY(0); }
 }
 
-/* ADDED: Keyframe animation for a premium pulsing glow */
-@keyframes pulse-glow {
-    0%, 100% {
-        text-shadow: 
-            -1px -1px 0 #000, 1px -1px 0 #000,
-            -1px 1px 0 #000, 1px 1px 0 #000,
-            0 0 10px var(--nm-accent),
-            0 0 20px var(--nm-accent),
-            0 0 30px var(--nm-accent-hover);
-    }
-    50% {
-        text-shadow: 
-            -1px -1px 0 #000, 1px -1px 0 #000,
-            -1px 1px 0 #000, 1px 1px 0 #000,
-            0 0 15px var(--nm-accent),
-            0 0 25px var(--nm-accent-hover),
-            0 0 40px var(--nm-accent-hover);
-    }
-}
-
-/* ADDED: Light theme version of the pulse glow */
-body.light-theme @keyframes pulse-glow {
-    0%, 100% {
-        text-shadow: 
-            -1px -1px 0 #fff, 1px -1px 0 #fff,
-            -1px 1px 0 #fff, 1px 1px 0 #fff,
-            0 0 10px var(--nm-accent),
-            0 0 20px var(--nm-accent),
-            0 0 30px var(--nm-accent-hover);
-    }
-    50% {
-        text-shadow: 
-            -1px -1px 0 #fff, 1px -1px 0 #fff,
-            -1px 1px 0 #fff, 1px 1px 0 #fff,
-            0 0 15px var(--nm-accent),
-            0 0 25px var(--nm-accent-hover),
-            0 0 40px var(--nm-accent-hover);
-    }
-}
+/* REMOVED: Keyframe animation for a premium pulsing glow - CAUSES BUGS ON MOBILE */
+/* @keyframes pulse-glow { ... }
+body.light-theme @keyframes pulse-glow { ... }
+*/
 
 /* ADDED: Keyframe for gradient border animation */
 @keyframes animated-gradient-border {
@@ -288,11 +253,13 @@ body.light-theme @keyframes pulse-glow {
     font-size: 2rem; 
     color: var(--nm-accent);
     font-family: 'Orbitron', sans-serif;
-    /* MODIFIED: Base text-shadow for animation */
+    /* MODIFIED: Replaced animation with a stable, static multi-layer glow to fix mobile bug */
     text-shadow: 
         -1px -1px 0 #000, 1px -1px 0 #000,
         -1px 1px 0 #000, 1px 1px 0 #000,
-        0 0 10px var(--nm-accent), 0 0 20px var(--nm-accent);
+        0 0 10px var(--nm-accent),
+        0 0 20px var(--nm-accent-hover),
+        0 0 30px var(--nm-accent-hover);
     display: flex;
     align-items: center;
     gap: 10px;
@@ -301,8 +268,8 @@ body.light-theme @keyframes pulse-glow {
     text-overflow: ellipsis;
     white-space: nowrap;
     min-width: 0; /* ADDED: Fix for flex container truncation */
-    /* MODIFIED: Added pulse animation */
-    animation: pulse-glow 2.5s ease-in-out infinite;
+    /* MODIFIED: Removed pulse animation */
+    /* animation: pulse-glow 2.5s ease-in-out infinite; */
 }
 
 .nav-title h1::after {
@@ -320,6 +287,17 @@ body.light-theme @keyframes pulse-glow {
 body.light-theme .nav-title h1::after {
     background-image: url('https://raw.githubusercontent.com/dedsec1121fk/dedsec1121fk.github.io/6f776cd9772a079a6d26370dddab911bf7cde8cd/Assets/Images/Logos/Custom%20White%20Purple%20Fox%20Logo.jpg');
 }
+
+/* ADDED: Light theme static glow fix */
+body.light-theme .nav-title h1 {
+    text-shadow: 
+        -1px -1px 0 #fff, 1px -1px 0 #fff,
+        -1px 1px 0 #fff, 1px 1px 0 #fff,
+        0 0 10px var(--nm-accent),
+        0 0 20px var(--nm-accent-hover),
+        0 0 30px var(--nm-accent-hover);
+}
+
 
 /* MODIFIED: BURGER MENU IS NOW VISIBLE GLOBALLY */
 .burger-menu {
@@ -471,23 +449,25 @@ body.light-theme .nav-title h1::after {
     font-family: 'Orbitron', sans-serif;
     font-size: 2.5rem;
     margin-bottom: 10px;
-    /* MODIFIED: Added pulse animation and stronger base glow */
-    animation: pulse-glow 2.5s ease-in-out infinite;
-    text-shadow: /* This will be overridden by the animation, but good for fallback */
+    /* MODIFIED: Removed pulse animation and replaced with static glow */
+    /* animation: pulse-glow 2.5s ease-in-out infinite; */
+    text-shadow: 
         -1px -1px 0 #000, 1px -1px 0 #000,
         -1px 1px 0 #000, 1px 1px 0 #000,
         0 0 10px var(--nm-accent),
-        0 0 20px var(--nm-accent);
+        0 0 20px var(--nm-accent-hover),
+        0 0 30px var(--nm-accent-hover);
 }
 
 body.light-theme .page-header h1 {
-    /* MODIFIED: Added pulse animation and stronger base glow */
-    animation: pulse-glow 2.5s ease-in-out infinite;
-    text-shadow: /* Fallback */
+    /* MODIFIED: Removed animation, set static glow for light theme */
+    /* animation: pulse-glow 2.5s ease-in-out infinite; */
+    text-shadow: 
         -1px -1px 0 #fff, 1px -1px 0 #fff,
         -1px 1px 0 #fff, 1px 1px 0 #fff,
         0 0 10px var(--nm-accent),
-        0 0 20px var(--nm-accent);
+        0 0 20px var(--nm-accent-hover),
+        0 0 30px var(--nm-accent-hover);
 }
 
 .page-header p {
