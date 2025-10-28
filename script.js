@@ -52,7 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Call the function to inject AdSense
-    injectAdSense();
+    // injectAdSense(); // <-- THIS LINE HAS BEEN REMOVED TO PREVENT REDUNDANT SCRIPT LOADING
 
     // --- GLOBAL STATE ---
     let currentLanguage = 'en';
