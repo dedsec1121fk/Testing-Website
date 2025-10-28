@@ -1,7 +1,7 @@
 /*
     =================================================================
     DEDSEC PROJECT MULTI-PAGE STYLES
-    VERSION: 2.6 (Final Text Glow Compatibility Fix)
+    VERSION: 2.7 (Premium UX Refinement)
     =================================================================
 */
 
@@ -72,9 +72,16 @@ body.light-theme {
 
 /*
     =================================================================
-    GLOBAL STYLES & PREMIUM UX
+    GLOBAL STYLES & PREMIUM UX - Further Enhancements
     =================================================================
 */
+
+/* ADDED: Subtle background movement for premium depth */
+@keyframes subtleFloat {
+    0% { transform: translateZ(0) translateY(0); }
+    50% { transform: translateZ(0) translateY(-5px); }
+    100% { transform: translateZ(0) translateY(0); }
+}
 
 /* ADDED: Smooth scrolling and native-like touch behavior */
 html {
@@ -118,6 +125,8 @@ body::before {
     pointer-events: none;
     transition: background-image 0.3s ease;
     transform: translateZ(0);
+    /* ADDED: Subtle floating animation */
+    animation: subtleFloat 30s ease-in-out infinite alternate;
 }
 
 body::after {
@@ -133,6 +142,8 @@ body::after {
     z-index: -1;
     pointer-events: none;
     transform: translateZ(0);
+    /* ADDED: Slower, slightly different floating animation for a sense of depth */
+    animation: subtleFloat 40s ease-in-out infinite alternate-reverse;
 }
 
 body.light-theme::before {
@@ -157,6 +168,21 @@ body.light-theme::before {
     z-index: 1000;
     padding: 0 15px;
     box-sizing: border-box;
+    /* ADDED: Subtle hover effect for the entire bar and transition for .scrolled class */
+    transition: background 0.3s ease, border-bottom 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* ADDED: Class for when the user has scrolled (e.g., via JavaScript) */
+.main-nav.scrolled {
+    background: var(--nm-darkest);
+    border-bottom-color: var(--nm-accent-hover);
+    /* Deeper shadow to indicate elevation from the page */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4); 
+}
+
+.main-nav:hover {
+    /* Subtly lift the shadow on hover */
+    box-shadow: 0 0 5px rgba(var(--glow-rgb), 0.5); 
 }
 
 .nav-container {
@@ -233,6 +259,12 @@ body.light-theme .nav-title h1::after {
     height: 3px;
     background: var(--nm-text);
     transition: all 0.3s var(--ease-out-cubic);
+}
+
+/* ADDED: Animation for the burger menu icon on hover */
+.burger-menu:hover span {
+    background: var(--nm-accent);
+    transform: scaleX(1.1);
 }
 
 .burger-menu.active span:nth-child(1) { transform: rotate(45deg) translate(6px, 6px); }
@@ -383,6 +415,11 @@ body.light-theme .page-header h1 {
     margin: 0 auto;
 }
 
+/* ADDED: Content section entry animation */
+@keyframes sectionSlideIn {
+    to { opacity: 1; transform: translateY(0); }
+}
+
 .content-section {
     background: rgba(31, 42, 56, 0.9);
     border: 1px solid var(--nm-border);
@@ -390,8 +427,19 @@ body.light-theme .page-header h1 {
     padding: 30px;
     margin-bottom: 30px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-    /* MODIFIED: Premium transition */
-    transition: border-color 0.3s ease, box-shadow 0.3s var(--ease-out-cubic);
+    
+    /* MODIFIED: Premium transition, adding transform and opacity */
+    transition: border-color 0.3s ease, box-shadow 0.3s var(--ease-out-cubic), transform 0.3s var(--ease-out-cubic), opacity 0.3s ease;
+    will-change: transform, box-shadow, border-color;
+    
+    /* ADDED: Initial state for slide-in animation (requires JS to apply .animated class) */
+    opacity: 0;
+    transform: translateY(15px);
+}
+
+/* This class would be added to content-sections after load via JavaScript, possibly staggered */
+.content-section.animated {
+    animation: sectionSlideIn 0.6s var(--ease-out-cubic) forwards;
 }
 
 body.light-theme .content-section {
@@ -401,6 +449,8 @@ body.light-theme .content-section {
 .content-section:hover {
     border-color: var(--nm-accent);
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3), var(--shadow-glow-accent);
+    /* ADDED: Subtle lift on hover */
+    transform: translateY(-2px); 
 }
 
 .content-section h2 {
@@ -609,14 +659,16 @@ body.light-theme .tool-card {
     font-family: 'Roboto Mono', monospace;
     font-size: 0.9rem;
     box-sizing: border-box;
-    /* MODIFIED: Premium transition */
-    transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s var(--ease-out-cubic);
+    /* MODIFIED: Premium transition, adding transform */
+    transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s var(--ease-out-cubic), transform 0.3s var(--ease-out-cubic);
 }
 .form-group input:focus {
     outline: none;
     border-color: var(--nm-accent);
     background-color: var(--nm-dark);
     box-shadow: var(--shadow-glow-accent);
+    /* ADDED: Subtle focus zoom */
+    transform: scale(1.005);
 }
 
 .form-actions { text-align: center; margin-top: 30px; }
@@ -697,8 +749,8 @@ body.light-theme .tool-card {
     clip-path: none; 
     border-radius: 50px; 
     box-sizing: border-box;
-    /* MODIFIED: Premium transition */
-    transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s var(--ease-out-cubic);
+    /* MODIFIED: Premium transition, adding transform */
+    transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s var(--ease-out-cubic), transform 0.3s var(--ease-out-cubic);
 }
 
 #main-search-input:focus {
@@ -706,6 +758,8 @@ body.light-theme .tool-card {
     background-color: var(--nm-dark);
     border-color: var(--nm-accent-hover);
     box-shadow: var(--shadow-glow-accent);
+    /* ADDED: Subtle focus zoom */
+    transform: scale(1.005);
 }
 
 #search-suggestions-container {
@@ -1415,14 +1469,16 @@ body.light-theme #useful-info-results-container .search-result-item {
     font-size: 0.9rem;
     border-radius: 50px;
     box-sizing: border-box;
-    /* MODIFIED: Premium transition */
-    transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s var(--ease-out-cubic);
+    /* MODIFIED: Premium transition, adding transform */
+    transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s var(--ease-out-cubic), transform 0.3s var(--ease-out-cubic);
 }
 .modal-search-container input:focus {
     outline: none;
     background-color: var(--nm-dark);
     border-color: var(--nm-accent-hover);
     box-shadow: var(--shadow-glow-accent);
+    /* ADDED: Subtle focus zoom */
+    transform: scale(1.005);
 }
 
 /* Content Highlight */
