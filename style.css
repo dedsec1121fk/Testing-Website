@@ -1,7 +1,7 @@
 /*
     =================================================================
     DEDSEC PROJECT MULTI-PAGE STYLES
-    VERSION: 2.7 (Premium UX Refinement)
+    VERSION: 2.6 (Final Text Glow Compatibility Fix)
     =================================================================
 */
 
@@ -39,9 +39,12 @@
     
     /* ADDED: Premium feel variables */
     --ease-out-cubic: cubic-bezier(0.23, 1, 0.32, 1);
-    --shadow-glow-accent: 0 0 15px 0px rgba(var(--glow-rgb), 0.5);
-    --shadow-glow-success: 0 0 15px 0px rgba(0, 255, 0, 0.5);
-    --shadow-glow-danger: 0 0 15px 0px rgba(255, 0, 0, 0.5);
+    
+    /* MODIFIED: Increased glow intensity and added physical shadow variable */
+    --shadow-physical-subtle: 0 3px 8px rgba(0,0,0,0.2);
+    --shadow-glow-accent: 0 0 20px 0px rgba(var(--glow-rgb), 0.6);
+    --shadow-glow-success: 0 0 20px 0px rgba(0, 255, 0, 0.6);
+    --shadow-glow-danger: 0 0 20px 0px rgba(255, 0, 0, 0.6);
     
     /* ADDED: Light theme specific variables */
     --nm-text-muted-dark: #CCCCCC;
@@ -68,26 +71,23 @@ body.light-theme {
     /* FIXED: Ensure proper contrast for light theme */
     --warning-bg: rgba(153, 102, 255, 0.1);
     --danger-bg: rgba(255, 0, 0, 0.1);
+
+    /* ADDED: Physical shadow for light theme */
+    --shadow-physical-subtle: 0 3px 8px rgba(0,0,0,0.1);
 }
 
 /*
     =================================================================
-    GLOBAL STYLES & PREMIUM UX - Further Enhancements
+    GLOBAL STYLES & PREMIUM UX
     =================================================================
 */
-
-/* ADDED: Subtle background movement for premium depth */
-@keyframes subtleFloat {
-    0% { transform: translateZ(0) translateY(0); }
-    50% { transform: translateZ(0) translateY(-5px); }
-    100% { transform: translateZ(0) translateY(0); }
-}
 
 /* ADDED: Smooth scrolling and native-like touch behavior */
 html {
     scroll-behavior: smooth;
     -webkit-tap-highlight-color: transparent; /* Disable tap flash on mobile */
     overscroll-behavior-y: none; /* Disable "bounce" on mobile */
+    overscroll-behavior-x: none; /* MODIFIED: Added for horizontal bounce */
 }
 
 body {
@@ -125,8 +125,6 @@ body::before {
     pointer-events: none;
     transition: background-image 0.3s ease;
     transform: translateZ(0);
-    /* ADDED: Subtle floating animation */
-    animation: subtleFloat 30s ease-in-out infinite alternate;
 }
 
 body::after {
@@ -142,8 +140,6 @@ body::after {
     z-index: -1;
     pointer-events: none;
     transform: translateZ(0);
-    /* ADDED: Slower, slightly different floating animation for a sense of depth */
-    animation: subtleFloat 40s ease-in-out infinite alternate-reverse;
 }
 
 body.light-theme::before {
@@ -151,9 +147,9 @@ body.light-theme::before {
     opacity: 0.1; /* Reduced opacity for better readability */
 }
 
-/* ADDED: Page load fade-in */
+/* MODIFIED: Page load fade-in (stronger effect) */
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
+    from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
 }
 
@@ -164,25 +160,13 @@ body.light-theme::before {
     left: 0;
     width: 100%;
     background: var(--nm-darkest);
-    border-bottom: 2px solid var(--nm-accent);
+    /* MODIFIED: Changed to gradient border for premium look */
+    border-bottom: 2px solid;
+    border-image-slice: 1;
+    border-image-source: linear-gradient(90deg, var(--nm-accent-hover), var(--nm-accent) 50%, var(--nm-accent-hover) 100%);
     z-index: 1000;
     padding: 0 15px;
     box-sizing: border-box;
-    /* ADDED: Subtle hover effect for the entire bar and transition for .scrolled class */
-    transition: background 0.3s ease, border-bottom 0.3s ease, box-shadow 0.3s ease;
-}
-
-/* ADDED: Class for when the user has scrolled (e.g., via JavaScript) */
-.main-nav.scrolled {
-    background: var(--nm-darkest);
-    border-bottom-color: var(--nm-accent-hover);
-    /* Deeper shadow to indicate elevation from the page */
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4); 
-}
-
-.main-nav:hover {
-    /* Subtly lift the shadow on hover */
-    box-shadow: 0 0 5px rgba(var(--glow-rgb), 0.5); 
 }
 
 .nav-container {
@@ -261,12 +245,6 @@ body.light-theme .nav-title h1::after {
     transition: all 0.3s var(--ease-out-cubic);
 }
 
-/* ADDED: Animation for the burger menu icon on hover */
-.burger-menu:hover span {
-    background: var(--nm-accent);
-    transform: scaleX(1.1);
-}
-
 .burger-menu.active span:nth-child(1) { transform: rotate(45deg) translate(6px, 6px); }
 .burger-menu.active span:nth-child(2) { opacity: 0; }
 .burger-menu.active span:nth-child(3) { transform: rotate(-45deg) translate(6px, -6px); }
@@ -322,7 +300,8 @@ body.light-theme .nav-title h1::after {
     border-color: var(--nm-accent-hover);
     /* MODIFIED: More lift and glow */
     transform: translateY(-3px);
-    box-shadow: var(--shadow-glow-accent);
+    /* MODIFIED: Added physical shadow for "lift" */
+    box-shadow: var(--shadow-physical-subtle), var(--shadow-glow-accent);
 }
 
 /* ADDED: Premium "press" effect */
@@ -368,7 +347,8 @@ body.light-theme .nav-title h1::after {
     color: var(--nm-text-on-accent); 
     /* MODIFIED: More lift and glow */
     transform: translateY(-3px);
-    box-shadow: var(--shadow-glow-accent);
+    /* MODIFIED: Added physical shadow for "lift" */
+    box-shadow: var(--shadow-physical-subtle), var(--shadow-glow-accent);
 }
 
 /* ADDED: Premium "press" effect */
@@ -415,11 +395,6 @@ body.light-theme .page-header h1 {
     margin: 0 auto;
 }
 
-/* ADDED: Content section entry animation */
-@keyframes sectionSlideIn {
-    to { opacity: 1; transform: translateY(0); }
-}
-
 .content-section {
     background: rgba(31, 42, 56, 0.9);
     border: 1px solid var(--nm-border);
@@ -427,19 +402,8 @@ body.light-theme .page-header h1 {
     padding: 30px;
     margin-bottom: 30px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-    
-    /* MODIFIED: Premium transition, adding transform and opacity */
-    transition: border-color 0.3s ease, box-shadow 0.3s var(--ease-out-cubic), transform 0.3s var(--ease-out-cubic), opacity 0.3s ease;
-    will-change: transform, box-shadow, border-color;
-    
-    /* ADDED: Initial state for slide-in animation (requires JS to apply .animated class) */
-    opacity: 0;
-    transform: translateY(15px);
-}
-
-/* This class would be added to content-sections after load via JavaScript, possibly staggered */
-.content-section.animated {
-    animation: sectionSlideIn 0.6s var(--ease-out-cubic) forwards;
+    /* MODIFIED: Premium transition */
+    transition: border-color 0.3s ease, box-shadow 0.3s var(--ease-out-cubic);
 }
 
 body.light-theme .content-section {
@@ -448,9 +412,8 @@ body.light-theme .content-section {
 
 .content-section:hover {
     border-color: var(--nm-accent);
+    /* MODIFIED: Kept original physical shadow, added enhanced glow */
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3), var(--shadow-glow-accent);
-    /* ADDED: Subtle lift on hover */
-    transform: translateY(-2px); 
 }
 
 .content-section h2 {
@@ -481,7 +444,8 @@ body.light-theme .content-section {
     padding: 20px;
     /* MODIFIED: Premium transition */
     transition: transform 0.25s var(--ease-out-cubic), border-color 0.25s ease, box-shadow 0.25s var(--ease-out-cubic);
-    will-change: transform, box-shadow;
+    /* MODIFIED: More specific will-change */
+    will-change: transform, box-shadow, border-color;
 }
 
 body.light-theme .tool-card {
@@ -491,7 +455,8 @@ body.light-theme .tool-card {
 .tool-card:hover {
     border-color: var(--nm-accent);
     transform: translateY(-3px);
-    box-shadow: var(--shadow-glow-accent);
+    /* MODIFIED: Added physical shadow for "lift" */
+    box-shadow: var(--shadow-physical-subtle), var(--shadow-glow-accent);
 }
 
 .tool-card h4 {
@@ -578,6 +543,7 @@ body.light-theme .tool-card {
 .anniversary-banner:hover {
     transform: translateY(-3px);
     border-color: #FFD700;
+    /* MODIFIED: Kept original physical shadow, added enhanced glow */
     box-shadow: 0 4px 15px rgba(153, 102, 255, 0.3), var(--shadow-glow-accent);
 }
 
@@ -659,16 +625,15 @@ body.light-theme .tool-card {
     font-family: 'Roboto Mono', monospace;
     font-size: 0.9rem;
     box-sizing: border-box;
-    /* MODIFIED: Premium transition, adding transform */
-    transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s var(--ease-out-cubic), transform 0.3s var(--ease-out-cubic);
+    /* MODIFIED: Premium transition */
+    transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s var(--ease-out-cubic);
 }
-.form-group input:focus {
+/* MODIFIED: Switched to :focus-visible for accessibility */
+.form-group input:focus-visible {
     outline: none;
     border-color: var(--nm-accent);
     background-color: var(--nm-dark);
     box-shadow: var(--shadow-glow-accent);
-    /* ADDED: Subtle focus zoom */
-    transform: scale(1.005);
 }
 
 .form-actions { text-align: center; margin-top: 30px; }
@@ -749,17 +714,16 @@ body.light-theme .tool-card {
     clip-path: none; 
     border-radius: 50px; 
     box-sizing: border-box;
-    /* MODIFIED: Premium transition, adding transform */
-    transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s var(--ease-out-cubic), transform 0.3s var(--ease-out-cubic);
+    /* MODIFIED: Premium transition */
+    transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s var(--ease-out-cubic);
 }
 
-#main-search-input:focus {
+/* MODIFIED: Switched to :focus-visible for accessibility */
+#main-search-input:focus-visible {
     outline: none;
     background-color: var(--nm-dark);
     border-color: var(--nm-accent-hover);
     box-shadow: var(--shadow-glow-accent);
-    /* ADDED: Subtle focus zoom */
-    transform: scale(1.005);
 }
 
 #search-suggestions-container {
@@ -864,7 +828,8 @@ body.light-theme .modal-overlay {
     height: 85%;
     max-height: 800px;
     border: 1px solid var(--nm-accent); 
-    box-shadow: var(--shadow-glow-accent); /* ADDED: Modal glow */
+    /* MODIFIED: Added enhanced glow */
+    box-shadow: var(--shadow-glow-accent);
     display: flex;
     flex-direction: column;
     overflow: hidden;
@@ -879,7 +844,8 @@ body.light-theme .modal-overlay {
 
 body.light-theme .modal-content {
     background: rgba(248, 248, 248, 0.9);
-    box-shadow: 0 5px 25px rgba(0,0,0,0.1);
+    /* MODIFIED: Added enhanced glow for light theme consistency */
+    box-shadow: 0 5px 25px rgba(0,0,0,0.1), var(--shadow-glow-accent);
     border: 1px solid var(--nm-border);
 }
 
@@ -973,7 +939,8 @@ body.light-theme .modal-header {
     color: var(--nm-text-on-accent);
     background-color: var(--nm-accent);
     border-color: var(--nm-accent-hover);
-    box-shadow: var(--shadow-glow-accent); 
+    /* MODIFIED: Added physical shadow for "lift" */
+    box-shadow: var(--shadow-physical-subtle), var(--shadow-glow-accent); 
     transform: translateY(-3px);
 }
 
@@ -1008,13 +975,15 @@ body.light-theme .modal-header {
     opacity: 0.9;
     border-color: var(--nm-success) !important;
     transform: translateY(-3px);
-    box-shadow: var(--shadow-glow-success) !important;
+    /* MODIFIED: Added physical shadow for "lift" */
+    box-shadow: var(--shadow-physical-subtle), var(--shadow-glow-success) !important;
 }
 .decline-btn:hover {
     opacity: 0.9;
     border-color: var(--nm-danger) !important;
     transform: translateY(-3px);
-    box-shadow: var(--shadow-glow-danger) !important;
+    /* MODIFIED: Added physical shadow for "lift" */
+    box-shadow: var(--shadow-physical-subtle), var(--shadow-glow-danger) !important;
 }
 
 /* ADDED: Premium "press" effect */
@@ -1081,7 +1050,8 @@ body.light-theme .code-container {
 .copy-btn:hover {
     background: var(--nm-accent);
     color: var(--nm-text-on-accent);
-    box-shadow: var(--shadow-glow-accent); 
+    /* MODIFIED: Added subtle physical shadow for "lift" */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1), var(--shadow-glow-accent); 
     border-color: var(--nm-accent-hover);
     transform: translateY(-3px);
 }
@@ -1159,7 +1129,8 @@ body.light-theme .note {
     position: relative;
     /* MODIFIED: Premium transition */
     transition: transform 0.25s var(--ease-out-cubic), background-color 0.25s ease, color 0.25s ease, box-shadow 0.25s var(--ease-out-cubic), border-color 0.25s ease;
-    will-change: transform, box-shadow;
+    /* MODIFIED: More specific will-change */
+    will-change: transform, box-shadow, background-color, color, border-color;
 }
 
 .contact-grid .app-icon:hover {
@@ -1167,7 +1138,8 @@ body.light-theme .note {
     border-color: var(--nm-accent-hover);
     color: var(--nm-text-on-accent);
     transform: translateY(-3px);
-    box-shadow: var(--shadow-glow-accent);
+    /* MODIFIED: Added physical shadow for "lift" */
+    box-shadow: var(--shadow-physical-subtle), var(--shadow-glow-accent);
 }
 
 /* ADDED: Premium "press" effect */
@@ -1291,7 +1263,8 @@ body.light-theme .store-link a {
     border-color: var(--nm-accent);
     color: var(--nm-darkest);
     transform: translateY(-3px);
-    box-shadow: var(--shadow-glow-accent);
+    /* MODIFIED: Added physical shadow for "lift" */
+    box-shadow: var(--shadow-physical-subtle), var(--shadow-glow-accent);
 }
 /* ADDED: Premium "press" effect */
 .store-link a:active {
@@ -1337,7 +1310,8 @@ body.light-theme .store-link a {
     box-sizing: border-box;
     /* MODIFIED: Premium transition */
     transition: transform 0.25s var(--ease-out-cubic), background-color 0.25s ease, color 0.25s ease, box-shadow 0.25s var(--ease-out-cubic), border-color 0.25s ease;
-    will-change: transform, box-shadow;
+    /* MODIFIED: More specific will-change */
+    will-change: transform, box-shadow, background-color, color, border-color;
 }
 
 #useful-information-nav .app-icon:hover {
@@ -1345,7 +1319,8 @@ body.light-theme .store-link a {
     border-color: var(--nm-accent-hover);
     color: var(--nm-text-on-accent);
     transform: translateY(-3px);
-    box-shadow: var(--shadow-glow-accent);
+    /* MODIFIED: Added physical shadow for "lift" */
+    box-shadow: var(--shadow-physical-subtle), var(--shadow-glow-accent);
 }
 
 /* ADDED: Premium "press" effect */
@@ -1469,16 +1444,15 @@ body.light-theme #useful-info-results-container .search-result-item {
     font-size: 0.9rem;
     border-radius: 50px;
     box-sizing: border-box;
-    /* MODIFIED: Premium transition, adding transform */
-    transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s var(--ease-out-cubic), transform 0.3s var(--ease-out-cubic);
+    /* MODIFIED: Premium transition */
+    transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s var(--ease-out-cubic);
 }
-.modal-search-container input:focus {
+/* MODIFIED: Switched to :focus-visible for accessibility */
+.modal-search-container input:focus-visible {
     outline: none;
     background-color: var(--nm-dark);
     border-color: var(--nm-accent-hover);
     box-shadow: var(--shadow-glow-accent);
-    /* ADDED: Subtle focus zoom */
-    transform: scale(1.005);
 }
 
 /* Content Highlight */
@@ -1519,6 +1493,74 @@ body.light-theme #useful-info-results-container .search-result-item {
 }
 #disclaimer-lang-btn { font-size: 1.1rem; padding: 12px 20px; }
 #disclaimer-lang-btn i { font-size: 1.3rem; }
+
+/*
+    =================================================================
+    ADDED: PREMIUM FOCUS-VISIBLE STYLES
+    =================================================================
+*/
+
+/* ADDED: Provides a premium, accessible focus ring for keyboard navigation 
+    on all interactive elements *except* inputs (which have their own).
+*/
+.nav-link:focus-visible,
+.nav-action-btn:focus-visible,
+.certificate-btn:focus-visible,
+#generate-certificate:focus-visible,
+.language-button:focus-visible,
+.accept-btn:focus-visible,
+.decline-btn:focus-visible,
+.copy-btn:focus-visible,
+.contact-grid .app-icon:focus-visible,
+.store-link a:focus-visible,
+#useful-information-nav .app-icon:focus-visible,
+.close-modal:focus-visible,
+.carousel-btn:focus-visible,
+.burger-menu:focus-visible {
+    outline: none;
+    /* Creates a "ring" of the accent color, inset by a ring of the bg color */
+    box-shadow: 0 0 0 2px var(--nm-darkest), 
+                0 0 0 4px var(--nm-accent), 
+                var(--shadow-glow-accent);
+    /* Ensure rounded corners match */
+    border-radius: 20px;
+}
+
+/* Specific radius adjustments for focus */
+.burger-menu:focus-visible { border-radius: 4px; }
+.close-modal:focus-visible { border-radius: 50%; }
+.carousel-btn:focus-visible { border-radius: 0; }
+.copy-btn:focus-visible { 
+    box-shadow: 0 0 0 2px var(--nm-container), 
+                0 0 0 4px var(--nm-accent), 
+                var(--shadow-glow-accent);
+}
+
+/* Light theme adjustments for focus ring */
+body.light-theme .nav-link:focus-visible,
+body.light-theme .nav-action-btn:focus-visible,
+body.light-theme .certificate-btn:focus-visible,
+body.light-theme #generate-certificate:focus-visible,
+body.light-theme .language-button:focus-visible,
+body.light-theme .accept-btn:focus-visible,
+body.light-theme .decline-btn:focus-visible,
+body.light-theme .copy-btn:focus-visible,
+body.light-theme .contact-grid .app-icon:focus-visible,
+body.light-theme .store-link a:focus-visible,
+body.light-theme #useful-information-nav .app-icon:focus-visible,
+body.light-theme .close-modal:focus-visible,
+body.light-theme .burger-menu:focus-visible {
+     box-shadow: 0 0 0 2px var(--nm-abyss-blue), 
+                0 0 0 4px var(--nm-accent), 
+                var(--shadow-glow-accent);
+}
+
+body.light-theme .copy-btn:focus-visible {
+    box-shadow: 0 0 0 2px var(--nm-container-light), 
+                0 0 0 4px var(--nm-accent), 
+                var(--shadow-glow-accent);
+}
+
 
 /*
     =================================================================
