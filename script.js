@@ -1,59 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // --- AUTO-INJECT ADSENSE CODE ---
-    function injectAdSense() {
-        // Inject main AdSense script in head
-        const adSenseScript = document.createElement('script');
-        adSenseScript.async = true;
-        adSenseScript.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6091474574080213';
-        adSenseScript.crossOrigin = 'anonymous';
-        document.head.appendChild(adSenseScript);
-        
-        console.log('AdSense script injected in head');
-        
-        // Inject ad unit in body
-        const adUnitContainer = document.createElement('div');
-        adUnitContainer.id = 'auto-injected-ad';
-        adUnitContainer.style.cssText = `
-            margin: 20px auto;
-            max-width: 1200px;
-            text-align: center;
-            padding: 10px;
-        `;
-        
-        adUnitContainer.innerHTML = `
-            <ins class="adsbygoogle"
-                 style="display:block"
-                 data-ad-client="ca-pub-6091474574080213"
-                 data-ad-slot="1257213712"
-                 data-ad-format="auto"
-                 data-full-width-responsive="true"></ins>
-            <script>
-                 (adsbygoogle = window.adsbygoogle || []).push({});
-            </script>
-        `;
-        
-        // Try to insert ad unit at strategic locations
-        const mainContent = document.querySelector('main') || document.querySelector('.content') || document.body;
-        
-        // Insert after main content or at the end of body
-        if (mainContent && mainContent !== document.body) {
-            mainContent.parentNode.insertBefore(adUnitContainer, mainContent.nextSibling);
-        } else {
-            // Insert before footer or at the end of body
-            const footer = document.querySelector('footer');
-            if (footer) {
-                document.body.insertBefore(adUnitContainer, footer);
-            } else {
-                document.body.appendChild(adUnitContainer);
-            }
-        }
-        
-        console.log('Ad unit injected in body');
-    }
-
-    // Call the function to inject AdSense
-    injectAdSense();
-
+    // --- AdSense is now loaded only via HTML ---
+    
     // --- GLOBAL STATE ---
     let currentLanguage = 'en';
     let usefulInfoSearchIndex = [];
@@ -261,7 +208,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (disclaimerModal) {
                     disclaimerModal.classList.add('visible');
                 }
-            }, 500);
+            }, 10); // <-- OPTIMIZED: Changed from 500 to 10
         }
 
         // Handle accept button
@@ -273,9 +220,9 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log('Disclaimer accepted');
         });
 
-        // Handle decline button - redirect to Google homepage
+        // Handle decline button - go back
         declineBtn?.addEventListener('click', () => {
-            window.location.href = 'https://www.google.com';
+            window.history.back(); // <-- OPTIMIZED: Changed from Google redirect
         });
 
         // Prevent closing the disclaimer modal by clicking outside
@@ -785,27 +732,27 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         };
 
-        searchInput.addEventListener('focus', async () => {
+        // --- OPTIMIZED: Start indexing 1 second after page load ---
+        setTimeout(() => {
             if (isUsefulInfoIndexBuilt) return;
 
             searchInput.placeholder = currentLanguage === 'gr' ? 'Ευρετηρίαση άρθρων...' : 'Indexing articles...';
             searchInput.disabled = true;
-
             progressBarContainer.style.display = 'block';
             progressBar.style.width = '0%';
 
-            await buildUsefulInfoSearchIndex(progressBar, progressText);
+            buildUsefulInfoSearchIndex(progressBar, progressText).then(() => {
+                updateUsefulInfoButtonTitles();
+                setTimeout(() => {
+                    progressBarContainer.style.display = 'none';
+                }, 500);
+
+                searchInput.disabled = false;
+                searchInput.placeholder = currentLanguage === 'gr' ? 'Αναζήτηση άρθρων...' : 'Search articles...';
+            });
             
-            updateUsefulInfoButtonTitles();
-
-            setTimeout(() => {
-                progressBarContainer.style.display = 'none';
-            }, 500);
-
-            searchInput.disabled = false;
-            searchInput.placeholder = currentLanguage === 'gr' ? 'Αναζήτηση άρθρων...' : 'Search articles...';
-            searchInput.focus();
-        }, { once: true });
+        }, 1000); // 1000ms (1 second) delay
+        // --- End of optimization ---
 
         searchInput.addEventListener('input', () => {
             const query = searchInput.value.trim();
