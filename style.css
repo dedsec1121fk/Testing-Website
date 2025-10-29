@@ -931,19 +931,6 @@ body.light-theme .modal-header {
 .hidden { display: none !important; } 
 .hidden-by-default { display: none; }
 
-/* FIX: Reserve space for injected ad to prevent Cumulative Layout Shift (CLS) */
-#auto-injected-ad {
-    max-width: 1200px;
-    margin: 20px auto;
-    padding: 10px;
-    /* Set a min-height to reserve a stable space in the layout.
-      This prevents content from "jumping" when the ad loads.
-      250px is a common height for a "auto" format banner.
-    */
-    min-height: 250px; 
-    box-sizing: border-box;
-}
-
 /* Accept/Decline Buttons */
 .decline-btn, .accept-btn {
     color: var(--nm-text-on-status) !important;
