@@ -507,88 +507,6 @@ body.light-theme .tool-card {
     animation: fadeIn 0.5s 0.1s var(--ease-out-cubic) backwards;
 }
 
-/* Anniversary Banner */
-.anniversary-banner {
-    background: linear-gradient(135deg, var(--nm-accent), var(--nm-accent-hover));
-    border: 2px solid var(--nm-accent);
-    border-radius: 20px;
-    padding: 20px;
-    margin: 15px auto;
-    max-width: 480px;
-    width: 100%;
-    opacity: 0.85;
-    box-shadow: 0 4px 15px rgba(153, 102, 255, 0.3);
-    position: relative;
-    z-index: 5;
-    box-sizing: border-box;
-    /* MODIFIED: Premium transition */
-    transition: transform 0.25s var(--ease-out-cubic), border-color 0.25s ease, box-shadow 0.25s var(--ease-out-cubic);
-    will-change: transform, box-shadow;
-}
-.anniversary-banner:hover {
-    transform: translateY(-3px);
-    border-color: #FFD700;
-    box-shadow: 0 4px 15px rgba(153, 102, 255, 0.3), var(--shadow-glow-accent);
-}
-
-.anniversary-content {
-    display: flex;
-    align-items: flex-start;
-    gap: 15px;
-    margin-bottom: 15px;
-}
-.anniversary-icon { font-size: 2rem; color: var(--nm-text); flex-shrink: 0; }
-.anniversary-text h3 {
-    margin: 0 0 10px 0;
-    color: var(--nm-text);
-    font-family: 'Orbitron', sans-serif;
-    font-size: 1.2rem;
-    text-align: center;
-    white-space: nowrap;
-}
-.anniversary-text p {
-    margin: 0;
-    color: var(--nm-text);
-    font-size: 0.9rem;
-    line-height: 1.4;
-    text-align: left;
-}
-
-.certificate-btn {
-    width: 100%;
-    background: linear-gradient(135deg, #FFD700, #FF6B6B);
-    border: 2px solid #FFD700;
-    color: #000000;
-    padding: 12px 20px;
-    border-radius: 20px;
-    font-family: 'Orbitron', sans-serif;
-    font-weight: 700;
-    font-size: 0.9rem;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    opacity: 0.85;
-    box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
-    /* MODIFIED: Premium transition */
-    transition: transform 0.25s var(--ease-out-cubic), background-color 0.25s ease, color 0.25s ease, box-shadow 0.25s var(--ease-out-cubic), border-color 0.25s ease;
-    will-change: transform, box-shadow;
-}
-
-.certificate-btn:hover {
-    background: linear-gradient(135deg, #FF6B6B, #FFD700);
-    border-color: #FF6B6B;
-    transform: translateY(-3px);
-    box-shadow: 0 6px 20px rgba(255, 215, 0, 0.5);
-}
-
-/* ADDED: Premium "press" effect */
-.certificate-btn:active {
-    transform: translateY(0px) scale(0.97);
-    transition-duration: 0.1s;
-}
-
 /* Certificate Form Styles */
 .certificate-form-container { max-width: 500px; margin: 0 auto; }
 .form-group { margin-bottom: 20px; }
@@ -620,38 +538,6 @@ body.light-theme .tool-card {
 }
 
 .form-actions { text-align: center; margin-top: 30px; }
-
-#generate-certificate {
-    background: linear-gradient(135deg, var(--nm-success), #00CC00);
-    border: 2px solid var(--nm-success);
-    color: #000000;
-    padding: 15px 30px;
-    border-radius: 20px;
-    font-family: 'Orbitron', sans-serif;
-    font-weight: 700;
-    font-size: 1rem;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    margin: 0 auto;
-    /* MODIFIED: Premium transition */
-    transition: transform 0.25s var(--ease-out-cubic), background-color 0.25s ease, color 0.25s ease, box-shadow 0.25s var(--ease-out-cubic), border-color 0.25s ease;
-    will-change: transform, box-shadow;
-}
-
-#generate-certificate:hover {
-    background: linear-gradient(135deg, #00CC00, var(--nm-success));
-    transform: translateY(-3px);
-    box-shadow: 0 6px 20px rgba(0, 255, 0, 0.3), var(--shadow-glow-success);
-}
-
-/* ADDED: Premium "press" effect */
-#generate-certificate:active {
-    transform: translateY(0px) scale(0.97);
-    transition-duration: 0.1s;
-}
 
 /* Search Styles */
 .main-header-container {
