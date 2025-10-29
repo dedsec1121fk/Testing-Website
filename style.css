@@ -39,12 +39,9 @@
     
     /* ADDED: Premium feel variables */
     --ease-out-cubic: cubic-bezier(0.23, 1, 0.32, 1);
-    
-    /* MODIFIED: Increased glow intensity and added physical shadow variable */
-    --shadow-physical-subtle: 0 3px 8px rgba(0,0,0,0.2);
-    --shadow-glow-accent: 0 0 20px 0px rgba(var(--glow-rgb), 0.6);
-    --shadow-glow-success: 0 0 20px 0px rgba(0, 255, 0, 0.6);
-    --shadow-glow-danger: 0 0 20px 0px rgba(255, 0, 0, 0.6);
+    --shadow-glow-accent: 0 0 15px 0px rgba(var(--glow-rgb), 0.5);
+    --shadow-glow-success: 0 0 15px 0px rgba(0, 255, 0, 0.5);
+    --shadow-glow-danger: 0 0 15px 0px rgba(255, 0, 0, 0.5);
     
     /* ADDED: Light theme specific variables */
     --nm-text-muted-dark: #CCCCCC;
@@ -71,9 +68,6 @@ body.light-theme {
     /* FIXED: Ensure proper contrast for light theme */
     --warning-bg: rgba(153, 102, 255, 0.1);
     --danger-bg: rgba(255, 0, 0, 0.1);
-
-    /* ADDED: Physical shadow for light theme */
-    --shadow-physical-subtle: 0 3px 8px rgba(0,0,0,0.1);
 }
 
 /*
@@ -87,7 +81,6 @@ html {
     scroll-behavior: smooth;
     -webkit-tap-highlight-color: transparent; /* Disable tap flash on mobile */
     overscroll-behavior-y: none; /* Disable "bounce" on mobile */
-    overscroll-behavior-x: none; /* MODIFIED: Added for horizontal bounce */
 }
 
 body {
@@ -147,9 +140,9 @@ body.light-theme::before {
     opacity: 0.1; /* Reduced opacity for better readability */
 }
 
-/* MODIFIED: Page load fade-in (stronger effect) */
+/* ADDED: Page load fade-in */
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
+    from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
 }
 
@@ -160,10 +153,7 @@ body.light-theme::before {
     left: 0;
     width: 100%;
     background: var(--nm-darkest);
-    /* MODIFIED: Changed to gradient border for premium look */
-    border-bottom: 2px solid;
-    border-image-slice: 1;
-    border-image-source: linear-gradient(90deg, var(--nm-accent-hover), var(--nm-accent) 50%, var(--nm-accent-hover) 100%);
+    border-bottom: 2px solid var(--nm-accent);
     z-index: 1000;
     padding: 0 15px;
     box-sizing: border-box;
@@ -300,8 +290,7 @@ body.light-theme .nav-title h1::after {
     border-color: var(--nm-accent-hover);
     /* MODIFIED: More lift and glow */
     transform: translateY(-3px);
-    /* MODIFIED: Added physical shadow for "lift" */
-    box-shadow: var(--shadow-physical-subtle), var(--shadow-glow-accent);
+    box-shadow: var(--shadow-glow-accent);
 }
 
 /* ADDED: Premium "press" effect */
@@ -347,8 +336,7 @@ body.light-theme .nav-title h1::after {
     color: var(--nm-text-on-accent); 
     /* MODIFIED: More lift and glow */
     transform: translateY(-3px);
-    /* MODIFIED: Added physical shadow for "lift" */
-    box-shadow: var(--shadow-physical-subtle), var(--shadow-glow-accent);
+    box-shadow: var(--shadow-glow-accent);
 }
 
 /* ADDED: Premium "press" effect */
@@ -412,7 +400,6 @@ body.light-theme .content-section {
 
 .content-section:hover {
     border-color: var(--nm-accent);
-    /* MODIFIED: Kept original physical shadow, added enhanced glow */
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3), var(--shadow-glow-accent);
 }
 
@@ -444,8 +431,7 @@ body.light-theme .content-section {
     padding: 20px;
     /* MODIFIED: Premium transition */
     transition: transform 0.25s var(--ease-out-cubic), border-color 0.25s ease, box-shadow 0.25s var(--ease-out-cubic);
-    /* MODIFIED: More specific will-change */
-    will-change: transform, box-shadow, border-color;
+    will-change: transform, box-shadow;
 }
 
 body.light-theme .tool-card {
@@ -455,8 +441,7 @@ body.light-theme .tool-card {
 .tool-card:hover {
     border-color: var(--nm-accent);
     transform: translateY(-3px);
-    /* MODIFIED: Added physical shadow for "lift" */
-    box-shadow: var(--shadow-physical-subtle), var(--shadow-glow-accent);
+    box-shadow: var(--shadow-glow-accent);
 }
 
 .tool-card h4 {
@@ -543,7 +528,6 @@ body.light-theme .tool-card {
 .anniversary-banner:hover {
     transform: translateY(-3px);
     border-color: #FFD700;
-    /* MODIFIED: Kept original physical shadow, added enhanced glow */
     box-shadow: 0 4px 15px rgba(153, 102, 255, 0.3), var(--shadow-glow-accent);
 }
 
@@ -628,8 +612,7 @@ body.light-theme .tool-card {
     /* MODIFIED: Premium transition */
     transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s var(--ease-out-cubic);
 }
-/* MODIFIED: Switched to :focus-visible for accessibility */
-.form-group input:focus-visible {
+.form-group input:focus {
     outline: none;
     border-color: var(--nm-accent);
     background-color: var(--nm-dark);
@@ -718,8 +701,7 @@ body.light-theme .tool-card {
     transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s var(--ease-out-cubic);
 }
 
-/* MODIFIED: Switched to :focus-visible for accessibility */
-#main-search-input:focus-visible {
+#main-search-input:focus {
     outline: none;
     background-color: var(--nm-dark);
     border-color: var(--nm-accent-hover);
@@ -828,8 +810,7 @@ body.light-theme .modal-overlay {
     height: 85%;
     max-height: 800px;
     border: 1px solid var(--nm-accent); 
-    /* MODIFIED: Added enhanced glow */
-    box-shadow: var(--shadow-glow-accent);
+    box-shadow: var(--shadow-glow-accent); /* ADDED: Modal glow */
     display: flex;
     flex-direction: column;
     overflow: hidden;
@@ -844,8 +825,7 @@ body.light-theme .modal-overlay {
 
 body.light-theme .modal-content {
     background: rgba(248, 248, 248, 0.9);
-    /* MODIFIED: Added enhanced glow for light theme consistency */
-    box-shadow: 0 5px 25px rgba(0,0,0,0.1), var(--shadow-glow-accent);
+    box-shadow: 0 5px 25px rgba(0,0,0,0.1);
     border: 1px solid var(--nm-border);
 }
 
@@ -939,8 +919,7 @@ body.light-theme .modal-header {
     color: var(--nm-text-on-accent);
     background-color: var(--nm-accent);
     border-color: var(--nm-accent-hover);
-    /* MODIFIED: Added physical shadow for "lift" */
-    box-shadow: var(--shadow-physical-subtle), var(--shadow-glow-accent); 
+    box-shadow: var(--shadow-glow-accent); 
     transform: translateY(-3px);
 }
 
@@ -975,15 +954,13 @@ body.light-theme .modal-header {
     opacity: 0.9;
     border-color: var(--nm-success) !important;
     transform: translateY(-3px);
-    /* MODIFIED: Added physical shadow for "lift" */
-    box-shadow: var(--shadow-physical-subtle), var(--shadow-glow-success) !important;
+    box-shadow: var(--shadow-glow-success) !important;
 }
 .decline-btn:hover {
     opacity: 0.9;
     border-color: var(--nm-danger) !important;
     transform: translateY(-3px);
-    /* MODIFIED: Added physical shadow for "lift" */
-    box-shadow: var(--shadow-physical-subtle), var(--shadow-glow-danger) !important;
+    box-shadow: var(--shadow-glow-danger) !important;
 }
 
 /* ADDED: Premium "press" effect */
@@ -1050,8 +1027,7 @@ body.light-theme .code-container {
 .copy-btn:hover {
     background: var(--nm-accent);
     color: var(--nm-text-on-accent);
-    /* MODIFIED: Added subtle physical shadow for "lift" */
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1), var(--shadow-glow-accent); 
+    box-shadow: var(--shadow-glow-accent); 
     border-color: var(--nm-accent-hover);
     transform: translateY(-3px);
 }
@@ -1129,8 +1105,7 @@ body.light-theme .note {
     position: relative;
     /* MODIFIED: Premium transition */
     transition: transform 0.25s var(--ease-out-cubic), background-color 0.25s ease, color 0.25s ease, box-shadow 0.25s var(--ease-out-cubic), border-color 0.25s ease;
-    /* MODIFIED: More specific will-change */
-    will-change: transform, box-shadow, background-color, color, border-color;
+    will-change: transform, box-shadow;
 }
 
 .contact-grid .app-icon:hover {
@@ -1138,8 +1113,7 @@ body.light-theme .note {
     border-color: var(--nm-accent-hover);
     color: var(--nm-text-on-accent);
     transform: translateY(-3px);
-    /* MODIFIED: Added physical shadow for "lift" */
-    box-shadow: var(--shadow-physical-subtle), var(--shadow-glow-accent);
+    box-shadow: var(--shadow-glow-accent);
 }
 
 /* ADDED: Premium "press" effect */
@@ -1263,8 +1237,7 @@ body.light-theme .store-link a {
     border-color: var(--nm-accent);
     color: var(--nm-darkest);
     transform: translateY(-3px);
-    /* MODIFIED: Added physical shadow for "lift" */
-    box-shadow: var(--shadow-physical-subtle), var(--shadow-glow-accent);
+    box-shadow: var(--shadow-glow-accent);
 }
 /* ADDED: Premium "press" effect */
 .store-link a:active {
@@ -1310,8 +1283,7 @@ body.light-theme .store-link a {
     box-sizing: border-box;
     /* MODIFIED: Premium transition */
     transition: transform 0.25s var(--ease-out-cubic), background-color 0.25s ease, color 0.25s ease, box-shadow 0.25s var(--ease-out-cubic), border-color 0.25s ease;
-    /* MODIFIED: More specific will-change */
-    will-change: transform, box-shadow, background-color, color, border-color;
+    will-change: transform, box-shadow;
 }
 
 #useful-information-nav .app-icon:hover {
@@ -1319,8 +1291,7 @@ body.light-theme .store-link a {
     border-color: var(--nm-accent-hover);
     color: var(--nm-text-on-accent);
     transform: translateY(-3px);
-    /* MODIFIED: Added physical shadow for "lift" */
-    box-shadow: var(--shadow-physical-subtle), var(--shadow-glow-accent);
+    box-shadow: var(--shadow-glow-accent);
 }
 
 /* ADDED: Premium "press" effect */
@@ -1447,8 +1418,7 @@ body.light-theme #useful-info-results-container .search-result-item {
     /* MODIFIED: Premium transition */
     transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s var(--ease-out-cubic);
 }
-/* MODIFIED: Switched to :focus-visible for accessibility */
-.modal-search-container input:focus-visible {
+.modal-search-container input:focus {
     outline: none;
     background-color: var(--nm-dark);
     border-color: var(--nm-accent-hover);
@@ -1493,74 +1463,6 @@ body.light-theme #useful-info-results-container .search-result-item {
 }
 #disclaimer-lang-btn { font-size: 1.1rem; padding: 12px 20px; }
 #disclaimer-lang-btn i { font-size: 1.3rem; }
-
-/*
-    =================================================================
-    ADDED: PREMIUM FOCUS-VISIBLE STYLES
-    =================================================================
-*/
-
-/* ADDED: Provides a premium, accessible focus ring for keyboard navigation 
-    on all interactive elements *except* inputs (which have their own).
-*/
-.nav-link:focus-visible,
-.nav-action-btn:focus-visible,
-.certificate-btn:focus-visible,
-#generate-certificate:focus-visible,
-.language-button:focus-visible,
-.accept-btn:focus-visible,
-.decline-btn:focus-visible,
-.copy-btn:focus-visible,
-.contact-grid .app-icon:focus-visible,
-.store-link a:focus-visible,
-#useful-information-nav .app-icon:focus-visible,
-.close-modal:focus-visible,
-.carousel-btn:focus-visible,
-.burger-menu:focus-visible {
-    outline: none;
-    /* Creates a "ring" of the accent color, inset by a ring of the bg color */
-    box-shadow: 0 0 0 2px var(--nm-darkest), 
-                0 0 0 4px var(--nm-accent), 
-                var(--shadow-glow-accent);
-    /* Ensure rounded corners match */
-    border-radius: 20px;
-}
-
-/* Specific radius adjustments for focus */
-.burger-menu:focus-visible { border-radius: 4px; }
-.close-modal:focus-visible { border-radius: 50%; }
-.carousel-btn:focus-visible { border-radius: 0; }
-.copy-btn:focus-visible { 
-    box-shadow: 0 0 0 2px var(--nm-container), 
-                0 0 0 4px var(--nm-accent), 
-                var(--shadow-glow-accent);
-}
-
-/* Light theme adjustments for focus ring */
-body.light-theme .nav-link:focus-visible,
-body.light-theme .nav-action-btn:focus-visible,
-body.light-theme .certificate-btn:focus-visible,
-body.light-theme #generate-certificate:focus-visible,
-body.light-theme .language-button:focus-visible,
-body.light-theme .accept-btn:focus-visible,
-body.light-theme .decline-btn:focus-visible,
-body.light-theme .copy-btn:focus-visible,
-body.light-theme .contact-grid .app-icon:focus-visible,
-body.light-theme .store-link a:focus-visible,
-body.light-theme #useful-information-nav .app-icon:focus-visible,
-body.light-theme .close-modal:focus-visible,
-body.light-theme .burger-menu:focus-visible {
-     box-shadow: 0 0 0 2px var(--nm-abyss-blue), 
-                0 0 0 4px var(--nm-accent), 
-                var(--shadow-glow-accent);
-}
-
-body.light-theme .copy-btn:focus-visible {
-    box-shadow: 0 0 0 2px var(--nm-container-light), 
-                0 0 0 4px var(--nm-accent), 
-                var(--shadow-glow-accent);
-}
-
 
 /*
     =================================================================
