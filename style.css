@@ -127,7 +127,8 @@ body::after {
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 800 800' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3E/ffilter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    /* ⚡ PERFORMANCE: Optimized and syntax-corrected SVG data URI */
+    background-image: url("data:image/svg+xml,%3Csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
     background-size: cover;
     opacity: 0.3;
     z-index: -1;
@@ -206,7 +207,8 @@ body.light-theme .nav-title h1 {
     display: block;
     width: 2.5rem;
     height: 2.5rem;
-    background-image: url('https://raw.githubusercontent.com/dedsec1121fk/dedsec1121fk.github.io/9254ed6bf953c497074005b0da02e819aba18487/Assets/Images/Logos/Custom%20Black%20Purple%20Fox%20Logo.png');
+    /* ⚡ PERFORMANCE: Unified dark mode logo URL to prevent double download */
+    background-image: url('https://raw.githubusercontent.com/dedsec1121fk/dedsec1121fk.github.io/main/Assets/Images/Logos/Custom%20Black%20Purple%20Fox%20Logo.png');
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
@@ -274,7 +276,7 @@ body.light-theme .nav-title h1::after {
     padding: 8px 15px;
     border-radius: 20px;
     border: 1px solid transparent;
-    /* MODIFIED: Premium transition */
+    /* ⚡ PERFORMANCE: Reordered transition */
     transition: transform 0.25s var(--ease-out-cubic), background-color 0.25s ease, color 0.25s ease, box-shadow 0.25s var(--ease-out-cubic), border-color 0.25s ease;
     will-change: transform, box-shadow;
     /* ADDED: Full width for menu item look */
@@ -322,7 +324,7 @@ body.light-theme .nav-title h1::after {
     display: flex;
     align-items: center;
     gap: 5px;
-    /* MODIFIED: Premium transition */
+    /* ⚡ PERFORMANCE: Reordered transition */
     transition: transform 0.25s var(--ease-out-cubic), background-color 0.25s ease, color 0.25s ease, box-shadow 0.25s var(--ease-out-cubic), border-color 0.25s ease;
     will-change: transform, box-shadow;
     /* ADDED: Full width for menu item look */
@@ -571,7 +573,7 @@ body.light-theme .tool-card {
     gap: 10px;
     opacity: 0.85;
     box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
-    /* MODIFIED: Premium transition */
+    /* ⚡ PERFORMANCE: Reordered transition */
     transition: transform 0.25s var(--ease-out-cubic), background-color 0.25s ease, color 0.25s ease, box-shadow 0.25s var(--ease-out-cubic), border-color 0.25s ease;
     will-change: transform, box-shadow;
 }
@@ -636,7 +638,7 @@ body.light-theme .tool-card {
     justify-content: center;
     gap: 10px;
     margin: 0 auto;
-    /* MODIFIED: Premium transition */
+    /* ⚡ PERFORMANCE: Reordered transition */
     transition: transform 0.25s var(--ease-out-cubic), background-color 0.25s ease, color 0.25s ease, box-shadow 0.25s var(--ease-out-cubic), border-color 0.25s ease;
     will-change: transform, box-shadow;
 }
@@ -694,7 +696,6 @@ body.light-theme .tool-card {
     color: var(--nm-text);
     font-family: 'Roboto Mono', monospace;
     font-size: 0.9rem;
-    clip-path: none; 
     border-radius: 50px; 
     box-sizing: border-box;
     /* MODIFIED: Premium transition */
@@ -719,7 +720,6 @@ body.light-theme .tool-card {
     max-height: 300px;
     overflow-y: auto;
     z-index: 100;
-    clip-path: none;
     border-radius: 20px;
 }
 
@@ -814,7 +814,6 @@ body.light-theme .modal-overlay {
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    clip-path: none;
     border-radius: 20px;
     /* MODIFIED: Premium "grow-in" animation */
     opacity: 0;
@@ -869,8 +868,8 @@ body.light-theme .modal-header {
     cursor: pointer;
     padding: 0;
     line-height: 1;
-    /* MODIFIED: Premium transition */
-    transition: color 0.2s, text-shadow 0.2s, transform 0.2s var(--ease-out-cubic);
+    /* ⚡ PERFORMANCE: Reordered transition */
+    transition: transform 0.2s var(--ease-out-cubic), color 0.2s, text-shadow 0.2s;
 }
 
 .close-modal:hover {
@@ -906,10 +905,9 @@ body.light-theme .modal-header {
     padding: 12px 25px;
     cursor: pointer;
     position: relative;
-    clip-path: none;
     border-radius: 20px;
     box-shadow: none; 
-    /* MODIFIED: Premium transition */
+    /* ⚡ PERFORMANCE: Reordered transition */
     transition: transform 0.25s var(--ease-out-cubic), background-color 0.25s ease, color 0.25s ease, box-shadow 0.25s var(--ease-out-cubic), border-color 0.25s ease;
     will-change: transform, box-shadow;
 }
@@ -932,6 +930,19 @@ body.light-theme .modal-header {
 /* Utility Classes */
 .hidden { display: none !important; } 
 .hidden-by-default { display: none; }
+
+/* FIX: Reserve space for injected ad to prevent Cumulative Layout Shift (CLS) */
+#auto-injected-ad {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 10px;
+    /* Set a min-height to reserve a stable space in the layout.
+      This prevents content from "jumping" when the ad loads.
+      250px is a common height for a "auto" format banner.
+    */
+    min-height: 250px; 
+    box-sizing: border-box;
+}
 
 /* Accept/Decline Buttons */
 .decline-btn, .accept-btn {
@@ -983,7 +994,6 @@ body.light-theme .modal-header {
     padding: 15px;
     margin: 1em 0;
     transition: background-color 0.3s ease;
-    clip-path: none;
     border-radius: 20px;
     box-shadow: inset 0 0 10px rgba(0,0,0,0.5); 
 }
@@ -1017,9 +1027,8 @@ body.light-theme .code-container {
     font-family: 'Orbitron', sans-serif;
     font-size: 0.7rem;
     text-transform: uppercase;
-    clip-path: none;
     border-radius: 20px;
-    /* MODIFIED: Premium transition */
+    /* ⚡ PERFORMANCE: Reordered transition */
     transition: transform 0.25s var(--ease-out-cubic), background-color 0.25s ease, color 0.25s ease, box-shadow 0.25s var(--ease-out-cubic), border-color 0.25s ease;
     will-change: transform, box-shadow;
 }
@@ -1090,7 +1099,6 @@ body.light-theme .note {
     height: auto;
     padding: 12px 15px;
     gap: 15px;
-    clip-path: none;
     border-radius: 20px; 
     background: rgba(0, 0, 0, 0.9);
     border: 1px solid var(--nm-accent);
@@ -1103,7 +1111,7 @@ body.light-theme .note {
     text-decoration: none;
     box-sizing: border-box;
     position: relative;
-    /* MODIFIED: Premium transition */
+    /* ⚡ PERFORMANCE: Reordered transition */
     transition: transform 0.25s var(--ease-out-cubic), background-color 0.25s ease, color 0.25s ease, box-shadow 0.25s var(--ease-out-cubic), border-color 0.25s ease;
     will-change: transform, box-shadow;
 }
@@ -1155,7 +1163,6 @@ body.light-theme .contact-grid .app-icon {
     overflow: hidden;
     border: 1px solid var(--nm-border);
     background-color: rgba(31, 42, 56, 0.9);
-    clip-path: none;
     border-radius: 20px;
 }
 body.light-theme .gym-carousel {
@@ -1205,7 +1212,6 @@ body.light-theme .gym-carousel {
     height: auto;
     border: 1px solid var(--nm-border);
     background-color: rgba(31, 42, 56, 0.9);
-    clip-path: none;
     border-radius: 20px; 
 }
 body.light-theme .github-stats img {
@@ -1223,9 +1229,8 @@ body.light-theme .github-stats img {
     max-width: 100%;
     box-sizing: border-box;
     line-height: 1.4;
-    clip-path: none;
     border-radius: 20px;
-    /* MODIFIED: Premium transition */
+    /* ⚡ PERFORMANCE: Reordered transition */
     transition: transform 0.25s var(--ease-out-cubic), background-color 0.25s ease, color 0.25s ease, box-shadow 0.25s var(--ease-out-cubic), border-color 0.25s ease;
     will-change: transform, box-shadow;
 }
@@ -1281,7 +1286,7 @@ body.light-theme .store-link a {
     gap: 15px;
     text-decoration: none;
     box-sizing: border-box;
-    /* MODIFIED: Premium transition */
+    /* ⚡ PERFORMANCE: Reordered transition */
     transition: transform 0.25s var(--ease-out-cubic), background-color 0.25s ease, color 0.25s ease, box-shadow 0.25s var(--ease-out-cubic), border-color 0.25s ease;
     will-change: transform, box-shadow;
 }

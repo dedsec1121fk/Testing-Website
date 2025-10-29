@@ -52,7 +52,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Call the function to inject AdSense
-    injectAdSense();
+    // FIX: Delayed AdSense injection to improve TBT.
+    // This runs the ad script 1 second *after* the page is loaded,
+    // so it doesn't block the main content from rendering.
+    setTimeout(injectAdSense, 1000);
 
     // --- GLOBAL STATE ---
     let currentLanguage = 'en';
@@ -61,6 +64,10 @@ document.addEventListener('DOMContentLoaded', () => {
     let isUsefulInfoIndexBuilt = false;
     let usefulInformationLoaded = false;
     let isFetchingUsefulInfo = false;
+    
+    // Certificate script loading state
+    let areCertificateScriptsLoading = false;
+    let areCertificateScriptsLoaded = false;
 
     // --- NAVIGATION FUNCTIONALITY ---
     function initializeNavigation() {
@@ -288,6 +295,35 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+    
+    // --- HELPER FUNCTIONS (Security & Performance) ---
+
+    /**
+     * 🔒 SECURITY: Sanitizes string inputs to prevent XSS.
+     * Removes < and > characters.
+     */
+    function sanitizeInput(str) {
+        if (!str) return '';
+        return str.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    }
+
+    /**
+     * ⚡ PERFORMANCE: Asynchronously loads a script.
+     * Returns a promise that resolves when the script is loaded.
+     */
+    function loadScript(src) {
+        return new Promise((resolve, reject) => {
+            if (document.querySelector(`script[src="${src}"]`)) {
+                resolve(); // Already loaded or loading
+                return;
+            }
+            const script = document.createElement('script');
+            script.src = src;
+            script.onload = () => resolve();
+            script.onerror = () => reject(new Error(`Failed to load script: ${src}`));
+            document.head.appendChild(script);
+        });
+    }
 
     // --- CERTIFICATE FUNCTIONALITY ---
     const certificateTranslations = {
@@ -316,6 +352,47 @@ document.addEventListener('DOMContentLoaded', () => {
             team: 'Ομάδα DedSec Project'
         }
     };
+    
+    /**
+     * ⚡ PERFORMANCE: Lazily loads certificate scripts and opens the modal.
+     */
+    async function openCertificateModal() {
+        const certificateModal = document.getElementById('certificate-modal');
+        const certificateBtn = document.getElementById('certificate-btn');
+        if (!certificateModal || !certificateBtn) return;
+
+        if (areCertificateScriptsLoaded) {
+            certificateModal.classList.add('visible');
+            return;
+        }
+
+        if (areCertificateScriptsLoading) {
+            return; // Prevent double-clicks
+        }
+
+        areCertificateScriptsLoading = true;
+        const btnSpan = certificateBtn.querySelector('span');
+        const originalBtnText = btnSpan.textContent;
+        btnSpan.textContent = currentLanguage === 'gr' ? 'Φόρτωση...' : 'Loading...';
+        certificateBtn.disabled = true;
+
+        try {
+            await Promise.all([
+                loadScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js'),
+                loadScript('https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js')
+            ]);
+            areCertificateScriptsLoaded = true;
+            console.log('Certificate scripts loaded successfully.');
+            certificateModal.classList.add('visible');
+        } catch (error) {
+            console.error('Failed to load certificate scripts:', error);
+            alert(currentLanguage === 'gr' ? 'Σφάλμα φόρτωσης. Παρακαλώ δοκιμάστε ξανά.' : 'Error loading scripts. Please try again.');
+        } finally {
+            areCertificateScriptsLoading = false;
+            btnSpan.textContent = originalBtnText;
+            certificateBtn.disabled = false;
+        }
+    }
 
     function initializeCertificateFeature() {
         const certificateBtn = document.getElementById('certificate-btn');
@@ -324,11 +401,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const certificateModal = document.getElementById('certificate-modal');
         
         if (certificateBtn) {
-            certificateBtn.addEventListener('click', () => {
-                if (certificateModal) {
-                    certificateModal.classList.add('visible');
-                }
-            });
+            // Modified to use the new lazy-loading function
+            certificateBtn.addEventListener('click', openCertificateModal);
         }
 
         if (generateCertificateBtn && certificateForm) {
@@ -366,7 +440,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    function generateCertificate() {
+    async function generateCertificate() {
         const form = document.getElementById('certificate-form');
         
         if (!form.checkValidity()) {
@@ -374,22 +448,33 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        if (typeof window.jspdf === 'undefined' || typeof window.jspdf.jsPDF === 'undefined') {
-            alert('Error: Certificate generator failed to load. Please check your internet connection and try again.');
+        // ⚡ PERFORMANCE: Ensure scripts are loaded before trying to use them
+        if (!areCertificateScriptsLoaded) {
+            alert(currentLanguage === 'gr' ? 'Οι βιβλιοθήκες πιστοποιητικού δεν έχουν φορτωθεί. Παρακαλώ κλείστε και ανοίξτε ξανά το παράθυρο.' : 'Certificate libraries not loaded. Please close and re-open the modal.');
             return;
         }
 
-        if (typeof html2canvas === 'undefined') {
+        // 🔒 SECURITY: Check if generator functions are available (post-load)
+        if (typeof window.jspdf === 'undefined' || typeof window.jspdf.jsPDF === 'undefined' || typeof window.html2canvas === 'undefined') {
             alert('Error: Certificate generator failed to load. Please check your internet connection and try again.');
             return;
         }
 
         const formData = new FormData(form);
-        const firstName = formData.get('firstName');
-        const lastName = formData.get('lastName');
-        const age = formData.get('age');
-        const country = formData.get('country');
-        const city = formData.get('city');
+        
+        // 🔒 SECURITY: Sanitize all string inputs
+        const firstName = sanitizeInput(formData.get('firstName'));
+        const lastName = sanitizeInput(formData.get('lastName'));
+        const age = formData.get('age'); // Age is a number, no sanitization needed
+        const country = sanitizeInput(formData.get('country'));
+        const city = sanitizeInput(formData.get('city'));
+        
+        // Check if sanitization blocked a required field
+        if (!firstName || !lastName || !country || !city) {
+            alert(currentLanguage === 'gr' ? 'Τα πεδία δεν μπορούν να περιέχουν ειδικούς χαρακτήρες όπως < ή >.' : 'Fields cannot contain special characters like < or >.');
+            form.reportValidity(); // This will highlight the empty (post-sanitization) fields
+            return;
+        }
 
         generateCertificateWithCanvas(firstName, lastName, age, country, city);
     }
@@ -399,7 +484,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const tempCertificate = createCertificateHTML(firstName, lastName, age, country, city);
             document.body.appendChild(tempCertificate);
 
-            html2canvas(tempCertificate, {
+            // Use the now-loaded html2canvas
+            window.html2canvas(tempCertificate, {
                 scale: 2,
                 useCORS: true,
                 backgroundColor: '#ffffff'
@@ -407,6 +493,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.body.removeChild(tempCertificate);
                 const imgData = canvas.toDataURL('image/png');
                 
+                // Use the now-loaded jspdf
                 const { jsPDF } = window.jspdf;
                 const doc = new jsPDF('landscape', 'mm', 'a4');
                 
@@ -423,7 +510,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 showCertificateSuccess(firstName);
             }).catch(error => {
                 console.error("Error generating certificate:", error);
-                document.body.removeChild(tempCertificate);
+                if (document.body.contains(tempCertificate)) {
+                    document.body.removeChild(tempCertificate);
+                }
                 alert("An error occurred while generating the certificate. Please try again.");
             });
 
@@ -1235,7 +1324,7 @@ document.addEventListener('DOMContentLoaded', () => {
         initializeNavigation();
         initializeThemeSwitcher();
         initializeLanguageSwitcher();
-        initializeCertificateFeature();
+        initializeCertificateFeature(); // Now uses lazy loading
         initializeWebSearchSuggestions();
         initializeModals();
         initializeCarousels();
