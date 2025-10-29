@@ -512,7 +512,7 @@ body.light-theme .tool-card {
     margin: 15px auto;
     max-width: 480px;
     width: 100%;
-    opacity: 0.85;
+    opacity: 0.8;
     box-shadow: 0 4px 15px rgba(153, 102, 255, 0.3);
     position: relative;
     z-index: 5;
@@ -775,8 +775,8 @@ body.light-theme #search-suggestions-container .search-result-item {
     width: 100%;
     height: 100%;
     background: rgba(1, 8, 17, 0.7);
-    -webkit-backdrop-filter: blur(10px); 
-    backdrop-filter: blur(10px); 
+    /* REMOVED: -webkit-backdrop-filter: blur(10px); */
+    /* REMOVED: backdrop-filter: blur(10px); */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -784,7 +784,7 @@ body.light-theme #search-suggestions-container .search-result-item {
     opacity: 0;
     visibility: hidden;
     /* MODIFIED: Faster fade-in */
-    transition: opacity 0.25s ease-out, visibility 0s 0.25s, backdrop-filter 0.25s ease-out;
+    transition: opacity 0.25s ease-out, visibility 0s 0.25s;
 }
 
 body.light-theme .modal-overlay {
@@ -1487,8 +1487,8 @@ body.light-theme #useful-info-results-container .search-result-item {
         margin: 0;
     }
     .modal-overlay {
-        -webkit-backdrop-filter: none; 
-        backdrop-filter: none; 
+        /* REMOVED: -webkit-backdrop-filter: none; */
+        /* REMOVED: backdrop-filter: none; */
         background: rgba(1, 8, 17, 0.85);
     }
     body.light-theme .modal-overlay { background: rgba(255, 255, 255, 0.85); }
