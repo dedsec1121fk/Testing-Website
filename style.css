@@ -177,13 +177,13 @@ body.light-theme .main-nav { background: var(--nm-abyss-blue-light); } /* SOLID 
     display: block;
     width: 2.5rem;
     height: 2.5rem;
-    background-image: url('https://raw.githubusercontent.com/dedsec1121fk/dedsec1121fk.github.io/9254ed6bf953c497074005b0da02e819aba18487/Assets/Images/Logos/Custom%20Black%20Purple%20Fox%20Logo.png');
+    background-image: url('https://raw.githubusercontent.com/dedsec1121fk/dedsec1121fk.github.io/875f705c11d1ea083879541823d56a41b1059ec8/Assets/Images/Logos/Custom%20Black%20Purple%20Fox%20Logo.png');
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
     text-shadow: none; 
 }
-body.light-theme .nav-title h1::after { background-image: url('https://raw.githubusercontent.com/dedsec1121fk/dedsec1121fk.github.io/6f776cd9772a079a6d26370dddab911bf7cde8cd/Assets/Images/Logos/Custom%20White%20Purple%20Fox%20Logo.jpg'); }
+body.light-theme .nav-title h1::after { background-image: url('https://raw.githubusercontent.com/dedsec1121fk/dedsec1121fk.github.io/875f705c11d1ea083879541823d56a41b1059ec8/Assets/Images/Logos/Custom%20White%20Purple%20Fox%20Logo.jpg'); }
 
 .burger-menu { display: flex; flex-direction: column; background: none; border: none; cursor: pointer; padding: 5px; gap: 4px; }
 .burger-menu span { width: 25px; height: 3px; background: var(--nm-text); transition: all 0.3s var(--ease-out-cubic); }
