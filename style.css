@@ -133,16 +133,18 @@ body::before, body::after { display: none; }
     top: 0;
     left: 0;
     width: 100%;
-    background: rgba(11, 18, 28, 0.7);
-    -webkit-backdrop-filter: blur(10px);
-    backdrop-filter: blur(10px);
+    /* CHANGED: Removed transparency and blur */
+    background: var(--nm-darkest);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    /* END CHANGED */
     border-bottom: 1px solid var(--nm-border);
     z-index: 1000;
     padding: 0 15px;
     box-sizing: border-box;
 }
 
-body.light-theme .main-nav { background: rgba(248, 248, 248, 0.7); }
+body.light-theme .main-nav { background: var(--nm-abyss-blue-light); } /* CHANGED: Solid light background */
 
 .nav-container {
     display: flex;
@@ -196,9 +198,11 @@ body.light-theme .nav-title h1::after { background-image: url('https://raw.githu
     width: 80%;
     max-width: 300px;
     height: calc(100vh - 61px);
-    background: rgba(11, 18, 28, 0.9);
-    -webkit-backdrop-filter: blur(10px);
-    backdrop-filter: blur(10px);
+    /* CHANGED: Removed transparency and blur */
+    background: var(--nm-darkest);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    /* END CHANGED */
     flex-direction: column;
     padding: 20px;
     box-shadow: -4px 0 15px rgba(0, 0, 0, 0.3);
@@ -211,7 +215,7 @@ body.light-theme .nav-title h1::after { background-image: url('https://raw.githu
     align-items: center; 
     gap: 10px;
 }
-body.light-theme .nav-menu { background: rgba(248, 248, 248, 0.9); }
+body.light-theme .nav-menu { background: var(--nm-abyss-blue-light); } /* CHANGED: Solid light background */
 .nav-menu.active { transform: translateX(0); }
 
 .nav-link {
@@ -487,10 +491,11 @@ body.light-theme .feature-card { background: var(--nm-container-light); }
     color: var(--nm-text-muted);
     margin-top: 25px;
     border-top: 1px solid var(--nm-border);
-    /* Transparency retained from previous request */
-    background: rgba(11, 18, 28, 0.7);
-    -webkit-backdrop-filter: blur(10px);
-    backdrop-filter: blur(10px);
+    /* CHANGED: Removed transparency and blur */
+    background: var(--nm-darkest);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    /* END CHANGED */
 }
 
 /*
