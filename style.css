@@ -82,8 +82,13 @@ html {
 body {
     margin: 0;
     padding: 0;
-    background-color: var(--nm-darkest);
-    background-image: linear-gradient(180deg, var(--nm-darkest) 0%, var(--nm-abyss-blue) 100%);
+    background-color: var(--nm-abyss-blue);
+    /* ORIGINAL BACKGROUND IMAGE RESTORED */
+    background-image: url('Assets/Images/Backgrounds/matrix-code-background-no-color.jpg'); 
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    /* END ORIGINAL BACKGROUND */
     min-height: 100vh;
     font-family: 'Inter', sans-serif;
     color: var(--nm-text);
@@ -94,7 +99,12 @@ body {
 }
 
 body.light-theme {
-    background-image: linear-gradient(180deg, #ffffff 0%, var(--nm-abyss-blue-light) 100%);
+    background-color: #f0f0f0;
+    /* ORIGINAL LIGHT THEME BACKGROUND IMAGE RESTORED */
+    background-image: url('Assets/Images/Backgrounds/matrix-code-background-light.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
 }
 
 .code-container code, .nav-action-btn, .form-group input, .contact-grid .app-icon, .copy-btn, #useful-information-nav .app-icon {
@@ -377,11 +387,13 @@ body.light-theme .tool-card { background: var(--nm-dark-light); }
     justify-content: center;
     text-align: center;
     box-sizing: border-box;
-    background-color: var(--nm-darkest);
-    background-image: radial-gradient(at top center, rgba(var(--glow-rgb), 0.2) 0%, transparent 50%), linear-gradient(180deg, var(--nm-abyss-blue) 0%, var(--nm-darkest) 100%);
+    /* BACKGROUND RESTORED - Removed conflicting gradients/colors */
+    background-color: transparent; 
+    background-image: none;
+    /* END BACKGROUND RESTORED */
     border-bottom: 1px solid var(--nm-border);
 }
-body.light-theme .hero-section { background-image: radial-gradient(at top center, rgba(var(--glow-rgb), 0.1) 0%, transparent 50%), linear-gradient(180deg, var(--nm-abyss-blue-light) 0%, #ffffff 100%); }
+body.light-theme .hero-section { background-image: none; background-color: transparent; }
 
 .hero-content { max-width: 800px; animation: fadeIn 0.5s 0.1s var(--ease-out-cubic) backwards; }
 .hero-content h1 {
@@ -475,7 +487,7 @@ body.light-theme .feature-card { background: var(--nm-container-light); }
     color: var(--nm-text-muted);
     margin-top: 25px;
     border-top: 1px solid var(--nm-border);
-    /* CHANGE: Added transparency for background to be seen (consistent with main-nav) */
+    /* Transparency retained from previous request */
     background: rgba(11, 18, 28, 0.7);
     -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
@@ -695,6 +707,7 @@ body.light-theme .tip, body.light-theme .note { background: var(--nm-container-l
     position: relative;
     transition: transform 0.25s var(--ease-out-cubic), background-color 0.25s ease, color 0.25s ease, box-shadow 0.25s var(--ease-out-cubic), border-color 0.25s ease;
     will-change: transform, box-shadow;
+    min-height: 140px;
 }
 
 .contact-grid .app-icon:hover {
