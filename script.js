@@ -1,7 +1,6 @@
-// script.js - Fixed Version
 document.addEventListener('DOMContentLoaded', () => {
-    'use strict';
-
+    // --- AdSense is now loaded only via HTML ---
+    
     // --- GLOBAL STATE ---
     let currentLanguage = 'en';
     let usefulInfoSearchIndex = [];
@@ -16,8 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const navMenu = document.getElementById('nav-menu');
         
         if (burgerMenu && navMenu) {
-            burgerMenu.addEventListener('click', (e) => {
-                e.stopPropagation();
+            burgerMenu.addEventListener('click', () => {
                 burgerMenu.classList.toggle('active');
                 navMenu.classList.toggle('active');
             });
@@ -26,32 +24,25 @@ document.addEventListener('DOMContentLoaded', () => {
         // Close menu when clicking on a link
         document.querySelectorAll('.nav-link').forEach(link => {
             link.addEventListener('click', () => {
-                closeMobileMenu();
+                if (burgerMenu && navMenu) {
+                    burgerMenu.classList.remove('active');
+                    navMenu.classList.remove('active');
+                }
             });
         });
 
         // Close menu when clicking outside
         document.addEventListener('click', (e) => {
-            const burgerMenu = document.getElementById('burger-menu');
-            const navMenu = document.getElementById('nav-menu');
-            
-            if (navMenu?.classList.contains('active') && 
-                !navMenu.contains(e.target) && 
-                !burgerMenu?.contains(e.target)) {
-                closeMobileMenu();
+            if (burgerMenu && navMenu && navMenu.classList.contains('active')) {
+                if (!navMenu.contains(e.target) && !burgerMenu.contains(e.target)) {
+                    burgerMenu.classList.remove('active');
+                    navMenu.classList.remove('active');
+                }
             }
         });
-
-        function closeMobileMenu() {
-            const burgerMenu = document.getElementById('burger-menu');
-            const navMenu = document.getElementById('nav-menu');
-            
-            burgerMenu?.classList.remove('active');
-            navMenu?.classList.remove('active');
-        }
     }
 
-    // --- FIXED THEME SWITCHER ---
+    // --- THEME SWITCHER ---
     function initializeThemeSwitcher() {
         const themeBtn = document.getElementById('nav-theme-switcher');
         const themeIcon = themeBtn?.querySelector('i');
@@ -61,43 +52,35 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!themeBtn || !themeIcon || !themeSpan) return;
             
             if (isLightTheme) {
-                themeIcon.className = 'fas fa-sun';
+                themeIcon.classList.remove('fa-moon');
+                themeIcon.classList.add('fa-sun');
                 themeSpan.setAttribute('data-en', 'Light Theme');
                 themeSpan.setAttribute('data-gr', 'Φωτεινό Θέμα');
             } else {
-                themeIcon.className = 'fas fa-moon';
+                themeIcon.classList.remove('fa-sun');
+                themeIcon.classList.add('fa-moon');
                 themeSpan.setAttribute('data-en', 'Dark Theme');
                 themeSpan.setAttribute('data-gr', 'Σκοτεινό Θέμα');
             }
-            // Update text immediately
-            const text = themeSpan.getAttribute(`data-${currentLanguage}`) || themeSpan.getAttribute('data-en');
-            themeSpan.textContent = text;
+            themeSpan.textContent = themeSpan.getAttribute(`data-${currentLanguage}`) || themeSpan.getAttribute('data-en');
         };
 
         themeBtn?.addEventListener('click', () => {
+            document.body.classList.toggle('light-theme');
             const isLight = document.body.classList.contains('light-theme');
-            if (isLight) {
-                document.body.classList.remove('light-theme');
-                localStorage.setItem('theme', 'dark');
-                updateThemeButton(false);
-            } else {
-                document.body.classList.add('light-theme');
-                localStorage.setItem('theme', 'light');
-                updateThemeButton(true);
-            }
+            localStorage.setItem('theme', isLight ? 'light' : 'dark');
+            updateThemeButton(isLight);
         });
 
         // Set initial theme
         const savedTheme = localStorage.getItem('theme');
         if (savedTheme === 'light') {
             document.body.classList.add('light-theme');
-            updateThemeButton(true);
-        } else {
-            updateThemeButton(false);
         }
+        updateThemeButton(document.body.classList.contains('light-theme'));
     }
 
-    // --- LANGUAGE MANAGEMENT ---
+    // --- LANGUAGE SWITCHER ---
     function initializeLanguageSwitcher() {
         const langBtn = document.getElementById('nav-lang-switcher');
         const disclaimerLangBtn = document.getElementById('disclaimer-lang-btn');
@@ -109,6 +92,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
+        // Language selection button in disclaimer modal
         disclaimerLangBtn?.addEventListener('click', () => {
             if (languageModal) {
                 languageModal.classList.add('visible');
@@ -126,6 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // --- LANGUAGE MANAGEMENT ---
     window.changeLanguage = (lang) => {
         currentLanguage = lang;
         document.documentElement.lang = lang;
@@ -180,32 +165,35 @@ document.addEventListener('DOMContentLoaded', () => {
             searchInput.placeholder = lang === 'gr' ? 'Αναζήτηση στο διαδίκτυο...' : 'Search the Web...';
         }
 
-        // Update buttons
-        document.querySelectorAll('.btn').forEach(btn => {
-            const text = btn.getAttribute(`data-${lang}`) || btn.textContent;
-            if (btn.getAttribute('data-en')) {
-                btn.textContent = text;
+        // Update useful info search placeholder if it exists
+        const usefulInfoSearchInput = document.getElementById('useful-info-search-input');
+        if (usefulInfoSearchInput) {
+            if (!isUsefulInfoIndexBuilt) {
+                usefulInfoSearchInput.placeholder = lang === 'gr' ? 'Πατήστε για φόρτωση αναζήτησης...' : 'Click to load search...';
+            } else {
+                usefulInfoSearchInput.placeholder = lang === 'gr' ? 'Αναζήτηση άρθρων...' : 'Search articles...';
             }
-        });
+        }
 
-        // Update feature cards
-        document.querySelectorAll('.feature-card h3, .feature-card p').forEach(el => {
-            const text = el.getAttribute(`data-${lang}`) || el.textContent;
-            if (el.getAttribute('data-en')) {
-                el.textContent = text;
-            }
-        });
+        // Update useful info prompt
+        const usefulInfoPrompt = document.getElementById('useful-info-prompt');
+        if (usefulInfoPrompt) {
+            const text = usefulInfoPrompt.getAttribute(`data-${lang}`) || usefulInfoPrompt.textContent;
+            usefulInfoPrompt.textContent = text;
+        }
 
-        // Update quick access cards
-        document.querySelectorAll('.quick-access-card span').forEach(span => {
-            const text = span.getAttribute(`data-${lang}`) || span.textContent;
-            if (span.getAttribute('data-en')) {
+        // Update disclaimer language button
+        const disclaimerLangBtn = document.getElementById('disclaimer-lang-btn');
+        if (disclaimerLangBtn) {
+            const span = disclaimerLangBtn.querySelector('span');
+            if (span) {
+                const text = span.getAttribute(`data-${lang}`) || span.textContent;
                 span.textContent = text;
             }
-        });
+        }
     };
 
-    // --- FIXED DISCLAIMER FUNCTIONALITY ---
+    // --- DISCLAIMER FUNCTIONALITY ---
     function initializeDisclaimer() {
         const disclaimerModal = document.getElementById('disclaimer-modal');
         const acceptBtn = document.getElementById('accept-disclaimer');
@@ -220,7 +208,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (disclaimerModal) {
                     disclaimerModal.classList.add('visible');
                 }
-            }, 1000);
+            }, 10); // <-- OPTIMIZED: Changed from 500 to 10
         }
 
         // Handle accept button
@@ -229,14 +217,17 @@ document.addEventListener('DOMContentLoaded', () => {
             if (disclaimerModal) {
                 disclaimerModal.classList.remove('visible');
             }
+            console.log('Disclaimer accepted');
         });
 
         // Handle decline button - go back
         declineBtn?.addEventListener('click', () => {
-            window.history.back();
+            window.history.back(); // <-- OPTIMIZED: Changed from Google redirect
         });
 
         // Prevent closing the disclaimer modal by clicking outside
+        // This listener is still useful to stop propagation if needed,
+        // but the main closing logic is now handled in initializeModals()
         disclaimerModal?.addEventListener('click', (e) => {
             if (e.target === disclaimerModal) {
                 // Don't allow closing by clicking outside - force user to make a choice
@@ -339,12 +330,141 @@ document.addEventListener('DOMContentLoaded', () => {
             };
             
             modal.addEventListener('click', e => {
+                // Check if the target is the modal overlay itself
+                // AND if the modal is NOT the disclaimer modal
                 if (e.target === modal && modal.id !== 'disclaimer-modal') {
                     closeModal();
                 }
             });
             
             closeModalBtn?.addEventListener('click', closeModal);
+        });
+    }
+
+    // --- CAROUSEL FUNCTIONALITY ---
+    function initializeCarousels() {
+        const carousels = document.querySelectorAll('.gym-carousel');
+        
+        carousels.forEach(carousel => {
+            const images = carousel.querySelectorAll('.gym-clothing-images img');
+            const prevBtn = carousel.querySelector('.carousel-btn.prev');
+            const nextBtn = carousel.querySelector('.carousel-btn.next');
+            
+            if (images.length > 0 && prevBtn && nextBtn) {
+                let currentIndex = 0;
+                
+                const showImage = (index) => {
+                    images.forEach((img, i) => {
+                        img.classList.toggle('active', i === index);
+                    });
+                };
+                
+                prevBtn.addEventListener('click', () => {
+                    currentIndex = (currentIndex > 0) ? currentIndex - 1 : images.length - 1;
+                    showImage(currentIndex);
+                });
+                
+                nextBtn.addEventListener('click', () => {
+                    currentIndex = (currentIndex < images.length - 1) ? currentIndex + 1 : 0;
+                    showImage(currentIndex);
+                });
+                
+                showImage(0);
+            }
+        });
+    }
+
+    // --- COPY FUNCTIONALITY ---
+    function initializeCopyButtons() {
+        // Make copy function globally accessible
+        window.copyToClipboard = (button, targetId) => {
+            const codeElement = document.getElementById(targetId);
+            if (!codeElement || !navigator.clipboard) {
+                console.warn('Clipboard API not available or element not found.');
+                button.textContent = 'Error';
+                setTimeout(() => { 
+                    button.textContent = (currentLanguage === 'gr') ? 'Αντιγραφή' : 'Copy'; 
+                }, 1500);
+                return;
+            }
+            
+            const originalText = button.textContent;
+            navigator.clipboard.writeText(codeElement.innerText).then(() => {
+                button.textContent = (currentLanguage === 'gr') ? 'Αντιγράφηκε!' : 'Copied!';
+                setTimeout(() => { button.textContent = originalText; }, 1500);
+            }).catch(err => {
+                console.error('Failed to copy text: ', err);
+                button.textContent = 'Failed!';
+                setTimeout(() => { button.textContent = originalText; }, 1500);
+            });
+        };
+
+        // Attach copy functionality to existing buttons
+        document.querySelectorAll('.copy-btn').forEach(btn => {
+            const targetId = btn.getAttribute('onclick')?.match(/'(.*?)'/)?.[1];
+            if (targetId) {
+                btn.addEventListener('click', () => {
+                    window.copyToClipboard(btn, targetId);
+                });
+            }
+        });
+    }
+
+    // --- TOOL CATEGORIES FUNCTIONALITY ---
+    function initializeToolCategories() {
+        console.log('Initializing tool categories...');
+        
+        // Close all categories and tool items by default
+        document.querySelectorAll('.category, .tool-item').forEach(item => {
+            item.classList.remove('active');
+        });
+        
+        // Category toggle functionality
+        document.querySelectorAll('.category-header').forEach(header => {
+            header.addEventListener('click', function() {
+                console.log('Category header clicked');
+                const category = this.parentElement;
+                const wasActive = category.classList.contains('active');
+                
+                // Close all categories first
+                document.querySelectorAll('.category').forEach(otherCategory => {
+                    otherCategory.classList.remove('active');
+                });
+                
+                // Open the clicked category if it was not active
+                if (!wasActive) {
+                    category.classList.add('active');
+                }
+            });
+        });
+        
+        // Tool item toggle functionality
+        document.querySelectorAll('.tool-header').forEach(header => {
+            header.addEventListener('click', function(e) {
+                console.log('Tool header clicked');
+                // Prevent the category from closing when clicking on a tool
+                e.stopPropagation();
+                
+                const toolItem = this.parentElement;
+                const wasActive = toolItem.classList.contains('active');
+                
+                // Close all other tool items in the same category
+                const category = toolItem.closest('.category');
+                if (category) {
+                    category.querySelectorAll('.tool-item').forEach(otherTool => {
+                        if (otherTool !== toolItem) {
+                            otherTool.classList.remove('active');
+                        }
+                    });
+                }
+                
+                // Toggle the clicked tool item
+                if (!wasActive) {
+                    toolItem.classList.add('active');
+                } else {
+                    toolItem.classList.remove('active');
+                }
+            });
         });
     }
 
@@ -388,6 +508,24 @@ document.addEventListener('DOMContentLoaded', () => {
             this.idfMaps[indexName] = idfMap;
         },
 
+        _getNgrams(word, n = 2) {
+            const ngrams = new Set();
+            if (!word || word.length < n) return ngrams;
+            for (let i = 0; i <= word.length - n; i++) {
+                ngrams.add(word.substring(i, i + n));
+            }
+            return ngrams;
+        },
+
+        _calculateSimilarity(word1, word2) {
+            if (!word1 || !word2) return 0;
+            const ngrams1 = this._getNgrams(word1);
+            const ngrams2 = this._getNgrams(word2);
+            const intersection = new Set([...ngrams1].filter(x => ngrams2.has(x)));
+            const union = ngrams1.size + ngrams2.size - intersection.size;
+            return union === 0 ? 0 : intersection.size / union;
+        },
+
         search(query, index, lang, indexName) {
             const queryTokens = this.tokenize(query, lang);
             if (queryTokens.length === 0) return [];
@@ -414,6 +552,20 @@ document.addEventListener('DOMContentLoaded', () => {
                             tokenFound = true;
                         }
                         if(tokenFound) foundTokens.add(qToken);
+
+                        if (!tokenFound) {
+                            let bestSimilarity = 0;
+                            const allItemTokens = [...item.titleTokens, ...item.textTokens];
+                            allItemTokens.forEach(tToken => {
+                                const similarity = this._calculateSimilarity(qToken, tToken);
+                                if (similarity > bestSimilarity) bestSimilarity = similarity;
+                            });
+                            
+                            if (bestSimilarity > 0.7) {
+                               score += bestSimilarity * 5 * idf;
+                               foundTokens.add(qToken);
+                            }
+                        }
                     });
 
                     if (foundTokens.size === queryTokens.length && queryTokens.length > 1) score *= 1.5;
@@ -527,6 +679,33 @@ document.addEventListener('DOMContentLoaded', () => {
         isUsefulInfoIndexBuilt = true;
     }
 
+    function updateUsefulInfoButtonTitles() {
+        const titleMap = new Map();
+
+        usefulInfoSearchIndex.forEach(item => {
+            if (!titleMap.has(item.url)) {
+                titleMap.set(item.url, {});
+            }
+            const langTitles = titleMap.get(item.url);
+            if (!langTitles[item.lang]) {
+                langTitles[item.lang] = item.title;
+            }
+        });
+
+        document.querySelectorAll('#useful-information-nav .app-icon[data-url]').forEach(button => {
+            const url = button.dataset.url;
+            const titles = titleMap.get(url);
+            if (titles) {
+                const buttonSpan = button.querySelector('span');
+                if(buttonSpan) {
+                   buttonSpan.setAttribute('data-en', titles.en || '');
+                   buttonSpan.setAttribute('data-gr', titles.gr || titles.en || '');
+                   buttonSpan.textContent = (currentLanguage === 'gr' ? titles.gr : titles.en) || titles.en || buttonSpan.textContent;
+                }
+            }
+        });
+    }
+
     function initializeUsefulInfoSearch() {
         const searchInput = document.getElementById('useful-info-search-input');
         const resultsContainer = document.getElementById('useful-info-results-container');
@@ -553,7 +732,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         };
 
-        // Start indexing 1 second after page load
+        // --- OPTIMIZED: Start indexing 1 second after page load ---
         setTimeout(() => {
             if (isUsefulInfoIndexBuilt) return;
 
@@ -563,6 +742,7 @@ document.addEventListener('DOMContentLoaded', () => {
             progressBar.style.width = '0%';
 
             buildUsefulInfoSearchIndex(progressBar, progressText).then(() => {
+                updateUsefulInfoButtonTitles();
                 setTimeout(() => {
                     progressBarContainer.style.display = 'none';
                 }, 500);
@@ -571,7 +751,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 searchInput.placeholder = currentLanguage === 'gr' ? 'Αναζήτηση άρθρων...' : 'Search articles...';
             });
             
-        }, 1000);
+        }, 1000); // 1000ms (1 second) delay
+        // --- End of optimization ---
 
         searchInput.addEventListener('input', () => {
             const query = searchInput.value.trim();
@@ -745,40 +926,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // --- COPY FUNCTIONALITY ---
-    function initializeCopyButtons() {
-        window.copyToClipboard = (button, targetId) => {
-            const codeElement = document.getElementById(targetId);
-            if (!codeElement || !navigator.clipboard) {
-                console.warn('Clipboard API not available or element not found.');
-                button.textContent = 'Error';
-                setTimeout(() => { 
-                    button.textContent = (currentLanguage === 'gr') ? 'Αντιγραφή' : 'Copy'; 
-                }, 1500);
-                return;
-            }
-            
-            const originalText = button.textContent;
-            navigator.clipboard.writeText(codeElement.innerText).then(() => {
-                button.textContent = (currentLanguage === 'gr') ? 'Αντιγράφηκε!' : 'Copied!';
-                setTimeout(() => { button.textContent = originalText; }, 1500);
-            }).catch(err => {
-                console.error('Failed to copy text: ', err);
-                button.textContent = 'Failed!';
-                setTimeout(() => { button.textContent = originalText; }, 1500);
-            });
-        };
-
-        document.querySelectorAll('.copy-btn').forEach(btn => {
-            const targetId = btn.getAttribute('onclick')?.match(/'(.*?)'/)?.[1];
-            if (targetId) {
-                btn.addEventListener('click', () => {
-                    window.copyToClipboard(btn, targetId);
-                });
-            }
-        });
-    }
-
     // --- INITIALIZATION ---
     function initializePortfolio() {
         initializeNavigation();
@@ -786,8 +933,15 @@ document.addEventListener('DOMContentLoaded', () => {
         initializeLanguageSwitcher();
         initializeWebSearchSuggestions();
         initializeModals();
+        initializeCarousels();
         initializeCopyButtons();
-        initializeDisclaimer();
+        initializeDisclaimer(); // Added disclaimer initialization (no cookie consent)
+
+        // Initialize tool categories if on the tools page
+        if (document.querySelector('.categories-container')) {
+            console.log('Tools page detected, initializing tool categories...');
+            initializeToolCategories();
+        }
 
         // Initialize useful information if on that page
         if (document.getElementById('useful-information-nav')) {
@@ -798,6 +952,12 @@ document.addEventListener('DOMContentLoaded', () => {
         // Set initial language
         const savedLanguage = localStorage.getItem('language') || 'en';
         changeLanguage(savedLanguage);
+
+        // Set initial theme
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'light') {
+            document.body.classList.add('light-theme');
+        }
 
         // Update active nav link based on current page
         const currentPage = window.location.pathname.split('/').pop() || 'index.html';
