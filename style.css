@@ -84,7 +84,7 @@ body {
     padding: 0;
     background-color: var(--nm-abyss-blue);
     /* BACKGROUND IMAGE FIXED: Reverted to old filename for dark theme */
-    background-image: url('Assets/Images/Backgrounds/matrix-code-background.jpg'); 
+    background-image: url('https://raw.githubusercontent.com/dedsec1121fk/dedsec1121fk.github.io/main/Assets/Images/Backgrounds/matrix-code-background.jpg'); 
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
@@ -101,7 +101,7 @@ body {
 body.light-theme {
     background-color: #f0f0f0;
     /* LIGHT THEME BACKGROUND IMAGE RESTORED */
-    background-image: url('Assets/Images/Backgrounds/matrix-code-background-light.jpg');
+    background-image: url('https://raw.githubusercontent.com/dedsec1121fk/dedsec1121fk.github.io/main/Assets/Images/Backgrounds/matrix-code-background-light.jpg');
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
