@@ -83,8 +83,8 @@ body {
     margin: 0;
     padding: 0;
     background-color: var(--nm-abyss-blue);
-    /* BACKGROUND IMAGE RESTORED */
-    background-image: url('Assets/Images/Backgrounds/matrix-code-background-no-color.jpg'); 
+    /* BACKGROUND IMAGE FIXED: Reverted to old filename for dark theme */
+    background-image: url('Assets/Images/Backgrounds/matrix-code-background.jpg'); 
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
