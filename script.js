@@ -1,14 +1,6 @@
-// script.js - Complete with Security Improvements
+// script.js - Fixed Version
 document.addEventListener('DOMContentLoaded', () => {
     'use strict';
-
-    // --- SECURITY CONFIGURATION ---
-    const SECURITY_CONFIG = {
-        maxSearchResults: 5,
-        debounceDelay: 250,
-        apiTimeout: 10000,
-        maxFileSize: 5 * 1024 * 1024 // 5MB
-    };
 
     // --- GLOBAL STATE ---
     let currentLanguage = 'en';
@@ -17,75 +9,6 @@ document.addEventListener('DOMContentLoaded', () => {
     let isUsefulInfoIndexBuilt = false;
     let usefulInformationLoaded = false;
     let isFetchingUsefulInfo = false;
-
-    // --- SECURITY UTILITIES ---
-    const SecurityUtils = {
-        sanitizeHTML: (str) => {
-            const div = document.createElement('div');
-            div.textContent = str;
-            return div.innerHTML;
-        },
-
-        escapeRegex: (string) => {
-            return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-        },
-
-        validateURL: (url) => {
-            try {
-                const parsed = new URL(url);
-                return ['https:', 'http:'].includes(parsed.protocol);
-            } catch {
-                return false;
-            }
-        },
-
-        safeTextContent: (element, text) => {
-            const sanitizedText = this.sanitizeHTML(text);
-            if (element.children.length === 0) {
-                element.textContent = sanitizedText;
-            } else {
-                const hasDirectText = Array.from(element.childNodes).some(node => 
-                    node.nodeType === Node.TEXT_NODE && node.textContent.trim().length > 0
-                );
-                
-                if (hasDirectText) {
-                    Array.from(element.childNodes).forEach(node => {
-                        if (node.nodeType === Node.TEXT_NODE && node.textContent.trim().length > 0) {
-                            node.textContent = sanitizedText;
-                        }
-                    });
-                }
-            }
-        }
-    };
-
-    // --- PERFORMANCE UTILITIES ---
-    const PerformanceUtils = {
-        debounce: (func, wait, immediate = false) => {
-            let timeout;
-            return function executedFunction(...args) {
-                const later = () => {
-                    timeout = null;
-                    if (!immediate) func(...args);
-                };
-                const callNow = immediate && !timeout;
-                clearTimeout(timeout);
-                timeout = setTimeout(later, wait);
-                if (callNow) func(...args);
-            };
-        },
-
-        throttle: (func, limit) => {
-            let inThrottle;
-            return function(...args) {
-                if (!inThrottle) {
-                    func.apply(this, args);
-                    inThrottle = true;
-                    setTimeout(() => inThrottle = false, limit);
-                }
-            };
-        }
-    };
 
     // --- NAVIGATION FUNCTIONALITY ---
     function initializeNavigation() {
@@ -128,7 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // --- THEME SWITCHER ---
+    // --- FIXED THEME SWITCHER ---
     function initializeThemeSwitcher() {
         const themeBtn = document.getElementById('nav-theme-switcher');
         const themeIcon = themeBtn?.querySelector('i');
@@ -138,32 +61,40 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!themeBtn || !themeIcon || !themeSpan) return;
             
             if (isLightTheme) {
-                themeIcon.classList.remove('fa-moon');
-                themeIcon.classList.add('fa-sun');
+                themeIcon.className = 'fas fa-sun';
                 themeSpan.setAttribute('data-en', 'Light Theme');
                 themeSpan.setAttribute('data-gr', 'Φωτεινό Θέμα');
             } else {
-                themeIcon.classList.remove('fa-sun');
-                themeIcon.classList.add('fa-moon');
+                themeIcon.className = 'fas fa-moon';
                 themeSpan.setAttribute('data-en', 'Dark Theme');
                 themeSpan.setAttribute('data-gr', 'Σκοτεινό Θέμα');
             }
-            updateElementText(themeSpan);
+            // Update text immediately
+            const text = themeSpan.getAttribute(`data-${currentLanguage}`) || themeSpan.getAttribute('data-en');
+            themeSpan.textContent = text;
         };
 
         themeBtn?.addEventListener('click', () => {
-            document.body.classList.toggle('light-theme');
             const isLight = document.body.classList.contains('light-theme');
-            localStorage.setItem('theme', isLight ? 'light' : 'dark');
-            updateThemeButton(isLight);
+            if (isLight) {
+                document.body.classList.remove('light-theme');
+                localStorage.setItem('theme', 'dark');
+                updateThemeButton(false);
+            } else {
+                document.body.classList.add('light-theme');
+                localStorage.setItem('theme', 'light');
+                updateThemeButton(true);
+            }
         });
 
         // Set initial theme
         const savedTheme = localStorage.getItem('theme');
         if (savedTheme === 'light') {
             document.body.classList.add('light-theme');
+            updateThemeButton(true);
+        } else {
+            updateThemeButton(false);
         }
-        updateThemeButton(document.body.classList.contains('light-theme'));
     }
 
     // --- LANGUAGE MANAGEMENT ---
@@ -178,7 +109,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        // Language selection button in disclaimer modal
         disclaimerLangBtn?.addEventListener('click', () => {
             if (languageModal) {
                 languageModal.classList.add('visible');
@@ -196,11 +126,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    function updateElementText(element) {
-        const text = element.getAttribute(`data-${currentLanguage}`) || element.getAttribute('data-en');
-        SecurityUtils.safeTextContent(element, text);
-    }
-
     window.changeLanguage = (lang) => {
         currentLanguage = lang;
         document.documentElement.lang = lang;
@@ -208,7 +133,20 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // Update all elements with data attributes
         document.querySelectorAll('[data-en]').forEach(el => {
-            updateElementText(el);
+            const text = el.getAttribute(`data-${lang}`) || el.getAttribute('data-en');
+            const hasDirectText = Array.from(el.childNodes).some(node => 
+                node.nodeType === Node.TEXT_NODE && node.textContent.trim().length > 0
+            );
+            
+            if (hasDirectText) {
+                Array.from(el.childNodes).forEach(node => {
+                    if (node.nodeType === Node.TEXT_NODE && node.textContent.trim().length > 0) {
+                        node.textContent = text;
+                    }
+                });
+            } else if (el.children.length === 0) {
+                el.textContent = text;
+            }
         });
 
         // Update lang sections
@@ -222,12 +160,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Update navigation links
         document.querySelectorAll('.nav-link').forEach(link => {
-            updateElementText(link);
+            const text = link.getAttribute(`data-${lang}`) || link.textContent;
+            if (link.getAttribute('data-en')) {
+                link.textContent = text;
+            }
         });
 
         // Update navigation action buttons
         document.querySelectorAll('.nav-action-btn span').forEach(span => {
-            updateElementText(span);
+            const text = span.getAttribute(`data-${lang}`) || span.textContent;
+            if (span.getAttribute('data-en')) {
+                span.textContent = text;
+            }
         });
 
         // Update search placeholder
@@ -236,60 +180,32 @@ document.addEventListener('DOMContentLoaded', () => {
             searchInput.placeholder = lang === 'gr' ? 'Αναζήτηση στο διαδίκτυο...' : 'Search the Web...';
         }
 
-        // Update useful info search placeholder if it exists
-        const usefulInfoSearchInput = document.getElementById('useful-info-search-input');
-        if (usefulInfoSearchInput) {
-            if (!isUsefulInfoIndexBuilt) {
-                usefulInfoSearchInput.placeholder = lang === 'gr' ? 'Πατήστε για φόρτωση αναζήτησης...' : 'Click to load search...';
-            } else {
-                usefulInfoSearchInput.placeholder = lang === 'gr' ? 'Αναζήτηση άρθρων...' : 'Search articles...';
-            }
-        }
-
-        // Update useful info prompt
-        const usefulInfoPrompt = document.getElementById('useful-info-prompt');
-        if (usefulInfoPrompt) {
-            updateElementText(usefulInfoPrompt);
-        }
-
-        // Update disclaimer language button
-        const disclaimerLangBtn = document.getElementById('disclaimer-lang-btn');
-        if (disclaimerLangBtn) {
-            const span = disclaimerLangBtn.querySelector('span');
-            if (span) {
-                updateElementText(span);
-            }
-        }
-
         // Update buttons
         document.querySelectorAll('.btn').forEach(btn => {
-            updateElementText(btn);
+            const text = btn.getAttribute(`data-${lang}`) || btn.textContent;
+            if (btn.getAttribute('data-en')) {
+                btn.textContent = text;
+            }
         });
 
         // Update feature cards
         document.querySelectorAll('.feature-card h3, .feature-card p').forEach(el => {
-            updateElementText(el);
+            const text = el.getAttribute(`data-${lang}`) || el.textContent;
+            if (el.getAttribute('data-en')) {
+                el.textContent = text;
+            }
         });
 
         // Update quick access cards
         document.querySelectorAll('.quick-access-card span').forEach(span => {
-            updateElementText(span);
-        });
-
-        // Update security notice
-        document.querySelectorAll('.notice-text h3, .notice-text p').forEach(el => {
-            updateElementText(el);
-        });
-
-        // Update footer
-        document.querySelectorAll('.footer-section h4, .footer-section a, .footer-section p').forEach(el => {
-            if (el.hasAttribute('data-en')) {
-                updateElementText(el);
+            const text = span.getAttribute(`data-${lang}`) || span.textContent;
+            if (span.getAttribute('data-en')) {
+                span.textContent = text;
             }
         });
     };
 
-    // --- DISCLAIMER FUNCTIONALITY ---
+    // --- FIXED DISCLAIMER FUNCTIONALITY ---
     function initializeDisclaimer() {
         const disclaimerModal = document.getElementById('disclaimer-modal');
         const acceptBtn = document.getElementById('accept-disclaimer');
@@ -336,16 +252,17 @@ document.addEventListener('DOMContentLoaded', () => {
         const searchForm = document.getElementById('main-search-form');
         if (!searchInput || !suggestionsContainer || !searchForm) return;
 
-        const debounce = PerformanceUtils.debounce((query) => {
-            fetchSuggestions(query);
-        }, SECURITY_CONFIG.debounceDelay);
+        const debounce = (func, delay) => {
+            let timeoutId;
+            return (...args) => {
+                clearTimeout(timeoutId);
+                timeoutId = setTimeout(() => {
+                    func.apply(this, args);
+                }, delay);
+            };
+        };
 
         const fetchSuggestions = (query) => {
-            if (!SecurityUtils.validateURL('https://suggestqueries.google.com/complete/search')) {
-                console.error('Invalid URL for suggestions');
-                return;
-            }
-
             const oldScript = document.getElementById('jsonp-script');
             if (oldScript) {
                 oldScript.remove();
@@ -364,15 +281,17 @@ document.addEventListener('DOMContentLoaded', () => {
             document.head.appendChild(script);
         };
 
+        const debouncedFetchSuggestions = debounce(fetchSuggestions, 250);
+
         window.handleGoogleSuggestions = (data) => {
             suggestionsContainer.innerHTML = '';
             const suggestions = data[1];
 
             if (suggestions && Array.isArray(suggestions) && suggestions.length > 0) {
-                suggestions.slice(0, SECURITY_CONFIG.maxSearchResults).forEach(suggestion => {
+                suggestions.slice(0, 5).forEach(suggestion => {
                     const itemEl = document.createElement('div');
                     itemEl.classList.add('search-result-item');
-                    itemEl.textContent = SecurityUtils.sanitizeHTML(suggestion);
+                    itemEl.textContent = suggestion;
                     
                     itemEl.addEventListener('click', () => {
                         searchInput.value = suggestion;
@@ -395,7 +314,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 suggestionsContainer.innerHTML = '';
                 return;
             }
-            debounce(query);
+            debouncedFetchSuggestions(query);
         });
 
         document.addEventListener('click', (e) => {
@@ -420,152 +339,12 @@ document.addEventListener('DOMContentLoaded', () => {
             };
             
             modal.addEventListener('click', e => {
-                // Check if the target is the modal overlay itself
-                // AND if the modal is NOT the disclaimer modal
                 if (e.target === modal && modal.id !== 'disclaimer-modal') {
                     closeModal();
                 }
             });
             
             closeModalBtn?.addEventListener('click', closeModal);
-        });
-
-        // Escape key to close modals
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                document.querySelectorAll('.modal-overlay.visible').forEach(modal => {
-                    if (modal.id !== 'disclaimer-modal') {
-                        modal.classList.remove('visible');
-                    }
-                });
-            }
-        });
-    }
-
-    // --- CAROUSEL FUNCTIONALITY ---
-    function initializeCarousels() {
-        const carousels = document.querySelectorAll('.gym-carousel');
-        
-        carousels.forEach(carousel => {
-            const images = carousel.querySelectorAll('.gym-clothing-images img');
-            const prevBtn = carousel.querySelector('.carousel-btn.prev');
-            const nextBtn = carousel.querySelector('.carousel-btn.next');
-            
-            if (images.length > 0 && prevBtn && nextBtn) {
-                let currentIndex = 0;
-                
-                const showImage = (index) => {
-                    images.forEach((img, i) => {
-                        img.classList.toggle('active', i === index);
-                    });
-                };
-                
-                prevBtn.addEventListener('click', () => {
-                    currentIndex = (currentIndex > 0) ? currentIndex - 1 : images.length - 1;
-                    showImage(currentIndex);
-                });
-                
-                nextBtn.addEventListener('click', () => {
-                    currentIndex = (currentIndex < images.length - 1) ? currentIndex + 1 : 0;
-                    showImage(currentIndex);
-                });
-                
-                showImage(0);
-            }
-        });
-    }
-
-    // --- COPY FUNCTIONALITY ---
-    function initializeCopyButtons() {
-        // Make copy function globally accessible
-        window.copyToClipboard = (button, targetId) => {
-            const codeElement = document.getElementById(targetId);
-            if (!codeElement || !navigator.clipboard) {
-                console.warn('Clipboard API not available or element not found.');
-                button.textContent = 'Error';
-                setTimeout(() => { 
-                    button.textContent = (currentLanguage === 'gr') ? 'Αντιγραφή' : 'Copy'; 
-                }, 1500);
-                return;
-            }
-            
-            const originalText = button.textContent;
-            navigator.clipboard.writeText(codeElement.innerText).then(() => {
-                button.textContent = (currentLanguage === 'gr') ? 'Αντιγράφηκε!' : 'Copied!';
-                setTimeout(() => { button.textContent = originalText; }, 1500);
-            }).catch(err => {
-                console.error('Failed to copy text: ', err);
-                button.textContent = 'Failed!';
-                setTimeout(() => { button.textContent = originalText; }, 1500);
-            });
-        };
-
-        // Attach copy functionality to existing buttons
-        document.querySelectorAll('.copy-btn').forEach(btn => {
-            const targetId = btn.getAttribute('onclick')?.match(/'(.*?)'/)?.[1];
-            if (targetId) {
-                btn.addEventListener('click', () => {
-                    window.copyToClipboard(btn, targetId);
-                });
-            }
-        });
-    }
-
-    // --- TOOL CATEGORIES FUNCTIONALITY ---
-    function initializeToolCategories() {
-        console.log('Initializing tool categories...');
-        
-        // Close all categories and tool items by default
-        document.querySelectorAll('.category, .tool-item').forEach(item => {
-            item.classList.remove('active');
-        });
-        
-        // Category toggle functionality
-        document.querySelectorAll('.category-header').forEach(header => {
-            header.addEventListener('click', function() {
-                console.log('Category header clicked');
-                const category = this.parentElement;
-                const wasActive = category.classList.contains('active');
-                
-                // Close all categories first
-                document.querySelectorAll('.category').forEach(otherCategory => {
-                    otherCategory.classList.remove('active');
-                });
-                
-                // Open the clicked category if it was not active
-                if (!wasActive) {
-                    category.classList.add('active');
-                }
-            });
-        });
-        
-        // Tool item toggle functionality
-        document.querySelectorAll('.tool-header').forEach(header => {
-            header.addEventListener('click', function(e) {
-                console.log('Tool header clicked');
-                // Prevent the category from closing when clicking on a tool
-                e.stopPropagation();
-                
-                const toolItem = this.parentElement;
-                const wasActive = toolItem.classList.contains('active');
-                
-                // Close all other tool items in the same category
-                const category = toolItem.closest('.category');
-                if (category) {
-                    category.querySelectorAll('.tool-item').forEach(otherTool => {
-                        if (otherTool !== toolItem) {
-                            otherTool.classList.remove('active');
-                        }
-                    });
-                }
-                
-                // Toggle the clicked tool item
-                if (!wasActive) {
-                    toolItem.classList.add('active');
-                } else {
-                    toolItem.classList.remove('active');
-                }
-            });
         });
     }
 
@@ -609,24 +388,6 @@ document.addEventListener('DOMContentLoaded', () => {
             this.idfMaps[indexName] = idfMap;
         },
 
-        _getNgrams(word, n = 2) {
-            const ngrams = new Set();
-            if (!word || word.length < n) return ngrams;
-            for (let i = 0; i <= word.length - n; i++) {
-                ngrams.add(word.substring(i, i + n));
-            }
-            return ngrams;
-        },
-
-        _calculateSimilarity(word1, word2) {
-            if (!word1 || !word2) return 0;
-            const ngrams1 = this._getNgrams(word1);
-            const ngrams2 = this._getNgrams(word2);
-            const intersection = new Set([...ngrams1].filter(x => ngrams2.has(x)));
-            const union = ngrams1.size + ngrams2.size - intersection.size;
-            return union === 0 ? 0 : intersection.size / union;
-        },
-
         search(query, index, lang, indexName) {
             const queryTokens = this.tokenize(query, lang);
             if (queryTokens.length === 0) return [];
@@ -653,20 +414,6 @@ document.addEventListener('DOMContentLoaded', () => {
                             tokenFound = true;
                         }
                         if(tokenFound) foundTokens.add(qToken);
-
-                        if (!tokenFound) {
-                            let bestSimilarity = 0;
-                            const allItemTokens = [...item.titleTokens, ...item.textTokens];
-                            allItemTokens.forEach(tToken => {
-                                const similarity = this._calculateSimilarity(qToken, tToken);
-                                if (similarity > bestSimilarity) bestSimilarity = similarity;
-                            });
-                            
-                            if (bestSimilarity > 0.7) {
-                               score += bestSimilarity * 5 * idf;
-                               foundTokens.add(qToken);
-                            }
-                        }
                     });
 
                     if (foundTokens.size === queryTokens.length && queryTokens.length > 1) score *= 1.5;
@@ -727,28 +474,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const indexPromises = usefulInfoFiles.map(async (file) => {
             try {
-                if (!SecurityUtils.validateURL(file.download_url)) {
-                    console.warn('Invalid URL for file:', file.download_url);
-                    return;
-                }
-
-                const controller = new AbortController();
-                const timeoutId = setTimeout(() => controller.abort(), SECURITY_CONFIG.apiTimeout);
-
-                const response = await fetch(file.download_url, { 
-                    signal: controller.signal 
-                });
-                clearTimeout(timeoutId);
-
+                const response = await fetch(file.download_url);
                 if (!response.ok) return;
-                
-                // Check file size
-                const contentLength = response.headers.get('content-length');
-                if (contentLength && parseInt(contentLength) > SECURITY_CONFIG.maxFileSize) {
-                    console.warn('File too large:', file.name);
-                    return;
-                }
-
                 const htmlContent = await response.text();
                 const tempDiv = document.createElement('div');
                 tempDiv.innerHTML = htmlContent;
@@ -786,11 +513,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     });
                 });
             } catch (e) {
-                if (e.name === 'AbortError') {
-                    console.warn(`Timeout loading file: ${file.name}`);
-                } else {
-                    console.error(`Failed to index file: ${file.name}`, e);
-                }
+                console.error(`Failed to index file: ${file.name}`, e);
             } finally {
                 filesLoaded++;
                 const progress = (filesLoaded / totalFiles) * 100;
@@ -802,33 +525,6 @@ document.addEventListener('DOMContentLoaded', () => {
         await Promise.all(indexPromises);
         SearchEngine.calculateIdf('usefulInfo', usefulInfoSearchIndex);
         isUsefulInfoIndexBuilt = true;
-    }
-
-    function updateUsefulInfoButtonTitles() {
-        const titleMap = new Map();
-
-        usefulInfoSearchIndex.forEach(item => {
-            if (!titleMap.has(item.url)) {
-                titleMap.set(item.url, {});
-            }
-            const langTitles = titleMap.get(item.url);
-            if (!langTitles[item.lang]) {
-                langTitles[item.lang] = item.title;
-            }
-        });
-
-        document.querySelectorAll('#useful-information-nav .app-icon[data-url]').forEach(button => {
-            const url = button.dataset.url;
-            const titles = titleMap.get(url);
-            if (titles) {
-                const buttonSpan = button.querySelector('span');
-                if(buttonSpan) {
-                   buttonSpan.setAttribute('data-en', titles.en || '');
-                   buttonSpan.setAttribute('data-gr', titles.gr || titles.en || '');
-                   updateElementText(buttonSpan);
-                }
-            }
-        });
     }
 
     function initializeUsefulInfoSearch() {
@@ -867,7 +563,6 @@ document.addEventListener('DOMContentLoaded', () => {
             progressBar.style.width = '0%';
 
             buildUsefulInfoSearchIndex(progressBar, progressText).then(() => {
-                updateUsefulInfoButtonTitles();
                 setTimeout(() => {
                     progressBarContainer.style.display = 'none';
                 }, 500);
@@ -899,7 +594,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     const snippet = SearchEngine.generateSnippet(result.text, query, currentLanguage);
                     const highlightedSnippet = SearchEngine.highlight(snippet, query, currentLanguage);
 
-                    itemEl.innerHTML = `${highlightedSnippet} <small>${SecurityUtils.sanitizeHTML(result.title)}</small>`;
+                    itemEl.innerHTML = `${highlightedSnippet} <small>${result.title}</small>`;
                     itemEl.addEventListener('click', () => {
                         searchInput.value = '';
                         resultsContainer.classList.add('hidden');
@@ -923,18 +618,7 @@ document.addEventListener('DOMContentLoaded', () => {
         navContainer.innerHTML = `<p>${currentLanguage === 'gr' ? 'Φόρτωση...' : 'Loading...'}</p>`;
         
         try {
-            if (!SecurityUtils.validateURL(GITHUB_API_URL)) {
-                throw new Error('Invalid GitHub API URL');
-            }
-
-            const controller = new AbortController();
-            const timeoutId = setTimeout(() => controller.abort(), SECURITY_CONFIG.apiTimeout);
-
-            const response = await fetch(GITHUB_API_URL, { 
-                signal: controller.signal 
-            });
-            clearTimeout(timeoutId);
-
+            const response = await fetch(GITHUB_API_URL);
             if (!response.ok) throw new Error(`GitHub API error: ${response.status}`);
             const files = await response.json();
             usefulInfoFiles = files.filter(file => file.type === 'file' && file.name.endsWith('.html'));
@@ -962,7 +646,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 button.dataset.url = file.download_url;
                 
                 const initialTitle = currentLanguage === 'gr' ? titleGR : titleEN;
-                button.innerHTML = `<i class="fas fa-book-open"></i><span data-en="${SecurityUtils.sanitizeHTML(titleEN)}" data-gr="${SecurityUtils.sanitizeHTML(titleGR)}">${SecurityUtils.sanitizeHTML(initialTitle)}</span>`;
+                button.innerHTML = `<i class="fas fa-book-open"></i><span data-en="${titleEN}" data-gr="${titleGR}">${initialTitle}</span>`;
                 
                 button.addEventListener('click', () => {
                     const span = button.querySelector('span');
@@ -973,13 +657,8 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             usefulInformationLoaded = true;
         } catch (error) {
-            if (error.name === 'AbortError') {
-                console.error('Timeout fetching useful information');
-                navContainer.innerHTML = `<p style="color: var(--nm-danger);">${currentLanguage === 'gr' ? 'Χρονικό όριο φόρτωσης.' : 'Load timeout.'}</p>`;
-            } else {
-                console.error('Failed to fetch useful information:', error);
-                navContainer.innerHTML = `<p style="color: var(--nm-danger);">${currentLanguage === 'gr' ? 'Αποτυχία φόρτωσης.' : 'Failed to load.'}</p>`;
-            }
+            console.error('Failed to fetch useful information:', error);
+            navContainer.innerHTML = `<p style="color: var(--nm-danger);">${currentLanguage === 'gr' ? 'Αποτυχία φόρτωσης.' : 'Failed to load.'}</p>`;
         } finally {
             isFetchingUsefulInfo = false;
         }
@@ -992,7 +671,7 @@ document.addEventListener('DOMContentLoaded', () => {
         modalOverlay.innerHTML = `
             <div class="modal-content">
                 <div class="modal-header">
-                    <h2>${SecurityUtils.sanitizeHTML(title)}</h2>
+                    <h2>${title}</h2>
                     <button class="close-modal">&times;</button>
                 </div>
                 <div class="modal-body">${htmlContent}</div>
@@ -1057,35 +736,47 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function loadInformationContent(url, title, textToHighlight = null) {
         try {
-            if (!SecurityUtils.validateURL(url)) {
-                throw new Error('Invalid content URL');
-            }
-
-            const controller = new AbortController();
-            const timeoutId = setTimeout(() => controller.abort(), SECURITY_CONFIG.apiTimeout);
-
-            const response = await fetch(url, { 
-                signal: controller.signal 
-            });
-            clearTimeout(timeoutId);
-
+            const response = await fetch(url);
             if (!response.ok) throw new Error(`Fetch failed: ${response.status}`);
-            
-            // Check file size
-            const contentLength = response.headers.get('content-length');
-            if (contentLength && parseInt(contentLength) > SECURITY_CONFIG.maxFileSize) {
-                throw new Error('File too large');
-            }
-
             const htmlContent = await response.text();
             createAndShowArticleModal(title, htmlContent, textToHighlight);
         } catch (error) {
-            if (error.name === 'AbortError') {
-                console.error('Timeout loading content');
-            } else {
-                console.error('Failed to load content:', error);
-            }
+            console.error('Failed to load content:', error);
         }
+    }
+
+    // --- COPY FUNCTIONALITY ---
+    function initializeCopyButtons() {
+        window.copyToClipboard = (button, targetId) => {
+            const codeElement = document.getElementById(targetId);
+            if (!codeElement || !navigator.clipboard) {
+                console.warn('Clipboard API not available or element not found.');
+                button.textContent = 'Error';
+                setTimeout(() => { 
+                    button.textContent = (currentLanguage === 'gr') ? 'Αντιγραφή' : 'Copy'; 
+                }, 1500);
+                return;
+            }
+            
+            const originalText = button.textContent;
+            navigator.clipboard.writeText(codeElement.innerText).then(() => {
+                button.textContent = (currentLanguage === 'gr') ? 'Αντιγράφηκε!' : 'Copied!';
+                setTimeout(() => { button.textContent = originalText; }, 1500);
+            }).catch(err => {
+                console.error('Failed to copy text: ', err);
+                button.textContent = 'Failed!';
+                setTimeout(() => { button.textContent = originalText; }, 1500);
+            });
+        };
+
+        document.querySelectorAll('.copy-btn').forEach(btn => {
+            const targetId = btn.getAttribute('onclick')?.match(/'(.*?)'/)?.[1];
+            if (targetId) {
+                btn.addEventListener('click', () => {
+                    window.copyToClipboard(btn, targetId);
+                });
+            }
+        });
     }
 
     // --- INITIALIZATION ---
@@ -1095,15 +786,8 @@ document.addEventListener('DOMContentLoaded', () => {
         initializeLanguageSwitcher();
         initializeWebSearchSuggestions();
         initializeModals();
-        initializeCarousels();
         initializeCopyButtons();
         initializeDisclaimer();
-
-        // Initialize tool categories if on the tools page
-        if (document.querySelector('.categories-container')) {
-            console.log('Tools page detected, initializing tool categories...');
-            initializeToolCategories();
-        }
 
         // Initialize useful information if on that page
         if (document.getElementById('useful-information-nav')) {
@@ -1114,12 +798,6 @@ document.addEventListener('DOMContentLoaded', () => {
         // Set initial language
         const savedLanguage = localStorage.getItem('language') || 'en';
         changeLanguage(savedLanguage);
-
-        // Set initial theme
-        const savedTheme = localStorage.getItem('theme');
-        if (savedTheme === 'light') {
-            document.body.classList.add('light-theme');
-        }
 
         // Update active nav link based on current page
         const currentPage = window.location.pathname.split('/').pop() || 'index.html';
@@ -1134,15 +812,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
-
-    // Error handling
-    window.addEventListener('error', (e) => {
-        console.error('Global error:', e.error);
-    });
-
-    window.addEventListener('unhandledrejection', (e) => {
-        console.error('Unhandled promise rejection:', e.reason);
-    });
 
     // Initialize the application
     initializePortfolio();
