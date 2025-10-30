@@ -16,8 +16,10 @@ document.addEventListener('DOMContentLoaded', () => {
         
         if (burgerMenu && navMenu) {
             burgerMenu.addEventListener('click', () => {
+                const isExpanded = burgerMenu.getAttribute('aria-expanded') === 'true';
                 burgerMenu.classList.toggle('active');
                 navMenu.classList.toggle('active');
+                burgerMenu.setAttribute('aria-expanded', !isExpanded);
             });
         }
 
@@ -27,6 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (burgerMenu && navMenu) {
                     burgerMenu.classList.remove('active');
                     navMenu.classList.remove('active');
+                    burgerMenu.setAttribute('aria-expanded', 'false');
                 }
             });
         });
@@ -37,6 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (!navMenu.contains(e.target) && !burgerMenu.contains(e.target)) {
                     burgerMenu.classList.remove('active');
                     navMenu.classList.remove('active');
+                    burgerMenu.setAttribute('aria-expanded', 'false');
                 }
             }
         });
@@ -56,11 +60,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 themeIcon.classList.add('fa-sun');
                 themeSpan.setAttribute('data-en', 'Light Theme');
                 themeSpan.setAttribute('data-gr', 'Φωτεινό Θέμα');
+                themeBtn.setAttribute('aria-label', 'Switch to dark theme');
             } else {
                 themeIcon.classList.remove('fa-sun');
                 themeIcon.classList.add('fa-moon');
                 themeSpan.setAttribute('data-en', 'Dark Theme');
                 themeSpan.setAttribute('data-gr', 'Σκοτεινό Θέμα');
+                themeBtn.setAttribute('aria-label', 'Switch to light theme');
             }
             themeSpan.textContent = themeSpan.getAttribute(`data-${currentLanguage}`) || themeSpan.getAttribute('data-en');
         };
@@ -89,6 +95,7 @@ document.addEventListener('DOMContentLoaded', () => {
         langBtn?.addEventListener('click', () => {
             if (languageModal) {
                 languageModal.classList.add('visible');
+                languageModal.setAttribute('aria-hidden', 'false');
             }
         });
 
@@ -96,6 +103,7 @@ document.addEventListener('DOMContentLoaded', () => {
         disclaimerLangBtn?.addEventListener('click', () => {
             if (languageModal) {
                 languageModal.classList.add('visible');
+                languageModal.setAttribute('aria-hidden', 'false');
             }
         });
 
@@ -105,6 +113,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 changeLanguage(button.dataset.lang);
                 if (languageModal) {
                     languageModal.classList.remove('visible');
+                    languageModal.setAttribute('aria-hidden', 'true');
                 }
             });
         });
@@ -191,6 +200,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 span.textContent = text;
             }
         }
+        
+        // Update skip link
+        const skipLink = document.querySelector('.skip-link');
+        if (skipLink) {
+            const text = skipLink.getAttribute(`data-${lang}`) || skipLink.textContent;
+            skipLink.textContent = text;
+        }
     };
 
     // --- DISCLAIMER FUNCTIONALITY ---
@@ -207,8 +223,9 @@ document.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => {
                 if (disclaimerModal) {
                     disclaimerModal.classList.add('visible');
+                    disclaimerModal.setAttribute('aria-hidden', 'false');
                 }
-            }, 10); // <-- OPTIMIZED: Changed from 500 to 10
+            }, 10);
         }
 
         // Handle accept button
@@ -216,18 +233,17 @@ document.addEventListener('DOMContentLoaded', () => {
             localStorage.setItem('disclaimerAccepted', 'true');
             if (disclaimerModal) {
                 disclaimerModal.classList.remove('visible');
+                disclaimerModal.setAttribute('aria-hidden', 'true');
             }
             console.log('Disclaimer accepted');
         });
 
         // Handle decline button - go back
         declineBtn?.addEventListener('click', () => {
-            window.history.back(); // <-- OPTIMIZED: Changed from Google redirect
+            window.history.back();
         });
 
         // Prevent closing the disclaimer modal by clicking outside
-        // This listener is still useful to stop propagation if needed,
-        // but the main closing logic is now handled in initializeModals()
         disclaimerModal?.addEventListener('click', (e) => {
             if (e.target === disclaimerModal) {
                 // Don't allow closing by clicking outside - force user to make a choice
@@ -283,6 +299,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     const itemEl = document.createElement('div');
                     itemEl.classList.add('search-result-item');
                     itemEl.textContent = suggestion;
+                    itemEl.setAttribute('role', 'option');
                     
                     itemEl.addEventListener('click', () => {
                         searchInput.value = suggestion;
@@ -327,6 +344,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const closeModalBtn = modal.querySelector('.close-modal');
             const closeModal = () => {
                 modal.classList.remove('visible');
+                modal.setAttribute('aria-hidden', 'true');
             };
             
             modal.addEventListener('click', e => {
@@ -338,6 +356,13 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             
             closeModalBtn?.addEventListener('click', closeModal);
+            
+            // Close modal on Escape key
+            modal.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && modal.classList.contains('visible')) {
+                    closeModal();
+                }
+            });
         });
     }
 
@@ -356,6 +381,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const showImage = (index) => {
                     images.forEach((img, i) => {
                         img.classList.toggle('active', i === index);
+                        img.setAttribute('aria-hidden', i !== index);
                     });
                 };
                 
@@ -732,7 +758,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         };
 
-        // --- OPTIMIZED: Start indexing 1 second after page load ---
+        // Start indexing 1 second after page load
         setTimeout(() => {
             if (isUsefulInfoIndexBuilt) return;
 
@@ -751,8 +777,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 searchInput.placeholder = currentLanguage === 'gr' ? 'Αναζήτηση άρθρων...' : 'Search articles...';
             });
             
-        }, 1000); // 1000ms (1 second) delay
-        // --- End of optimization ---
+        }, 1000);
 
         searchInput.addEventListener('input', () => {
             const query = searchInput.value.trim();
@@ -772,6 +797,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 results.slice(0, 7).forEach(result => {
                     const itemEl = document.createElement('div');
                     itemEl.classList.add('search-result-item');
+                    itemEl.setAttribute('role', 'option');
                     const snippet = SearchEngine.generateSnippet(result.text, query, currentLanguage);
                     const highlightedSnippet = SearchEngine.highlight(snippet, query, currentLanguage);
 
@@ -849,11 +875,13 @@ document.addEventListener('DOMContentLoaded', () => {
         document.querySelectorAll('.article-modal-overlay').forEach(modal => modal.remove());
         const modalOverlay = document.createElement('div');
         modalOverlay.className = 'modal-overlay article-modal-overlay'; 
+        modalOverlay.setAttribute('role', 'dialog');
+        modalOverlay.setAttribute('aria-labelledby', 'article-modal-title');
         modalOverlay.innerHTML = `
             <div class="modal-content">
                 <div class="modal-header">
-                    <h2>${title}</h2>
-                    <button class="close-modal">&times;</button>
+                    <h2 id="article-modal-title">${title}</h2>
+                    <button class="close-modal" aria-label="Close">&times;</button>
                 </div>
                 <div class="modal-body">${htmlContent}</div>
             </div>`;
@@ -878,7 +906,10 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
         
-        setTimeout(() => modalOverlay.classList.add('visible'), 10);
+        setTimeout(() => {
+            modalOverlay.classList.add('visible');
+            modalOverlay.setAttribute('aria-hidden', 'false');
+        }, 10);
         changeLanguage(currentLanguage);
     
         if (textToHighlight) {
@@ -896,6 +927,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         const closeModal = () => {
             modalOverlay.classList.remove('visible');
+            modalOverlay.setAttribute('aria-hidden', 'true');
             modalOverlay.addEventListener('transitionend', () => modalOverlay.remove(), { once: true });
             
             const searchInput = document.getElementById('useful-info-search-input');
@@ -913,6 +945,13 @@ document.addEventListener('DOMContentLoaded', () => {
             if (e.target === modalOverlay) closeModal();
         });
         modalOverlay.querySelector('.close-modal').addEventListener('click', closeModal);
+        
+        // Close modal on Escape key
+        modalOverlay.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && modalOverlay.classList.contains('visible')) {
+                closeModal();
+            }
+        });
     }
 
     async function loadInformationContent(url, title, textToHighlight = null) {
@@ -935,7 +974,7 @@ document.addEventListener('DOMContentLoaded', () => {
         initializeModals();
         initializeCarousels();
         initializeCopyButtons();
-        initializeDisclaimer(); // Added disclaimer initialization (no cookie consent)
+        initializeDisclaimer();
 
         // Initialize tool categories if on the tools page
         if (document.querySelector('.categories-container')) {
