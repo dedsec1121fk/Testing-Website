@@ -83,12 +83,12 @@ body {
     margin: 0;
     padding: 0;
     background-color: var(--nm-abyss-blue);
-    /* ORIGINAL BACKGROUND IMAGE RESTORED */
+    /* BACKGROUND IMAGE RESTORED */
     background-image: url('Assets/Images/Backgrounds/matrix-code-background-no-color.jpg'); 
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
-    /* END ORIGINAL BACKGROUND */
+    /* END BACKGROUND RESTORED */
     min-height: 100vh;
     font-family: 'Inter', sans-serif;
     color: var(--nm-text);
@@ -100,7 +100,7 @@ body {
 
 body.light-theme {
     background-color: #f0f0f0;
-    /* ORIGINAL LIGHT THEME BACKGROUND IMAGE RESTORED */
+    /* LIGHT THEME BACKGROUND IMAGE RESTORED */
     background-image: url('Assets/Images/Backgrounds/matrix-code-background-light.jpg');
     background-size: cover;
     background-position: center;
@@ -133,18 +133,18 @@ body::before, body::after { display: none; }
     top: 0;
     left: 0;
     width: 100%;
-    /* CHANGED: Removed transparency and blur */
+    /* REMOVED TRANSPARENCY */
     background: var(--nm-darkest);
     -webkit-backdrop-filter: none;
     backdrop-filter: none;
-    /* END CHANGED */
+    /* END REMOVED TRANSPARENCY */
     border-bottom: 1px solid var(--nm-border);
     z-index: 1000;
     padding: 0 15px;
     box-sizing: border-box;
 }
 
-body.light-theme .main-nav { background: var(--nm-abyss-blue-light); } /* CHANGED: Solid light background */
+body.light-theme .main-nav { background: var(--nm-abyss-blue-light); } /* SOLID LIGHT BACKGROUND */
 
 .nav-container {
     display: flex;
@@ -198,11 +198,11 @@ body.light-theme .nav-title h1::after { background-image: url('https://raw.githu
     width: 80%;
     max-width: 300px;
     height: calc(100vh - 61px);
-    /* CHANGED: Removed transparency and blur */
+    /* REMOVED TRANSPARENCY */
     background: var(--nm-darkest);
     -webkit-backdrop-filter: none;
     backdrop-filter: none;
-    /* END CHANGED */
+    /* END REMOVED TRANSPARENCY */
     flex-direction: column;
     padding: 20px;
     box-shadow: -4px 0 15px rgba(0, 0, 0, 0.3);
@@ -215,7 +215,7 @@ body.light-theme .nav-title h1::after { background-image: url('https://raw.githu
     align-items: center; 
     gap: 10px;
 }
-body.light-theme .nav-menu { background: var(--nm-abyss-blue-light); } /* CHANGED: Solid light background */
+body.light-theme .nav-menu { background: var(--nm-abyss-blue-light); } /* SOLID LIGHT BACKGROUND */
 .nav-menu.active { transform: translateX(0); }
 
 .nav-link {
@@ -491,11 +491,11 @@ body.light-theme .feature-card { background: var(--nm-container-light); }
     color: var(--nm-text-muted);
     margin-top: 25px;
     border-top: 1px solid var(--nm-border);
-    /* CHANGED: Removed transparency and blur */
+    /* REMOVED TRANSPARENCY */
     background: var(--nm-darkest);
     -webkit-backdrop-filter: none;
     backdrop-filter: none;
-    /* END CHANGED */
+    /* END REMOVED TRANSPARENCY */
 }
 
 /*
