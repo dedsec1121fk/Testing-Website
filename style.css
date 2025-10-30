@@ -93,20 +93,7 @@ body {
     -moz-osx-font-smoothing: grayscale;
 }
 
-body.light-theme {
-    background-image: linear-gradient(180deg, #ffffff 0%, var(--nm-abyss-blue-light) 100%);
-}
-
-.code-container code, .nav-action-btn, .form-group input, .contact-grid .app-icon, .copy-btn, #useful-information-nav .app-icon {
-    font-family: 'Roboto Mono', monospace;
-}
-
-::-webkit-scrollbar { width: 8px; height: 8px; }
-::-webkit-scrollbar-track { background: var(--nm-dark); }
-::-webkit-scrollbar-thumb { background: var(--nm-border); border-radius: 4px; }
-::-webkit-scrollbar-thumb:hover { background: var(--nm-accent); }
-
-/* --- BACKGROUND IMAGE STYLES (Restored) --- */
+/* --- ADDED: BACKGROUND IMAGE STYLES --- */
 body::before {
     content: '';
     position: fixed;
@@ -114,7 +101,7 @@ body::before {
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: url('https://raw.githubusercontent.com/dedsec1121fk/dedsec1121fk.github.io/5860edb8a7468955336c9cf1d8b357597d6d645/Assets/Images/Logos/Custom%20Black%20Purple%20Fox%20Logo.png');
+    background-image: url('https://raw.githubusercontent.com/dedsec1121fk/dedsec1121fk.github.io/5860edb8a7468d955336c9cf1d8b357597d6d645/Assets/Images/Logos/Custom%20Black%20Purple%20Fox%20Logo.png');
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
@@ -144,7 +131,23 @@ body.light-theme::before {
     background-image: url('https://raw.githubusercontent.com/dedsec1121fk/dedsec1121fk.github.io/6f776cd9772a079a6d26370dddab911bf7cde8cd/Assets/Images/Logos/Custom%20White%20Purple%20Fox%20Logo.jpg');
     opacity: 0.1; /* Reduced opacity for better readability */
 }
+/* --- END: BACKGROUND IMAGE STYLES --- */
 
+
+body.light-theme {
+    background-image: linear-gradient(180deg, #ffffff 0%, var(--nm-abyss-blue-light) 100%);
+}
+
+.code-container code, .nav-action-btn, .form-group input, .contact-grid .app-icon, .copy-btn, #useful-information-nav .app-icon {
+    font-family: 'Roboto Mono', monospace;
+}
+
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: var(--nm-dark); }
+::-webkit-scrollbar-thumb { background: var(--nm-border); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--nm-accent); }
+
+/* body::before, body::after { display: none; } -- This was removed to show the backgrounds */
 
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(10px); }
@@ -407,7 +410,7 @@ body.light-theme .tool-card { background: var(--nm-dark-light); }
     justify-content: center;
     text-align: center;
     box-sizing: border-box;
-    background-color: var(--nm-darkest);
+    background-color: transparent; /* MODIFIED: Made transparent */
     background-image: radial-gradient(at top center, rgba(var(--glow-rgb), 0.2) 0%, transparent 50%), linear-gradient(180deg, var(--nm-abyss-blue) 0%, var(--nm-darkest) 100%);
     border-bottom: 1px solid var(--nm-border);
 }
@@ -470,13 +473,13 @@ body.light-theme .hero-section { background-image: radial-gradient(at top center
     text-align: left;
 }
 .feature-card {
-    background: var(--nm-dark);
+    background: rgba(21, 30, 42, 0.9); /* MODIFIED: Made transparent */
     border: 1px solid var(--nm-border);
     padding: 25px;
     border-radius: 12px;
     transition: transform 0.3s var(--ease-out-cubic), box-shadow 0.3s var(--ease-out-cubic);
 }
-body.light-theme .feature-card { background: var(--nm-container-light); }
+body.light-theme .feature-card { background: rgba(248, 248, 248, 0.9); } /* MODIFIED: Made transparent */
 .feature-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-glow-accent); }
 .feature-card i { font-size: 2rem; color: var(--nm-accent); margin-bottom: 15px; }
 .feature-card h3 { font-family: 'Orbitron', sans-serif; font-size: 1.2rem; color: var(--nm-text); margin-bottom: 10px; }
