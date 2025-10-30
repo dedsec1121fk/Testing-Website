@@ -1,7 +1,7 @@
 /*
     =================================================================
     DEDSEC PROJECT MULTI-PAGE STYLES
-    VERSION: 2.6 (Final Text Glow Compatibility Fix)
+    VERSION: 3.0 (Professional Hero/Grid Layout)
     =================================================================
 */
 
@@ -940,4 +940,705 @@ body.light-theme .modal-header {
     opacity: 0.9;
     border-color: var(--nm-danger) !important;
     transform: translateY(-3px);
-    box-shadow: var(--shadow-glow-danger) !importa```
+    box-shadow: var(--shadow-glow-danger) !important;
+}
+
+/* ADDED: Premium "press" effect */
+.accept-btn:active, .decline-btn:active {
+    transform: translateY(0px) scale(0.97);
+    transition-duration: 0.1s;
+}
+
+/*
+    =================================================================
+    COMPONENT STYLES (CODE, NOTES, ETC)
+    =================================================================
+*/
+
+/* Code Container */
+.code-container {
+    position: relative;
+    background: rgba(11, 18, 28, 0.9);
+    border: 1px solid var(--nm-border);
+    padding: 15px;
+    margin: 1em 0;
+    transition: background-color 0.3s ease;
+    clip-path: none;
+    border-radius: 20px;
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.5); 
+}
+
+body.light-theme .code-container {
+    background: rgba(240, 240, 240, 0.9);
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
+}
+
+.code-container code {
+    font-family: 'Roboto Mono', monospace;
+    color: var(--nm-text);
+    word-break: break-all;
+    display: block;
+    font-size: 0.85em;
+    background: none;
+    padding: 0;
+    border-radius: 0;
+}
+
+.copy-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: var(--nm-container);
+    border: 1px solid var(--nm-border);
+    color: var(--nm-text);
+    padding: 4px 8px;
+    cursor: pointer;
+    white-space: nowrap;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    clip-path: none;
+    border-radius: 20px;
+    /* MODIFIED: Premium transition */
+    transition: transform 0.25s var(--ease-out-cubic), background-color 0.25s ease, color 0.25s ease, box-shadow 0.25s var(--ease-out-cubic), border-color 0.25s ease;
+    will-change: transform, box-shadow;
+}
+
+.copy-btn:hover {
+    background: var(--nm-accent);
+    color: var(--nm-text-on-accent);
+    box-shadow: var(--shadow-glow-accent); 
+    border-color: var(--nm-accent-hover);
+    transform: translateY(-3px);
+}
+
+/* ADDED: Premium "press" effect */
+.copy-btn:active {
+    transform: translateY(0px) scale(0.97);
+    transition-duration: 0.1s;
+}
+
+/* Tip and Note Styles */
+.tip, .note {
+    background: rgba(31, 42, 56, 0.9);
+    border-left: 2px solid var(--nm-warning);
+    box-shadow: none; 
+    margin: 1em 0;
+    padding: 0.8em 1em;
+    border-radius: 0 20px 20px 0;
+    transition: all 0.3s ease;
+}
+
+body.light-theme .tip,
+body.light-theme .note {
+    background: rgba(248, 248, 248, 0.9);
+}
+
+.note.note-warning {
+    background-color: var(--warning-bg);
+    color: var(--nm-text);
+    font-weight: bold;
+    border-left: 4px solid var(--nm-warning);
+    padding: 1rem;
+    border-radius: 20px;
+}
+.note.note-danger {
+    border-left: 4px solid var(--nm-danger);
+    background: var(--danger-bg);
+    padding: 1rem;
+    border-radius: 20px;
+}
+
+/*
+    =================================================================
+    PAGE-SPECIFIC STYLES
+    =================================================================
+*/
+
+/* --- Contact Page --- */
+/* RE-PURPOSED: .contact-grid is now used for the Contact page, not the homepage */
+.contact-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 15px;
+    justify-items: center;
+    padding-top: 20px;
+}
+
+.contact-grid .app-icon {
+    width: 100%;
+    max-width: 350px;
+    height: auto;
+    padding: 12px 15px;
+    gap: 15px;
+    clip-path: none;
+    border-radius: 20px; 
+    background: rgba(0, 0, 0, 0.9);
+    border: 1px solid var(--nm-accent);
+    color: var(--nm-text);
+    cursor: pointer;
+    font-family: 'Roboto Mono', monospace;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    text-decoration: none;
+    box-sizing: border-box;
+    position: relative;
+    /* MODIFIED: Premium transition */
+    transition: transform 0.25s var(--ease-out-cubic), background-color 0.25s ease, color 0.25s ease, box-shadow 0.25s var(--ease-out-cubic), border-color 0.25s ease;
+    will-change: transform, box-shadow;
+}
+
+.contact-grid .app-icon:hover {
+    background: var(--nm-accent);
+    border-color: var(--nm-accent-hover);
+    color: var(--nm-text-on-accent);
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-glow-accent);
+}
+
+/* ADDED: Premium "press" effect */
+.contact-grid .app-icon:active {
+    transform: translateY(0px) scale(0.97);
+    transition-duration: 0.1s;
+}
+
+.contact-grid .app-icon i {
+    color: var(--nm-text);
+    transition: color 0.2s ease;
+    font-size: 1.4rem;
+    margin: 0;
+    text-shadow: none; 
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+}
+.contact-grid .app-icon:hover i { color: var(--nm-text-on-accent); text-shadow: none; }
+.contact-grid .app-icon span {
+    font-size: 0.75rem;
+    font-weight: 700;
+    line-height: 1.2;
+    word-break: break-word;
+    text-align: left;
+}
+body.light-theme .contact-grid .app-icon {
+    background: var(--nm-darkest);
+    color: var(--nm-text);
+}
+
+/* --- Gym Page --- */
+.gym-carousel {
+    position: relative;
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+    aspect-ratio: 3 / 4;
+    overflow: hidden;
+    border: 1px solid var(--nm-border);
+    background-color: rgba(31, 42, 56, 0.9);
+    clip-path: none;
+    border-radius: 20px;
+}
+body.light-theme .gym-carousel {
+    background-color: rgba(248, 248, 248, 0.9);
+}
+.gym-clothing-images { width: 100%; height: 100%; }
+.gym-clothing-images img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+.gym-clothing-images img.active { opacity: 1; }
+.carousel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    font-size: 1.5rem;
+    z-index: 10;
+    margin: 0 10px;
+    transition: background-color 0.2s ease;
+}
+.carousel-btn.prev { left: 0; }
+.carousel-btn.next { right: 0; }
+.carousel-btn:hover { background-color: rgba(0, 0, 0, 0.8); }
+
+/* --- About Page --- */
+.github-stats {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    width: 100%;
+}
+.github-stats img {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    border: 1px solid var(--nm-border);
+    background-color: rgba(31, 42, 56, 0.9);
+    clip-path: none;
+    border-radius: 20px; 
+}
+body.light-theme .github-stats img {
+    background-color: rgba(248, 248, 248, 0.9);
+}
+.store-link { margin: 1rem 0 1.5rem 0; }
+.store-link a {
+    color: var(--nm-accent);
+    font-weight: bold;
+    text-decoration: none;
+    border: 1px solid var(--nm-border);
+    padding: 10px 15px;
+    background-color: rgba(31, 42, 56, 0.9);
+    display: inline-block;
+    max-width: 100%;
+    box-sizing: border-box;
+    line-height: 1.4;
+    clip-path: none;
+    border-radius: 20px;
+    /* MODIFIED: Premium transition */
+    transition: transform 0.25s var(--ease-out-cubic), background-color 0.25s ease, color 0.25s ease, box-shadow 0.25s var(--ease-out-cubic), border-color 0.25s ease;
+    will-change: transform, box-shadow;
+}
+body.light-theme .store-link a {
+    background-color: rgba(248, 248, 248, 0.9);
+}
+.store-link a:hover {
+    background-color: var(--nm-accent-hover);
+    border-color: var(--nm-accent);
+    color: var(--nm-darkest);
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-glow-accent);
+}
+/* ADDED: Premium "press" effect */
+.store-link a:active {
+    transform: translateY(0px) scale(0.97);
+    transition-duration: 0.1s;
+}
+
+/* --- Misc Components --- */
+.modal-divider { margin: 2rem 0; border-color: var(--nm-border); }
+.text-center { text-align: center; }
+.ad-image {
+    width: 100%;
+    max-width: 400px;
+    margin: 1rem auto;
+    display: block;
+    border-radius: 20px;
+    border: 1px solid var(--nm-border);
+}
+
+/* --- Useful Information Page --- */
+#useful-information-nav {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 15px;
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+#useful-information-nav .app-icon {
+    width: 100%;
+    height: auto;
+    padding: 15px 20px;
+    border-radius: 20px;
+    background: rgba(0, 0, 0, 0.9);
+    border: 2px solid var(--nm-accent);
+    color: var(--nm-text);
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 15px;
+    text-decoration: none;
+    box-sizing: border-box;
+    /* MODIFIED: Premium transition */
+    transition: transform 0.25s var(--ease-out-cubic), background-color 0.25s ease, color 0.25s ease, box-shadow 0.25s var(--ease-out-cubic), border-color 0.25s ease;
+    will-change: transform, box-shadow;
+}
+
+#useful-information-nav .app-icon:hover {
+    background: var(--nm-accent);
+    border-color: var(--nm-accent-hover);
+    color: var(--nm-text-on-accent);
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-glow-accent);
+}
+
+/* ADDED: Premium "press" effect */
+#useful-information-nav .app-icon:active {
+    transform: translateY(0px) scale(0.97);
+    transition-duration: 0.1s;
+}
+
+#useful-information-nav .app-icon i { font-size: 1.4rem; color: inherit; flex-shrink: 0; }
+#useful-information-nav .app-icon span {
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-align: left;
+    word-break: break-word;
+    line-height: 1.3;
+    color: inherit;
+}
+body.light-theme #useful-information-nav .app-icon {
+    background: var(--nm-darkest);
+    color: var(--nm-text);
+}
+
+/* Progress Bar Styles */
+.progress-bar-container {
+    width: 100%;
+    height: 20px;
+    background-color: var(--nm-darkest);
+    border-radius: 20px;
+    overflow: hidden;
+    margin-bottom: 15px;
+    position: relative;
+    display: none;
+    border: 1px solid var(--nm-border);
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.progress-bar {
+    width: 0%;
+    height: 100%;
+    background: linear-gradient(135deg, var(--nm-accent), var(--nm-accent-hover));
+    transition: width 0.3s ease-in-out;
+    border-radius: 20px;
+}
+.progress-bar-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 0.8rem;
+    font-weight: bold;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
+}
+
+/* Search Results Container */
+#useful-info-results-container {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background-color: var(--nm-dark);
+    border: 1px solid var(--nm-search-green);
+    box-shadow: none;
+    max-height: 300px;
+    overflow-y: auto;
+    z-index: 100;
+    border-radius: 20px;
+    margin-top: 5px;
+}
+#useful-info-results-container .search-result-item {
+    padding: 12px 15px;
+    color: var(--nm-text);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border-bottom: 1px solid var(--nm-border);
+    text-align: left;
+}
+#useful-info-results-container .search-result-item:last-child { border-bottom: none; }
+#useful-info-results-container .search-result-item:hover {
+    background-color: var(--nm-accent);
+    color: var(--nm-text-on-accent);
+}
+#useful-info-results-container .search-result-item small {
+    display: block;
+    font-size: 0.7rem;
+    color: var(--nm-text);
+    margin-top: 4px;
+}
+#useful-info-results-container .search-result-item:hover small { color: rgba(0, 0, 0, 0.7); }
+
+body.light-theme #useful-info-results-container .search-result-item {
+    color: #000000;
+}
+
+/* Modal Search Container */
+.modal-search-container {
+    position: relative;
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto 20px auto;
+}
+.modal-search-container::before {
+    font-family: 'Font Awesome 5 Free', 'FontAwesome';
+    font-weight: 900;
+    content: '\f002';
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--nm-text);
+    z-index: 2;
+}
+.modal-search-container input {
+    width: 100%;
+    padding: 12px 15px 12px 45px;
+    background-color: var(--nm-darkest);
+    border: 2px solid var(--nm-search-green);
+    color: var(--nm-text);
+    font-family: 'Roboto Mono', monospace;
+    font-size: 0.9rem;
+    border-radius: 50px;
+    box-sizing: border-box;
+    /* MODIFIED: Premium transition */
+    transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s var(--ease-out-cubic);
+}
+.modal-search-container input:focus {
+    outline: none;
+    background-color: var(--nm-dark);
+    border-color: var(--nm-accent-hover);
+    box-shadow: var(--shadow-glow-accent);
+}
+
+/* Content Highlight */
+.content-highlight {
+    background-color: rgba(255, 255, 0, 0.3);
+    box-shadow: none;
+    transition: background-color 1s ease;
+    border-radius: 5px;
+}
+
+/* Cookie Consent Modal Specific Styles */
+#cookie-consent-modal .modal-content { max-width: 500px; margin: 20px; }
+#cookie-consent-modal .modal-body { max-height: 400px; overflow-y: auto; }
+#cookie-consent-modal .modal-body ul { margin: 15px 0; padding-left: 20px; }
+#cookie-consent-modal .modal-body li { margin-bottom: 8px; line-height: 1.4; }
+#cookie-consent-modal .modal-body strong { color: var(--nm-accent); }
+.modal-footer {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    padding: 20px;
+    border-top: 1px solid var(--nm-border);
+    flex-shrink: 0;
+}
+#cookie-consent-modal { z-index: 2000; }
+#language-selection-modal { z-index: 2001; }
+
+/* Disclaimer Modal Buttons */
+#disclaimer-modal .modal-footer { padding: 20px 20px; }
+#disclaimer-modal .decline-btn,
+#disclaimer-modal .accept-btn {
+    font-size: 1rem;
+    padding: 12px 20px;
+    min-height: 40px;
+    min-width: 90px;
+    border-radius: 20px;
+    margin: 0 10px;
+}
+#disclaimer-lang-btn { font-size: 1.1rem; padding: 12px 20px; }
+#disclaimer-lang-btn i { font-size: 1.3rem; }
+
+/*
+    =================================================================
+    RESPONSIVE DESIGN (ALL SCREENS)
+    =================================================================
+*/
+
+/* --- Small Phones --- */
+@media (max-width: 480px) {
+    .page-header h1 { font-size: 2rem; }
+    .nav-title h1 { font-size: 1.4rem; gap: 8px; }
+    .nav-title h1::after { width: 1.8rem; height: 1.8rem; }
+    .content-section { padding: 15px; }
+    .modal-body { padding: 15px; }
+    .hero-section { padding: 3rem 15px 2rem; }
+    .hero-section h2 { font-size: 2rem; }
+    .hero-section p { font-size: 1rem; }
+}
+
+/* --- Mobile & Small Tablets --- */
+@media (max-width: 768px) {
+    /* All navigation-related styles are handled globally now, only adjust layout */
+    .page-content { margin-top: 70px; padding: 15px; }
+    /* Homepage page-content override */
+    .page-content.home-page { margin-top: 0; padding: 20px 15px; } 
+
+    .content-section { padding: 20px; }
+    .content-grid { grid-template-columns: 1fr; }
+    .nav-title h1 { font-size: 1.5rem; gap: 8px; }
+    .nav-title h1::after { width: 2rem; height: 2rem; }
+    #useful-information-nav { max-width: 100%; }
+    #useful-information-nav .app-icon { padding: 12px 15px; }
+    #useful-information-nav .app-icon span { font-size: 0.8rem; }
+    #disclaimer-modal .modal-footer { flex-direction: column; gap: 15px; padding: 15px; }
+    #disclaimer-modal .decline-btn,
+    #disclaimer-modal .accept-btn {
+        font-size: 0.9rem;
+        padding: 10px 15px;
+        min-height: 35px;
+        min-width: 80px;
+        margin: 0;
+    }
+    .modal-overlay {
+        /* --- OPTIMIZED: Removed blur on mobile, using solid fallback --- */
+        -webkit-backdrop-filter: none; 
+        backdrop-filter: none; 
+        background: rgba(1, 8, 17, 0.95);
+    }
+    body.light-theme .modal-overlay { background: rgba(255, 255, 255, 0.95); }
+    
+    .feature-grid { grid-template-columns: 1fr; }
+    .hero-section { margin-top: 70px; }
+}
+
+/* --- Tablets (Landscape) --- */
+@media (min-width: 769px) and (max-width: 991px) {
+    .content-grid { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+    .page-header h1 { font-size: 2.2rem; }
+    .feature-grid { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+}
+
+/* MODIFIED: Centering logic for Desktops and larger screens */
+@media (min-width: 992px) { 
+    .nav-container {
+        /* Align items to the right to ensure the burger menu is flush right */
+        justify-content: flex-end; 
+        position: relative; 
+    }
+
+    .nav-title {
+        /* Absolute position and transform to center the title regardless of other elements */
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        max-width: calc(100% - 150px); /* Leave space for the burger menu and padding */
+        text-align: center; /* Center the text within the title box */
+    }
+    
+    .nav-title h1 {
+        /* Ensure the H1 is centered inside its absolutely positioned container */
+        justify-content: center;
+    }
+
+    .burger-menu {
+        /* Ensure burger menu remains on the far right */
+        margin-left: auto;
+        flex-shrink: 0;
+    }
+    
+    .nav-container { padding: 15px 0; }
+    .nav-title h1 { font-size: 2rem; }
+    
+    /* NEW: Adjust feature grid for desktops */
+    .feature-grid {
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    }
+}
+
+/* --- Large Desktops & TVs --- */
+@media (min-width: 1600px) {
+    .nav-container, .page-content { max-width: 1500px; }
+    body { font-size: 17px; }
+    .page-header h1 { font-size: 3rem; }
+    .content-section { padding: 40px; }
+}
+
+/*
+    =================================================================
+    ACCESSIBILITY (USER-FRIENDLY)
+    =================================================================
+*/
+
+/* Add a visible focus ring that matches your theme */
+a:focus-visible,
+button:focus-visible,
+.nav-link:focus-visible,
+.nav-action-btn:focus-visible,
+.contact-grid .app-icon:focus-visible,
+#useful-information-nav .app-icon:focus-visible,
+.feature-card:focus-visible { /* ADDED */
+    outline: 2px solid var(--nm-accent) !important;
+    outline-offset: 2px;
+    box-shadow: var(--shadow-glow-accent);
+}
+
+/* For inputs, we can just enhance the existing style */
+#main-search-input:focus-visible,
+.form-group input:focus-visible {
+    outline: none;
+}
+
+/*
+    =================================================================
+    DESKTOP NAVIGATION (USER-FRIENDLY)
+    =================================================================
+*/
+
+@media (min-width: 992px) {
+    /* Hide the burger menu */
+    .burger-menu {
+        display: none;
+    }
+
+    /* Re-style the nav menu for desktop */
+    .nav-menu {
+        position: static;
+        transform: none;
+        height: auto;
+        width: auto;
+        max-width: none;
+        flex-direction: row;
+        background: none;
+        box-shadow: none;
+        padding: 0;
+        overflow-y: visible;
+        gap: 5px; /* Spacing between links */
+        margin-left: auto; /* Pushes menu to the right */
+    }
+
+    /* This positions your nav menu to the right of the centered title,
+       and the nav actions to the right of the nav menu.
+    */
+    .nav-container {
+        display: grid;
+        grid-template-columns: 1fr auto 1fr;
+        align-items: center;
+    }
+    
+    .nav-title {
+        /* This stays the same - centered */
+        position: static;
+        transform: none;
+        grid-column: 2 / 3;
+        text-align: center;
+    }
+
+    .nav-menu {
+        grid-column: 3 / 4;
+        justify-self: end;
+        flex-direction: row;
+        align-items: center;
+    }
+    
+    .nav-link {
+        width: auto; /* Let links be their natural width */
+        font-size: 0.85rem;
+    }
+    
+    /* Re-style the actions to be horizontal */
+    .nav-actions {
+        flex-direction: row;
+        margin-top: 0;
+        width: auto;
+        margin-left: 15px; /* Space between links and actions */
+        border-left: 1px solid var(--nm-border);
+        padding-left: 15px;
+    }
+}
