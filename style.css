@@ -1,7 +1,7 @@
 /*
     =================================================================
     DEDSEC PROJECT MULTI-PAGE STYLES
-    VERSION: 3.2 (Restored Transparency & Fixed Background)
+    VERSION: 3.3 (Hero Content Block Added)
     =================================================================
 */
 
@@ -440,7 +440,22 @@ body.light-theme .tool-card { background: rgba(233, 233, 233, 0.9); } /* 0.9 opa
 }
 body.light-theme .hero-section { background-image: none; background-color: transparent; }
 
-.hero-content { max-width: 800px; animation: fadeIn 0.5s 0.1s var(--ease-out-cubic) backwards; }
+.hero-content { 
+    max-width: 800px; 
+    animation: fadeIn 0.5s 0.1s var(--ease-out-cubic) backwards; 
+
+    /* ADDED: Background block styles */
+    background: rgba(31, 42, 56, 0.9); /* 0.9 opacity of --nm-container */
+    border: 1px solid var(--nm-border);
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+body.light-theme .hero-content {
+    background: rgba(248, 248, 248, 0.9);
+}
+
 .hero-content h1 {
     /* CHANGE: Switched to Noto Serif for a more professional heading font */
     font-family: 'Noto Serif', serif;
@@ -902,6 +917,7 @@ body.light-theme .modal-footer { background: rgba(240, 240, 240, 0.5); } /* 0.5 
     .modal-body { padding: 15px; }
     .hero-content h1 { font-size: 2.2rem; }
     .hero-content p { font-size: 1.1rem; }
+    .hero-content { padding: 20px; } /* ADDED: Mobile padding for hero block */
     .cta-button { font-size: 0.9rem; padding: 10px 20px; }
     .features-section { padding: 40px 15px; }
 }
