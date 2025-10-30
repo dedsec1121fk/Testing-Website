@@ -1,7 +1,7 @@
 /*
     =================================================================
     DEDSEC PROJECT MULTI-PAGE STYLES
-    VERSION: 3.1 (Corporate & Professional Redesign)
+    VERSION: 3.2 (Restored Transparency & Fixed Background)
     =================================================================
 */
 
@@ -83,12 +83,7 @@ body {
     margin: 0;
     padding: 0;
     background-color: var(--nm-abyss-blue);
-    /* BACKGROUND IMAGE FIXED: Reverted to old filename for dark theme */
-    background-image: url('https://raw.githubusercontent.com/dedsec1121fk/dedsec1121fk.github.io/main/Assets/Images/Backgrounds/matrix-code-background.jpg'); 
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
-    /* END BACKGROUND RESTORED */
+    /* REMOVED background-image, now handled by ::before */
     min-height: 100vh;
     font-family: 'Inter', sans-serif;
     color: var(--nm-text);
@@ -99,12 +94,8 @@ body {
 }
 
 body.light-theme {
+    /* REMOVED background-image, now handled by ::before */
     background-color: #f0f0f0;
-    /* LIGHT THEME BACKGROUND IMAGE RESTORED */
-    background-image: url('https://raw.githubusercontent.com/dedsec1121fk/dedsec1121fk.github.io/main/Assets/Images/Backgrounds/matrix-code-background-light.jpg');
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
 }
 
 .code-container code, .nav-action-btn, .form-group input, .contact-grid .app-icon, .copy-btn, #useful-information-nav .app-icon {
@@ -116,7 +107,50 @@ body.light-theme {
 ::-webkit-scrollbar-thumb { background: var(--nm-border); border-radius: 4px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--nm-accent); }
 
-body::before, body::after { display: none; }
+/* --- BACKGROUND IMAGE STYLES --- */
+/* ADDED: Restored fixed background logo from old CSS */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* UPDATED: New Dark Theme Logo URL */
+    background-image: url('https://raw.githubusercontent.com/dedsec1121fk/dedsec1121fk.github.io/875f705c11d1ea083879541823d56a41b1059ec8/Assets/Images/Logos/Custom%20Black%20Purple%20Fox%20Logo.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0.15;
+    z-index: -2;
+    pointer-events: none;
+    transition: background-image 0.3s ease;
+    transform: translateZ(0);
+}
+
+/* ADDED: Restored noise filter from old CSS */
+body::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 800 800' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3E/ffilter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    background-size: cover;
+    opacity: 0.3;
+    z-index: -1;
+    pointer-events: none;
+    transform: translateZ(0);
+}
+
+/* ADDED: Restored light theme logo switch */
+body.light-theme::before {
+    /* UPDATED: New Light Theme Logo URL */
+    background-image: url('https://raw.githubusercontent.com/dedsec1121fk/dedsec1121fk.github.io/875f705c11d1ea083879541823d56a41b1059ec8/Assets/Images/Logos/Custom%20White%20Purple%20Fox%20Logo.jpg');
+    opacity: 0.1; /* Reduced opacity for better readability */
+}
+
 
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(10px); }
@@ -146,6 +180,7 @@ body::before, body::after { display: none; }
 
 /* MODIFIED: Restored transparency */
 body.light-theme .main-nav { background: rgba(249, 249, 252, 0.8); } /* 0.8 opacity of --nm-abyss-blue-light */
+
 
 .nav-container {
     display: flex;
@@ -199,10 +234,10 @@ body.light-theme .nav-title h1::after { background-image: url('https://raw.githu
     width: 80%;
     max-width: 300px;
     height: calc(100vh - 61px);
-    /* MODIFIED: Restored transparency */
-    background: rgba(11, 18, 28, 0.8); /* 0.8 opacity of --nm-darkest */
-    -webkit-backdrop-filter: blur(10px);
-    backdrop-filter: blur(10px);
+    /* MODIFIED: Made solid as requested */
+    background: var(--nm-darkest);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
     /* END MODIFIED */
     flex-direction: column;
     padding: 20px;
@@ -216,8 +251,8 @@ body.light-theme .nav-title h1::after { background-image: url('https://raw.githu
     align-items: center; 
     gap: 10px;
 }
-/* MODIFIED: Restored transparency */
-body.light-theme .nav-menu { background: rgba(249, 249, 252, 0.8); } /* 0.8 opacity of --nm-abyss-blue-light */
+/* MODIFIED: Made solid as requested */
+body.light-theme .nav-menu { background: var(--nm-abyss-blue-light); }
 .nav-menu.active { transform: translateX(0); }
 
 .nav-link {
