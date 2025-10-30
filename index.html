@@ -5,47 +5,26 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <title>DedSec Project</title>
   <meta name="description" content="DedSec — cybersecurity toolkit and security research. Ethical tools, guides, and articles." />
-  <meta name="keywords" content="DedSec, cybersecurity, ethical hacking, security research" />
   <meta name="theme-color" content="#9966FF" />
 
-  <!-- Content Security Policy (moderate, allows required external resources) -->
+  <!-- Moderate CSP for allowed external fonts and suggestions -->
   <meta http-equiv="Content-Security-Policy"
         content="
           default-src 'self' https:;
-          script-src 'self' https://pagead2.googlesyndication.com https://suggestqueries.google.com https://cdnjs.cloudflare.com 'unsafe-inline';
-          style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com;
-          font-src https://fonts.gstatic.com https://cdnjs.cloudflare.com data:;
+          script-src 'self' https://suggestqueries.google.com 'unsafe-inline';
+          style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+          font-src https://fonts.gstatic.com data:;
           img-src 'self' data: https:;
-          connect-src 'self' https://api.github.com https://suggestqueries.google.com https:;
+          connect-src 'self' https://api.github.com https:;
           frame-ancestors 'none';
           base-uri 'self';
           upgrade-insecure-requests;
         ">
 
-  <!-- Preconnect & Preload critical assets for speed -->
+  <!-- Performance: preload -->
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preload" href="style.css" as="style">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Roboto+Mono:wght@400;700&family=Orbitron:wght@500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
-
-  <!-- Optional analytics / ads (kept but isolated) -->
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6091474574080213" crossorigin="anonymous"></script>
-
-  <!-- Structured data -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    "name": "DedSec Project",
-    "url": "https://ded-sec.space/",
-    "potentialAction": {
-      "@type": "SearchAction",
-      "target": "https://ded-sec.space/#search={search_term_string}",
-      "query-input": "required name=search_term_string"
-    }
-  }
-  </script>
 </head>
 <body class="site">
 
@@ -57,9 +36,8 @@
       </a>
 
       <nav class="main-nav" role="navigation" aria-label="Primary Navigation">
-        <button id="nav-toggle" class="nav-toggle" aria-expanded="false" aria-controls="primary-menu">
-          <span class="sr-only">Toggle navigation</span>
-          <svg width="22" height="14" viewBox="0 0 22 14" aria-hidden="true"><rect width="22" height="2"></rect><rect y="6" width="22" height="2"></rect><rect y="12" width="22" height="2"></rect></svg>
+        <button id="nav-toggle" class="nav-toggle" aria-expanded="false" aria-controls="primary-menu" aria-label="Toggle navigation">
+          <svg width="22" height="14" viewBox="0 0 22 14" aria-hidden="true" focusable="false"><rect width="22" height="2"></rect><rect y="6" width="22" height="2"></rect><rect y="12" width="22" height="2"></rect></svg>
         </button>
 
         <ul id="primary-menu" class="menu" hidden>
@@ -141,9 +119,7 @@
     </div>
   </footer>
 
-  <!-- Language modal and disclaimer are preserved but simplified (loaded from JS when needed) -->
-
-  <!-- main script (deferred) -->
   <script src="script.js" defer></script>
 </body>
 </html>
+
