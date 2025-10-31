@@ -795,7 +795,7 @@ body.light-theme .github-stats img { background-color: var(--nm-dark-light); }
 
 .store-link { margin: 1rem 0 1.5rem 0; text-align: center; }
 .store-link a {
-    color: var(--nm-accent);
+    color: var(--nm-text); /* MODIFIED: Changed from var(--nm-accent) to var(--nm-text) for white */
     font-weight: bold;
     text-decoration: none;
     border: 1px solid var(--nm-border);
