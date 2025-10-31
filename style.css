@@ -152,8 +152,8 @@ body::after {
 }
 
 body.light-theme::before {
-    /* UPDATED: New Light Theme Logo URL */
-    background-image: url('https://raw.githubusercontent.com/dedsec1121fk/dedsec1121fk.github.io/875f705c11d1ea083879541823d56a41b10599c8/Assets/Images/Logos/Custom%20White%20Purple%20Fox%20Logo.jpg');
+    /* UPDATED: New Light Theme Logo URL - FIXED COMMIT HASH */
+    background-image: url('https://raw.githubusercontent.com/dedsec1121fk/dedsec1121fk.github.io/875f705c11d1ea083879541823d56a41b1059ec8/Assets/Images/Logos/Custom%20White%20Purple%20Fox%20Logo.jpg');
     opacity: 0.1;
 }
 
