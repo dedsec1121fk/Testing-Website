@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function initializeNavigation() {
         const burgerMenu = document.getElementById('burger-menu');
         const navMenu = document.getElementById('nav-menu');
-        
+
         if (burgerMenu && navMenu) {
             burgerMenu.addEventListener('click', () => {
                 burgerMenu.classList.toggle('active');
@@ -39,181 +39,211 @@ document.addEventListener('DOMContentLoaded', () => {
         const themeIcon = themeBtn?.querySelector('i');
         const themeSpan = themeBtn?.querySelector('span');
 
-        const updateThemeButton = (isLightTheme) => {
-            if (!themeBtn || !themeIcon || !themeSpan) return;
-            
-            if (isLightTheme) {
-                themeIcon.classList.remove('fa-moon');
-                themeIcon.classList.add('fa-sun');
-                themeSpan.setAttribute('data-en', 'Light Theme');
-                themeSpan.setAttribute('data-gr', 'Φωτεινό Θέμα');
-            } else {
-                themeIcon.classList.remove('fa-sun');
-                themeIcon.classList.add('fa-moon');
-                themeSpan.setAttribute('data-en', 'Dark Theme');
-                themeSpan.setAttribute('data-gr', 'Σκοτεινό Θέμα');
+        if (themeBtn) {
+            themeBtn.addEventListener('click', () => {
+                document.body.classList.toggle('light-theme');
+                const isLight = document.body.classList.contains('light-theme');
+                localStorage.setItem('theme', isLight ? 'light' : 'dark');
+                updateThemeButton(isLight);
+            });
+            updateThemeButton(document.body.classList.contains('light-theme'));
+        }
+
+        function updateThemeButton(isLight) {
+            if (themeIcon) {
+                themeIcon.className = isLight ? 'fas fa-moon' : 'fas fa-sun';
             }
-            themeSpan.textContent = themeSpan.getAttribute(`data-${currentLanguage}`) || themeSpan.getAttribute('data-en');
-        };
-
-        themeBtn?.addEventListener('click', () => {
-            document.body.classList.toggle('light-theme');
-            const isLight = document.body.classList.contains('light-theme');
-            localStorage.setItem('theme', isLight ? 'light' : 'dark');
-            updateThemeButton(isLight);
-        });
-
-        const savedTheme = localStorage.getItem('theme');
-        if (savedTheme === 'light') { document.body.classList.add('light-theme'); }
-        updateThemeButton(document.body.classList.contains('light-theme'));
+            if (themeSpan) {
+                themeSpan.setAttribute('data-en', isLight ? 'Dark Theme' : 'Light Theme');
+                themeSpan.setAttribute('data-gr', isLight ? 'Σκοτεινό Θέμα' : 'Φωτεινό Θέμα');
+                updateText(themeSpan.parentElement);
+            }
+        }
     }
 
-    // --- LANGUAGE SWITCHER ---
-    function initializeLanguageSwitcher() {
-        const langBtn = document.getElementById('nav-lang-switcher');
-        const disclaimerLangBtn = document.getElementById('disclaimer-lang-btn');
-        const languageModal = document.getElementById('language-selection-modal');
-        
-        langBtn?.addEventListener('click', () => { if (languageModal) languageModal.classList.add('visible'); });
-        disclaimerLangBtn?.addEventListener('click', () => { if (languageModal) languageModal.classList.add('visible'); });
+    // --- LANGUAGE SWITCHER & INTERNATIONALIZATION (i18n) ---
+    function updateText(element = document) {
+        element.querySelectorAll('[data-en], [data-gr]').forEach(el => {
+            const translation = el.getAttribute(`data-${currentLanguage}`);
+            if (translation) {
+                // Handle special elements (input/textarea, meta, title)
+                if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+                    el.placeholder = translation;
+                } else if (el.tagName === 'OPTION') {
+                    el.textContent = translation;
+                } else if (el.tagName === 'META') {
+                    if (el.getAttribute('name') === 'description' || el.getAttribute('property')?.includes('description')) {
+                        el.setAttribute('content', translation);
+                    }
+                } else if (el.tagName === 'TITLE') {
+                     document.title = translation;
+                }
+                else {
+                    el.innerHTML = translation;
+                }
+            }
+        });
+    }
 
-        document.querySelectorAll('.language-button').forEach(button => {
-            button.addEventListener('click', () => {
-                changeLanguage(button.dataset.lang);
-                if (languageModal) languageModal.classList.remove('visible');
+    function changeLanguage(lang) {
+        if (lang === currentLanguage) return;
+
+        currentLanguage = lang;
+        localStorage.setItem('language', lang);
+
+        document.documentElement.lang = lang; // Set HTML lang attribute
+        updateText(); // Update all text on the page
+
+        // Update Theme Switcher text after language change
+        const themeBtnSpan = document.getElementById('nav-theme-switcher')?.querySelector('span');
+        if (themeBtnSpan) {
+            const isLight = document.body.classList.contains('light-theme');
+            themeBtnSpan.setAttribute('data-en', isLight ? 'Dark Theme' : 'Light Theme');
+            themeBtnSpan.setAttribute('data-gr', isLight ? 'Σκοτεινό Θέμα' : 'Φωτεινό Θέμα');
+            updateText(themeBtnSpan.parentElement); // Update only the button text
+        }
+    }
+
+    function initializeLanguageSwitcher() {
+        const modal = document.getElementById('language-selection-modal');
+        const modalBtn = document.getElementById('nav-language-switcher');
+        const languageBtns = modal?.querySelectorAll('.language-button');
+
+        if (modalBtn) {
+            modalBtn.addEventListener('click', () => openModal('language-selection-modal'));
+        }
+
+        languageBtns?.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const lang = e.target.getAttribute('data-lang');
+                if (lang) {
+                    changeLanguage(lang);
+                    closeModal('language-selection-modal');
+                }
             });
         });
     }
 
-    // --- LANGUAGE MANAGEMENT ---
-    window.changeLanguage = (lang) => {
-        currentLanguage = lang;
-        document.documentElement.lang = lang;
-        localStorage.setItem('language', lang);
-        
-        document.querySelectorAll('[data-en]').forEach(el => {
-            const text = el.getAttribute(`data-${lang}`) || el.getAttribute('data-en');
-            const hasDirectText = Array.from(el.childNodes).some(node => node.nodeType === Node.TEXT_NODE && node.textContent.trim().length > 0);
-            
-            if (hasDirectText) {
-                Array.from(el.childNodes).forEach(node => {
-                    if (node.nodeType === Node.TEXT_NODE && node.textContent.trim().length > 0) {
-                        node.textContent = text;
-                    }
-                });
-            } else if (el.children.length === 0) {
-                el.textContent = text;
-            }
-        });
+    // --- MODAL FUNCTIONALITY ---
+    function openModal(modalId) {
+        const modal = document.getElementById(modalId);
+        if (modal) {
+            modal.classList.add('active');
+            setTimeout(() => modal.querySelector('.modal-content')?.classList.add('active'), 10);
+            document.body.style.overflow = 'hidden';
+        }
+    }
 
-        document.querySelectorAll('[data-lang-section]').forEach(el => {
-            el.classList.toggle('hidden', el.dataset.langSection !== lang);
-            if (el.dataset.langSection === lang) {
-                el.classList.remove('hidden-by-default');
-            }
-        });
-    };
+    function closeModal(modalId) {
+        const modal = document.getElementById(modalId);
+        if (modal) {
+            modal.querySelector('.modal-content')?.classList.remove('active');
+            setTimeout(() => {
+                modal.classList.remove('active');
+                document.body.style.overflow = '';
+            }, 300);
+        }
+    }
 
-    // --- DISCLAIMER FUNCTIONALITY ---
+    function initializeModals() {
+        document.querySelectorAll('.modal-overlay').forEach(modal => {
+            // Close button inside modal
+            modal.querySelector('.close-modal')?.addEventListener('click', () => closeModal(modal.id));
+
+            // Close when clicking outside the modal content
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    closeModal(modal.id);
+                }
+            });
+        });
+    }
+
+    // --- CAROUSEL (SWIPER) INITIALIZATION ---
+    function initializeCarousels() {
+        // Placeholder for external library initialization (e.g., Swiper)
+    }
+
+    // --- CODE COPY BUTTONS ---
+    function initializeCopyButtons() {
+        document.querySelectorAll('.copy-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                const codeContainer = button.closest('.code-container');
+                const codeElement = codeContainer ? codeContainer.querySelector('code') : null;
+
+                if (codeElement) {
+                    const textToCopy = codeElement.textContent;
+                    navigator.clipboard.writeText(textToCopy).then(() => {
+                        button.classList.add('copied');
+                        const originalText = button.getAttribute('data-en');
+                        const originalGrText = button.getAttribute('data-gr');
+                        button.setAttribute('data-en', 'Copied!');
+                        button.setAttribute('data-gr', 'Αντιγράφηκε!');
+                        updateText(button.parentElement); // Update button text
+
+                        setTimeout(() => {
+                            button.classList.remove('copied');
+                            button.setAttribute('data-en', originalText);
+                            button.setAttribute('data-gr', originalGrText);
+                            updateText(button.parentElement); // Restore button text
+                        }, 2000);
+                    }).catch(err => {
+                        console.error('Could not copy text: ', err);
+                    });
+                }
+            });
+        });
+    }
+
+    // --- DISCLAIMER & COOKIE FUNCTIONALITY ---
     function initializeDisclaimer() {
         const disclaimerModal = document.getElementById('disclaimer-modal');
         const acceptBtn = document.getElementById('accept-disclaimer');
         const declineBtn = document.getElementById('decline-disclaimer');
-        const disclaimerAccepted = localStorage.getItem('disclaimerAccepted');
 
-        if (!disclaimerAccepted) {
-            setTimeout(() => { if (disclaimerModal) disclaimerModal.classList.add('visible'); }, 10);
+        // Check if disclaimer has been accepted before
+        if (localStorage.getItem('disclaimer_accepted') !== 'true' && disclaimerModal) {
+            openModal('disclaimer-modal');
         }
 
         acceptBtn?.addEventListener('click', () => {
-            localStorage.setItem('disclaimerAccepted', 'true');
-            if (disclaimerModal) disclaimerModal.classList.remove('visible');
+            localStorage.setItem('disclaimer_accepted', 'true');
+            closeModal('disclaimer-modal');
         });
 
-        declineBtn?.addEventListener('click', () => { window.history.back(); });
-    }
-
-    // --- MODAL MANAGEMENT ---
-    function initializeModals() {
-        document.querySelectorAll('.modal-overlay').forEach(modal => {
-            const closeModalBtn = modal.querySelector('.close-modal');
-            const closeModal = () => modal.classList.remove('visible');
-            
-            modal.addEventListener('click', e => {
-                if (e.target === modal && modal.id !== 'disclaimer-modal') closeModal();
-            });
-            
-            closeModalBtn?.addEventListener('click', closeModal);
+        declineBtn?.addEventListener('click', () => {
+            alert('You must accept the terms to use the DedSec Project website. You will be redirected.');
+            window.location.href = 'https://google.com'; // Redirect to a benign site
         });
     }
 
-    // --- CAROUSEL FUNCTIONALITY ---
-    function initializeCarousels() {
-        document.querySelectorAll('.gym-carousel').forEach(carousel => {
-            const images = carousel.querySelectorAll('.gym-clothing-images img');
-            const prevBtn = carousel.querySelector('.carousel-btn.prev');
-            const nextBtn = carousel.querySelector('.carousel-btn.next');
-            
-            if (images.length > 0 && prevBtn && nextBtn) {
-                let currentIndex = 0;
-                const showImage = (index) => images.forEach((img, i) => img.classList.toggle('active', i === index));
-                prevBtn.addEventListener('click', () => { currentIndex = (currentIndex > 0) ? currentIndex - 1 : images.length - 1; showImage(currentIndex); });
-                nextBtn.addEventListener('click', () => { currentIndex = (currentIndex < images.length - 1) ? currentIndex + 1 : 0; showImage(currentIndex); });
-                showImage(0);
-            }
-        });
-    }
-
-    // --- COPY FUNCTIONALITY ---
-    function initializeCopyButtons() {
-        window.copyToClipboard = (button, targetId) => {
-            const codeElement = document.getElementById(targetId);
-            if (!codeElement || !navigator.clipboard) {
-                button.textContent = 'Error';
-                setTimeout(() => { button.textContent = (currentLanguage === 'gr') ? 'Αντιγραφή' : 'Copy'; }, 1500);
-                return;
-            }
-            
-            const originalText = button.textContent;
-            navigator.clipboard.writeText(codeElement.innerText).then(() => {
-                button.textContent = (currentLanguage === 'gr') ? 'Αντιγράφηκε!' : 'Copied!';
-                setTimeout(() => { button.textContent = originalText; }, 1500);
-            }).catch(err => {
-                button.textContent = 'Failed!';
-                setTimeout(() => { button.textContent = originalText; }, 1500);
-            });
-        };
-
-        document.querySelectorAll('.copy-btn').forEach(btn => {
-            const targetId = btn.getAttribute('onclick')?.match(/'(.*?)'/)?.[1];
-            if (targetId) {
-                btn.addEventListener('click', () => window.copyToClipboard(btn, targetId));
-            }
-        });
-    }
-
-    // --- TOOL CATEGORIES FUNCTIONALITY ---
+    // --- TOOLS PAGE COLLAPSIBLE SECTIONS ---
     function initializeToolCategories() {
-        document.querySelectorAll('.category, .tool-item').forEach(item => item.classList.remove('active'));
-        
         document.querySelectorAll('.category-header').forEach(header => {
             header.addEventListener('click', function() {
-                const category = this.parentElement;
+                const category = this.closest('.category');
                 const wasActive = category.classList.contains('active');
+
+                // Close all other categories
                 document.querySelectorAll('.category').forEach(c => c.classList.remove('active'));
-                if (!wasActive) category.classList.add('active');
+
+                // Toggle the clicked one
+                category.classList.toggle('active', !wasActive);
             });
         });
-        
+
         document.querySelectorAll('.tool-header').forEach(header => {
-            header.addEventListener('click', function(e) {
-                e.stopPropagation();
+            header.addEventListener('click', function() {
                 const toolItem = this.parentElement;
                 const wasActive = toolItem.classList.contains('active');
                 const category = toolItem.closest('.category');
+
+                // Close all other tool items in the same category
                 if (category) {
                     category.querySelectorAll('.tool-item').forEach(t => { if (t !== toolItem) t.classList.remove('active'); });
                 }
+
+                // Toggle the clicked one
                 toolItem.classList.toggle('active', !wasActive);
             });
         });
@@ -233,11 +263,10 @@ document.addEventListener('DOMContentLoaded', () => {
             initializeToolCategories();
         }
 
-        // Removed all calls to 'Useful Information' functions
-
         changeLanguage(localStorage.getItem('language') || 'en');
         if (localStorage.getItem('theme') === 'light') document.body.classList.add('light-theme');
 
+        // Nav active state logic
         const currentPage = window.location.pathname.split('/').pop() || 'index.html';
         document.querySelectorAll('.nav-link').forEach(link => {
             const linkPage = link.getAttribute('href').split('/').pop();
