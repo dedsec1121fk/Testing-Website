@@ -102,7 +102,7 @@ html {
 body {
     margin: 0;
     padding: 0;
-    background-color: transparent; /* <-- UPDATED */
+    background-color: var(--nm-abyss-blue);
     font-family: 'Inter', sans-serif;
     color: var(--nm-text);
     transition: background-color 0.3s ease, color 0.3s ease;
@@ -519,7 +519,7 @@ body.light-theme .tool-card {
     border-radius: 0;
     overflow-y: auto;
     overflow-x: hidden;
-    background: transparent; /* <-- UPDATED */
+    background: var(--nm-abyss-blue);
 }
 
 .home-screen {
