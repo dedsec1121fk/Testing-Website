@@ -45,37 +45,39 @@
     /* Light theme specific variables (Adjusted for consistency) */
     --nm-text-muted-dark: #CCCCCC;
     --nm-text-muted-light: #666666;
-    --nm-border-light: #9370DB; /* Medium Purple Border */
-    --nm-container-light: #D2B4DE; /* Light Purple Container */
-    --nm-darkest-light: #EEDEFF; /* Light Lavender Gray */
-    --nm-dark-light: #E0C6FF;    /* Light Lavender Nav/Card Background */
-    --nm-abyss-blue-light: #F8F0FF; /* Very Light Lavender Background */
+    --nm-border-light: #000000;         /* Black Border (High Contrast) */
+    --nm-container-light: #FFFFFF;      /* White Container (High Contrast) */
+    --nm-darkest-light: #FFFFFF;        /* White Background (High Contrast) */
+    --nm-dark-light: #FFFFFF;           /* White Nav/Card Background (High Contrast) */
+    --nm-abyss-blue-light: #FFFFFF;     /* Pure White Background (High Contrast) */
 }
 
 body.light-theme {
-    /* Pure Lavender/Purple Palette (Light Theme) */
+    /* Pure Black/White Palette (High Contrast) */
     --nm-abyss-blue: var(--nm-abyss-blue-light);
     --nm-darkest: var(--nm-darkest-light);
     --nm-dark: var(--nm-dark-light);
     --nm-container: var(--nm-container-light);
     --nm-border: var(--nm-border-light);
-    --nm-accent: #9966FF;
-    --nm-accent-hover: #7F5AD5;
+    --nm-accent: #000000;               /* Black Accent (Used for borders, etc.) */
+    --nm-accent-hover: #333333;          /* Dark Gray Hover */
     --nm-text: #000000;
     --nm-text-muted: var(--nm-text-muted-light);
-    --nm-danger: #C71585;         /* Medium Violet Red for Danger */
-    --nm-danger-hover: #8B008B;
-    --nm-success: #38A169;
-    --nm-warning: #D8BFD8;
+    --nm-danger: #CC0000;               /* High Contrast Red for Danger */
+    --nm-danger-hover: #8B0000;
+    --nm-success: #008000;              /* High Contrast Green for Success */
+    --nm-warning: #FFCC00;              /* High Contrast Yellow for Warning */
 
-    --nm-text-on-accent: #FFFFFF;
+    --nm-text-on-accent: #FFFFFF;        /* White text on black accent (for primary CTA/nav hover) */
     --nm-text-on-status: #FFFFFF;
 
-    --glow-color: rgba(var(--glow-rgb), 0.3);
+    /* No glow/lighter glow for high-contrast theme */
+    --glow-rgb: 0, 0, 0;
+    --glow-color: rgba(var(--glow-rgb), 0.1);
     --nm-search-green: var(--nm-accent);
 
-    --warning-bg: rgba(216, 191, 216, 0.5);
-    --danger-bg: rgba(199, 21, 133, 0.3);
+    --warning-bg: rgba(255, 204, 0, 0.2);
+    --danger-bg: rgba(204, 0, 0, 0.1);
 }
 
 /*
@@ -95,7 +97,7 @@ body {
     background-color: var(--nm-abyss-blue);
     min-height: 100vh;
     font-family: 'Inter', sans-serif;
-    color: var(--nm-text) !important; /* CRITICAL FIX: Ensure all body text is correctly themed */
+    color: var(--nm-text);
     transition: background-color 0.3s ease, color 0.3s ease;
     position: relative;
     -webkit-font-smoothing: antialiased;
@@ -152,8 +154,8 @@ body::after {
 
 body.light-theme::before {
     /* UPDATED: New Light Theme Logo URL */
-    background-image: url('https://raw.githubusercontent.com/dedsec1121fk/dedsec1121fk.github.io/875f705c11d1ea083879541823d56a41b1059ec8/Assets/Images/Logos/Custom%20White%20Purple%20Fox%20Logo.jpg');
-    opacity: 0.1;
+    background-image: url('https://raw.githubusercontent.com/dedsec1121fk/dedsec1121fk.github.io/875f705c11d1ea083879541823d56a41b10599c8/Assets/Images/Logos/Custom%20White%20Purple%20Fox%20Logo.jpg');
+    opacity: 0.05; /* Reduced opacity for a cleaner white theme */
 }
 
 
@@ -182,7 +184,7 @@ body.light-theme::before {
     box-sizing: border-box;
 }
 
-body.light-theme .main-nav { background: rgba(248, 240, 255, 0.8); }
+body.light-theme .main-nav { background: rgba(255, 255, 255, 0.95); } /* Changed to white background */
 
 .nav-container {
     display: flex;
@@ -198,7 +200,7 @@ body.light-theme .main-nav { background: rgba(248, 240, 255, 0.8); }
 .nav-title h1 {
     margin: 0;
     font-size: 2rem;
-    color: var(--nm-text) !important; /* FIX: Ensure nav title text is correctly themed */
+    color: var(--nm-text); /* MODIFIED: Changed from var(--nm-accent) to var(--nm-text) for white */
     font-family: 'Orbitron', sans-serif;
     text-shadow: none;
     display: flex;
@@ -309,10 +311,6 @@ body.light-theme .nav-menu { background: var(--nm-abyss-blue-light); }
     box-sizing: border-box;
 }
 
-.nav-action-btn i {
-    color: var(--nm-text) !important; /* FIX: Ensure icons in nav buttons are correctly themed */
-}
-
 .nav-action-btn:hover {
     background: var(--nm-accent);
     color: var(--nm-text-on-accent);
@@ -320,6 +318,14 @@ body.light-theme .nav-menu { background: var(--nm-abyss-blue-light); }
     box-shadow: var(--shadow-glow-accent);
 }
 .nav-action-btn:active { transform: translateY(0px) scale(0.97); transition-duration: 0.1s; }
+
+/* OVERRIDE: High Contrast Light Theme Button Hover */
+body.light-theme .nav-action-btn:hover {
+    background: #F0F0F0; /* Light gray hover */
+    color: var(--nm-text); /* Black text */
+    border-color: var(--nm-border); /* Black border */
+    box-shadow: none; /* Removed glow */
+}
 
 /*
     =================================================================
@@ -341,7 +347,7 @@ body.light-theme .nav-menu { background: var(--nm-abyss-blue-light); }
 
 .page-header { text-align: center; margin-bottom: 30px; padding-top: 20px; }
 .page-header h1 {
-    color: var(--nm-text) !important; /* CRITICAL FIX: Ensure text is correctly themed */
+    color: var(--nm-text) !important; /* CRITICAL FIX: Ensure text is white */
     font-family: 'Noto Serif', serif;
     font-size: 2.5rem;
     margin-bottom: 10px;
@@ -367,7 +373,7 @@ body.light-theme .nav-menu { background: var(--nm-abyss-blue-light); }
     max-width: 1200px;
     box-sizing: border-box;
 }
-body.light-theme .content-section { background: rgba(210, 180, 222, 0.9); }
+body.light-theme .content-section { background: rgba(255, 255, 255, 1.0); } /* Changed to white background */
 
 .content-section:hover {
     border-color: var(--nm-accent);
@@ -375,7 +381,7 @@ body.light-theme .content-section { background: rgba(210, 180, 222, 0.9); }
 }
 
 .content-section h2 {
-    color: var(--nm-text) !important; /* CRITICAL FIX: Ensure text is correctly themed */
+    color: var(--nm-text) !important; /* CRITICAL FIX: Ensure text is white */
     font-family: 'Noto Serif', serif;
     margin-bottom: 20px;
     border-bottom: 2px solid var(--nm-border);
@@ -383,16 +389,16 @@ body.light-theme .content-section { background: rgba(210, 180, 222, 0.9); }
     text-shadow: none !important; /* CRITICAL FIX: Force the glow to be removed */
 }
 .content-section h3 {
-    color: var(--nm-text) !important; /* CRITICAL FIX: Ensure text is correctly themed */
+    color: var(--nm-text) !important; /* CRITICAL FIX: Ensure text is white */
     font-family: 'Noto Serif', serif;
     margin: 25px 0 15px 0;
     text-shadow: none !important; /* CRITICAL FIX: Force the glow to be removed */
 }
 
-/* FIX: Force all links inside the main content to be correctly themed, overriding default browser/visited link color */
+/* FIX: Force all links inside the main content to be white, overriding default browser/visited link color */
 .content-section a,
 .content-section a:visited {
-    color: var(--nm-text) !important;
+    color: var(--nm-text);
 }
 
 .content-grid {
@@ -411,10 +417,10 @@ body.light-theme .content-section { background: rgba(210, 180, 222, 0.9); }
     transition: transform 0.25s var(--ease-out-cubic), border-color 0.25s ease, box-shadow 0.25s var(--ease-out-cubic);
     will-change: transform, box-shadow;
 }
-body.light-theme .tool-card { background: rgba(224, 198, 255, 0.9); }
+body.light-theme .tool-card { background: rgba(255, 255, 255, 1.0); } /* Changed to white background */
 .tool-card:hover { border-color: var(--nm-accent); transform: translateY(-3px); box-shadow: var(--shadow-glow-accent); }
 .tool-card h4 {
-    color: var(--nm-text) !important; /* FIX: Ensure tool card title is correctly themed */
+    color: var(--nm-text); /* PREVIOUSLY MODIFIED to white from var(--nm-accent) - This is now redundant but kept for good measure. */
     margin-bottom: 10px;
     font-family: 'Noto Serif', serif;
 }
@@ -457,13 +463,13 @@ body.light-theme .hero-section { background-image: none; background-color: trans
 }
 
 body.light-theme .hero-content {
-    background: rgba(210, 180, 222, 0.9);
+    background: rgba(255, 255, 255, 1.0); /* Changed to white background */
 }
 
 .hero-content h1 {
     font-family: 'Noto Serif', serif;
     font-size: 2.8rem;
-    color: var(--nm-text) !important; /* FIX: Ensure hero title text is correctly themed */
+    color: var(--nm-text);
     text-shadow: none;
     margin-bottom: 15px;
 }
@@ -490,8 +496,20 @@ body.light-theme .hero-content {
 }
 .cta-button.primary { background: var(--nm-accent); color: var(--nm-text-on-accent); border-color: var(--nm-accent); }
 .cta-button.secondary { background: transparent; color: var(--nm-text); border-color: var(--nm-border); }
-.cta-button.primary:hover { background: var(--nm-accent-hover); border-color: var(--nm-accent-hover); transform: translateY(-3px); box-shadow: var(--shadow-glow-accent); }
-.cta-button.secondary:hover { background: var(--nm-container); border-color: var(--nm-accent); color: var(--nm-text); }
+
+/* OVERRIDE: High Contrast Light Theme Button Hover */
+.cta-button.primary:hover {
+    background: #F0F0F0; /* Light gray hover */
+    border-color: var(--nm-border);
+    color: var(--nm-text);
+    transform: translateY(-3px);
+    box-shadow: none;
+}
+.cta-button.secondary:hover {
+    background: #F0F0F0; /* Light gray hover */
+    border-color: var(--nm-border);
+    color: var(--nm-text);
+}
 .cta-button:active { transform: translateY(0px) scale(0.97); transition-duration: 0.1s; }
 
 /* Features Section (Homepage) */
@@ -507,7 +525,7 @@ body.light-theme .hero-content {
     font-family: 'Orbitron', sans-serif;
     font-size: 1.8rem;
     margin-bottom: 40px;
-    color: var(--nm-text) !important; /* FIX: Ensure feature section title is correctly themed */
+    color: var(--nm-text);
 }
 .features-grid {
     display: grid;
@@ -523,13 +541,13 @@ body.light-theme .hero-content {
     border-radius: 12px;
     transition: transform 0.3s var(--ease-out-cubic), box-shadow 0.3s var(--ease-out-cubic);
 }
-body.light-theme .feature-card { background: rgba(224, 198, 255, 0.9); }
+body.light-theme .feature-card { background: rgba(255, 255, 255, 1.0); } /* Changed to white background */
 .feature-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-glow-accent); }
 .feature-card i { font-size: 2rem; color: var(--nm-accent); margin-bottom: 15px; }
 .feature-card h3 {
     font-family: 'Noto Serif', serif;
     font-size: 1.2rem;
-    color: var(--nm-text) !important; /* FIX: Ensure feature card title is correctly themed */
+    color: var(--nm-text);
     margin-bottom: 10px;
 }
 .feature-card p { color: var(--nm-text-muted); line-height: 1.6; margin: 0; }
@@ -579,7 +597,7 @@ body.light-theme .feature-card { background: rgba(224, 198, 255, 0.9); }
     visibility: hidden;
     transition: opacity 0.25s ease-out, visibility 0s 0.25s, backdrop-filter 0.25s ease-out;
 }
-body.light-theme .modal-overlay { background: rgba(248, 240, 255, 0.7); }
+body.light-theme .modal-overlay { background: rgba(255, 255, 255, 0.9); } /* Changed to white background */
 .modal-overlay.visible { opacity: 1; visibility: visible; transition: opacity 0.25s ease-out; }
 
 .modal-content {
@@ -600,7 +618,7 @@ body.light-theme .modal-overlay { background: rgba(248, 240, 255, 0.7); }
     transition: transform 0.3s var(--ease-out-cubic), opacity 0.3s ease;
     will-change: transform, opacity;
 }
-body.light-theme .modal-content { background: rgba(210, 180, 222, 0.9); box-shadow: 0 5px 25px rgba(0,0,0,0.1); border: 1px solid var(--nm-border); }
+body.light-theme .modal-content { background: #FFFFFF; box-shadow: 0 5px 25px rgba(0,0,0,0.1); border: 1px solid var(--nm-border); } /* Changed to white background */
 .modal-content-auto-height { height: auto; }
 .modal-overlay.visible .modal-content { transform: translateY(0) scale(1); opacity: 1; }
 
@@ -615,7 +633,7 @@ body.light-theme .modal-content { background: rgba(210, 180, 222, 0.9); box-shad
     transition: background-color 0.3s ease;
     flex-shrink: 0;
 }
-body.light-theme .modal-header { background: rgba(238, 222, 255, 0.5); }
+body.light-theme .modal-header { background: rgba(240, 240, 240, 0.8); } /* Changed to light gray background */
 .modal-header h2 { font-family: 'Orbitron', sans-serif; font-size: 1.1rem; margin: 0; color: var(--nm-text); text-transform: uppercase; text-shadow: none; }
 .close-modal { background: none; border: none; color: var(--nm-text); font-size: 1.5rem; cursor: pointer; padding: 0; line-height: 1; transition: color 0.2s, text-shadow 0.2s, transform 0.2s var(--ease-out-cubic); }
 .close-modal:hover { color: var(--nm-danger); text-shadow: none; transform: rotate(90deg); }
@@ -681,7 +699,7 @@ body.light-theme .modal-header { background: rgba(238, 222, 255, 0.5); }
     box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
     position: relative;
 }
-body.light-theme .code-container { background: var(--nm-darkest-light); box-shadow: inset 0 0 10px rgba(0,0,0,0.1); }
+body.light-theme .code-container { background: #FFFFFF; box-shadow: inset 0 0 10px rgba(0,0,0,0.1); } /* Changed to white background */
 .code-container code { font-family: 'Roboto Mono', monospace; color: var(--nm-text); word-break: break-all; display: block; font-size: 0.85em; background: none; padding: 0; border-radius: 0; }
 
 .copy-btn {
@@ -738,7 +756,7 @@ body.light-theme .tip, body.light-theme .note { background: var(--nm-container-l
     border-radius: 12px;
     background: rgba(0, 0, 0, 0.9);
     border: 1px solid var(--nm-border);
-    color: var(--nm-text) !important; /* FIX: Enforce theme color for portfolio link text */
+    color: var(--nm-text);
     cursor: pointer;
     font-family: 'Roboto Mono', monospace;
     display: flex;
@@ -763,7 +781,7 @@ body.light-theme .tip, body.light-theme .note { background: var(--nm-container-l
     border-radius: 8px;
     background: rgba(0, 0, 0, 0.9);
     border: 1px solid var(--nm-border);
-    color: var(--nm-text) !important; /* FIX: Enforce theme color for contact link text */
+    color: var(--nm-text);
     cursor: pointer;
     font-family: 'Roboto Mono', monospace;
     display: flex;
@@ -786,18 +804,30 @@ body.light-theme .tip, body.light-theme .note { background: var(--nm-container-l
     box-shadow: var(--shadow-glow-accent);
 }
 .contact-grid .app-icon:active { transform: translateY(0px) scale(0.97); transition-duration: 0.1s; }
-.contact-grid .app-icon i { color: var(--nm-text) !important; transition: color 0.2s ease; font-size: 1.8rem; margin: 0; text-shadow: none; flex-shrink: 0; display: flex; align-items: center; }
-#home-link-grid .app-icon i {
-    font-size: 2.2rem;
-    color: var(--nm-text) !important; /* CRITICAL FIX: Ensure portfolio icons use theme text color, not accent color */
-    flex-shrink: 0;
-    transition: color 0.2s ease, transform 0.2s ease;
-}
+.contact-grid .app-icon i { color: var(--nm-text); transition: color 0.2s ease; font-size: 1.8rem; margin: 0; text-shadow: none; flex-shrink: 0; display: flex; align-items: center; }
+#home-link-grid .app-icon i { color: var(--nm-accent); transition: color 0.2s ease, transform 0.2s ease; }
 #home-link-grid .app-icon:hover i { color: var(--nm-text-on-accent); transform: scale(1.1); }
 /* MODIFIED: text-align set to center */
-.contact-grid .app-icon span { font-size: 0.9rem; font-weight: 700; line-height: 1.3; word-break: break-word; text-align: center; color: var(--nm-text) !important; /* FIX: Enforce theme color for button text */ }
+.contact-grid .app-icon span { font-size: 0.9rem; font-weight: 700; line-height: 1.3; word-break: break-word; text-align: center; }
 #home-link-grid .app-icon span { text-align: center; font-size: 1rem; }
-body.light-theme .contact-grid .app-icon { background: rgba(233, 233, 233, 0.9); color: var(--nm-text); }
+body.light-theme .contact-grid .app-icon {
+    background: #FFFFFF; /* Changed to white background */
+    color: var(--nm-text);
+    border-color: var(--nm-border);
+}
+
+/* OVERRIDE: High Contrast Light Theme Contact/Link Button Hover */
+.contact-grid .app-icon:hover {
+    background: #F0F0F0; /* Light gray hover */
+    border-color: var(--nm-border);
+    color: var(--nm-text);
+    transform: translateY(-3px);
+    box-shadow: none;
+}
+.contact-grid .app-icon i { color: var(--nm-text); } /* Ensure black icon */
+#home-link-grid .app-icon i { color: var(--nm-text); } /* Ensure black icon */
+#home-link-grid .app-icon:hover i { color: var(--nm-text); transform: scale(1.1); } /* Ensure black icon on hover */
+
 
 .gym-carousel { position: relative; width: 100%; max-width: 400px; margin: 0 auto; aspect-ratio: 3 / 4; overflow: hidden; border: 1px solid var(--nm-border); background-color: var(--nm-dark); border-radius: 12px; }
 body.light-theme .gym-carousel { background-color: var(--nm-dark-light); }
@@ -857,13 +887,33 @@ body.light-theme .store-link a { background-color: var(--nm-dark-light); }
     transition: transform 0.25s var(--ease-out-cubic), background-color 0.25s ease, color 0.25s ease, box-shadow 0.25s var(--ease-out-cubic), border-color 0.25s ease;
     will-change: transform, box-shadow;
 }
-#useful-information-nav .app-icon:hover { background: var(--nm-accent); border-color: var(--nm-accent-hover); color: var(--nm-text-on-accent); transform: translateY(-3px); box-shadow: var(--shadow-glow-accent); }
+body.light-theme #useful-information-nav .app-icon {
+    background: #FFFFFF; /* Changed to white background */
+    color: var(--nm-text);
+    border-color: var(--nm-border);
+}
+#useful-information-nav .app-icon:hover {
+    background: var(--nm-accent);
+    border-color: var(--nm-accent-hover);
+    color: var(--nm-text-on-accent);
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-glow-accent);
+}
 #useful-information-nav .app-icon:active { transform: translateY(0px) scale(0.97); transition-duration: 0.1s; }
 #useful-information-nav .app-icon i { font-size: 1.4rem; color: var(--nm-accent); flex-shrink: 0; transition: color 0.2s ease; }
 #useful-information-nav .app-icon:hover i { color: var(--nm-text-on-accent); }
 /* MODIFIED: text-align set to center */
 #useful-information-nav .app-icon span { font-size: 0.9rem; font-weight: 700; text-align: center; word-break: break-word; line-height: 1.3; color: inherit; }
-body.light-theme #useful-information-nav .app-icon { background: rgba(233, 233, 233, 0.9); color: var(--nm-text); }
+
+/* OVERRIDE: High Contrast Light Theme Useful Info Button Hover */
+#useful-information-nav .app-icon:hover {
+    background: #F0F0F0; /* Light gray hover */
+    border-color: var(--nm-border);
+    color: var(--nm-text);
+    box-shadow: none;
+}
+#useful-information-nav .app-icon i { color: var(--nm-text); } /* Ensure black icon */
+#useful-information-nav .app-icon:hover i { color: var(--nm-text); } /* Ensure black icon on hover */
 
 .progress-bar-container { width: 100%; height: 20px; background-color: var(--nm-darkest); border-radius: 10px; overflow: hidden; margin-bottom: 15px; position: relative; display: none; border: 1px solid var(--nm-border); max-width: 700px; margin-left: auto; margin-right: auto; }
 .progress-bar { width: 0%; height: 100%; background: linear-gradient(135deg, var(--nm-accent), var(--nm-accent-hover)); transition: width 0.3s ease-in-out; border-radius: 10px; }
@@ -890,7 +940,7 @@ body.light-theme .modal-search-container input { background: var(--nm-darkest-li
     /* Use transparent version of --nm-darkest */
     background: rgba(29, 10, 60, 0.5);
 }
-body.light-theme .modal-footer { background: rgba(238, 222, 255, 0.5); }
+body.light-theme .modal-footer { background: rgba(240, 240, 240, 0.8); } /* Changed to light gray background */
 .language-selection-btn {
     background: var(--nm-container);
     border: 1px solid var(--nm-border);
@@ -942,7 +992,7 @@ body.light-theme .modal-footer { background: rgba(238, 222, 255, 0.5); }
     #disclaimer-modal .modal-footer { flex-direction: column; gap: 15px; padding: 15px; }
     #disclaimer-modal .decline-btn, #disclaimer-modal .accept-btn { margin: 0; }
     .modal-overlay { -webkit-backdrop-filter: none; backdrop-filter: none; background: rgba(11, 0, 31, 0.95); }
-    body.light-theme .modal-overlay { background: rgba(248, 240, 255, 0.95); }
+    body.light-theme .modal-overlay { background: rgba(255, 255, 255, 0.95); } /* Changed to white background */
     .hero-section { min-height: 60vh; }
 }
 
@@ -1000,3 +1050,4 @@ a:focus-visible, button:focus-visible, .nav-link:focus-visible, .nav-action-btn:
     box-shadow: var(--shadow-glow-accent);
 }
 .modal-search-container input:focus-visible { outline: none; }
+}
