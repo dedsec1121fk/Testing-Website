@@ -531,6 +531,11 @@ body.light-theme .tool-card {
     animation: fadeIn 0.5s 0.1s var(--ease-out-cubic) backwards;
 }
 
+/* Remove the empty search bar container */
+.main-header-container {
+    display: none;
+}
+
 /* Certificate Form Styles */
 .certificate-form-container { max-width: 500px; margin: 0 auto; }
 .form-group { margin-bottom: 20px; }
@@ -563,7 +568,7 @@ body.light-theme .tool-card {
 
 .form-actions { text-align: center; margin-top: 30px; }
 
-/* Hero Section */
+/* Enhanced Hero Section */
 .hero-section {
     display: flex;
     flex-direction: column;
