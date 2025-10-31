@@ -38,9 +38,9 @@
 
     /* Premium feel variables */
     --ease-out-cubic: cubic-bezier(0.23, 1, 0.32, 1);
-    --shadow-glow-accent: 0 4px 8px rgba(0, 0, 0, 0.2); /* REMOVED PURPLE GLOW */
+    --shadow-glow-accent: 0 0 15px 0px rgba(var(--glow-rgb), 0.5);
     --shadow-glow-success: 0 0 15px 0px rgba(0, 255, 0, 0.5);
-    --shadow-glow-danger: 0 4px 8px rgba(0, 0, 0, 0.2); /* REMOVED PURPLE GLOW */
+    --shadow-glow-danger: 0 0 15px 0px rgba(199, 21, 133, 0.5); /* Based on new --nm-danger */
 
     /* Light theme specific variables (Adjusted for consistency) */
     --nm-text-muted-dark: #CCCCCC;
