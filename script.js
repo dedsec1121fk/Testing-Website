@@ -1,6 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // --- AdSense is now loaded only via HTML ---
-    
     // --- GLOBAL STATE ---
     let currentLanguage = 'en';
 
@@ -79,29 +77,17 @@ document.addEventListener('DOMContentLoaded', () => {
     function initializeLanguageSwitcher() {
         const langBtn = document.getElementById('nav-lang-switcher');
         const disclaimerLangBtn = document.getElementById('disclaimer-lang-btn');
-        const languageModal = document.getElementById('language-selection-modal');
         
+        // Navigation language button - toggle immediately
         langBtn?.addEventListener('click', () => {
-            if (languageModal) {
-                languageModal.classList.add('visible');
-            }
+            const newLang = currentLanguage === 'en' ? 'gr' : 'en';
+            changeLanguage(newLang);
         });
 
-        // Language selection button in disclaimer modal
+        // Disclaimer language button - toggle immediately  
         disclaimerLangBtn?.addEventListener('click', () => {
-            if (languageModal) {
-                languageModal.classList.add('visible');
-            }
-        });
-
-        // Language selection
-        document.querySelectorAll('.language-button').forEach(button => {
-            button.addEventListener('click', () => {
-                changeLanguage(button.dataset.lang);
-                if (languageModal) {
-                    languageModal.classList.remove('visible');
-                }
-            });
+            const newLang = currentLanguage === 'en' ? 'gr' : 'en';
+            changeLanguage(newLang);
         });
     }
 
@@ -196,7 +182,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (disclaimerModal) {
                     disclaimerModal.classList.add('visible');
                 }
-            }, 10); // <-- OPTIMIZED: Changed from 500 to 10
+            }, 10);
         }
 
         // Handle accept button
@@ -210,12 +196,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Handle decline button - go back
         declineBtn?.addEventListener('click', () => {
-            window.history.back(); // <-- OPTIMIZED: Changed from Google redirect
+            window.history.back();
         });
 
         // Prevent closing the disclaimer modal by clicking outside
-        // This listener is still useful to stop propagation if needed,
-        // but the main closing logic is now handled in initializeModals()
         disclaimerModal?.addEventListener('click', (e) => {
             if (e.target === disclaimerModal) {
                 // Don't allow closing by clicking outside - force user to make a choice
@@ -379,7 +363,7 @@ document.addEventListener('DOMContentLoaded', () => {
         initializeModals();
         initializeCarousels();
         initializeCopyButtons();
-        initializeDisclaimer(); // Added disclaimer initialization (no cookie consent)
+        initializeDisclaimer();
 
         // Initialize tool categories if on the tools page
         if (document.querySelector('.categories-container')) {
