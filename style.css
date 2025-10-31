@@ -411,6 +411,11 @@ body.light-theme .tool-card { background: rgba(224, 198, 255, 0.9); }
 .tool-features li { margin-bottom: 8px; line-height: 1.5; color: var(--nm-text); position: relative; padding-left: 5px; }
 .tool-features li::before { content: "•"; color: var(--nm-accent); font-weight: bold; display: inline-block; width: 1em; margin-left: -1em; }
 
+/* DEDSEC: Explicitly set the color of the bullet point 'title' (assuming it's a strong tag) to white to ensure it overrides any other styles. */
+.tool-features li strong {
+    color: var(--nm-text);
+}
+
 /*
     =================================================================
     HOMEPAGE HERO & NEW STYLES
