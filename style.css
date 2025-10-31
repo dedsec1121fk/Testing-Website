@@ -16,6 +16,7 @@
     --nm-accent-hover: #8844ff;      /* Brighter purple for hover */
     --nm-text: #ffffff;              /* Pure white text */
     --nm-text-muted: #cccccc;        /* Light gray text */
+    --nm-text-accent: #ffffff;       /* White accent text in dark theme */
     --nm-danger: #ff4444;            /* Bright red */
     --nm-danger-hover: #ff2222;      /* Brighter red */
     --nm-success: #44ff44;           /* Bright green */
@@ -60,6 +61,7 @@ body.light-theme {
     --nm-accent-hover: #8844ff;      /* Brighter purple */
     --nm-text: #000000;              /* Pure black text */
     --nm-text-muted: #333333;        /* Dark gray text */
+    --nm-text-accent: #000000;       /* Black accent text in light theme */
     --nm-danger: #ff0000;            /* Strong red */
     --nm-danger-hover: #dd0000;      /* Darker red */
     --nm-success: #00cc00;           /* Green */
@@ -205,7 +207,7 @@ body.light-theme::before {
 .nav-title h1 {
     margin: 0;
     font-size: 2rem; 
-    color: var(--nm-accent);
+    color: var(--nm-text-accent); /* CHANGED: from --nm-accent to --nm-text-accent */
     font-family: 'Orbitron', sans-serif;
     /* MODIFIED: Drastically simplified text-shadow to a single, minimal glow layer */
     text-shadow: 0 0 8px var(--nm-accent-hover);
@@ -387,7 +389,7 @@ body.light-theme .nav-title h1::after {
 }
 
 .page-header h1 {
-    color: var(--nm-accent);
+    color: var(--nm-text-accent); /* CHANGED: from --nm-accent to --nm-text-accent */
     font-family: 'Orbitron', sans-serif;
     font-size: 2.5rem;
     margin-bottom: 10px;
@@ -428,7 +430,7 @@ body.light-theme .content-section {
 }
 
 .content-section h2 {
-    color: var(--nm-accent);
+    color: var(--nm-text-accent); /* CHANGED: from --nm-accent to --nm-text-accent */
     font-family: 'Orbitron', sans-serif;
     margin-bottom: 20px;
     border-bottom: 2px solid var(--nm-border);
@@ -469,7 +471,7 @@ body.light-theme .tool-card {
 }
 
 .tool-card h4 {
-    color: var(--nm-accent);
+    color: var(--nm-text-accent); /* CHANGED: from --nm-accent to --nm-text-accent */
     margin-bottom: 10px;
     font-family: 'Orbitron', sans-serif;
 }
@@ -696,7 +698,7 @@ body.light-theme .tool-card {
     font-size: 1.3rem;
     font-weight: bold;
     margin-bottom: 12px;
-    color: var(--nm-text);
+    color: var(--nm-text-accent); /* CHANGED: from --nm-text to --nm-text-accent */
     font-family: 'Orbitron', sans-serif;
 }
 
@@ -750,7 +752,7 @@ body.light-theme .tool-card {
 .stat-number {
     font-size: 2.5rem;
     font-weight: bold;
-    color: var(--nm-accent);
+    color: var(--nm-text-accent); /* CHANGED: from --nm-accent to --nm-text-accent */
     font-family: 'Orbitron', sans-serif;
     margin-bottom: 8px;
 }
@@ -863,7 +865,7 @@ body.light-theme .modal-header {
     font-family: 'Orbitron', sans-serif;
     font-size: 1.1rem;
     margin: 0;
-    color: var(--nm-text);
+    color: var(--nm-text-accent); /* CHANGED: from --nm-text to --nm-text-accent */
     text-transform: uppercase;
     text-shadow: none; 
 }
@@ -1330,7 +1332,7 @@ body.light-theme .store-link a {
 
 .category-header h3 {
     margin: 0;
-    color: var(--nm-accent);
+    color: var(--nm-text-accent); /* CHANGED: from #8a2be2 to --nm-text-accent */
     font-family: 'Orbitron', sans-serif;
 }
 
@@ -1449,7 +1451,7 @@ body.light-theme .store-link a {
 .page-header h1 {
     font-size: 2.5rem;
     margin-bottom: 15px;
-    color: var(--nm-accent);
+    color: var(--nm-text-accent); /* CHANGED: from #8a2be2 to --nm-text-accent */
     font-family: 'Orbitron', sans-serif;
     text-shadow: 0 0 10px var(--nm-accent-hover);
 }
@@ -1464,7 +1466,7 @@ body.light-theme .store-link a {
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     padding-bottom: 10px;
     margin-bottom: 20px;
-    color: var(--nm-accent);
+    color: var(--nm-text-accent); /* CHANGED: from #8a2be2 to --nm-text-accent */
     font-family: 'Orbitron', sans-serif;
 }
 
