@@ -12,8 +12,8 @@
     --nm-dark: #1a1a1a;              /* Dark gray */
     --nm-container: #2a2a2a;         /* Container background */
     --nm-border: #404040;            /* Borders and dividers */
-    --nm-accent: #4a90e2;            /* Blue accent */
-    --nm-accent-hover: #357abd;      /* Darker blue for hover */
+    --nm-accent: #9966ff;            /* Lavender purple */
+    --nm-accent-hover: #8844ff;      /* Brighter purple for hover */
     --nm-text: #ffffff;              /* Pure white text */
     --nm-text-muted: #cccccc;        /* Light gray text */
     --nm-text-accent: #ffffff;       /* White accent text in dark theme */
@@ -27,7 +27,7 @@
     --nm-text-on-status: #000000;    /* Black text on status colors */
     
     /* === GLOW EFFECTS === */
-    --glow-rgb: 74, 144, 226;        /* RGB values for blue accent glow */
+    --glow-rgb: 153, 102, 255;       /* RGB values for lavender purple glow */
     --glow-color: rgba(var(--glow-rgb), 0.0);
     --nm-search-green: var(--nm-accent);
     --glow-color-search: rgba(var(--glow-rgb), 0.0);
@@ -57,8 +57,8 @@ body.light-theme {
     --nm-dark: #e0e0e0;              /* Light gray */
     --nm-container: #d0d0d0;         /* Container background */
     --nm-border: #a0a0a0;            /* Borders and dividers */
-    --nm-accent: #2c5aa0;            /* Darker blue for light theme */
-    --nm-accent-hover: #1e3d6f;      /* Even darker blue */
+    --nm-accent: #9966ff;            /* Lavender purple */
+    --nm-accent-hover: #8844ff;      /* Brighter purple */
     --nm-text: #000000;              /* Pure black text */
     --nm-text-muted: #333333;        /* Dark gray text */
     --nm-text-accent: #000000;       /* Black accent text in light theme */
@@ -72,7 +72,7 @@ body.light-theme {
     --nm-text-on-status: #000000;
     
     /* === LIGHT THEME GLOW EFFECTS === */
-    --glow-rgb: 44, 90, 160;         /* RGB values for darker blue in light theme */
+    --glow-rgb: 153, 102, 255;       /* RGB values for lavender purple */
     --glow-color: rgba(var(--glow-rgb), 0.3);
     --nm-search-green: var(--nm-accent);
     
@@ -531,11 +531,6 @@ body.light-theme .tool-card {
     align-items: center;
     /* ADDED: Page load animation */
     animation: fadeIn 0.5s 0.1s var(--ease-out-cubic) backwards;
-}
-
-/* Remove the empty search bar container */
-.main-header-container {
-    display: none;
 }
 
 /* Certificate Form Styles */
