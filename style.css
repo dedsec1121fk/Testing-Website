@@ -1,7 +1,7 @@
 /*
     =================================================================
     DEDSEC PROJECT MULTI-PAGE STYLES
-    VERSION: 4.3 (Fixed Near-Black & Vibrant Lavender Palette)
+    VERSION: 4.4 (Fixed Near-Black & Vibrant Lavender Palette)
     =================================================================
 */
 
@@ -85,7 +85,7 @@ body {
     -moz-osx-font-smoothing: grayscale;
 }
 
-/* FIXED: Removed '#useful-information-nav .app-icon' from this selector */
+/* FIXED: The combined selector that was causing issues */
 .code-container code, .nav-action-btn, .form-group input, .contact-grid .app-icon, .copy-btn {
     font-family: 'Roboto Mono', monospace;
 }
