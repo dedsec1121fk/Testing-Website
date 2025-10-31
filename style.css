@@ -770,10 +770,11 @@ body.light-theme .modal-overlay {
 
 .modal-content {
     background: var(--nm-container);
-    width: 95%;
-    max-width: 800px;
-    height: 85%;
-    max-height: 800px;
+    /* MODIFIED: Reduced max size for compact appearance */
+    width: 90%;
+    max-width: 450px; /* Reduced from 800px */
+    height: auto;     /* Changed from 85% to auto */
+    max-height: 500px; /* Reduced from 800px */
     border: 1px solid var(--nm-accent);
     box-shadow: var(--shadow-glow-accent); /* ADDED: Modal glow */
     display: flex;
@@ -795,6 +796,9 @@ body.light-theme .modal-content {
 .modal-content-auto-height {
     height: auto;
     max-height: 90vh; /* Ensure it doesn't take up too much vertical space */
+    /* ADDED: Add padding inside the content for smaller screens */
+    padding: 10px 0; 
+    box-sizing: border-box;
 }
 
 .modal-overlay.visible .modal-content {
@@ -833,6 +837,8 @@ body.light-theme .modal-content {
     align-items: center;
     justify-content: center;
     gap: 15px;
+    /* MODIFIED: Ensure the content is centered within the (now smaller) body */
+    height: 100%;
 }
 
 .modal-footer {
@@ -902,7 +908,8 @@ body.light-theme .modal-content {
     transition: transform 0.25s var(--ease-out-cubic), background-color 0.25s ease, color 0.25s ease, box-shadow 0.25s var(--ease-out-cubic), border-color 0.25s ease;
     will-change: transform, box-shadow;
     min-height: 45px;
-    min-width: 100px;
+    min-width: 150px; /* MODIFIED: Increased min-width for better appearance in a compact modal */
+    max-width: 100%;
 }
 
 .language-button:hover, 
