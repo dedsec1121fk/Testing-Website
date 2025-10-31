@@ -519,7 +519,7 @@ body.light-theme .tool-card {
     border-radius: 0;
     overflow-y: auto;
     overflow-x: hidden;
-    background: var(--nm-abyss-blue);
+    background: transparent; /* This will let the body's background image show through */
 }
 
 .home-screen {
