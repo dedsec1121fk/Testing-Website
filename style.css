@@ -125,8 +125,8 @@ body::before {
     left: 0;
     width: 100%;
     height: 100%;
-    /* UPDATED: New Dark Theme Logo URL */
-    background-image: url('https://raw.githubusercontent.com/dedsec1121fk/dedsec1121fk.github.io/875f705c11d1ea083879541823d56a41b1059ec8/Assets/Images/Logos/Custom%20Black%20Purple%20Fox%20Logo.png');
+    /* UPDATED: New Dark Theme Logo URL (FIXED: replaced commit hash with 'main') */
+    background-image: url('https://raw.githubusercontent.com/dedsec1121fk/dedsec1121fk.github.io/main/Assets/Images/Logos/Custom%20Black%20Purple%20Fox%20Logo.png');
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
@@ -155,8 +155,8 @@ body::after {
 }
 
 body.light-theme::before {
-    /* UPDATED: New Light Theme Logo URL */
-    background-image: url('https://raw.githubusercontent.com/dedsec1121fk/dedsec1121fk.github.io/875f705c11d1ea083879541823d56a41b10599c8/Assets/Images/Logos/Custom%20White%20Purple%20Fox%20Logo.jpg');
+    /* UPDATED: New Light Theme Logo URL (FIXED: replaced commit hash with 'main') */
+    background-image: url('https://raw.githubusercontent.com/dedsec1121fk/dedsec1121fk.github.io/main/Assets/Images/Logos/Custom%20White%20Purple%20Fox%20Logo.jpg');
     opacity: 0.05; /* Reduced opacity for a cleaner white theme */
     /* FIX: Remove filter in light mode */
     filter: none;
@@ -221,7 +221,8 @@ body.light-theme .main-nav { background: rgba(255, 255, 255, 0.95); } /* Changed
     display: block;
     width: 2.5rem;
     height: 2.5rem;
-    background-image: url('https://raw.githubusercontent.com/dedsec1121fk/dedsec1121fk.github.io/875f705c11d1ea083879541823d56a41b1059ec8/Assets/Images/Logos/Custom%20Black%20Purple%20Fox%20Logo.png');
+    /* FIXED: replaced commit hash with 'main' */
+    background-image: url('https://raw.githubusercontent.com/dedsec1121fk/dedsec1121fk.github.io/main/Assets/Images/Logos/Custom%20Black%20Purple%20Fox%20Logo.png');
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
@@ -229,7 +230,8 @@ body.light-theme .main-nav { background: rgba(255, 255, 255, 0.95); } /* Changed
 }
 
 body.light-theme .nav-title h1::after {
-    background-image: url('https://raw.githubusercontent.com/dedsec1121fk/dedsec1121fk.github.io/875f705c11d1ea083879541823d56a41b10599c8/Assets/Images/Logos/Custom%20White%20Purple%20Fox%20Logo.jpg');
+    /* FIXED: replaced commit hash with 'main' */
+    background-image: url('https://raw.githubusercontent.com/dedsec1121fk/dedsec1121fk.github.io/main/Assets/Images/Logos/Custom%20White%20Purple%20Fox%20Logo.jpg');
 }
 
 .nav-title a { color: inherit; text-decoration: none; }
