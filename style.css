@@ -19,7 +19,7 @@
     --nm-danger: #C71585;         /* Medium Violet Red (Magenta/Purple) for Danger */
     --nm-danger-hover: #8B008B;   /* Dark Magenta for Danger Hover */
     --nm-success: #00FF00;        /* Keeping Green for Universal Success Signal */
-    --nm-warning: #D8BFD8;        /* Thistle (Soft Purple) for Warning */
+    --nm-warning: #D8BFD8;         /* Thistle (Soft Purple) for Warning */
 
     --nm-text-on-accent: #FFFFFF;
     --nm-text-on-status: #0B121C;
@@ -152,7 +152,7 @@ body::after {
 
 body.light-theme::before {
     /* UPDATED: New Light Theme Logo URL */
-    background-image: url('https://raw.githubusercontent.com/dedsec1121fk/dedsec1121fk.github.io/875f705c11d1ea083879541823d56a41b1059ec8/Assets/Images/Logos/Custom%20White%20Purple%20Fox%20Logo.jpg');
+    background-image: url('https://raw.githubusercontent.com/dedsec1121fk/dedsec1121fk.github.io/875f705c11d1ea083879541823d56a41b10599c8/Assets/Images/Logos/Custom%20White%20Purple%20Fox%20Logo.jpg');
     opacity: 0.1;
 }
 
@@ -383,6 +383,12 @@ body.light-theme .content-section { background: rgba(210, 180, 222, 0.9); }
     margin: 25px 0 15px 0;
 }
 
+/* FIX: Force all links inside the main content to be white, overriding default browser/visited link color */
+.content-section a,
+.content-section a:visited {
+    color: var(--nm-text);
+}
+
 .content-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -402,7 +408,7 @@ body.light-theme .content-section { background: rgba(210, 180, 222, 0.9); }
 body.light-theme .tool-card { background: rgba(224, 198, 255, 0.9); }
 .tool-card:hover { border-color: var(--nm-accent); transform: translateY(-3px); box-shadow: var(--shadow-glow-accent); }
 .tool-card h4 {
-    color: var(--nm-text); /* PREVIOUSLY MODIFIED to white from var(--nm-accent) */
+    color: var(--nm-text); /* PREVIOUSLY MODIFIED to white from var(--nm-accent) - This is now redundant but kept for good measure. */
     margin-bottom: 10px;
     font-family: 'Noto Serif', serif;
 }
