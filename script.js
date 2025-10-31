@@ -163,6 +163,22 @@ document.addEventListener('DOMContentLoaded', () => {
                 span.textContent = text;
             }
         }
+
+        // Update feature cards
+        document.querySelectorAll('.feature-title, .feature-description, .feature-cta').forEach(el => {
+            const text = el.getAttribute(`data-${lang}`) || el.textContent;
+            if (el.getAttribute('data-en')) {
+                el.textContent = text;
+            }
+        });
+
+        // Update stats labels
+        document.querySelectorAll('.stat-label').forEach(el => {
+            const text = el.getAttribute(`data-${lang}`) || el.textContent;
+            if (el.getAttribute('data-en')) {
+                el.textContent = text;
+            }
+        });
     };
 
     // --- DISCLAIMER FUNCTIONALITY ---

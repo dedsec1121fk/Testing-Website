@@ -1,7 +1,7 @@
 /*
     =================================================================
     DEDSEC PROJECT MULTI-PAGE STYLES
-    VERSION: 3.0 (Complete Color System Overhaul)
+    VERSION: 3.1 (Enhanced Home Screen Design)
     =================================================================
 */
 
@@ -570,26 +570,203 @@ body.light-theme .tool-card {
     align-items: center;
     text-align: center;
     width: 100%;
-    max-width: 500px;
-    margin: 5px auto;
-    padding: 10px;
+    max-width: 800px;
+    margin: 20px auto 30px;
+    padding: 30px 20px;
     box-sizing: border-box;
+    background: var(--nm-container);
+    border-radius: 20px;
+    border: 1px solid var(--nm-border);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--nm-accent), var(--nm-accent-hover));
+    z-index: 1;
 }
 
 .hero-text {
     color: var(--nm-text);
-    font-size: 0.9rem;
+    font-size: 1.1rem;
+    line-height: 1.7;
+    margin: 0 0 25px 0;
+    max-width: 600px;
+}
+
+.hero-cta {
+    display: inline-block;
+    background: var(--nm-accent);
+    color: var(--nm-text-on-accent);
+    padding: 12px 30px;
+    border-radius: 25px;
+    text-decoration: none;
+    font-family: 'Orbitron', sans-serif;
+    font-weight: bold;
+    font-size: 1rem;
+    border: 2px solid transparent;
+    transition: all 0.3s var(--ease-out-cubic);
+    box-shadow: var(--shadow-glow-accent);
+    margin-top: 15px;
+}
+
+.hero-cta:hover {
+    background: var(--nm-accent-hover);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(var(--glow-rgb), 0.6);
+}
+
+.hero-cta:active {
+    transform: translateY(0px) scale(0.97);
+}
+
+/* NEW: Enhanced Feature Cards */
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
+    width: 100%;
+    max-width: 1200px;
+    margin: 20px 0 40px;
+}
+
+.feature-card {
+    background: var(--nm-darkest);
+    border: 1px solid var(--nm-border);
+    border-radius: 20px;
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-decoration: none;
+    color: var(--nm-text);
+    transition: all 0.3s var(--ease-out-cubic);
+    position: relative;
+    overflow: hidden;
+    height: 100%;
+    box-sizing: border-box;
+}
+
+.feature-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--nm-accent), var(--nm-accent-hover));
+    transform: scaleX(0);
+    transition: transform 0.3s var(--ease-out-cubic);
+}
+
+.feature-card:hover {
+    border-color: var(--nm-accent);
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-glow-accent);
+}
+
+.feature-card:hover::before {
+    transform: scaleX(1);
+}
+
+.feature-icon {
+    font-size: 2.5rem;
+    color: var(--nm-accent);
+    margin-bottom: 15px;
+    transition: transform 0.3s var(--ease-out-cubic);
+}
+
+.feature-card:hover .feature-icon {
+    transform: scale(1.1) rotate(5deg);
+}
+
+.feature-title {
+    font-size: 1.3rem;
+    font-weight: bold;
+    margin-bottom: 12px;
+    color: var(--nm-text);
+    font-family: 'Orbitron', sans-serif;
+}
+
+.feature-description {
+    font-size: 0.95rem;
     line-height: 1.6;
-    margin: 0 0 20px 0;
+    color: var(--nm-text-muted);
+    margin-bottom: 15px;
+    flex-grow: 1;
+}
+
+.feature-cta {
+    color: var(--nm-accent);
+    font-size: 0.9rem;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: auto;
+    transition: gap 0.3s ease;
+}
+
+.feature-card:hover .feature-cta {
+    gap: 12px;
+}
+
+/* NEW: Quick Stats Section */
+.stats-section {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    width: 100%;
+    max-width: 1000px;
+    margin: 30px 0;
+}
+
+.stat-card {
+    background: var(--nm-container);
+    border: 1px solid var(--nm-border);
+    border-radius: 15px;
+    padding: 20px;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+    border-color: var(--nm-accent);
+    transform: translateY(-3px);
+}
+
+.stat-number {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: var(--nm-accent);
+    font-family: 'Orbitron', sans-serif;
+    margin-bottom: 8px;
+}
+
+.stat-label {
+    font-size: 0.9rem;
+    color: var(--nm-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
 /* Footer */
 .main-footer {
     text-align: center;
-    padding: 1rem;
+    padding: 2rem 1rem 1rem;
     font-size: 0.7rem;
     color: var(--nm-text);
-    margin-top: 25px;
+    margin-top: 40px;
+    border-top: 1px solid var(--nm-border);
+    width: 100%;
+    max-width: 1200px;
 }
 
 /*
@@ -1307,6 +1484,12 @@ body.light-theme .store-link a {
     .nav-title h1::after { width: 1.8rem; height: 1.8rem; }
     .content-section { padding: 15px; }
     .modal-body { padding: 15px; }
+    .hero-section { padding: 20px 15px; margin: 15px auto 25px; }
+    .hero-text { font-size: 1rem; }
+    .features-grid { grid-template-columns: 1fr; gap: 20px; }
+    .feature-card { padding: 20px; }
+    .stats-section { grid-template-columns: repeat(2, 1fr); gap: 15px; }
+    .stat-number { font-size: 2rem; }
 }
 
 /* --- Mobile & Small Tablets --- */
@@ -1334,12 +1517,15 @@ body.light-theme .store-link a {
         background: rgba(0, 0, 0, 0.95);
     }
     body.light-theme .modal-overlay { background: rgba(255, 255, 255, 0.95); }
+    .hero-section { max-width: 100%; }
+    .features-grid { grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); }
 }
 
 /* --- Tablets (Landscape) --- */
 @media (min-width: 769px) and (max-width: 991px) {
     .content-grid { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
     .page-header h1 { font-size: 2.2rem; }
+    .features-grid { grid-template-columns: repeat(2, 1fr); }
 }
 
 /* MODIFIED: Centering logic for Desktops and larger screens */
@@ -1372,6 +1558,7 @@ body.light-theme .store-link a {
     
     .nav-container { padding: 15px 0; }
     .nav-title h1 { font-size: 2rem; }
+    .features-grid { grid-template-columns: repeat(3, 1fr); }
 }
 
 /* --- Large Desktops & TVs --- */
@@ -1380,6 +1567,7 @@ body.light-theme .store-link a {
     body { font-size: 17px; }
     .page-header h1 { font-size: 3rem; }
     .content-section { padding: 40px; }
+    .features-grid { grid-template-columns: repeat(4, 1fr); }
 }
 
 /*
@@ -1393,7 +1581,8 @@ a:focus-visible,
 button:focus-visible,
 .nav-link:focus-visible,
 .nav-action-btn:focus-visible,
-.contact-grid .app-icon:focus-visible {
+.contact-grid .app-icon:focus-visible,
+.feature-card:focus-visible {
     outline: 2px solid var(--nm-accent) !important;
     outline-offset: 2px;
     box-shadow: var(--shadow-glow-accent);
