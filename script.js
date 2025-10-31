@@ -39,339 +39,287 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- THEME SWITCHER ---
     function initializeThemeSwitcher() {
-        const themeBtn = document.getElementById('nav-theme-switcher');
-        const themeIcon = themeBtn?.querySelector('i');
-        const themeSpan = themeBtn?.querySelector('span');
+        const themeToggle = document.getElementById('theme-toggle');
 
-        const updateThemeButton = (isLightTheme) => {
-            if (!themeBtn || !themeIcon || !themeSpan) return;
-            
-            if (isLightTheme) {
-                themeIcon.classList.remove('fa-moon');
-                themeIcon.classList.add('fa-sun');
-                themeSpan.setAttribute('data-en', 'Light Theme');
-                themeSpan.setAttribute('data-gr', 'Φωτεινό Θέμα');
-            } else {
-                themeIcon.classList.remove('fa-sun');
-                themeIcon.classList.add('fa-moon');
-                themeSpan.setAttribute('data-en', 'Dark Theme');
-                themeSpan.setAttribute('data-gr', 'Σκοτεινό Θέμα');
-            }
-            themeSpan.textContent = themeSpan.getAttribute(`data-${currentLanguage}`) || themeSpan.getAttribute('data-en');
-        };
-
-        themeBtn?.addEventListener('click', () => {
-            document.body.classList.toggle('light-theme');
-            const isLight = document.body.classList.contains('light-theme');
-            localStorage.setItem('theme', isLight ? 'light' : 'dark');
-            updateThemeButton(isLight);
-        });
-
-        // Set initial theme
-        const savedTheme = localStorage.getItem('theme');
-        if (savedTheme === 'light') {
-            document.body.classList.add('light-theme');
+        if (themeToggle) {
+            themeToggle.addEventListener('click', () => {
+                document.body.classList.toggle('light-theme');
+                const isLightTheme = document.body.classList.contains('light-theme');
+                localStorage.setItem('theme', isLightTheme ? 'light' : 'dark');
+                updateThemeToggleIcon(isLightTheme);
+            });
         }
-        updateThemeButton(document.body.classList.contains('light-theme'));
+
+        // Function to set the icon based on the current theme
+        function updateThemeToggleIcon(isLightTheme) {
+            if (themeToggle) {
+                if (isLightTheme) {
+                    themeToggle.innerHTML = '<i class="fa-solid fa-moon"></i>'; // Moon icon for light theme (click to switch to dark)
+                    themeToggle.setAttribute('aria-label', 'Switch to Dark Theme');
+                } else {
+                    themeToggle.innerHTML = '<i class="fa-solid fa-sun"></i>'; // Sun icon for dark theme (click to switch to light)
+                    themeToggle.setAttribute('aria-label', 'Switch to Light Theme');
+                }
+            }
+        }
+
+        // Initial setup for the icon
+        updateThemeToggleIcon(document.body.classList.contains('light-theme'));
     }
 
     // --- LANGUAGE SWITCHER ---
     function initializeLanguageSwitcher() {
-        const langBtn = document.getElementById('nav-lang-switcher');
-        const disclaimerLangBtn = document.getElementById('disclaimer-lang-btn');
-        const languageModal = document.getElementById('language-selection-modal');
-        
-        langBtn?.addEventListener('click', () => {
-            if (languageModal) {
-                languageModal.classList.add('visible');
-            }
-        });
+        const langToggle = document.getElementById('lang-toggle');
 
-        // Language selection button in disclaimer modal
-        disclaimerLangBtn?.addEventListener('click', () => {
-            if (languageModal) {
-                languageModal.classList.add('visible');
-            }
-        });
-
-        // Language selection
-        document.querySelectorAll('.language-button').forEach(button => {
-            button.addEventListener('click', () => {
-                changeLanguage(button.dataset.lang);
-                if (languageModal) {
-                    languageModal.classList.remove('visible');
-                }
+        if (langToggle) {
+            langToggle.addEventListener('click', () => {
+                const newLanguage = currentLanguage === 'en' ? 'el' : 'en';
+                changeLanguage(newLanguage);
+                localStorage.setItem('language', newLanguage);
             });
-        });
+        }
     }
 
-    // --- LANGUAGE MANAGEMENT ---
-    window.changeLanguage = (lang) => {
+    // --- LANGUAGE CHANGE LOGIC (Placeholder for a real multi-language implementation) ---
+    // NOTE: A complete implementation would involve mapping keys to text for different languages.
+    function changeLanguage(lang) {
         currentLanguage = lang;
         document.documentElement.lang = lang;
-        localStorage.setItem('language', lang);
         
-        // Update all elements with data attributes
-        document.querySelectorAll('[data-en]').forEach(el => {
-            const text = el.getAttribute(`data-${lang}`) || el.getAttribute('data-en');
-            const hasDirectText = Array.from(el.childNodes).some(node => 
-                node.nodeType === Node.TEXT_NODE && node.textContent.trim().length > 0
-            );
-            
-            if (hasDirectText) {
-                Array.from(el.childNodes).forEach(node => {
-                    if (node.nodeType === Node.TEXT_NODE && node.textContent.trim().length > 0) {
-                        node.textContent = text;
-                    }
-                });
-            } else if (el.children.length === 0) {
-                el.textContent = text;
-            }
-        });
-
-        // Update lang sections
-        document.querySelectorAll('[data-lang-section]').forEach(el => {
-            el.style.display = el.dataset.langSection === lang ? 'block' : 'none';
-            el.classList.toggle('hidden', el.dataset.langSection !== lang);
-            if (el.dataset.langSection === lang) {
-                el.classList.remove('hidden-by-default');
-            }
-        });
-
-        // Update navigation links
-        document.querySelectorAll('.nav-link').forEach(link => {
-            const text = link.getAttribute(`data-${lang}`) || link.textContent;
-            if (link.getAttribute('data-en')) {
-                link.textContent = text;
-            }
-        });
-
-        // Update navigation action buttons
-        document.querySelectorAll('.nav-action-btn span').forEach(span => {
-            const text = span.getAttribute(`data-${lang}`) || span.textContent;
-            if (span.getAttribute('data-en')) {
-                span.textContent = text;
-            }
-        });
-
-        // Update disclaimer language button
-        const disclaimerLangBtn = document.getElementById('disclaimer-lang-btn');
-        if (disclaimerLangBtn) {
-            const span = disclaimerLangBtn.querySelector('span');
-            if (span) {
-                const text = span.getAttribute(`data-${lang}`) || span.textContent;
-                span.textContent = text;
+        // Update the button text/icon
+        const langToggle = document.getElementById('lang-toggle');
+        if (langToggle) {
+            if (lang === 'el') {
+                langToggle.textContent = 'EN';
+                langToggle.setAttribute('title', 'Switch to English');
+            } else {
+                langToggle.textContent = 'ΕΛ';
+                langToggle.setAttribute('title', 'Switch to Greek');
             }
         }
-
-        // Update feature cards
-        document.querySelectorAll('.feature-title, .feature-description, .feature-cta').forEach(el => {
-            const text = el.getAttribute(`data-${lang}`) || el.textContent;
-            if (el.getAttribute('data-en')) {
-                el.textContent = text;
+        
+        // Simple example for a few elements (requires data-lang attributes or a dedicated JSON)
+        document.querySelectorAll('[data-lang-en]').forEach(el => {
+            if (lang === 'en') {
+                el.textContent = el.getAttribute('data-lang-en');
+            } else if (el.getAttribute('data-lang-el')) {
+                el.textContent = el.getAttribute('data-lang-el');
             }
         });
-
-        // Update stats labels
-        document.querySelectorAll('.stat-label').forEach(el => {
-            const text = el.getAttribute(`data-${lang}`) || el.textContent;
-            if (el.getAttribute('data-en')) {
-                el.textContent = text;
-            }
-        });
-    };
-
-    // --- DISCLAIMER FUNCTIONALITY ---
-    function initializeDisclaimer() {
-        const disclaimerModal = document.getElementById('disclaimer-modal');
-        const acceptBtn = document.getElementById('accept-disclaimer');
-        const declineBtn = document.getElementById('decline-disclaimer');
-
-        // Check if user has already accepted the disclaimer
-        const disclaimerAccepted = localStorage.getItem('disclaimerAccepted');
-
-        if (!disclaimerAccepted) {
-            // Show disclaimer modal immediately on page load
-            setTimeout(() => {
-                if (disclaimerModal) {
-                    disclaimerModal.classList.add('visible');
-                }
-            }, 10); // <-- OPTIMIZED: Changed from 500 to 10
-        }
-
-        // Handle accept button
-        acceptBtn?.addEventListener('click', () => {
-            localStorage.setItem('disclaimerAccepted', 'true');
-            if (disclaimerModal) {
-                disclaimerModal.classList.remove('visible');
-            }
-            console.log('Disclaimer accepted');
-        });
-
-        // Handle decline button - go back
-        declineBtn?.addEventListener('click', () => {
-            window.history.back(); // <-- OPTIMIZED: Changed from Google redirect
-        });
-
-        // Prevent closing the disclaimer modal by clicking outside
-        // This listener is still useful to stop propagation if needed,
-        // but the main closing logic is now handled in initializeModals()
-        disclaimerModal?.addEventListener('click', (e) => {
-            if (e.target === disclaimerModal) {
-                // Don't allow closing by clicking outside - force user to make a choice
-                return;
-            }
-        });
+        
+        // This is where a more robust translation logic would go
+        console.log(`Language switched to: ${lang}`);
     }
 
-    // --- MODAL MANAGEMENT ---
+    // --- MODAL FUNCTIONALITY ---
     function initializeModals() {
-        document.querySelectorAll('.modal-overlay').forEach(modal => {
-            const closeModalBtn = modal.querySelector('.close-modal');
-            const closeModal = () => {
-                modal.classList.remove('visible');
-            };
-            
-            modal.addEventListener('click', e => {
-                // Check if the target is the modal overlay itself
-                // AND if the modal is NOT the disclaimer modal
-                if (e.target === modal && modal.id !== 'disclaimer-modal') {
-                    closeModal();
+        const modalTriggers = document.querySelectorAll('[data-modal-target]');
+        const closeButtons = document.querySelectorAll('.close-modal, .modal-footer button[data-dismiss="modal"]');
+        const modals = document.querySelectorAll('.modal');
+
+        modalTriggers.forEach(trigger => {
+            trigger.addEventListener('click', (e) => {
+                e.preventDefault();
+                const modal = document.querySelector(trigger.dataset.modalTarget);
+                if (modal) {
+                    openModal(modal);
                 }
             });
-            
-            closeModalBtn?.addEventListener('click', closeModal);
         });
+
+        closeButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const modal = button.closest('.modal');
+                if (modal) {
+                    closeModal(modal);
+                }
+            });
+        });
+
+        modals.forEach(modal => {
+            modal.addEventListener('click', (e) => {
+                // Close when clicking outside the modal-content
+                if (e.target === modal) {
+                    closeModal(modal);
+                }
+            });
+        });
+        
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                const openModalElement = document.querySelector('.modal.active');
+                if (openModalElement) {
+                    closeModal(openModalElement);
+                }
+            }
+        });
+
+        function openModal(modal) {
+            modal.classList.add('active');
+            document.body.classList.add('modal-open');
+        }
+
+        function closeModal(modal) {
+            modal.classList.remove('active');
+            document.body.classList.remove('modal-open');
+        }
+        
+        // Handle disclaimer modal acceptance/rejection
+        const acceptDisclaimerButton = document.getElementById('accept-disclaimer');
+        const rejectDisclaimerButton = document.getElementById('reject-disclaimer');
+        const disclaimerModal = document.getElementById('disclaimer-modal');
+        
+        if (acceptDisclaimerButton && disclaimerModal) {
+            acceptDisclaimerButton.addEventListener('click', () => {
+                localStorage.setItem('disclaimerAccepted', 'true');
+                closeModal(disclaimerModal);
+            });
+        }
+        
+        if (rejectDisclaimerButton && disclaimerModal) {
+            rejectDisclaimerButton.addEventListener('click', () => {
+                // You could redirect or simply close, depending on policy
+                closeModal(disclaimerModal); 
+                // A more strict approach might be window.location.href = 'about:blank';
+            });
+        }
+    }
+    
+    // --- DISCLAIMER/CONSENT INITIALIZATION ---
+    function initializeDisclaimer() {
+        const hasAccepted = localStorage.getItem('disclaimerAccepted');
+        const disclaimerModal = document.getElementById('disclaimer-modal');
+
+        // Only show the disclaimer modal if it hasn't been accepted before
+        if (!hasAccepted && disclaimerModal) {
+            setTimeout(() => {
+                disclaimerModal.classList.add('active');
+                document.body.classList.add('modal-open');
+            }, 1000); // Small delay for better UX after page load
+        }
     }
 
-    // --- CAROUSEL FUNCTIONALITY ---
+    // --- CAROUSEL FUNCTIONALITY (For tool/feature cards) ---
     function initializeCarousels() {
-        const carousels = document.querySelectorAll('.gym-carousel');
-        
-        carousels.forEach(carousel => {
-            const images = carousel.querySelectorAll('.gym-clothing-images img');
-            const prevBtn = carousel.querySelector('.carousel-btn.prev');
-            const nextBtn = carousel.querySelector('.carousel-btn.next');
+        document.querySelectorAll('.carousel-container').forEach(container => {
+            const track = container.querySelector('.carousel-track');
+            const prevButton = container.querySelector('.carousel-prev');
+            const nextButton = container.querySelector('.carousel-next');
+
+            if (!track || !prevButton || !nextButton) return;
+
+            // Clone cards for infinite loop effect
+            const cards = Array.from(track.children);
+            cards.forEach(card => {
+                const clone = card.cloneNode(true);
+                track.appendChild(clone);
+            });
+
+            let currentIndex = 0;
+            const cardWidth = cards[0].offsetWidth; // Assuming all cards have the same width
+            const totalCards = cards.length;
+
+            const updateCarousel = () => {
+                const offset = -currentIndex * cardWidth;
+                track.style.transform = `translateX(${offset}px)`;
+
+                // Simple loop logic (can be enhanced with transition end events)
+                if (currentIndex >= totalCards) {
+                    currentIndex = 0; // Reset after a visible loop
+                    // Note: A true seamless loop requires more complex logic to jump position instantly
+                }
+            };
+
+            nextButton.addEventListener('click', () => {
+                currentIndex++;
+                updateCarousel();
+            });
+
+            prevButton.addEventListener('click', () => {
+                currentIndex = (currentIndex > 0) ? currentIndex - 1 : 0;
+                updateCarousel();
+            });
+
+            // Initial setup
+            updateCarousel();
             
-            if (images.length > 0 && prevBtn && nextBtn) {
-                let currentIndex = 0;
-                
-                const showImage = (index) => {
-                    images.forEach((img, i) => {
-                        img.classList.toggle('active', i === index);
-                    });
-                };
-                
-                prevBtn.addEventListener('click', () => {
-                    currentIndex = (currentIndex > 0) ? currentIndex - 1 : images.length - 1;
-                    showImage(currentIndex);
-                });
-                
-                nextBtn.addEventListener('click', () => {
-                    currentIndex = (currentIndex < images.length - 1) ? currentIndex + 1 : 0;
-                    showImage(currentIndex);
-                });
-                
-                showImage(0);
-            }
+            // Re-calculate on resize
+            window.addEventListener('resize', updateCarousel);
         });
     }
-
-    // --- COPY FUNCTIONALITY ---
+    
+    // --- COPY BUTTONS ---
     function initializeCopyButtons() {
-        // Make copy function globally accessible
-        window.copyToClipboard = (button, targetId) => {
-            const codeElement = document.getElementById(targetId);
-            if (!codeElement || !navigator.clipboard) {
-                console.warn('Clipboard API not available or element not found.');
-                button.textContent = 'Error';
-                setTimeout(() => { 
-                    button.textContent = (currentLanguage === 'gr') ? 'Αντιγραφή' : 'Copy'; 
-                }, 1500);
-                return;
-            }
-            
-            const originalText = button.textContent;
-            navigator.clipboard.writeText(codeElement.innerText).then(() => {
-                button.textContent = (currentLanguage === 'gr') ? 'Αντιγράφηκε!' : 'Copied!';
-                setTimeout(() => { button.textContent = originalText; }, 1500);
-            }).catch(err => {
-                console.error('Failed to copy text: ', err);
-                button.textContent = 'Failed!';
-                setTimeout(() => { button.textContent = originalText; }, 1500);
-            });
-        };
+        document.querySelectorAll('.copy-command-btn').forEach(button => {
+            button.addEventListener('click', async () => {
+                const commandBlock = button.closest('.command-block');
+                const commandText = commandBlock ? commandBlock.querySelector('code').textContent.trim() : null;
 
-        // Attach copy functionality to existing buttons
-        document.querySelectorAll('.copy-btn').forEach(btn => {
-            const targetId = btn.getAttribute('onclick')?.match(/'(.*?)'/)?.[1];
-            if (targetId) {
-                btn.addEventListener('click', () => {
-                    window.copyToClipboard(btn, targetId);
-                });
-            }
+                if (commandText) {
+                    try {
+                        await navigator.clipboard.writeText(commandText);
+                        
+                        // Change button icon/text temporarily
+                        const originalContent = button.innerHTML;
+                        button.innerHTML = '<i class="fa-solid fa-check"></i> Copied!';
+                        button.classList.add('copied');
+
+                        setTimeout(() => {
+                            button.innerHTML = originalContent;
+                            button.classList.remove('copied');
+                        }, 2000);
+                        
+                    } catch (err) {
+                        console.error('Failed to copy text: ', err);
+                        alert('Error: Could not copy command. Please select and copy manually.');
+                    }
+                }
+            });
         });
     }
-
-    // --- TOOL CATEGORIES FUNCTIONALITY ---
+    
+    // --- TOOL CATEGORY FILTERING (For the tools page) ---
     function initializeToolCategories() {
-        console.log('Initializing tool categories...');
-        
-        // Close all categories and tool items by default
-        document.querySelectorAll('.category, .tool-item').forEach(item => {
-            item.classList.remove('active');
-        });
-        
-        // Category toggle functionality
-        document.querySelectorAll('.category-header').forEach(header => {
-            header.addEventListener('click', function() {
-                console.log('Category header clicked');
-                const category = this.parentElement;
-                const wasActive = category.classList.contains('active');
-                
-                // Close all categories first
-                document.querySelectorAll('.category').forEach(otherCategory => {
-                    otherCategory.classList.remove('active');
-                });
-                
-                // Open the clicked category if it was not active
-                if (!wasActive) {
-                    category.classList.add('active');
-                }
+        const categoriesContainer = document.querySelector('.categories-container');
+        const toolCards = document.querySelectorAll('.tool-card');
+
+        if (!categoriesContainer || toolCards.length === 0) return;
+
+        categoriesContainer.addEventListener('click', (e) => {
+            const target = e.target.closest('.category-tag');
+            if (!target) return;
+
+            const selectedCategory = target.getAttribute('data-category');
+            
+            // Update active tag class
+            categoriesContainer.querySelectorAll('.category-tag').forEach(tag => {
+                tag.classList.remove('active');
             });
-        });
-        
-        // Tool item toggle functionality
-        document.querySelectorAll('.tool-header').forEach(header => {
-            header.addEventListener('click', function(e) {
-                console.log('Tool header clicked');
-                // Prevent the category from closing when clicking on a tool
-                e.stopPropagation();
+            target.classList.add('active');
+
+            // Filter tool cards
+            toolCards.forEach(card => {
+                const cardCategory = card.getAttribute('data-category');
                 
-                const toolItem = this.parentElement;
-                const wasActive = toolItem.classList.contains('active');
-                
-                // Close all other tool items in the same category
-                const category = toolItem.closest('.category');
-                if (category) {
-                    category.querySelectorAll('.tool-item').forEach(otherTool => {
-                        if (otherTool !== toolItem) {
-                            otherTool.classList.remove('active');
-                        }
-                    });
-                }
-                
-                // Toggle the clicked tool item
-                if (!wasActive) {
-                    toolItem.classList.add('active');
+                if (selectedCategory === 'all' || cardCategory === selectedCategory) {
+                    card.style.display = 'block'; // Show
                 } else {
-                    toolItem.classList.remove('active');
+                    card.style.display = 'none'; // Hide
                 }
             });
+            
+            console.log(`Filtering by category: ${selectedCategory}`);
         });
+        
+        // Ensure the 'All' tag is active by default on load
+        const allTag = document.querySelector('.category-tag[data-category="all"]');
+        if (allTag) {
+            allTag.classList.add('active');
+        }
     }
 
-    // --- INITIALIZATION ---
+
+    // --- MAIN INITIALIZATION FUNCTION ---
     function initializePortfolio() {
         initializeNavigation();
         initializeThemeSwitcher();
