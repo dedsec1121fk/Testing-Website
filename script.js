@@ -151,7 +151,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (openModalElement) {
                     closeModal(openModalElement);
                 }
-            }
+            });
         });
 
         function openModal(modal) {
@@ -166,7 +166,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // Handle disclaimer modal acceptance/rejection
         const acceptDisclaimerButton = document.getElementById('accept-disclaimer');
-        const rejectDisclaimerButton = document.getElementById('reject-disclaimer');
+        const rejectDisclaimerButton = document.getElementById('decline-disclaimer'); // Corrected ID based on HTML
         const disclaimerModal = document.getElementById('disclaimer-modal');
         
         if (acceptDisclaimerButton && disclaimerModal) {
@@ -177,10 +177,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         
         if (rejectDisclaimerButton && disclaimerModal) {
+            // Redirect to google.com when declining the disclaimer
             rejectDisclaimerButton.addEventListener('click', () => {
-                // You could redirect or simply close, depending on policy
-                closeModal(disclaimerModal); 
-                // A more strict approach might be window.location.href = 'about:blank';
+                window.location.href = 'https://www.google.com';
             });
         }
     }
