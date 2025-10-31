@@ -1212,6 +1212,65 @@ body.light-theme .store-link a {
     transition-duration: 0.1s;
 }
 
+/* --- Collaborations Page Carousel (Adapted from old CSS) --- */
+.collaborations-carousel {
+    position: relative;
+    width: 100%;
+    /* Use a reasonable max-width for component */
+    max-width: 600px;
+    margin: 0 auto;
+    /* CRITICAL: Hides the parts of the slides/images that overflow */
+    overflow: hidden;
+    clip-path: none;
+    border-radius: 20px;
+    border: 1px solid var(--nm-border);
+    padding: 10px 0;
+}
+
+.carousel-slide-container {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+}
+
+.carousel-slide {
+    flex: 0 0 100%;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px;
+}
+
+/* CRITICAL: Ensures the image is contained within its slide and does not overflow */
+.slide-image {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 15px;
+}
+
+/* Carousel Navigation Buttons */
+.carousel-nav-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.5);
+    color: var(--nm-text);
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    z-index: 10;
+    border-radius: 50%;
+    line-height: 1;
+    font-size: 1.2rem;
+    transition: background-color 0.3s ease;
+}
+
+.carousel-nav-btn:hover {
+    background: var(--nm-accent);
+}
+
+.prev-btn { left: 10px; }
+.next-btn { right: 10px; }
+
 /* --- Misc Components --- */
 .modal-divider {
     margin: 2rem 0;
@@ -1432,6 +1491,17 @@ body.light-theme .category-header {
 
     .feature-card {
         padding: 20px;
+    }
+
+    /* Media query for the new carousel */
+    .collaborations-carousel {
+        max-width: 100%;
+        border-left: none;
+        border-right: none;
+        border-radius: 0;
+    }
+    .carousel-nav-btn {
+        padding: 8px;
     }
 }
 
