@@ -45,7 +45,7 @@
     /* Light theme specific variables (Clean Black & White) */
     --nm-text-muted-dark: #CCCCCC;
     --nm-text-muted-light: #555555;
-    --nm-border-light: #000000;         /* Black Border (High Contrast) */
+    --nm-border-light: #DDDDDD;         /* Light Gray Border for light theme */
     --nm-container-light: #FFFFFF;      /* White Container (High Contrast) */
     --nm-darkest-light: #FFFFFF;        /* White Background (High Contrast) */
     --nm-dark-light: #F9F9F9;           /* Very Light Gray Nav/Card Background */
@@ -994,6 +994,173 @@ body.light-theme .language-selection-btn:hover {
 
 /*
     =================================================================
+    LEARN ABOUT THE TOOLS PAGE (ACCORDION)
+    =================================================================
+*/
+.categories-container {
+    margin-top: 30px;
+}
+
+.category {
+    background: var(--nm-container);
+    border: 1px solid var(--nm-border);
+    border-radius: 8px;
+    margin-bottom: 20px;
+    overflow: hidden;
+}
+body.light-theme .category {
+    background: var(--nm-dark-light);
+}
+
+.category-header {
+    padding: 20px;
+    background: var(--nm-dark);
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.3s ease;
+}
+body.light-theme .category-header {
+    background: #FFFFFF;
+}
+
+
+.category-header:hover {
+    background: var(--nm-container);
+}
+body.light-theme .category-header:hover {
+    background: var(--nm-dark-light);
+}
+
+.category-header h3 {
+    margin: 0;
+    color: var(--nm-accent);
+    font-family: 'Orbitron', sans-serif;
+}
+
+.category-header .toggle-icon {
+    color: var(--nm-accent);
+    transition: transform 0.3s ease;
+}
+
+.category.active .toggle-icon {
+    transform: rotate(180deg);
+}
+
+.tools-list {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+}
+
+.category.active .tools-list {
+    max-height: 5000px; /* Large enough to accommodate all content */
+}
+
+.tool-item {
+    border-bottom: 1px solid var(--nm-border);
+    padding: 15px 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.tool-item:last-child {
+    border-bottom: none;
+}
+
+.tool-item:hover {
+    background: var(--nm-dark);
+}
+body.light-theme .tool-item:hover {
+    background: var(--nm-dark-light);
+}
+
+.tool-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.tool-title {
+    margin: 0;
+    color: var(--nm-text);
+    font-family: 'Roboto Mono', monospace;
+    font-size: 1rem;
+}
+
+.tool-expand-icon {
+    color: var(--nm-accent);
+    transition: transform 0.3s ease;
+}
+
+.tool-item.active .tool-expand-icon {
+    transform: rotate(180deg);
+}
+
+.tool-description {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+    padding-top: 0;
+}
+
+.tool-item.active .tool-description {
+    max-height: 2000px; /* Large enough to accommodate description */
+    padding-top: 15px;
+}
+
+.tool-description p {
+    margin-top: 0;
+    color: var(--nm-text-muted);
+    line-height: 1.5;
+}
+
+.tool-features {
+    margin-top: 15px;
+}
+
+.tool-features h5 {
+    color: var(--nm-text);
+    font-weight: bold;
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-family: 'Orbitron', sans-serif;
+}
+
+.tool-features ul {
+    padding-left: 20px;
+    margin: 0;
+}
+
+.tool-features li {
+    margin-bottom: 8px;
+    line-height: 1.5;
+    color: var(--nm-text-muted);
+    position: relative;
+    padding-left: 5px;
+}
+
+/* This is the bullet point logic, now using the theme variable */
+.tool-features li::before {
+    content: "•";
+    color: var(--nm-accent);
+    font-weight: bold;
+    display: inline-block;
+    width: 1em;
+    margin-left: -1em;
+}
+
+.modal-disclaimer {
+    background: var(--danger-bg);
+    border: 1px solid var(--nm-danger);
+    border-radius: 8px;
+    padding: 20px;
+    margin-top: 30px;
+}
+
+/*
+    =================================================================
     RESPONSIVE DESIGN
     =================================================================
 */
@@ -1010,6 +1177,10 @@ body.light-theme .language-selection-btn:hover {
     .hero-content { padding: 20px; }
     .cta-button { font-size: 0.9rem; padding: 10px 20px; }
     .features-section { padding: 40px 15px; }
+    .category-header { padding: 15px; }
+    .category-header h3 { font-size: 1rem; }
+    .tool-item { padding: 12px 15px; }
+    .tool-title { font-size: 0.9rem; }
 }
 
 @media (max-width: 768px) {
@@ -1088,3 +1259,4 @@ body.light-theme .contact-grid .app-icon:focus-visible,
 body.light-theme .cta-button:focus-visible {
     box-shadow: none;
 }
+
