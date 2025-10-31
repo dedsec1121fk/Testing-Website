@@ -1,6 +1,22 @@
 document.addEventListener('DOMContentLoaded', () => {
     // --- GLOBAL STATE ---
-    let currentLanguage = 'en';
+    let currentLanguage = localStorage.getItem('language') || 'en';
+    
+    // --- UTILITY FUNCTIONS ---
+    function updateThemeIcons(isLight) {
+        const themeBtn = document.getElementById('nav-theme-switcher');
+        const themeIcon = themeBtn?.querySelector('i');
+        const themeSpan = themeBtn?.querySelector('span');
+        
+        if (themeIcon) {
+            themeIcon.classList.toggle('fa-moon', !isLight);
+            themeIcon.classList.toggle('fa-sun', isLight);
+        }
+        if (themeSpan) {
+            themeSpan.setAttribute('data-en', isLight ? 'Dark Mode' : 'Light Mode');
+            themeSpan.setAttribute('data-gr', isLight ? 'Σκοτεινό Θέμα' : 'Φωτεινό Θέμα');
+        }
+    }
 
     // --- NAVIGATION FUNCTIONALITY ---
     function initializeNavigation() {
@@ -14,6 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
+        // Close menu when a link is clicked
         document.querySelectorAll('.nav-link').forEach(link => {
             link.addEventListener('click', () => {
                 if (burgerMenu && navMenu) {
@@ -23,6 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
 
+        // Close menu when clicking outside
         document.addEventListener('click', (e) => {
             if (burgerMenu && navMenu && navMenu.classList.contains('active')) {
                 if (!navMenu.contains(e.target) && !burgerMenu.contains(e.target)) {
@@ -36,157 +54,147 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- THEME SWITCHER ---
     function initializeThemeSwitcher() {
         const themeBtn = document.getElementById('nav-theme-switcher');
-        const themeIcon = themeBtn?.querySelector('i');
-        const themeSpan = themeBtn?.querySelector('span');
+        
+        // Initial setup based on localStorage
+        const savedTheme = localStorage.getItem('theme');
+        const isLight = savedTheme === 'light';
+        document.body.classList.toggle('light-theme', isLight);
+        updateThemeIcons(isLight);
 
         if (themeBtn) {
             themeBtn.addEventListener('click', () => {
-                document.body.classList.toggle('light-theme');
-                const isLight = document.body.classList.contains('light-theme');
-                localStorage.setItem('theme', isLight ? 'light' : 'dark');
-                updateThemeButton(isLight);
+                const isCurrentlyLight = document.body.classList.toggle('light-theme');
+                localStorage.setItem('theme', isCurrentlyLight ? 'light' : 'dark');
+                updateThemeIcons(isCurrentlyLight);
+                // Re-apply language on theme change to update the theme span text
+                changeLanguage(currentLanguage);
             });
-            updateThemeButton(document.body.classList.contains('light-theme'));
-        }
-
-        function updateThemeButton(isLight) {
-            if (themeIcon) {
-                themeIcon.className = isLight ? 'fas fa-moon' : 'fas fa-sun';
-            }
-            if (themeSpan) {
-                themeSpan.setAttribute('data-en', isLight ? 'Dark Theme' : 'Light Theme');
-                themeSpan.setAttribute('data-gr', isLight ? 'Σκοτεινό Θέμα' : 'Φωτεινό Θέμα');
-                updateText(themeSpan.parentElement);
-            }
         }
     }
 
-    // --- LANGUAGE SWITCHER & INTERNATIONALIZATION (i18n) ---
-    function updateText(element = document) {
-        element.querySelectorAll('[data-en], [data-gr]').forEach(el => {
-            const translation = el.getAttribute(`data-${currentLanguage}`);
-            if (translation) {
-                // Handle special elements (input/textarea, meta, title)
-                if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
-                    el.placeholder = translation;
-                } else if (el.tagName === 'OPTION') {
-                    el.textContent = translation;
-                } else if (el.tagName === 'META') {
-                    if (el.getAttribute('name') === 'description' || el.getAttribute('property')?.includes('description')) {
-                        el.setAttribute('content', translation);
-                    }
-                } else if (el.tagName === 'TITLE') {
-                     document.title = translation;
-                }
-                else {
-                    el.innerHTML = translation;
-                }
-            }
-        });
-    }
-
+    // --- LANGUAGE SWITCHER & TRANSLATION ---
     function changeLanguage(lang) {
-        if (lang === currentLanguage) return;
-
         currentLanguage = lang;
         localStorage.setItem('language', lang);
 
-        document.documentElement.lang = lang; // Set HTML lang attribute
-        updateText(); // Update all text on the page
+        document.querySelectorAll('[data-en], [data-gr], [data-lang-section]').forEach(element => {
+            const grText = element.getAttribute('data-gr');
+            const enText = element.getAttribute('data-en');
+            const langSection = element.getAttribute('data-lang-section');
 
-        // Update Theme Switcher text after language change
-        const themeBtnSpan = document.getElementById('nav-theme-switcher')?.querySelector('span');
-        if (themeBtnSpan) {
-            const isLight = document.body.classList.contains('light-theme');
-            themeBtnSpan.setAttribute('data-en', isLight ? 'Dark Theme' : 'Light Theme');
-            themeBtnSpan.setAttribute('data-gr', isLight ? 'Σκοτεινό Θέμα' : 'Φωτεινό Θέμα');
-            updateText(themeBtnSpan.parentElement); // Update only the button text
-        }
+            if (langSection) {
+                // Handle full sections (e.g., disclaimer/footer content)
+                element.classList.toggle('hidden-by-default', langSection !== lang);
+            } else if (grText || enText) {
+                // Handle individual elements
+                const text = lang === 'gr' ? grText : enText;
+                if (text !== null) {
+                    element.textContent = text;
+                }
+                // Handle input placeholders and alt/title attributes if necessary
+                if (element.placeholder) {
+                    element.placeholder = lang === 'gr' ? grText : enText;
+                }
+            }
+        });
+        
+        // Custom logic for the theme switcher button's text, which is based on theme, not lang alone
+        const isLight = document.body.classList.contains('light-theme');
+        updateThemeIcons(isLight);
     }
 
     function initializeLanguageSwitcher() {
-        const modal = document.getElementById('language-selection-modal');
-        const modalBtn = document.getElementById('nav-language-switcher');
-        const languageBtns = modal?.querySelectorAll('.language-button');
-
-        if (modalBtn) {
-            modalBtn.addEventListener('click', () => openModal('language-selection-modal'));
+        const langModal = document.getElementById('language-selection-modal');
+        const openLangBtn = document.getElementById('nav-lang-switcher');
+        const closeModals = langModal.querySelectorAll('.close-modal');
+        
+        // Check for first-time visitor
+        if (!localStorage.getItem('language')) {
+            langModal.classList.add('active');
         }
 
-        languageBtns?.forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const lang = e.target.getAttribute('data-lang');
-                if (lang) {
-                    changeLanguage(lang);
-                    closeModal('language-selection-modal');
-                }
+        // Open button in nav
+        if (openLangBtn) {
+            openLangBtn.addEventListener('click', () => {
+                langModal.classList.add('active');
             });
+        }
+        
+        // Language select buttons in modal
+        langModal.querySelectorAll('.language-button').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const lang = btn.getAttribute('data-lang');
+                changeLanguage(lang);
+                langModal.classList.remove('active');
+            });
+        });
+
+        // Close button/click outside
+        closeModals.forEach(btn => btn.addEventListener('click', () => langModal.classList.remove('active')));
+        langModal.addEventListener('click', (e) => {
+            if (e.target === langModal) {
+                langModal.classList.remove('active');
+            }
         });
     }
 
     // --- MODAL FUNCTIONALITY ---
-    function openModal(modalId) {
-        const modal = document.getElementById(modalId);
-        if (modal) {
-            modal.classList.add('active');
-            setTimeout(() => modal.querySelector('.modal-content')?.classList.add('active'), 10);
-            document.body.style.overflow = 'hidden';
-        }
-    }
-
-    function closeModal(modalId) {
-        const modal = document.getElementById(modalId);
-        if (modal) {
-            modal.querySelector('.modal-content')?.classList.remove('active');
-            setTimeout(() => {
-                modal.classList.remove('active');
-                document.body.style.overflow = '';
-            }, 300);
-        }
-    }
-
     function initializeModals() {
-        document.querySelectorAll('.modal-overlay').forEach(modal => {
-            // Close button inside modal
-            modal.querySelector('.close-modal')?.addEventListener('click', () => closeModal(modal.id));
+        // Disclaimer Modal (index.html, guide-for-installation.html)
+        const disclaimerModal = document.getElementById('disclaimer-modal');
+        const acceptBtn = document.getElementById('accept-disclaimer');
+        const declineBtn = document.getElementById('decline-disclaimer');
+        const disclaimerLangBtn = document.getElementById('disclaimer-lang-btn');
 
-            // Close when clicking outside the modal content
-            modal.addEventListener('click', (e) => {
-                if (e.target === modal) {
-                    closeModal(modal.id);
+        if (disclaimerModal) {
+            // Show disclaimer on load if not previously accepted
+            if (localStorage.getItem('disclaimer_accepted') !== 'true') {
+                disclaimerModal.classList.add('active');
+            }
+
+            if (acceptBtn) {
+                acceptBtn.addEventListener('click', () => {
+                    localStorage.setItem('disclaimer_accepted', 'true');
+                    disclaimerModal.classList.remove('active');
+                });
+            }
+
+            if (declineBtn) {
+                declineBtn.addEventListener('click', () => {
+                    // Prevent navigation and show a message (or just keep modal open)
+                    alert(currentLanguage === 'gr' ? 'Πρέπει να αποδεχτείτε τους όρους για να συνεχίσετε να χρησιμοποιείτε αυτόν τον ιστότοπο.' : 'You must accept the terms to continue using this website.');
+                });
+            }
+
+            // Disclaimer Language Switcher (inside the modal)
+            if (disclaimerLangBtn) {
+                disclaimerLangBtn.addEventListener('click', () => {
+                    const newLang = currentLanguage === 'en' ? 'gr' : 'en';
+                    changeLanguage(newLang);
+                });
+            }
+
+            // Close modal by clicking outside (only if not a required acceptance on load)
+            disclaimerModal.addEventListener('click', (e) => {
+                // Only allow closing by click outside if disclaimer was already accepted
+                if (e.target === disclaimerModal && localStorage.getItem('disclaimer_accepted') === 'true') {
+                    disclaimerModal.classList.remove('active');
                 }
             });
-        });
+        }
     }
 
-    // --- CAROUSEL (SWIPER) INITIALIZATION ---
-    function initializeCarousels() {
-        // Placeholder for external library initialization (e.g., Swiper)
-    }
-
-    // --- CODE COPY BUTTONS ---
+    // --- GUIDE/COMMAND COPY FUNCTIONALITY ---
     function initializeCopyButtons() {
         document.querySelectorAll('.copy-btn').forEach(button => {
             button.addEventListener('click', () => {
-                const codeContainer = button.closest('.code-container');
-                const codeElement = codeContainer ? codeContainer.querySelector('code') : null;
-
-                if (codeElement) {
-                    const textToCopy = codeElement.textContent;
-                    navigator.clipboard.writeText(textToCopy).then(() => {
+                const commandBlock = button.closest('.step-card').querySelector('pre code');
+                if (commandBlock) {
+                    const command = commandBlock.textContent.trim();
+                    navigator.clipboard.writeText(command).then(() => {
+                        // Feedback animation
                         button.classList.add('copied');
-                        const originalText = button.getAttribute('data-en');
-                        const originalGrText = button.getAttribute('data-gr');
-                        button.setAttribute('data-en', 'Copied!');
-                        button.setAttribute('data-gr', 'Αντιγράφηκε!');
-                        updateText(button.parentElement); // Update button text
-
-                        setTimeout(() => {
-                            button.classList.remove('copied');
-                            button.setAttribute('data-en', originalText);
-                            button.setAttribute('data-gr', originalGrText);
-                            updateText(button.parentElement); // Restore button text
-                        }, 2000);
+                        setTimeout(() => button.classList.remove('copied'), 1500);
                     }).catch(err => {
                         console.error('Could not copy text: ', err);
                     });
@@ -194,47 +202,12 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
     }
-
-    // --- DISCLAIMER & COOKIE FUNCTIONALITY ---
-    function initializeDisclaimer() {
-        const disclaimerModal = document.getElementById('disclaimer-modal');
-        const acceptBtn = document.getElementById('accept-disclaimer');
-        const declineBtn = document.getElementById('decline-disclaimer');
-
-        // Check if disclaimer has been accepted before
-        if (localStorage.getItem('disclaimer_accepted') !== 'true' && disclaimerModal) {
-            openModal('disclaimer-modal');
-        }
-
-        acceptBtn?.addEventListener('click', () => {
-            localStorage.setItem('disclaimer_accepted', 'true');
-            closeModal('disclaimer-modal');
-        });
-
-        declineBtn?.addEventListener('click', () => {
-            alert('You must accept the terms to use the DedSec Project website. You will be redirected.');
-            window.location.href = 'https://google.com'; // Redirect to a benign site
-        });
-    }
-
-    // --- TOOLS PAGE COLLAPSIBLE SECTIONS ---
+    
+    // --- TOOL CATEGORY ACCORDION (learn-about-the-tools.html) ---
     function initializeToolCategories() {
-        document.querySelectorAll('.category-header').forEach(header => {
-            header.addEventListener('click', function() {
-                const category = this.closest('.category');
-                const wasActive = category.classList.contains('active');
-
-                // Close all other categories
-                document.querySelectorAll('.category').forEach(c => c.classList.remove('active'));
-
-                // Toggle the clicked one
-                category.classList.toggle('active', !wasActive);
-            });
-        });
-
-        document.querySelectorAll('.tool-header').forEach(header => {
-            header.addEventListener('click', function() {
-                const toolItem = this.parentElement;
+        document.querySelectorAll('.tool-item').forEach(toolItem => {
+            const toolHeader = toolItem.querySelector('.tool-header');
+            toolHeader.addEventListener('click', () => {
                 const wasActive = toolItem.classList.contains('active');
                 const category = toolItem.closest('.category');
 
@@ -248,28 +221,30 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
     }
-
+    
     // --- INITIALIZATION ---
     function initializePortfolio() {
+        // 1. Core Language/Theme setup
+        changeLanguage(currentLanguage); // Sets initial language
+        if (localStorage.getItem('theme') === 'light') document.body.classList.add('light-theme');
+        
+        // 2. Initialize all dynamic components
         initializeNavigation();
         initializeThemeSwitcher();
         initializeLanguageSwitcher();
         initializeModals();
-        initializeCarousels();
         initializeCopyButtons();
-        initializeDisclaimer();
 
+        // 3. Page-specific initialization
         if (document.querySelector('.categories-container')) {
             initializeToolCategories();
         }
-
-        changeLanguage(localStorage.getItem('language') || 'en');
-        if (localStorage.getItem('theme') === 'light') document.body.classList.add('light-theme');
-
-        // Nav active state logic
+        
+        // 4. Nav active state logic (must run after initializeNavigation)
         const currentPage = window.location.pathname.split('/').pop() || 'index.html';
         document.querySelectorAll('.nav-link').forEach(link => {
             const linkPage = link.getAttribute('href').split('/').pop();
+            // Special handling for index.html at root vs /index.html
             link.classList.toggle('active', linkPage === currentPage || (currentPage === '' && linkPage === 'index.html'));
         });
     }
