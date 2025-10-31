@@ -75,34 +75,19 @@ document.addEventListener('DOMContentLoaded', () => {
         updateThemeButton(document.body.classList.contains('light-theme'));
     }
 
-    // --- LANGUAGE SWITCHER ---
+    // --- LANGUAGE SWITCHER (MODIFIED FOR DIRECT TOGGLE) ---
     function initializeLanguageSwitcher() {
         const langBtn = document.getElementById('nav-lang-switcher');
         const disclaimerLangBtn = document.getElementById('disclaimer-lang-btn');
-        const languageModal = document.getElementById('language-selection-modal');
-        
-        langBtn?.addEventListener('click', () => {
-            if (languageModal) {
-                languageModal.classList.add('visible');
-            }
-        });
+        // languageModal is no longer needed
 
-        // Language selection button in disclaimer modal
-        disclaimerLangBtn?.addEventListener('click', () => {
-            if (languageModal) {
-                languageModal.classList.add('visible');
-            }
-        });
+        const toggleLanguage = () => {
+            const newLang = currentLanguage === 'en' ? 'gr' : 'en';
+            changeLanguage(newLang);
+        };
 
-        // Language selection
-        document.querySelectorAll('.language-button').forEach(button => {
-            button.addEventListener('click', () => {
-                changeLanguage(button.dataset.lang);
-                if (languageModal) {
-                    languageModal.classList.remove('visible');
-                }
-            });
-        });
+        langBtn?.addEventListener('click', toggleLanguage);
+        disclaimerLangBtn?.addEventListener('click', toggleLanguage);
     }
 
     // --- LANGUAGE MANAGEMENT ---
