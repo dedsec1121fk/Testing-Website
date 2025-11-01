@@ -966,7 +966,8 @@ body.light-theme .modal-content {
 /* ================================================================= COMPONENT STYLES (CODE, NOTES, ETC) ================================================================= */
 
 /* --- Code Block Styling --- */
-pre {
+pre,
+.code-container {
     background: var(--nm-darkest);
     border: 1px solid var(--nm-accent);
     padding: 15px;
@@ -980,105 +981,47 @@ pre {
     word-wrap: break-word;
     margin-bottom: 20px;
     transition: border-color 0.3s ease;
-    /* ADDED: Ensure proper containment */
-    position: relative;
-    overflow: hidden;
 }
 
-pre:hover {
+pre:hover,
+.code-container:hover {
     border-color: var(--nm-accent-hover);
 }
 
-pre code {
+pre code,
+.code-container code {
     color: var(--nm-success);
     /* MODIFIED: Drastically simplified text-shadow to a single, minimal glow layer */
     text-shadow: 0 0 5px rgba(68, 255, 68, 0.4);
+    /* ADDED: Ensure code tag itself can wrap if needed */
+    white-space: pre-wrap;
+    word-wrap: break-word;
 }
 
-.code-container {
-    position: relative;
-    /* ADDED: Ensure proper containment */
-    overflow: visible;
-}
-
-/* UPDATED: Block-style copy buttons with proper borders and text containment */
 .copy-btn {
-    display: block;
-    width: 100%;
+    position: absolute;
+    top: 10px;
+    right: 10px;
     background: var(--nm-container);
-    border: 2px solid var(--nm-border);
+    border: 1px solid var(--nm-border);
     color: var(--nm-text-muted);
-    padding: 12px 15px;
+    padding: 5px 10px;
     border-radius: 10px;
     cursor: pointer;
-    font-size: 0.9rem;
-    transition: all 0.3s var(--ease-out-cubic);
+    font-size: 0.7rem;
+    transition: all 0.2s ease;
     z-index: 5;
     font-family: 'Roboto Mono', monospace;
-    font-weight: bold;
-    text-align: center;
-    margin-top: 10px;
-    box-sizing: border-box;
-    /* ADDED: Text containment */
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    position: relative;
 }
 
 .copy-btn:hover {
     background: var(--nm-accent);
     color: var(--nm-text-on-accent);
     border-color: var(--nm-accent-hover);
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-glow-accent);
 }
 
 .copy-btn:active {
-    transform: translateY(0px) scale(0.98);
-    transition-duration: 0.1s;
-}
-
-.copy-btn.copied {
-    background: var(--nm-success);
-    color: var(--nm-text-on-status);
-    border-color: var(--nm-success);
-}
-
-.copy-btn.copied:hover {
-    background: var(--nm-success);
-    border-color: var(--nm-success);
-    box-shadow: var(--shadow-glow-success);
-}
-
-/* ADDED: Icon for copy button */
-.copy-btn::before {
-    content: "📋";
-    margin-right: 8px;
-    font-size: 0.9em;
-}
-
-.copy-btn.copied::before {
-    content: "✅";
-}
-
-/* Ensure proper spacing for code blocks with copy buttons */
-.code-container {
-    margin-bottom: 25px;
-}
-
-.code-container pre {
-    margin-bottom: 0;
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
-    border-bottom: none;
-}
-
-.code-container .copy-btn {
-    margin-top: 0;
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
-    border-top: none;
+    transform: scale(0.95);
 }
 
 /* --- Notes, Warnings, and Danger Blocks --- */
@@ -1561,12 +1504,6 @@ body.light-theme .category-header {
     }
     .carousel-nav-btn {
         padding: 8px;
-    }
-
-    /* UPDATED: Copy button responsive styles */
-    .copy-btn {
-        padding: 10px 12px;
-        font-size: 0.85rem;
     }
 }
 
