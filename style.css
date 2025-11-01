@@ -980,7 +980,7 @@ pre {
     word-wrap: break-word;
     margin-bottom: 20px;
     transition: border-color 0.3s ease;
-    /* ADDED: Ensure proper containment for absolute positioned children */
+    /* ADDED: Ensure proper containment */
     position: relative;
     overflow: hidden;
 }
@@ -1001,57 +1001,84 @@ pre code {
     overflow: visible;
 }
 
+/* UPDATED: Block-style copy buttons with proper borders and text containment */
 .copy-btn {
-    position: absolute;
-    top: 10px;
-    right: 10px;
+    display: block;
+    width: 100%;
     background: var(--nm-container);
-    border: 1px solid var(--nm-border);
+    border: 2px solid var(--nm-border);
     color: var(--nm-text-muted);
-    padding: 5px 10px;
+    padding: 12px 15px;
     border-radius: 10px;
     cursor: pointer;
-    font-size: 0.7rem;
-    transition: all 0.2s ease;
+    font-size: 0.9rem;
+    transition: all 0.3s var(--ease-out-cubic);
     z-index: 5;
     font-family: 'Roboto Mono', monospace;
-    /* ADDED: Border constraints */
+    font-weight: bold;
+    text-align: center;
+    margin-top: 10px;
     box-sizing: border-box;
-    max-width: calc(100% - 20px); /* Prevent extending beyond container */
+    /* ADDED: Text containment */
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    position: relative;
 }
 
 .copy-btn:hover {
     background: var(--nm-accent);
     color: var(--nm-text-on-accent);
     border-color: var(--nm-accent-hover);
-    /* ADDED: Ensure border stays within container on hover */
-    transform: none; /* Remove any transforms that might push it out */
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-glow-accent);
 }
 
 .copy-btn:active {
-    transform: scale(0.95);
+    transform: translateY(0px) scale(0.98);
+    transition-duration: 0.1s;
 }
 
-/* ADDED: Specific styling for code containers to ensure copy button containment */
+.copy-btn.copied {
+    background: var(--nm-success);
+    color: var(--nm-text-on-status);
+    border-color: var(--nm-success);
+}
+
+.copy-btn.copied:hover {
+    background: var(--nm-success);
+    border-color: var(--nm-success);
+    box-shadow: var(--shadow-glow-success);
+}
+
+/* ADDED: Icon for copy button */
+.copy-btn::before {
+    content: "📋";
+    margin-right: 8px;
+    font-size: 0.9em;
+}
+
+.copy-btn.copied::before {
+    content: "✅";
+}
+
+/* Ensure proper spacing for code blocks with copy buttons */
+.code-container {
+    margin-bottom: 25px;
+}
+
 .code-container pre {
-    padding-top: 45px; /* Add extra padding at top to make room for copy button */
+    margin-bottom: 0;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom: none;
 }
 
-/* Ensure the copy button stays within bounds on smaller screens */
-@media (max-width: 768px) {
-    .copy-btn {
-        padding: 4px 8px;
-        font-size: 0.65rem;
-        top: 8px;
-        right: 8px;
-    }
-    
-    .code-container pre {
-        padding-top: 40px;
-    }
+.code-container .copy-btn {
+    margin-top: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-top: none;
 }
 
 /* --- Notes, Warnings, and Danger Blocks --- */
@@ -1534,6 +1561,12 @@ body.light-theme .category-header {
     }
     .carousel-nav-btn {
         padding: 8px;
+    }
+
+    /* UPDATED: Copy button responsive styles */
+    .copy-btn {
+        padding: 10px 12px;
+        font-size: 0.85rem;
     }
 }
 
