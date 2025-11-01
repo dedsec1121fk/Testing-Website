@@ -990,12 +990,18 @@ pre:hover,
 
 pre code,
 .code-container code {
-    color: var(--nm-success);
-    /* MODIFIED: Drastically simplified text-shadow to a single, minimal glow layer */
-    text-shadow: 0 0 5px rgba(68, 255, 68, 0.4);
+    color: var(--nm-text); /* MODIFIED: Changed from --nm-success to --nm-text */
+    text-shadow: none; /* MODIFIED: Removed green text-shadow */
     /* ADDED: Ensure code tag itself can wrap if needed */
     white-space: pre-wrap;
     word-wrap: break-word;
+}
+
+/* ADDED: Specific style to center the coupon code */
+#coupon-code {
+    display: block;
+    text-align: center;
+    font-size: 1.1rem;
 }
 
 .copy-btn {
