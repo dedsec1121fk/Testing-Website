@@ -178,13 +178,14 @@ body.light-theme::before {
     top: 0;
     left: 0;
     width: 100%;
-    /* MODIFIED: Make background and border transparent to remove the visible box */
-    background: transparent !important;
-    border-bottom: none !important;
+    /* MODIFIED: Added solid theme-aware background, border, and shadow */
+    background-color: var(--nm-darkest) !important;
+    border-bottom: 1px solid var(--nm-border) !important;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2) !important;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
     z-index: 1000;
     padding: 0 15px;
     box-sizing: border-box;
-    box-shadow: none !important;
 }
 
 .nav-container {
