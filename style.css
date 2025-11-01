@@ -1180,6 +1180,19 @@ body.light-theme .portfolio-card {
     box-shadow: 0 0 10px rgba(var(--glow-rgb), 0.5);
 }
 
+/* ADDED: Theme-aware GitHub Stats */
+.github-stat-light {
+    display: none; /* Hide light theme images by default (in dark mode) */
+}
+
+body.light-theme .github-stat-light {
+    display: block; /* Show light theme images in light mode */
+}
+
+body.light-theme .github-stat-dark {
+    display: none; /* Hide dark theme images in light mode */
+}
+
 /* --- Collaborations Page --- */
 .store-link {
     margin: 1rem 0 1.5rem 0;
