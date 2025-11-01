@@ -903,6 +903,7 @@ body.light-theme .modal-content {
     will-change: transform, box-shadow;
     min-height: 45px;
     min-width: 100px;
+    text-align: center; /* ADDED */
 }
 
 .language-button:hover, 
@@ -1080,7 +1081,7 @@ pre code,
     font-family: 'Roboto Mono', monospace;
     display: flex;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: center; /* MODIFIED: Changed from flex-start */
     text-decoration: none;
     box-sizing: border-box;
     position: relative;
