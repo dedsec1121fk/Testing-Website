@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find My Scammer - Community Investigation</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* Custom Styles for a Professional Dark Theme */
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%); /* Gradient background */
+            min-height: 100vh;
+        }
+        .card {
+            background: linear-gradient(145deg, #1E293B 0%, #0F1B2D 100%); /* Subtle gradient for card */
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(99, 102, 241, 0.2); /* Subtle indigo border */
+            backdrop-filter: blur(10px);
+        }
+        .gradient-text {
+            /* Professional Blue-Indigo Gradient for Title */
+            background-image: linear-gradient(90deg, #38BDF8, #6366F1, #8B5CF6); /* Extended gradient */
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-fill-color: transparent;
+        }
+        .cta-button {
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4); /* Indigo glow */
+            background: linear-gradient(90deg, #4F46E5 0%, #7C3AED 100%); /* Gradient button */
+        }
+        .cta-button:hover {
+            box-shadow: 0 6px 25px rgba(99, 102, 241, 0.7);
+            transform: translateY(-3px);
+            background: linear-gradient(90deg, #4338CA 0%, #6D28D9 100%); /* Darker on hover */
+        }
+        .evidence-badge {
+            background: linear-gradient(90deg, #1E40AF 0%, #3730A3 100%);
+            box-shadow: 0 2px 10px rgba(30, 64, 175, 0.3);
+        }
+        .divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent 0%, #4F46E5 50%, transparent 100%);
+        }
+        .pulse-glow {
+            animation: pulse-glow 2s infinite;
+        }
+        @keyframes pulse-glow {
+            0% {
+                box-shadow: 0 0 5px rgba(99, 102, 241, 0.5);
+            }
+            50% {
+                box-shadow: 0 0 20px rgba(99, 102, 241, 0.8);
+            }
+            100% {
+                box-shadow: 0 0 5px rgba(99, 102, 241, 0.5);
+            }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4">
+
+    <!-- Main Content Card -->
+    <div class="card max-w-4xl w-full mx-auto p-8 md:p-12 rounded-2xl text-slate-100">
+
+        <header class="text-center mb-12">
+            <div class="flex justify-center mb-6">
+                <div class="w-16 h-16 rounded-full bg-indigo-900/30 flex items-center justify-center pulse-glow">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                    </svg>
+                </div>
+            </div>
+            <h1 class="text-5xl md:text-7xl font-extrabold gradient-text mb-4 tracking-tight">
+                FIND MY SCAMMER
+            </h1>
+            <p class="text-xl text-slate-400 font-light tracking-wider max-w-2xl mx-auto">
+                Digital Forensics & Community-Driven Investigation Hub
+            </p>
+        </header>
+
+        <!-- Description Section -->
+        <section class="mb-12">
+            <h2 class="text-3xl font-semibold mb-6 border-b border-indigo-500/50 pb-3 text-indigo-300">
+                A Call for Collaborative Justice
+            </h2>
+            <div class="space-y-6">
+                <p class="text-lg text-slate-300 leading-relaxed">
+                    <span class="font-semibold text-indigo-300">Digital fraud is a global epidemic</span> that requires coordinated, international efforts to combat. This platform serves as a secure repository for documented evidence and victim statements regarding a specific threat actor operating across multiple jurisdictions.
+                </p>
+                <p class="text-lg text-slate-300 leading-relaxed">
+                    We are appealing to the global digital community—<span class="font-semibold text-indigo-300">cybersecurity experts, ethical hackers, law enforcement personnel, and fellow victims</span>—to assist in compiling a comprehensive forensic profile of this perpetrator.
+                </p>
+                <div class="bg-slate-800/50 p-5 rounded-xl border-l-4 border-indigo-500">
+                    <p class="text-lg text-slate-300 leading-relaxed">
+                        Your expertise or personal evidence—including communication logs, transaction hashes, associated aliases, or technical footprints (IP/device data)—is <span class="font-bold text-indigo-300">critically important</span> to building an indisputable case for law enforcement and preventing further exploitation.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Evidence Highlights -->
+        <section class="mb-12">
+            <h2 class="text-2xl font-semibold mb-6 text-indigo-300">Current Evidence Status</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="bg-slate-800/30 p-4 rounded-xl border border-slate-700 flex items-center">
+                    <div class="mr-4">
+                        <div class="w-10 h-10 rounded-full bg-indigo-900/50 flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div>
+                        <p class="font-semibold text-slate-300">Documentation</p>
+                        <p class="text-sm text-slate-400">Victim statements & logs</p>
+                    </div>
+                </div>
+                <div class="bg-slate-800/30 p-4 rounded-xl border border-slate-700 flex items-center">
+                    <div class="mr-4">
+                        <div class="w-10 h-10 rounded-full bg-indigo-900/50 flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div>
+                        <p class="font-semibold text-slate-300">Technical Data</p>
+                        <p class="text-sm text-slate-400">IP addresses & metadata</p>
+                    </div>
+                </div>
+                <div class="bg-slate-800/30 p-4 rounded-xl border border-slate-700 flex items-center">
+                    <div class="mr-4">
+                        <div class="w-10 h-10 rounded-full bg-indigo-900/50 flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div>
+                        <p class="font-semibold text-slate-300">Forensic Analysis</p>
+                        <p class="text-sm text-slate-400">Initial investigation report</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Download Section (Primary CTA) -->
+        <section class="text-center p-8 bg-gradient-to-br from-indigo-900/30 to-purple-900/20 rounded-2xl border border-indigo-700/30 mb-12">
+            <h2 class="text-2xl font-bold mb-4 text-indigo-300">
+                Download the Investigative Data Package
+            </h2>
+            <p class="text-slate-400 mb-8 max-w-2xl mx-auto">
+                The file below contains collected evidence, initial forensic reports, and technical metadata. Access is provided to aid verification and expansion of the investigation. All data is anonymized where necessary to protect victim privacy.
+            </p>
+
+            <!-- Download Button -->
+            <a id="downloadButton"
+               href="https://raw.githubusercontent.com/dedsec1121fk/Find-My-Scammer/b2a40e59035990ac91e580aa157cbcb0b8676242/Scammer.zip"
+               download="Scammer_Evidence_Package.zip"
+               class="cta-button inline-flex items-center justify-center px-10 py-4 text-xl font-bold rounded-xl text-white focus:outline-none focus:ring-4 focus:ring-indigo-500 focus:ring-opacity-70 mb-4">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                </svg>
+                ACCESS EVIDENCE FILE
+            </a>
+            <p class="text-sm text-slate-500">File: Scammer.zip (Direct download via GitHub)</p>
+        </section>
+
+        <!-- Contact Section -->
+        <section class="text-center p-6 bg-slate-800/40 rounded-xl border border-slate-700/50">
+            <h2 class="text-xl font-semibold mb-4 text-indigo-300">Have Additional Evidence?</h2>
+            <p class="text-slate-400 mb-4 max-w-2xl mx-auto">
+                If you possess additional information or evidence related to this investigation, please contact us through the official DedSec Project website.
+            </p>
+            <a href="#" class="inline-flex items-center text-indigo-400 hover:text-indigo-300 font-medium transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                </svg>
+                Contact DedSec Project
+            </a>
+        </section>
+
+        <div class="divider my-8"></div>
+
+        <!-- Footer -->
+        <footer class="text-center text-slate-500 text-sm">
+            <p>This initiative is part of the DedSec Project - A community-driven effort to combat digital fraud</p>
+            <p class="mt-2">All information is handled with strict confidentiality and shared only with verified investigators</p>
+        </footer>
+
+    </div>
+
+</body>
+</html>
