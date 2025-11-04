@@ -1,7 +1,7 @@
 /*
     =================================================================
     DEDSEC PROJECT MULTI-PAGE STYLES
-    VERSION: 3.1 (Enhanced Home Screen Design)
+    VERSION: 3.1 (Enhanced Home Screen Design) - FIXED
     =================================================================
 */
 
@@ -1041,7 +1041,8 @@ pre code,
     margin: 20px 0;
 }
 
-.warning {
+/* FIX: Changed .warning to .warning, .note-warning */
+.warning, .note-warning {
     border-left: 4px solid var(--nm-warning);
     background: var(--warning-bg);
     padding: 1rem;
@@ -1053,6 +1054,24 @@ pre code,
     background: var(--danger-bg);
     padding: 1rem;
     border-radius: 20px;
+}
+
+/* FIX: Added .tip style */
+.tip {
+    border-left: 4px solid var(--nm-success);
+    background: rgba(68, 255, 68, 0.1);
+    padding: 1rem;
+    border-radius: 20px;
+    margin: 20px 0;
+}
+
+/* FIX: Added .modal-disclaimer style */
+.modal-disclaimer {
+    border-left: 4px solid var(--nm-accent);
+    background: rgba(var(--glow-rgb), 0.1);
+    padding: 1rem;
+    border-radius: 20px;
+    margin: 20px 0;
 }
 
 
@@ -1235,6 +1254,11 @@ body.light-theme .store-link a {
     transition-duration: 0.1s;
 }
 
+/* FIX: Added style for .content-section-modal */
+.content-section-modal {
+    margin-top: 10px;
+}
+
 /* --- Collaborations Page Carousel (Adapted from old CSS) --- */
 .collaborations-carousel {
     position: relative;
@@ -1250,25 +1274,28 @@ body.light-theme .store-link a {
     padding: 10px 0;
 }
 
+/* FIX: Carousel logic changed to match JS (fade-in/out) */
 .carousel-slide-container {
-    display: flex;
-    transition: transform 0.5s ease-in-out;
+    position: relative;
 }
 
 .carousel-slide {
-    flex: 0 0 100%;
     width: 100%;
     box-sizing: border-box;
     padding: 10px;
 }
 
-/* CRITICAL: Ensures the image is contained within its slide and does not overflow */
 .slide-image {
     width: 100%;
     height: auto;
-    display: block;
+    display: none; /* Hide all images by default */
     border-radius: 15px;
 }
+
+.slide-image.active {
+    display: block; /* Show only the active image */
+}
+/* END CAROUSEL FIX */
 
 /* Carousel Navigation Buttons */
 .carousel-nav-btn {
@@ -1336,19 +1363,22 @@ body.light-theme .category-header {
     background: var(--nm-container);
 }
 
-.category-title {
+/* FIX: Changed .category-title to .category-header h3 */
+.category-header h3 {
     margin: 0;
     font-family: 'Orbitron', sans-serif;
     color: var(--nm-text-accent);
     font-size: 1.2rem;
 }
 
-.category-expand-icon {
+/* FIX: Changed .category-expand-icon to .toggle-icon */
+.toggle-icon {
     color: var(--nm-accent);
     transition: transform 0.3s ease;
 }
 
-.category.active .category-expand-icon {
+/* FIX: Changed .category.active .category-expand-icon to .category.active .toggle-icon */
+.category.active .toggle-icon {
     transform: rotate(180deg);
 }
 
