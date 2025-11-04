@@ -1,7 +1,7 @@
 /*
     =================================================================
     DEDSEC PROJECT MULTI-PAGE STYLES
-    VERSION: 3.1 (Enhanced Home Screen Design) - FIXED
+    VERSION: 3.2 (Nav-Bar Fix)
     =================================================================
 */
 
@@ -328,22 +328,26 @@ body.light-theme .nav-title h1::after {
     transition-duration: 0.1s;
 }
 
-/* MODIFIED: NAV ACTIONS STYLES FOR VERTICAL MENU */
+/* =================================================================
+    FIX: NAV ACTIONS (MOBILE)
+    Styled to be horizontal (row) and fit in the top bar.
+    =================================================================
+*/
 .nav-actions {
     display: flex;
     gap: 10px;
-    margin-left: 0; /* Removed desktop margin */
-    margin-top: 20px; /* Added spacing in vertical menu */
-    justify-content: center;
-    flex-direction: column; /* Stack buttons vertically */
-    width: 100%; /* Make actions take full width of menu */
+    margin-left: 10px; /* Space from burger */
+    margin-top: 0; 
+    justify-content: flex-end;
+    flex-direction: row; /* Horizontal */
+    width: auto; 
 }
 
 .nav-action-btn {
     background: var(--nm-container);
     border: 1px solid var(--nm-border);
     color: var(--nm-text);
-    padding: 8px 15px;
+    padding: 8px 10px; /* Tighter padding for icon-only */
     border-radius: 20px;
     cursor: pointer;
     font-family: 'Roboto Mono', monospace;
@@ -351,11 +355,9 @@ body.light-theme .nav-title h1::after {
     display: flex;
     align-items: center;
     gap: 5px;
-    /* MODIFIED: Premium transition */
     transition: transform 0.25s var(--ease-out-cubic), background-color 0.25s ease, color 0.25s ease, box-shadow 0.25s var(--ease-out-cubic), border-color 0.25s ease;
     will-change: transform, box-shadow;
-    /* ADDED: Full width for menu item look */
-    width: 100%; 
+    width: auto; /* Fit content */
     justify-content: center;
     box-sizing: border-box;
 }
@@ -373,6 +375,13 @@ body.light-theme .nav-title h1::after {
     transform: translateY(0px) scale(0.97);
     transition-duration: 0.1s;
 }
+
+/* ADDED: Hide text on mobile nav buttons */
+.nav-action-btn span {
+    display: none;
+}
+/* --- END OF NAV-ACTIONS FIX --- */
+
 
 /* --- PAGE CONTENT STYLES --- */
 .page-content {
@@ -1041,7 +1050,6 @@ pre code,
     margin: 20px 0;
 }
 
-/* FIX: Changed .warning to .warning, .note-warning */
 .warning, .note-warning {
     border-left: 4px solid var(--nm-warning);
     background: var(--warning-bg);
@@ -1056,7 +1064,6 @@ pre code,
     border-radius: 20px;
 }
 
-/* FIX: Added .tip style */
 .tip {
     border-left: 4px solid var(--nm-success);
     background: rgba(68, 255, 68, 0.1);
@@ -1065,7 +1072,6 @@ pre code,
     margin: 20px 0;
 }
 
-/* FIX: Added .modal-disclaimer style */
 .modal-disclaimer {
     border-left: 4px solid var(--nm-accent);
     background: rgba(var(--glow-rgb), 0.1);
@@ -1254,7 +1260,6 @@ body.light-theme .store-link a {
     transition-duration: 0.1s;
 }
 
-/* FIX: Added style for .content-section-modal */
 .content-section-modal {
     margin-top: 10px;
 }
@@ -1274,7 +1279,6 @@ body.light-theme .store-link a {
     padding: 10px 0;
 }
 
-/* FIX: Carousel logic changed to match JS (fade-in/out) */
 .carousel-slide-container {
     position: relative;
 }
@@ -1363,7 +1367,6 @@ body.light-theme .category-header {
     background: var(--nm-container);
 }
 
-/* FIX: Changed .category-title to .category-header h3 */
 .category-header h3 {
     margin: 0;
     font-family: 'Orbitron', sans-serif;
@@ -1371,13 +1374,11 @@ body.light-theme .category-header {
     font-size: 1.2rem;
 }
 
-/* FIX: Changed .category-expand-icon to .toggle-icon */
 .toggle-icon {
     color: var(--nm-accent);
     transition: transform 0.3s ease;
 }
 
-/* FIX: Changed .category.active .category-expand-icon to .category.active .toggle-icon */
 .category.active .toggle-icon {
     transform: rotate(180deg);
 }
@@ -1558,58 +1559,60 @@ body.light-theme .category-header {
     }
 }
 
+/* =================================================================
+    FIX: DESKTOP MEDIA QUERY
+    Re-implements the 3-column grid layout and restores
+    text to nav-action-buttons.
+    =================================================================
+*/
 @media (min-width: 993px) {
     /* Hide the burger menu on desktop */
     .burger-menu {
         display: none;
     }
 
-    /* Re-style the nav menu for desktop */
+    /* Re-style the nav container for desktop
+       [Actions] [Title] [Links]
+    */
+    .nav-container {
+        display: grid;
+        grid-template-columns: auto 1fr auto; 
+        align-items: center;
+        gap: 20px; 
+        padding: 10px 0; /* Reset mobile padding */
+    }
+    
+    /* 1. Title (Center) */
+    .nav-title {
+        grid-column: 2 / 3;
+        text-align: center;
+        /* Reset any flex properties from mobile */
+        position: static;
+        transform: none;
+    }
+
+    /* 2. Menu Links (Right) */
     .nav-menu {
+        grid-column: 3 / 4;
+        justify-self: end; /* Align the grid item itself to the end */
+        
+        /* Reset mobile styles */
         position: static;
         transform: none;
         height: auto;
         width: auto;
         max-width: none;
-        flex-direction: row;
         background: none;
         box-shadow: none;
         padding: 0;
         overflow-y: visible;
-        gap: 5px; /* Spacing between links */
-        /* MODIFIED: Reset to default position to be managed by grid */
-        margin-left: 0; 
         margin-top: 0;
-    }
-
-    /* This positions your nav menu to the right of the centered title,
-       and the nav actions to the right of the nav menu.
-    */
-    .nav-container {
-        display: grid;
-        grid-template-columns: auto 1fr auto; /* <-- THIS IS THE FIX */
-        align-items: center;
-        gap: 20px; /* Space between the grid columns */
-    }
-    
-    .nav-title {
-        /* This stays the same - centered */
-        position: static;
-        transform: none;
-        grid-column: 2 / 3;
-        text-align: center;
-    }
-
-    .nav-menu {
-        grid-column: 3 / 4;
-        justify-self: end;
+        
+        /* Style the links inside */
+        display: flex;
         flex-direction: row;
         align-items: center;
-        /* Re-style the actions to be horizontal within the nav-menu */
-        display: flex;
-        gap: 10px;
-        width: auto;
-        justify-content: flex-end; /* Align links to the right */
+        gap: 5px; 
     }
     
     .nav-link {
@@ -1617,18 +1620,31 @@ body.light-theme .category-header {
         font-size: 0.85rem;
     }
     
-    /* Re-style the actions to be horizontal */
+    /* 3. Actions (Left) */
     .nav-actions {
-        flex-direction: row;
-        width: auto;
-        justify-content: flex-start;
-        margin-top: 0;
         grid-column: 1 / 2;
+        justify-self: start; /* Align the grid item itself to the start */
+
+        /* Reset mobile styles */
+        margin-top: 0;
+        margin-left: 0;
+        width: auto;
+        
+        /* Style the buttons inside */
+        display: flex;
+        flex-direction: row;
+        gap: 10px;
     }
 
     .nav-action-btn {
         width: auto;
         font-size: 0.8rem;
+        padding: 8px 15px; /* Restore desktop padding */
+    }
+    
+    /* Re-show text on desktop */
+    .nav-action-btn span {
+        display: inline;
     }
 
     /* Reset the phone container for desktop view */
@@ -1644,7 +1660,7 @@ body.light-theme .category-header {
     }
 
     .home-screen, .page-content {
-        padding-top: 100px; /* Ensure content starts well below the fixed (now transparent) header */
+        padding-top: 100px; /* Ensure content starts well below the fixed header */
         margin-top: 0;
     }
 
@@ -1652,6 +1668,7 @@ body.light-theme .category-header {
         padding: 30px;
     }
 }
+/* --- END OF DESKTOP FIX --- */
 
 
 /* ================================================================= ACCESSIBILITY/FOCUS STYLES ================================================================= */
