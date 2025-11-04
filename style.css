@@ -1,7 +1,7 @@
 /*
     =================================================================
     DEDSEC PROJECT MULTI-PAGE STYLES
-    VERSION: 3.2 (Nav-Bar Fix)
+    VERSION: 3.3 (Mobile Nav Order Fix)
     =================================================================
 */
 
@@ -205,6 +205,7 @@ body.light-theme::before {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    order: 1; /* For mobile flex layout */
 }
 
 .nav-title h1 {
@@ -255,6 +256,8 @@ body.light-theme .nav-title h1::after {
     cursor: pointer;
     padding: 5px;
     gap: 4px;
+    order: 3; /* For mobile flex layout */
+    margin-left: 10px; /* Space between actions and burger */
 }
 
 .burger-menu span {
@@ -336,11 +339,12 @@ body.light-theme .nav-title h1::after {
 .nav-actions {
     display: flex;
     gap: 10px;
-    margin-left: 10px; /* Space from burger */
+    margin-left: 0; /* Space from burger */
     margin-top: 0; 
     justify-content: flex-end;
     flex-direction: row; /* Horizontal */
     width: auto; 
+    order: 2; /* For mobile flex layout */
 }
 
 .nav-action-btn {
@@ -1589,6 +1593,7 @@ body.light-theme .category-header {
         /* Reset any flex properties from mobile */
         position: static;
         transform: none;
+        order: unset; /* Reset mobile order */
     }
 
     /* 2. Menu Links (Right) */
@@ -1624,6 +1629,7 @@ body.light-theme .category-header {
     .nav-actions {
         grid-column: 1 / 2;
         justify-self: start; /* Align the grid item itself to the start */
+        order: unset; /* Reset mobile order */
 
         /* Reset mobile styles */
         margin-top: 0;
