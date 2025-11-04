@@ -1,7 +1,7 @@
 /*
     =================================================================
     DEDSEC PROJECT MULTI-PAGE STYLES
-    VERSION: 3.3 (Mobile Nav Order Fix)
+    VERSION: 3.4 (PC Layout Fix)
     =================================================================
 */
 
@@ -196,6 +196,7 @@ body.light-theme::before {
     margin: 0 auto;
     padding: 10px 0;
     transition: max-width 0.3s ease;
+    position: relative; /* For desktop title centering */
 }
 
 /* MODIFIED: ADDED TEXT SAFETY */
@@ -1565,8 +1566,7 @@ body.light-theme .category-header {
 
 /* =================================================================
     FIX: DESKTOP MEDIA QUERY
-    Re-implements the 3-column grid layout and restores
-    text to nav-action-buttons.
+    Implements [ (empty) ] [ Title ] [ Actions | Links ]
     =================================================================
 */
 @media (min-width: 993px) {
@@ -1575,31 +1575,30 @@ body.light-theme .category-header {
         display: none;
     }
 
-    /* Re-style the nav container for desktop
-       [Actions] [Title] [Links]
-    */
+    /* --- FLEXBOX LAYOUT WITH ABSOLUTE CENTERED TITLE --- */
     .nav-container {
-        display: grid;
-        grid-template-columns: auto 1fr auto; 
+        /* Use flexbox to group items on the right */
+        display: flex;
+        justify-content: flex-end; 
         align-items: center;
-        gap: 20px; 
-        padding: 10px 0; /* Reset mobile padding */
+        padding: 10px 0;
+        /* Position relative is needed for the absolute child */
+        position: relative;
     }
     
     /* 1. Title (Center) */
     .nav-title {
-        grid-column: 2 / 3;
-        text-align: center;
-        /* Reset any flex properties from mobile */
-        position: static;
-        transform: none;
+        /* Absolute centering */
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
         order: unset; /* Reset mobile order */
+        margin: 0; /* Override any flex margins */
     }
 
     /* 2. Menu Links (Right) */
     .nav-menu {
-        grid-column: 3 / 4;
-        justify-self: end; /* Align the grid item itself to the end */
+        order: 2; /* Actions first, then Menu */
         
         /* Reset mobile styles */
         position: static;
@@ -1625,12 +1624,10 @@ body.light-theme .category-header {
         font-size: 0.85rem;
     }
     
-    /* 3. Actions (Left) */
+    /* 3. Actions (Right, before menu) */
     .nav-actions {
-        grid-column: 1 / 2;
-        justify-self: start; /* Align the grid item itself to the start */
-        order: unset; /* Reset mobile order */
-
+        order: 1; /* Actions first, then Menu */
+        
         /* Reset mobile styles */
         margin-top: 0;
         margin-left: 0;
