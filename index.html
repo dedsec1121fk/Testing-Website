@@ -7,6 +7,23 @@
 
     <meta name="description" content="DedSec Project: The ultimate, no-root, Termux-based cybersecurity toolkit for Android. Access 40+ open-source tools for ethical hacking, OSINT, and security research. Explore tools, guides, and security articles.">
     <meta name="keywords" content="DedSec, DedSec Project, Cybersecurity, Ethical Hacking, Hacking Tools">
+
+<!-- Security Headers -->
+<meta http-equiv="Content-Security-Policy" content="
+  default-src 'self';
+  script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com;
+  style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com;
+  font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com;
+  img-src 'self' data: https:;
+  connect-src 'self';
+  frame-ancestors 'none';
+">
+
+<meta http-equiv="X-Content-Type-Options" content="nosniff">
+<meta http-equiv="X-Frame-Options" content="DENY">
+<meta http-equiv="X-XSS-Protection" content="1; mode=block">
+<meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+<meta name="robots" content="index, follow">
     
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://ded-sec.space/">
@@ -48,36 +65,36 @@
 </head>
 <body class="dark-theme">
     <nav class="main-nav">
-        <div class="nav-container">
-            <div class="nav-title">
-                <h1>DedSec Project</h1>
-            </div>
-            <button class="burger-menu" id="burger-menu" aria-label="Toggle navigation">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
-            <div class="nav-menu" id="nav-menu">
-                <a href="index.html" class="nav-link active" data-en="Home" data-gr="Αρχική">Home</a>
-                <a href="Pages/learn-about-the-tools.html" class="nav-link" data-en="Learn About The Tools" data-gr="Μάθετε για τα Εργαλεία">Learn About The Tools</a>
-                <a href="Pages/guide-for-installation.html" class="nav-link" data-en="Guide For Installation" data-gr="Οδηγός Εγκατάστασης">Guide For Installation</a>
-                <a href="Pages/collaborations.html" class="nav-link" data-en="Collaborations" data-gr="Συνεργασίες">Collaborations</a>
-                <a href="Pages/portfolio-github-info.html" class="nav-link" data-en="Portfolio & GitHub" data-gr="Portfolio & GitHub">Portfolio & GitHub</a>
-                <a href="Pages/contact-credits.html" class="nav-link" data-en="Contact & Credits" data-gr="Επικοινωνία & Συντελεστές">Contact & Credits</a>
-                <a href="Pages/privacy-policy.html" class="nav-link" data-en="Privacy Policy" data-gr="Πολιτική Απορρήτου">Privacy Policy</a>
-                <div class="nav-actions">
-                    <button id="nav-theme-switcher" class="nav-action-btn">
-                        <i class="fas fa-moon"></i>
-                        <span data-en="Theme" data-gr="Θέμα">Theme</span>
-                    </button>
-                    <button id="nav-lang-switcher" class="nav-action-btn">
-                        <i class="fas fa-globe"></i>
-                        <span data-en="English" data-gr="Ελληνικά">EN</span>
-                    </button>
-                </div>
-            </div>
+    <div class="nav-container">
+        <div class="nav-title">
+            <h1>DedSec Project</h1>
         </div>
-    </nav>
+        <button class="burger-menu" id="burger-menu" aria-label="Toggle navigation">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <div class="nav-menu" id="nav-menu">
+            <a href="index.html" class="nav-link" data-en="Home" data-gr="Αρχική">Home</a>
+            <a href="Pages/learn-about-the-tools.html" class="nav-link" data-en="Learn About The Tools" data-gr="Μάθετε για τα Εργαλεία">Learn About The Tools</a>
+            <a href="Pages/guide-for-installation.html" class="nav-link" data-en="Guide For Installation" data-gr="Οδηγός Εγκατάστασης">Guide For Installation</a>
+            <a href="Pages/collaborations.html" class="nav-link" data-en="Collaborations" data-gr="Συνεργασίες">Collaborations</a>
+            <a href="Pages/portfolio-github-info.html" class="nav-link" data-en="Portfolio & GitHub" data-gr="Portfolio & GitHub">Portfolio & GitHub</a>
+            <a href="Pages/contact-credits.html" class="nav-link" data-en="Contact & Credits" data-gr="Επικοινωνία & Συντελεστές">Contact & Credits</a>
+            <a href="Pages/privacy-policy.html" class="nav-link" data-en="Privacy Policy" data-gr="Πολιτική Απορρήτου">Privacy Policy</a>
+        </div>
+        <div class="nav-actions">
+            <button id="nav-theme-switcher" class="nav-action-btn">
+                <i class="fas fa-moon"></i>
+                <span data-en="Theme" data-gr="Θέμα">Theme</span>
+            </button>
+            <button id="nav-lang-switcher" class="nav-action-btn">
+                <i class="fas fa-globe"></i>
+                <span data-en="Language" data-gr="Γλώσσα">Language</span>
+            </button>
+        </div>
+    </div>
+</nav>
 
     <div class="phone-container">
         <div class="screen">

@@ -27,7 +27,10 @@ document.addEventListener('DOMContentLoaded', () => {
         // Close menu when clicking outside
         document.addEventListener('click', (e) => {
             if (burgerMenu && navMenu && navMenu.classList.contains('active')) {
-                if (!navMenu.contains(e.target) && !burgerMenu.contains(e.target)) {
+                // Check if the click is outside the menu AND outside the burger
+                // AND also not on the nav-actions (which are now separate)
+                const navActions = document.querySelector('.nav-actions');
+                if (!navMenu.contains(e.target) && !burgerMenu.contains(e.target) && !navActions.contains(e.target)) {
                     burgerMenu.classList.remove('active');
                     navMenu.classList.remove('active');
                 }
@@ -77,11 +80,20 @@ document.addEventListener('DOMContentLoaded', () => {
     function initializeLanguageSwitcher() {
         const langBtn = document.getElementById('nav-lang-switcher');
         const disclaimerLangBtn = document.getElementById('disclaimer-lang-btn');
+        const langModal = document.getElementById('language-selection-modal');
         
-        // Navigation language button - toggle immediately
+        // Navigation language button - open modal
         langBtn?.addEventListener('click', () => {
-            const newLang = currentLanguage === 'en' ? 'gr' : 'en';
-            changeLanguage(newLang);
+            langModal?.classList.add('visible');
+        });
+
+        // Language modal buttons - change language and close
+        document.querySelectorAll('#language-selection-modal .language-button').forEach(button => {
+            button.addEventListener('click', () => {
+                const newLang = button.getAttribute('data-lang');
+                changeLanguage(newLang);
+                langModal?.classList.remove('visible');
+            });
         });
 
         // Disclaimer language button - toggle immediately  
@@ -231,12 +243,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- CAROUSEL FUNCTIONALITY ---
     function initializeCarousels() {
-        const carousels = document.querySelectorAll('.gym-carousel');
+        // FIX: Updated to use correct class names from collaborations.html
+        const carousels = document.querySelectorAll('.collaborations-carousel');
         
         carousels.forEach(carousel => {
-            const images = carousel.querySelectorAll('.gym-clothing-images img');
-            const prevBtn = carousel.querySelector('.carousel-btn.prev');
-            const nextBtn = carousel.querySelector('.carousel-btn.next');
+            const images = carousel.querySelectorAll('.slide-image');
+            const prevBtn = carousel.querySelector('.carousel-nav-btn.prev-btn');
+            const nextBtn = carousel.querySelector('.carousel-nav-btn.next-btn');
             
             if (images.length > 0 && prevBtn && nextBtn) {
                 let currentIndex = 0;
@@ -257,46 +270,37 @@ document.addEventListener('DOMContentLoaded', () => {
                     showImage(currentIndex);
                 });
                 
-                showImage(0);
+                showImage(0); // Show the first image initially
             }
         });
     }
 
     // --- COPY FUNCTIONALITY ---
-    function initializeCopyButtons() {
-        // Make copy function globally accessible
-        window.copyToClipboard = (button, targetId) => {
-            const codeElement = document.getElementById(targetId);
-            if (!codeElement || !navigator.clipboard) {
-                console.warn('Clipboard API not available or element not found.');
-                button.textContent = 'Error';
-                setTimeout(() => { 
-                    button.textContent = (currentLanguage === 'gr') ? 'Αντιγραφή' : 'Copy'; 
-                }, 1500);
-                return;
-            }
-            
-            const originalText = button.textContent;
-            navigator.clipboard.writeText(codeElement.innerText).then(() => {
-                button.textContent = (currentLanguage === 'gr') ? 'Αντιγράφηκε!' : 'Copied!';
-                setTimeout(() => { button.textContent = originalText; }, 1500);
-            }).catch(err => {
-                console.error('Failed to copy text: ', err);
-                button.textContent = 'Failed!';
-                setTimeout(() => { button.textContent = originalText; }, 1500);
-            });
-        };
-
-        // Attach copy functionality to existing buttons
-        document.querySelectorAll('.copy-btn').forEach(btn => {
-            const targetId = btn.getAttribute('onclick')?.match(/'(.*?)'/)?.[1];
-            if (targetId) {
-                btn.addEventListener('click', () => {
-                    window.copyToClipboard(btn, targetId);
-                });
-            }
+    // FIX: Removed the redundant listener function (initializeCopyButtons)
+    // The 'onclick' attribute in the HTML is sufficient.
+    // Make copy function globally accessible
+    window.copyToClipboard = (button, targetId) => {
+        const codeElement = document.getElementById(targetId);
+        if (!codeElement || !navigator.clipboard) {
+            console.warn('Clipboard API not available or element not found.');
+            button.textContent = 'Error';
+            setTimeout(() => { 
+                button.textContent = (currentLanguage === 'gr') ? 'Αντιγραφή' : 'Copy'; 
+            }, 1500);
+            return;
+        }
+        
+        const originalText = button.textContent;
+        navigator.clipboard.writeText(codeElement.innerText).then(() => {
+            button.textContent = (currentLanguage === 'gr') ? 'Αντιγράφηκε!' : 'Copied!';
+            setTimeout(() => { button.textContent = originalText; }, 1500);
+        }).catch(err => {
+            console.error('Failed to copy text: ', err);
+            button.textContent = 'Failed!';
+            setTimeout(() => { button.textContent = originalText; }, 1500);
         });
-    }
+    };
+
 
     // --- TOOL CATEGORIES FUNCTIONALITY ---
     function initializeToolCategories() {
@@ -363,7 +367,7 @@ document.addEventListener('DOMContentLoaded', () => {
         initializeLanguageSwitcher();
         initializeModals();
         initializeCarousels();
-        initializeCopyButtons();
+        // FIX: Removed call to initializeCopyButtons();
         initializeDisclaimer();
 
         // Initialize tool categories if on the tools page
@@ -382,16 +386,16 @@ document.addEventListener('DOMContentLoaded', () => {
             document.body.classList.add('light-theme');
         }
 
-        // Update active nav link based on current page
+        // FIX: Update active nav link based on current page
         const currentPage = window.location.pathname.split('/').pop() || 'index.html';
         document.querySelectorAll('.nav-link').forEach(link => {
-            const linkPage = link.getAttribute('href');
-            if ((currentPage === 'index.html' || currentPage === '') && linkPage === 'index.html') {
+            // Remove the static 'active' class from HTML
+            link.classList.remove('active'); 
+            
+            const linkPage = link.getAttribute('href').split('/').pop();
+            
+            if (linkPage === currentPage) {
                 link.classList.add('active');
-            } else if (linkPage === currentPage) {
-                link.classList.add('active');
-            } else {
-                link.classList.remove('active');
             }
         });
     }
