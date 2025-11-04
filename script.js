@@ -82,12 +82,15 @@ document.addEventListener('DOMContentLoaded', () => {
         const disclaimerLangBtn = document.getElementById('disclaimer-lang-btn');
         const langModal = document.getElementById('language-selection-modal');
         
-        // Navigation language button - open modal
+        // MODIFIED: Navigation language button - toggles language immediately
         langBtn?.addEventListener('click', () => {
-            langModal?.classList.add('visible');
+            const newLang = currentLanguage === 'en' ? 'gr' : 'en';
+            changeLanguage(newLang);
         });
 
-        // Language modal buttons - change language and close
+        // Language modal buttons (from the now-unused modal) - change language and close
+        // This code is no longer triggered by the nav bar, but we leave it
+        // as it doesn't cause harm.
         document.querySelectorAll('#language-selection-modal .language-button').forEach(button => {
             button.addEventListener('click', () => {
                 const newLang = button.getAttribute('data-lang');
