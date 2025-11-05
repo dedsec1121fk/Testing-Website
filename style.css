@@ -1,7 +1,7 @@
 /*
     =================================================================
     DEDSEC PROJECT MULTI-PAGE STYLES
-    VERSION: 3.4 (PC Layout Fix)
+    VERSION: 3.5 (Store Integration)
     =================================================================
 */
 
@@ -737,6 +737,41 @@ body.light-theme .feature-card {
     color: var(--nm-accent-hover);
 }
 
+/* --- STORE SPECIFIC STYLES --- */
+.product-price {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.5rem;
+    color: var(--nm-accent);
+    margin: 15px 0;
+    text-shadow: 0 0 5px rgba(var(--glow-rgb), 0.7);
+}
+
+.payment-btn {
+    background: var(--nm-accent);
+    color: var(--nm-text-on-accent);
+    border: none;
+    padding: 12px 24px;
+    border-radius: 25px;
+    font-family: 'Orbitron', sans-serif;
+    font-weight: bold;
+    font-size: 1rem;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.3s var(--ease-out-cubic);
+    box-shadow: var(--shadow-glow-accent);
+    margin-top: 10px;
+}
+
+.payment-btn:hover {
+    background: var(--nm-accent-hover);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(var(--glow-rgb), 0.6);
+}
+
+.payment-btn:active {
+    transform: translateY(0px) scale(0.97);
+}
 
 /* --- FOOTER STYLES --- */
 .main-footer {

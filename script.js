@@ -180,6 +180,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 el.textContent = text;
             }
         });
+
+        // Update product prices and buttons
+        document.querySelectorAll('.product-price, .payment-btn').forEach(el => {
+            const text = el.getAttribute(`data-${lang}`) || el.textContent;
+            if (el.getAttribute('data-en')) {
+                el.textContent = text;
+            }
+        });
     };
 
     // --- DISCLAIMER FUNCTIONALITY ---
@@ -363,6 +371,17 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // --- STORE PAGE FUNCTIONALITY ---
+    function initializeStorePage() {
+        // Check if we're on the store page
+        if (document.querySelector('.store-page')) {
+            console.log('Store page detected, initializing store functionality...');
+            
+            // Add any store-specific functionality here
+            // For now, the store uses the same components as other pages
+        }
+    }
+
     // --- INITIALIZATION ---
     function initializePortfolio() {
         initializeNavigation();
@@ -372,6 +391,7 @@ document.addEventListener('DOMContentLoaded', () => {
         initializeCarousels();
         // FIX: Removed call to initializeCopyButtons();
         initializeDisclaimer();
+        initializeStorePage();
 
         // Initialize tool categories if on the tools page
         if (document.querySelector('.categories-container')) {
