@@ -1,7 +1,7 @@
 /*
     =================================================================
     DEDSEC PROJECT MULTI-PAGE STYLES
-    VERSION: 3.6 (Layout & Responsiveness Fix)
+    VERSION: 3.4 (PC Layout Fix)
     =================================================================
 */
 
@@ -92,27 +92,16 @@ body.light-theme {
     =================================================================
 */
 
-/* --- ADDED: Global Resets --- */
-*,
-*::before,
-*::after {
-    box-sizing: border-box;
-}
-
+/* ADDED: Smooth scrolling and native-like touch behavior */
 html {
     scroll-behavior: smooth;
     -webkit-tap-highlight-color: transparent;
     overscroll-behavior-y: none;
-    height: 100%; /* Ensure viewport height is calculated correctly */
 }
-/* --- End Global Resets --- */
-
 
 body {
     margin: 0;
     padding: 0;
-    /* --- MODIFIED: Added global padding-top to offset fixed 60px nav --- */
-    padding-top: 60px;
     background-color: var(--nm-abyss-blue);
     font-family: 'Inter', sans-serif;
     color: var(--nm-text);
@@ -120,7 +109,6 @@ body {
     position: relative;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    min-height: 100%; /* Ensure body takes at least full height */
 }
 
 /* --- OPTIMIZED: Keep specific elements monospaced --- */
@@ -190,14 +178,14 @@ body.light-theme::before {
     top: 0;
     left: 0;
     width: 100%;
-    /* --- MODIFIED: Added fixed height for layout stability --- */
-    height: 60px;
+    /* MODIFIED: Added solid theme-aware background, border, and shadow */
     background-color: var(--nm-darkest) !important;
     border-bottom: 1px solid var(--nm-border) !important;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2) !important;
     transition: background-color 0.3s ease, border-color 0.3s ease;
     z-index: 1000;
     padding: 0 15px;
+    box-sizing: border-box;
 }
 
 .nav-container {
@@ -206,16 +194,15 @@ body.light-theme::before {
     align-items: center;
     max-width: 1200px;
     margin: 0 auto;
-    padding: 8px 0; 
+    padding: 10px 0;
     transition: max-width 0.3s ease;
     position: relative; /* For desktop title centering */
-    height: 100%; /* --- MODIFIED: Ensure it fills the main-nav height --- */
 }
 
 /* MODIFIED: ADDED TEXT SAFETY */
 .nav-title {
-    flex-grow: 1; 
-    flex-shrink: 1;
+    flex-grow: 0; 
+    flex-shrink: 0;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -224,13 +211,15 @@ body.light-theme::before {
 
 .nav-title h1 {
     margin: 0;
-    font-size: 1.6rem; 
+    font-size: 2rem; 
     color: var(--nm-text-accent);
     font-family: 'Orbitron', sans-serif;
+    /* MODIFIED: Drastically simplified text-shadow to a single, minimal glow layer */
     text-shadow: 0 0 8px var(--nm-accent-hover);
     display: flex;
     align-items: center;
-    gap: 10px;
+    /* REMOVED: gap: 10px; to remove space for the logo */
+    /* ADDED: Prevent text going out */
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -239,24 +228,17 @@ body.light-theme::before {
 
 /* ADDED: Explicit light-theme fix for nav-title h1 to remove black outlines and keep single glow */
 body.light-theme .nav-title h1 {
+    /* Ensure the single, minimal glow is used here as well, overriding any potential inheritance of outlines */
     text-shadow: 0 0 8px var(--nm-accent-hover);
 }
 
-.nav-title h1::after {
-    content: '';
-    display: block;
-    width: 2rem;
-    height: 2rem;
-    background-image: url('https://raw.githubusercontent.com/dedsec1121fk/dedsec1121fk.github.io/9254ed6bf953c497074005b0da02e819aba18487/Assets/Images/Logos/Custom%20Black%20Purple%20Fox%20Logo.png');
-    background-size: contain;
-    background-position: center;
-    background-repeat: no-repeat;
-    text-shadow: none; 
+/* REMOVED: Logo display from navigation bar (for both themes) */
+.nav-title h1::after,
+body.light-theme .nav-title h1::after {
+    content: none;
+    display: none;
 }
 
-body.light-theme .nav-title h1::after {
-    background-image: url('https://raw.githubusercontent.com/dedsec1121fk/dedsec1121fk.github.io/6f776cd9772a079a6d26370dddab911bf7cde8cd/Assets/Images/Logos/Custom%20White%20Purple%20Fox%20Logo.jpg');
-}
 
 /* MODIFIED: BURGER MENU IS NOW VISIBLE GLOBALLY */
 .burger-menu {
@@ -284,14 +266,12 @@ body.light-theme .nav-title h1::after {
 
 /* MODIFIED: NAV MENU IS NOW ALWAYS THE MOBILE/SIDEBAR MENU */
 .nav-menu {
-    /* --- MODIFIED: Standardized to 60px nav height --- */
-    top: 60px; 
     position: fixed;
+    top: 70px; /* Aligns below the fixed header */
     right: 0;
     width: 80%;
     max-width: 300px;
-    /* --- MODIFIED: Standardized to 60px nav height --- */
-    height: calc(100vh - 60px); 
+    height: calc(100vh - 70px);
     background: var(--nm-darkest);
     flex-direction: column;
     padding: 20px;
@@ -301,6 +281,7 @@ body.light-theme .nav-title h1::after {
     visibility: visible;
     transition: transform 0.3s var(--ease-out-cubic);
     overflow-y: auto;
+    /* Added display flex to ensure vertical alignment from original mobile styles */
     display: flex; 
     align-items: center; 
     gap: 20px;
@@ -318,9 +299,12 @@ body.light-theme .nav-title h1::after {
     padding: 8px 15px;
     border-radius: 20px;
     border: 1px solid transparent;
+    /* MODIFIED: Premium transition */
     transition: transform 0.25s var(--ease-out-cubic), background-color 0.25s ease, color 0.25s ease, box-shadow 0.25s var(--ease-out-cubic), border-color 0.25s ease;
     will-change: transform, box-shadow;
+    /* ADDED: Full width for menu item look */
     width: 100%;
+    box-sizing: border-box;
     text-align: center;
 }
 
@@ -329,10 +313,12 @@ body.light-theme .nav-title h1::after {
     background: var(--nm-accent);
     color: var(--nm-text-on-accent); 
     border-color: var(--nm-accent-hover);
+    /* MODIFIED: More lift and glow */
     transform: translateY(-3px);
     box-shadow: var(--shadow-glow-accent);
 }
 
+/* ADDED: Premium "press" effect */
 .nav-link:active {
     transform: translateY(0px) scale(0.97);
     transition-duration: 0.1s;
@@ -340,12 +326,13 @@ body.light-theme .nav-title h1::after {
 
 /* =================================================================
     FIX: NAV ACTIONS (MOBILE)
+    Styled to be horizontal (row) and fit in the top bar.
     =================================================================
 */
 .nav-actions {
     display: flex;
     gap: 10px;
-    margin-left: 0; 
+    margin-left: 0; /* Space from burger */
     margin-top: 0; 
     justify-content: flex-end;
     flex-direction: row; /* Horizontal */
@@ -369,20 +356,24 @@ body.light-theme .nav-title h1::after {
     will-change: transform, box-shadow;
     width: auto; /* Fit content */
     justify-content: center;
+    box-sizing: border-box;
 }
 
 .nav-action-btn:hover {
     background: var(--nm-accent);
     color: var(--nm-text-on-accent); 
+    /* MODIFIED: More lift and glow */
     transform: translateY(-3px);
     box-shadow: var(--shadow-glow-accent);
 }
 
+/* ADDED: Premium "press" effect */
 .nav-action-btn:active {
     transform: translateY(0px) scale(0.97);
     transition-duration: 0.1s;
 }
 
+/* ADDED: Hide text on mobile nav buttons */
 .nav-action-btn span {
     display: none;
 }
@@ -391,13 +382,13 @@ body.light-theme .nav-title h1::after {
 
 /* --- PAGE CONTENT STYLES --- */
 .page-content {
-    /* --- MODIFIED: Removed margin-top, now handled by body padding --- */
-    /* margin-top: 80px; -> REMOVED */
-    padding: 20px; /* Standard internal padding */
+    margin-top: 80px;
+    padding: 20px;
     max-width: 1200px;
     margin-left: auto;
     margin-right: auto;
     transition: max-width 0.3s ease;
+    /* ADDED: Page load animation */
     animation: fadeIn 0.5s 0.1s var(--ease-out-cubic) backwards;
 }
 
@@ -411,10 +402,12 @@ body.light-theme .nav-title h1::after {
     font-family: 'Orbitron', sans-serif;
     font-size: 2.5rem;
     margin-bottom: 10px;
+    /* MODIFIED: Drastically simplified text-shadow to a single, minimal glow layer */
     text-shadow: 0 0 8px var(--nm-accent-hover);
 }
 
 body.light-theme .page-header h1 {
+    /* MODIFIED: Drastically simplified text-shadow to a single, minimal glow layer */
     text-shadow: 0 0 8px var(--nm-accent-hover);
 }
 
@@ -432,6 +425,7 @@ body.light-theme .page-header h1 {
     padding: 30px;
     margin-bottom: 30px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    /* MODIFIED: Premium transition */
     transition: border-color 0.3s ease, box-shadow 0.3s var(--ease-out-cubic);
 }
 
@@ -470,6 +464,7 @@ body.light-theme .content-section {
     border: 1px solid var(--nm-border);
     border-radius: 15px;
     padding: 20px;
+    /* MODIFIED: Premium transition */
     transition: transform 0.25s var(--ease-out-cubic), border-color 0.25s ease, box-shadow 0.25s var(--ease-out-cubic);
     will-change: transform, box-shadow;
 }
@@ -482,6 +477,12 @@ body.light-theme .tool-card {
     border-color: var(--nm-accent);
     transform: translateY(-3px);
     box-shadow: var(--shadow-glow-accent);
+}
+
+.tool-card h4 {
+    color: var(--nm-text-accent);
+    margin-bottom: 10px;
+    font-family: 'Orbitron', sans-serif;
 }
 
 /* --- TOOL FEATURES BULLET STYLES --- */
@@ -505,13 +506,13 @@ body.light-theme .tool-card {
 /* --- HOMEPAGE SPECIFIC STYLES --- */
 .phone-container {
     width: 100%;
-    /* --- MODIFIED: Fills remaining viewport *below* 60px nav --- */
-    height: calc(100vh - 60px);
-    margin-top: 0; /* Removed, handled by body padding */
+    height: calc(100vh - 0px); /* Height takes up the full viewport minus the fixed header height */
+    margin-top: 0px; /* Offset the fixed header height */
     display: flex;
     justify-content: center;
     align-items: center;
     overflow: hidden;
+    /* MODIFIED: Removed the "phone" border/styling */
     border: none;
     box-shadow: none;
     background: transparent;
@@ -521,21 +522,24 @@ body.light-theme .tool-card {
 .screen {
     width: 100%;
     height: 100%;
+    /* MODIFIED: Removed the "screen" styling */
     border-radius: 0;
     overflow-y: auto;
     overflow-x: hidden;
-    background: transparent; 
+    background: transparent; /* This will let the body's background image show through */
 }
 
 .home-screen {
-    /* --- MODIFIED: 20px is now correct internal padding --- */
-    padding-top: 20px; 
+    padding-top: 20px; /* Reduced padding since the navigation bar is mostly gone */
     padding-bottom: calc(20px + var(--safe-area-inset-bottom));
     width: 100%;
     max-width: 1200px;
     margin: 0 auto;
+    /* Added padding left/right to ensure content is centered within the phone container */
     padding-left: 15px;
     padding-right: 15px;
+    box-sizing: border-box;
+    /* ADDED: Page load animation */
     animation: fadeIn 0.5s 0.1s var(--ease-out-cubic) backwards;
 }
 
@@ -552,6 +556,7 @@ body.light-theme .tool-card {
     border-radius: 15px;
     padding: 15px 10px;
     text-align: center;
+    /* MODIFIED: Premium transition */
     transition: transform 0.25s var(--ease-out-cubic), border-color 0.25s ease, box-shadow 0.25s var(--ease-out-cubic);
     will-change: transform, box-shadow;
 }
@@ -615,7 +620,7 @@ body.light-theme .stat-card {
     line-height: 1.7;
     margin: 0 0 25px 0;
     max-width: 600px;
-    padding: 0 20px; 
+    padding: 0 20px; /* Added padding to ensure text doesn't hit the edges */
     margin-left: auto;
     margin-right: auto;
 }
@@ -667,6 +672,7 @@ body.light-theme .stat-card {
     text-decoration: none;
     color: var(--nm-text);
     text-align: left;
+    /* MODIFIED: Premium transition */
     transition: transform 0.25s var(--ease-out-cubic), border-color 0.25s ease, box-shadow 0.25s var(--ease-out-cubic);
     will-change: transform, box-shadow;
 }
@@ -681,21 +687,97 @@ body.light-theme .feature-card {
     box-shadow: var(--shadow-glow-accent);
 }
 
-.feature-card:active {
-    transform: translateY(0px) scale(0.97);
-    transition-duration: 0.1s;
+/* --- NEW STORE PAGE STYLES --- */
+
+.store-page .feature-card {
+    align-items: stretch; /* To make sure all elements inside align nicely */
 }
 
 .feature-icon {
-    font-size: 2.5rem;
+    font-size: 3rem;
     color: var(--nm-accent);
     margin-bottom: 15px;
+    text-shadow: 0 0 10px rgba(var(--glow-rgb), 0.6);
 }
 
 .feature-title {
     font-family: 'Orbitron', sans-serif;
     font-size: 1.3rem;
     color: var(--nm-text-accent);
+    margin-bottom: 10px;
+}
+
+.product-price {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 2.2rem;
+    font-weight: bold;
+    color: var(--nm-success);
+    margin: 15px 0 20px 0;
+    text-align: center;
+    background: var(--nm-dark);
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid var(--nm-success);
+    box-shadow: 0 0 10px rgba(68, 255, 68, 0.4);
+}
+
+.payment-btn {
+    display: block;
+    width: 100%;
+    text-align: center;
+    background: var(--nm-accent);
+    color: var(--nm-text-on-accent);
+    padding: 12px 25px;
+    border-radius: 15px;
+    text-decoration: none;
+    font-family: 'Orbitron', sans-serif;
+    font-weight: bold;
+    font-size: 1.1rem;
+    border: 2px solid transparent;
+    transition: all 0.3s var(--ease-out-cubic);
+    box-shadow: var(--shadow-glow-accent);
+    margin-bottom: 15px; /* Space before tool features */
+}
+
+.payment-btn:hover {
+    background: var(--nm-accent-hover);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(var(--glow-rgb), 0.6);
+}
+
+.payment-btn:active {
+    transform: translateY(0px) scale(0.97);
+}
+
+.tool-features {
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid var(--nm-border);
+    width: 100%;
+}
+
+.tool-features h5 {
+    font-family: 'Roboto Mono', monospace;
+    color: var(--nm-text-accent);
+    margin: 0 0 10px 0;
+    font-size: 1rem;
+}
+
+@media (max-width: 600px) {
+    .product-price {
+        font-size: 1.8rem;
+    }
+    .payment-btn {
+        font-size: 1rem;
+        padding: 10px 20px;
+    }
+}
+/* --- END OF NEW STORE PAGE STYLES --- */
+
+.feature-title {
+    color: var(--nm-text-accent);
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.1rem;
     margin: 0 0 10px 0;
 }
 
@@ -723,42 +805,6 @@ body.light-theme .feature-card {
     color: var(--nm-accent-hover);
 }
 
-/* --- STORE SPECIFIC STYLES --- */
-.product-price {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 1.5rem;
-    color: var(--nm-accent);
-    margin: 15px 0;
-    text-shadow: 0 0 5px rgba(var(--glow-rgb), 0.7);
-}
-
-.payment-btn {
-    background: var(--nm-accent);
-    color: var(--nm-text-on-accent);
-    border: none;
-    padding: 12px 24px;
-    border-radius: 25px;
-    font-family: 'Orbitron', sans-serif;
-    font-weight: bold;
-    font-size: 1rem;
-    cursor: pointer;
-    text-decoration: none;
-    display: inline-block;
-    transition: all 0.3s var(--ease-out-cubic);
-    box-shadow: var(--shadow-glow-accent);
-    margin-top: 10px;
-}
-
-.payment-btn:hover {
-    background: var(--nm-accent-hover);
-    transform: translateY(-3px);
-    box-shadow: 0 6px 20px rgba(var(--glow-rgb), 0.6);
-}
-
-.payment-btn:active {
-    transform: translateY(0px) scale(0.97);
-}
-
 /* --- FOOTER STYLES --- */
 .main-footer {
     text-align: center;
@@ -769,6 +815,8 @@ body.light-theme .feature-card {
     border-top: 1px solid var(--nm-border);
     width: 100%;
     max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 /* ================================================================= MODAL STYLES (COMMON) ================================================================= */
@@ -780,12 +828,17 @@ body.light-theme .feature-card {
     width: 100%;
     height: 100%;
     background: rgba(0, 0, 0, 0.8);
+    /* --- OPTIMIZED: Removed performance-heavy blur --- */
+    /* -webkit-backdrop-filter: blur(10px); */
+    /* backdrop-filter: blur(10px); */
+    /* --- End optimization --- */
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 1000;
     opacity: 0;
     visibility: hidden;
+    /* MODIFIED: Faster fade-in */
     transition: opacity 0.25s ease-out, visibility 0s 0.25s, backdrop-filter 0.25s ease-out;
 }
 
@@ -812,39 +865,38 @@ body.light-theme .modal-overlay {
     overflow: hidden;
     clip-path: none;
     border-radius: 20px;
+    /* MODIFIED: Premium "grow-in" animation */
     opacity: 0;
-    transform: translateY(20px) scale(0.95);
-    transition: transform 0.3s var(--ease-out-cubic), opacity 0.3s ease;
-    will-change: transform, opacity;
-}
-
-body.light-theme .modal-content {
-    background: var(--nm-container);
-}
-
-.modal-content-auto-height {
-    height: auto;
-    max-height: 90vh; /* Ensure it doesn't take up too much vertical space */
+    transform: scale(0.9);
+    transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+    animation: none; /* Override default animation */
 }
 
 .modal-overlay.visible .modal-content {
     opacity: 1;
-    transform: translateY(0) scale(1);
+    transform: scale(1);
+}
+
+.modal-content-auto-height {
+    height: auto;
+    max-height: 90vh;
+    overflow-y: auto;
 }
 
 .modal-header {
+    background: var(--nm-darkest);
     padding: 20px 30px;
     border-bottom: 1px solid var(--nm-border);
     display: flex;
     justify-content: space-between;
     align-items: center;
-    flex-shrink: 0;
+    flex-shrink: 0; /* Prevents header from shrinking on overflow */
 }
 
 .modal-header h2 {
-    margin: 0;
     font-family: 'Orbitron', sans-serif;
-    color: var(--nm-text-accent);
+    color: var(--nm-accent);
+    margin: 0;
     font-size: 1.5rem;
 }
 
@@ -852,9 +904,6 @@ body.light-theme .modal-content {
     padding: 30px;
     overflow-y: auto;
     flex-grow: 1;
-    line-height: 1.7;
-    font-size: 1rem;
-    color: var(--nm-text);
 }
 
 .modal-body-centered {
@@ -862,24 +911,26 @@ body.light-theme .modal-content {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    text-align: center;
     gap: 15px;
 }
 
 .modal-footer {
+    background: var(--nm-darkest);
     padding: 20px 30px;
     border-top: 1px solid var(--nm-border);
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    gap: 15px;
-    flex-shrink: 0;
+    gap: 20px;
+    flex-shrink: 0; /* Prevents footer from shrinking on overflow */
 }
 
 .close-modal {
     background: none;
     border: none;
-    font-size: 2rem;
     color: var(--nm-text-muted);
+    font-size: 2rem;
     cursor: pointer;
     line-height: 1;
     padding: 5px;
@@ -891,8 +942,7 @@ body.light-theme .modal-content {
 }
 
 /* --- Language & Theme Switcher Buttons (for use inside modals) --- */
-.language-selection-btn,
-.theme-selection-btn {
+.language-selection-btn, .theme-selection-btn {
     background: var(--nm-darkest);
     border: 1px solid var(--nm-border);
     color: var(--nm-text);
@@ -908,17 +958,15 @@ body.light-theme .modal-content {
     will-change: transform, box-shadow;
 }
 
-.language-selection-btn:hover,
-.theme-selection-btn:hover {
+.language-selection-btn:hover, .theme-selection-btn:hover {
     background: var(--nm-accent);
-    color: var(--nm-text-on-accent);
+    color: var(--nm-text-on-accent); 
     transform: translateY(-3px);
     box-shadow: var(--shadow-glow-accent);
 }
 
 /* --- Disclaimer/Language Buttons --- */
-.disclaimer-footer button,
-.language-button {
+.disclaimer-footer button, .language-button {
     background: var(--nm-darkest);
     border: 1px solid var(--nm-border);
     color: var(--nm-text);
@@ -928,6 +976,7 @@ body.light-theme .modal-content {
     font-family: 'Orbitron', sans-serif;
     font-weight: bold;
     font-size: 1rem;
+    /* MODIFIED: Premium transition */
     transition: transform 0.25s var(--ease-out-cubic), background-color 0.25s ease, color 0.25s ease, box-shadow 0.25s var(--ease-out-cubic), border-color 0.25s ease;
     will-change: transform, box-shadow;
     min-height: 45px;
@@ -935,8 +984,7 @@ body.light-theme .modal-content {
     text-align: center; /* ADDED */
 }
 
-.language-button:hover, 
-.language-button.selected {
+.language-button:hover, .language-button.selected {
     color: var(--nm-text-on-accent);
     background-color: var(--nm-accent);
     border-color: var(--nm-accent-hover);
@@ -944,81 +992,77 @@ body.light-theme .modal-content {
     transform: translateY(-3px);
 }
 
+/* ADDED: Premium "press" effect */
 .language-button:active {
     transform: translateY(0px) scale(0.97);
     transition-duration: 0.1s;
 }
 
 /* Utility Classes */
-.hidden { display: none !important; }
-.hidden-by-default { display: none; }
+.hidden {
+    display: none !important;
+}
+
+.hidden-by-default {
+    display: none;
+}
 
 /* Accept/Decline Buttons */
 .decline-btn, .accept-btn {
     color: var(--nm-text-on-status) !important;
-    transition: transform 0.25s var(--ease-out-cubic), opacity 0.25s ease, box-shadow 0.25s var(--ease-out-cubic);
-    will-change: transform, box-shadow;
+    /* MODIFIED: Premium transition */
+    transition: transform 0.25s var(--ease-out-cubic), box-shadow 0.25s var(--ease-out-cubic);
 }
 
-.accept-btn { 
-    background-color: var(--nm-success) !important; 
-    border-color: var(--nm-success);
-}
-
-.decline-btn { 
-    background-color: var(--nm-danger) !important; 
+.decline-btn {
+    background-color: var(--nm-danger);
     border-color: var(--nm-danger);
 }
 
-.accept-btn:hover { 
-    opacity: 0.9; 
-    border-color: var(--nm-success) !important;
-    transform: translateY(-3px);
-    box-shadow: var(--shadow-glow-success) !important;
+.accept-btn {
+    background-color: var(--nm-success);
+    border-color: var(--nm-success);
 }
 
-.decline-btn:hover { 
-    opacity: 0.9; 
-    border-color: var(--nm-danger) !important;
+.decline-btn:hover {
+    background-color: var(--nm-danger-hover);
+    border-color: var(--nm-danger-hover);
     transform: translateY(-3px);
-    box-shadow: var(--shadow-glow-danger) !important;
+    box-shadow: var(--shadow-glow-danger);
 }
 
-.accept-btn:active, .decline-btn:active {
+.accept-btn:hover {
+    background-color: var(--nm-success);
+    border-color: var(--nm-success);
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-glow-success);
+}
+
+.decline-btn:active, .accept-btn:active {
     transform: translateY(0px) scale(0.97);
     transition-duration: 0.1s;
 }
 
-
-/* ================================================================= COMPONENT STYLES (CODE, NOTES, ETC) ================================================================= */
-
-/* --- Code Block Styling --- */
-pre,
+/* --- CODE BLOCK STYLES (NEW & IMPROVED) --- */
 .code-container {
-    background: var(--nm-darkest);
-    border: 1px solid var(--nm-accent);
+    position: relative;
+    background-color: var(--nm-darkest);
+    border: 1px solid var(--nm-border);
+    border-radius: 10px;
     padding: 15px;
-    border-radius: 15px;
+    margin: 20px 0;
     overflow-x: auto;
     font-family: 'Roboto Mono', monospace;
     font-size: 0.9rem;
     line-height: 1.4;
-    position: relative;
-    white-space: pre-wrap;
-    word-wrap: break-word;
-    margin-bottom: 20px;
-    transition: border-color 0.3s ease;
+    color: var(--nm-text);
 }
 
-pre:hover,
-.code-container:hover {
-    border-color: var(--nm-accent-hover);
-}
-
-pre code,
 .code-container code {
-    color: var(--nm-text); 
-    text-shadow: none; 
+    /* OPTIMIZED: Remove padding here as it is already on the container */
+    padding: 0;
+    display: block;
+    /* ADDED: Ensure code tag itself can wrap if needed */
     white-space: pre-wrap;
     word-wrap: break-word;
 }
@@ -1095,78 +1139,66 @@ pre code,
     margin: 20px 0;
 }
 
-
 /* ================================================================= PAGE-SPECIFIC STYLES ================================================================= */
 
 /* --- Contact Page --- */
-/* --- MODIFIED: Made contact-grid responsive --- */
 .contact-grid {
     display: grid;
-    /* grid-template-columns: 1fr; -> REMOVED */
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* ADDED */
+    grid-template-columns: 1fr;
     gap: 15px;
-    /* justify-items: center; -> REMOVED */
+    justify-items: center;
     padding-top: 20px;
 }
 
 .contact-grid .app-icon {
-    width: 100%;
-    /* max-width: 350px; -> REMOVED */
-    max-width: none; /* ADDED */
-    height: auto;
-    padding: 12px 15px;
-    gap: 15px;
-    clip-path: none;
-    border-radius: 20px;
-    background: var(--nm-darkest);
-    border: 1px solid var(--nm-accent);
-    color: var(--nm-text);
-    cursor: pointer;
-    font-family: 'Roboto Mono', monospace;
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: center; 
     text-decoration: none;
-    position: relative;
-    transition: transform 0.25s var(--ease-out-cubic), background-color 0.25s ease, color 0.25s ease, box-shadow 0.25s var(--ease-out-cubic), border-color 0.25s ease;
+    color: var(--nm-text);
+    background: var(--nm-darkest);
+    border: 1px solid var(--nm-border);
+    border-radius: 15px;
+    padding: 20px 10px;
+    width: 100%;
+    max-width: 250px;
+    /* MODIFIED: Premium transition */
+    transition: transform 0.25s var(--ease-out-cubic), border-color 0.25s ease, box-shadow 0.25s var(--ease-out-cubic);
     will-change: transform, box-shadow;
 }
 
+body.light-theme .contact-grid .app-icon {
+    background: var(--nm-darkest);
+}
+
 .contact-grid .app-icon:hover {
-    background: var(--nm-accent);
-    border-color: var(--nm-accent-hover);
-    color: var(--nm-text-on-accent);
+    border-color: var(--nm-accent);
     transform: translateY(-3px);
     box-shadow: var(--shadow-glow-accent);
 }
 
-.contact-grid .app-icon:active {
-    transform: translateY(0px) scale(0.97);
-    transition-duration: 0.1s;
-}
-
 .contact-grid .app-icon i {
+    font-size: 2.5rem;
     color: var(--nm-accent);
-    font-size: 1.5rem;
-    transition: color 0.2s ease;
+    margin-bottom: 10px;
+    transition: color 0.3s ease;
 }
 
 .contact-grid .app-icon:hover i {
-    color: var(--nm-text-on-accent);
+    color: var(--nm-accent-hover);
 }
 
 .contact-grid .app-icon span {
-    font-size: 1rem;
+    font-family: 'Roboto Mono', monospace;
+    font-size: 0.9rem;
 }
-/* --- End Contact Page Fix --- */
-
 
 /* --- Portfolio Page --- */
 .portfolio-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 20px;
-    margin: 30px 0;
+    margin: 20px 0;
 }
 
 .portfolio-card {
@@ -1176,6 +1208,7 @@ pre code,
     padding: 20px;
     text-decoration: none;
     color: var(--nm-text);
+    /* MODIFIED: Premium transition */
     transition: transform 0.25s var(--ease-out-cubic), border-color 0.25s ease, box-shadow 0.25s var(--ease-out-cubic);
     will-change: transform, box-shadow;
 }
@@ -1249,65 +1282,72 @@ body.light-theme .github-stat-dark {
     background-color: var(--nm-container);
     display: inline-block;
     max-width: 100%;
+    box-sizing: border-box;
     line-height: 1.4;
     clip-path: none;
     border-radius: 20px;
-    transition: transform 0.25s var(--ease-out-cubic), background-color 0.25s ease, color 0.25s ease, box-shadow 0.25s var(--ease-out-cubic), border-color 0.25s ease;
+    /* MODIFIED: Premium transition */
+    transition: transform 0.25s var(--ease-out-cubic), border-color 0.25s ease, box-shadow 0.25s var(--ease-out-cubic);
     will-change: transform, box-shadow;
 }
 
-body.light-theme .store-link a {
-    background-color: var(--nm-container);
-}
-
 .store-link a:hover {
-    background-color: var(--nm-accent-hover);
     border-color: var(--nm-accent);
-    color: var(--nm-darkest);
     transform: translateY(-3px);
     box-shadow: var(--shadow-glow-accent);
 }
 
-.store-link a:active {
-    transform: translateY(0px) scale(0.97);
-    transition-duration: 0.1s;
-}
-
-.content-section-modal {
-    margin-top: 10px;
-}
-
-/* --- Collaborations Page Carousel (Adapted from old CSS) --- */
-.collaborations-carousel {
+/* --- Carousel Styles --- */
+.carousel-container {
     position: relative;
     width: 100%;
-    max-width: 600px;
-    margin: 0 auto;
+    max-width: 800px;
+    margin: 30px auto;
     overflow: hidden;
-    clip-path: none;
     border-radius: 20px;
     border: 1px solid var(--nm-border);
-    padding: 10px 0;
-}
-
-.carousel-slide-container {
-    position: relative;
+    background: var(--nm-darkest);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
 }
 
 .carousel-slide {
-    width: 100%;
-    padding: 10px;
+    display: flex;
+    transition: transform 0.5s ease-in-out;
 }
 
-.slide-image {
+.carousel-item {
+    min-width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0; /* Remove padding here */
+}
+
+.carousel-item img {
     width: 100%;
     height: auto;
-    display: none; /* Hide all images by default */
-    border-radius: 15px;
+    display: block;
+    object-fit: contain;
+    border-radius: 0; /* Remove border-radius on images inside the item */
+    border: none;
 }
 
-.slide-image.active {
-    display: block; /* Show only the active image */
+/* CAROUSEL FIX: Ensure all slides have the same height even if image loading is slow */
+.carousel-item {
+    min-height: 250px; /* Base height for mobile */
+    max-height: 450px; /* Max height for larger screens */
+    overflow: hidden;
+}
+
+@media (min-width: 768px) {
+    .carousel-item {
+        min-height: 350px;
+    }
+}
+
+.carousel-item.loading {
+    background-color: var(--nm-container);
 }
 /* END CAROUSEL FIX */
 
@@ -1332,8 +1372,13 @@ body.light-theme .store-link a {
     background: var(--nm-accent);
 }
 
-.prev-btn { left: 10px; }
-.next-btn { right: 10px; }
+.prev-btn {
+    left: 10px;
+}
+
+.next-btn {
+    right: 10px;
+}
 
 /* --- Misc Components --- */
 .modal-divider {
@@ -1396,239 +1441,158 @@ body.light-theme .category-header {
 .tools-list {
     max-height: 0;
     overflow: hidden;
-    transition: max-height 0.3s ease;
+    transition: max-height 0.3s ease-out;
+    padding: 0 20px;
 }
 
 .category.active .tools-list {
-    max-height: 5000px; /* Large enough to accommodate all content */
+    max-height: 1000px; /* Large enough value to show all content */
 }
 
-.tool-item {
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-    padding: 15px 20px;
-    cursor: pointer;
-    transition: all 0.3s ease;
+/* --- Price/Discount Card --- */
+.discount-container {
+    background: var(--nm-darkest);
+    border: 1px solid var(--nm-accent);
+    border-radius: 20px;
+    padding: 25px;
+    margin-bottom: 30px;
+    text-align: center;
+    box-shadow: var(--shadow-glow-accent);
 }
 
-.tool-item:last-child {
-    border-bottom: none;
+.discount-container h3 {
+    font-family: 'Orbitron', sans-serif;
+    color: var(--nm-accent);
+    font-size: 1.8rem;
+    margin-top: 0;
 }
 
-.tool-item:hover {
-    background: rgba(255, 255, 255, 0.03);
+.discount-price {
+    font-family: 'Roboto Mono', monospace;
+    font-size: 1.5rem;
+    color: var(--nm-text);
+    text-decoration: line-through;
+    opacity: 0.7;
+    margin-right: 15px;
 }
 
-.tool-header {
+.new-price {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: var(--nm-success);
+    display: inline-block;
+    text-shadow: 0 0 10px rgba(68, 255, 68, 0.7);
+}
+
+/* --- Coupon Form/Input --- */
+.coupon-form {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    gap: 10px;
+    margin-top: 20px;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
-.tool-title {
-    margin: 0;
+.coupon-form input {
+    flex-grow: 1;
+    padding: 12px 15px;
+    border: 1px solid var(--nm-border);
+    border-radius: 10px;
+    background: var(--nm-container);
     color: var(--nm-text);
     font-family: 'Roboto Mono', monospace;
     font-size: 1rem;
+    outline: none;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-.tool-expand-icon {
-    color: var(--nm-accent);
-    transition: transform 0.3s ease;
+.coupon-form input:focus {
+    border-color: var(--nm-accent);
+    box-shadow: 0 0 5px rgba(var(--glow-rgb), 0.5);
 }
 
-.tool-item.active .tool-expand-icon {
-    transform: rotate(180deg);
-}
-
-.tool-description {
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.3s ease;
-    padding-top: 0;
-}
-
-.tool-item.active .tool-description {
-    max-height: 2000px; /* Large enough to accommodate description */
-    padding-top: 15px;
-}
-
-.tool-description p {
-    margin-top: 0;
-    color: var(--nm-text-muted);
-    line-height: 1.5;
-}
-
-.tool-features {
-    margin-top: 15px;
-}
-
-.tool-features h5 {
-    color: var(--nm-text-accent);
+.coupon-form button {
+    background: var(--nm-accent);
+    color: var(--nm-text-on-accent);
+    border: none;
+    padding: 0 20px;
+    border-radius: 10px;
+    cursor: pointer;
     font-family: 'Orbitron', sans-serif;
-    font-size: 0.9rem;
-    margin-bottom: 8px;
+    font-weight: bold;
+    font-size: 1rem;
+    transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-
-/* ================================================================= MEDIA QUERIES (RESPONSIVENESS) ================================================================= */
-
-@media (max-width: 992px) {
-    /* --- MODIFIED: Removed all redundant margin/height rules --- */
-    /* All layout is now handled by the global body padding and container heights */
-    
-    .page-content {
-        padding: 15px;
-    }
-
-    .content-section {
-        padding: 20px;
-    }
-
-    /* .content-grid {
-        grid-template-columns: 1fr; -> This is already handled by auto-fit
-    } */
-
-    .nav-title h1 {
-        font-size: 1.5rem;
-        gap: 8px;
-    }
-
-    .nav-title h1::after {
-        width: 2rem;
-        height: 2rem;
-    }
-
-    #disclaimer-modal .modal-footer {
-        flex-direction: column;
-        gap: 15px;
-        padding: 15px;
-    }
-
-    #disclaimer-modal .decline-btn, #disclaimer-modal .accept-btn {
-        font-size: 0.9rem;
-        padding: 10px 15px;
-        min-height: 35px;
-        min-width: 80px;
-        margin: 0;
-    }
-
-    .modal-overlay {
-        -webkit-backdrop-filter: none;
-        backdrop-filter: none;
-    }
-
-    .modal-content {
-        width: 95%;
-        height: 95%;
-    }
-
-    .modal-header {
-        padding: 15px 20px;
-    }
-
-    .modal-body {
-        padding: 20px;
-        font-size: 0.9rem;
-    }
-
-    .modal-header h2 {
-        font-size: 1.3rem;
-    }
-    
-    .hero-section {
-        padding: 20px 0 30px 0;
-    }
-
-    .hero-text {
-        font-size: 1rem;
-    }
-
-    .hero-cta {
-        font-size: 0.9rem;
-        padding: 10px 25px;
-    }
-
-    .feature-card {
-        padding: 20px;
-    }
-
-    .collaborations-carousel {
-        max-width: 100%;
-        border-left: none;
-        border-right: none;
-        border-radius: 0;
-    }
-    .carousel-nav-btn {
-        padding: 8px;
-    }
+.coupon-form button:hover {
+    background: var(--nm-accent-hover);
 }
 
-/* =================================================================
-    FIX: DESKTOP MEDIA QUERY
-    =================================================================
-*/
-@media (min-width: 993px) {
-    .burger-menu {
-        display: none;
-    }
+.coupon-form button:active {
+    transform: scale(0.95);
+}
 
-    /* --- FLEXBOX LAYOUT WITH ABSOLUTE CENTERED TITLE --- */
-    /* This is the fragile, but intended, layout */
+/* ================================================================= MOBILE/TABLET STYLES (DEFAULT) ================================================================= */
+
+/* Nothing needed here, as the default styles are mobile-first */
+
+/* ================================================================= DESKTOP FIXES (Minimum 1024px) ================================================================= */
+
+@media (min-width: 1024px) {
     .nav-container {
         display: flex;
-        justify-content: flex-end; 
-        align-items: center;
-        padding: 8px 0; 
+        justify-content: center; /* Center the title/logo block */
         position: relative;
     }
     
     .nav-title {
+        order: 2; /* Move title to the center */
         position: absolute;
         left: 50%;
         transform: translateX(-50%);
-        order: unset; 
-        margin: 0; 
-        flex-grow: 0;
-        flex-shrink: 0;
-    }
-    
-    .nav-title h1 {
-        font-size: 1.6rem; 
+        max-width: 50%; /* Prevents title from getting too wide */
     }
 
-    .nav-title h1::after {
-        width: 2rem;
-        height: 2rem;
+    .burger-menu {
+        display: none; /* Hide burger menu on desktop */
     }
 
     .nav-menu {
-        order: 2; 
-        position: static;
-        transform: none;
-        height: auto;
+        position: static; /* Reset position for desktop */
+        top: auto;
+        right: auto;
         width: auto;
         max-width: none;
+        height: auto;
         background: none;
         box-shadow: none;
+        transform: translateX(0);
+        opacity: 1;
+        visibility: visible;
+        flex-direction: row; /* Horizontal links */
         padding: 0;
+        gap: 10px;
+        order: 1; /* Move menu to the left */
         overflow-y: visible;
-        margin-top: 0;
-        display: flex;
-        flex-direction: row;
+        flex-grow: 1; /* Allows menu to take available space */
+        justify-content: flex-start;
         align-items: center;
-        gap: 5px; 
     }
-    
+
     .nav-link {
-        width: auto; 
-        font-size: 0.85rem;
+        width: auto; /* Allow links to size based on content */
+        text-align: left;
     }
-    
+
     .nav-actions {
-        order: 1; 
+        order: 3; /* Move actions to the right */
+        /* Reset mobile styles */
         margin-top: 0;
         margin-left: 0;
         width: auto;
+        /* Style the buttons inside */
         display: flex;
         flex-direction: row;
         gap: 10px;
@@ -1640,18 +1604,35 @@ body.light-theme .category-header {
         padding: 8px 15px; /* Restore desktop padding */
     }
     
+    /* Re-show text on desktop */
     .nav-action-btn span {
         display: inline;
     }
 
-    /* --- MODIFIED: Removed all redundant padding/margin rules --- */
-    /* All layout is now handled by the global body padding */
-    
+    /* Reset the phone container for desktop view */
+    .phone-container {
+        height: auto;
+        margin-top: 0;
+        padding: 0;
+    }
+
+    .screen {
+        height: auto;
+        overflow-y: visible;
+    }
+
+    .home-screen, .page-content {
+        padding-top: 100px; /* Ensure content starts well below the fixed header */
+        margin-top: 0;
+    }
+
     .page-content {
-        padding-left: 30px;
-        padding-right: 30px;
-        padding-bottom: 30px;
-        /* padding-top: 20px; is inherited from global .page-content rule */
+        padding: 30px;
+    }
+
+    /* Contact Page Desktop Layout */
+    .contact-grid {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     }
 }
 /* --- END OF DESKTOP FIX --- */
@@ -1659,6 +1640,7 @@ body.light-theme .category-header {
 
 /* ================================================================= ACCESSIBILITY/FOCUS STYLES ================================================================= */
 
+/* Added standard focus styles for keyboard navigation */
 button:focus-visible,
 .nav-link:focus-visible,
 .nav-action-btn:focus-visible,
@@ -1669,9 +1651,8 @@ button:focus-visible,
     box-shadow: var(--shadow-glow-accent);
 }
 
-.form-grop input:focus-visible,
-.form-grop textarea:focus-visible {
-    outline: none !important;
-    border-color: var(--nm-accent-hover) !important;
-    box-shadow: 0 0 5px 0px rgba(var(--glow-rgb), 0.5) !important;
+/* For inputs, we can just enhance the existing style */
+.form-group input:focus-visible {
+    border-color: var(--nm-accent);
+    box-shadow: 0 0 5px rgba(var(--glow-rgb), 0.5);
 }
