@@ -1,3 +1,5 @@
+[file name]: style.css
+[file content begin]
 /*
     =================================================================
     DEDSEC PROJECT MULTI-PAGE STYLES
@@ -1614,6 +1616,43 @@ body.light-theme .category-header {
     margin-bottom: 20px;
 }
 
+/* Store Contact Page Button */
+.contact-page-btn {
+    display: inline-block;
+    background: var(--nm-accent);
+    color: var(--nm-text-on-accent);
+    padding: 15px 30px;
+    border-radius: 25px;
+    text-decoration: none;
+    font-family: 'Orbitron', sans-serif;
+    font-weight: bold;
+    font-size: 1.1rem;
+    border: 2px solid transparent;
+    transition: all 0.3s var(--ease-out-cubic);
+    box-shadow: var(--shadow-glow-accent);
+    margin: 20px 0;
+    text-align: center;
+    width: 100%;
+    max-width: 300px;
+    box-sizing: border-box;
+}
+
+.contact-page-btn:hover {
+    background: var(--nm-accent-hover);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(var(--glow-rgb), 0.6);
+}
+
+.contact-page-btn:active {
+    transform: translateY(0px) scale(0.97);
+}
+
+.contact-cta {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+}
+
 /* ================================================================= MEDIA QUERIES (RESPONSIVENESS) ================================================================= */
 
 @media (max-width: 992px) {
@@ -1743,6 +1782,12 @@ body.light-theme .category-header {
         grid-template-columns: 1fr;
         gap: 15px;
     }
+
+    .contact-page-btn {
+        padding: 12px 25px;
+        font-size: 1rem;
+        max-width: 250px;
+    }
 }
 
 /* =================================================================
@@ -1861,6 +1906,12 @@ body.light-theme .category-header {
     .store-page .feature-card {
         min-height: 550px;
     }
+
+    .contact-page-btn {
+        max-width: 350px;
+        padding: 18px 35px;
+        font-size: 1.2rem;
+    }
 }
 /* --- END OF DESKTOP FIX --- */
 
@@ -1885,3 +1936,4 @@ button:focus-visible,
     border-color: var(--nm-accent-hover) !important;
     box-shadow: 0 0 5px 0px rgba(var(--glow-rgb), 0.5) !important;
 }
+[file content end]
