@@ -194,7 +194,8 @@ body.light-theme::before {
     align-items: center;
     max-width: 1200px;
     margin: 0 auto;
-    padding: 10px 0;
+    /* MODIFIED: Reduced padding for a smaller header */
+    padding: 8px 0; 
     transition: max-width 0.3s ease;
     position: relative; /* For desktop title centering */
 }
@@ -211,7 +212,8 @@ body.light-theme::before {
 
 .nav-title h1 {
     margin: 0;
-    font-size: 2rem; 
+    /* MODIFIED: Reduced font size for mobile/desktop */
+    font-size: 1.6rem; 
     color: var(--nm-text-accent);
     font-family: 'Orbitron', sans-serif;
     /* MODIFIED: Drastically simplified text-shadow to a single, minimal glow layer */
@@ -235,8 +237,9 @@ body.light-theme .nav-title h1 {
 .nav-title h1::after {
     content: '';
     display: block;
-    width: 2.5rem;
-    height: 2.5rem;
+    /* MODIFIED: Reduced logo size */
+    width: 2rem;
+    height: 2rem;
     background-image: url('https://raw.githubusercontent.com/dedsec1121fk/dedsec1121fk.github.io/9254ed6bf953c497074005b0da02e819aba18487/Assets/Images/Logos/Custom%20Black%20Purple%20Fox%20Logo.png');
     background-size: contain;
     background-position: center;
@@ -274,12 +277,12 @@ body.light-theme .nav-title h1::after {
 
 /* MODIFIED: NAV MENU IS NOW ALWAYS THE MOBILE/SIDEBAR MENU */
 .nav-menu {
+    top: 60px; /* Adjusted to new header size */
     position: fixed;
-    top: 70px; /* Aligns below the fixed header */
     right: 0;
     width: 80%;
     max-width: 300px;
-    height: calc(100vh - 70px);
+    height: calc(100vh - 60px); /* Adjusted to new header size */
     background: var(--nm-darkest);
     flex-direction: column;
     padding: 20px;
@@ -1616,7 +1619,8 @@ body.light-theme .category-header {
         display: flex;
         justify-content: flex-end; 
         align-items: center;
-        padding: 10px 0;
+        /* Padding already reduced globally to 8px 0 (Lines 163-164) */
+        padding: 8px 0; 
         /* Position relative is needed for the absolute child */
         position: relative;
     }
@@ -1633,6 +1637,17 @@ body.light-theme .category-header {
         /* Re-apply flex properties for desktop centering */
         flex-grow: 0;
         flex-shrink: 0;
+    }
+    
+    .nav-title h1 {
+        /* Font size reduced globally, but ensuring it's not overridden */
+        font-size: 1.6rem; 
+    }
+
+    .nav-title h1::after {
+        /* Logo size reduced globally */
+        width: 2rem;
+        height: 2rem;
     }
 
     /* 2. Menu Links (Right) */
@@ -1702,24 +1717,17 @@ body.light-theme .category-header {
     }
 
     .home-screen, .page-content {
-        padding-top: 100px; /* Ensure content starts well below the fixed header */
+        /* MODIFIED: Reduced padding top from 100px to 85px to compensate for smaller header */
+        padding-top: 85px; 
         margin-top: 0;
     }
 
     .page-content {
-        /* * ==================================================
-         * START FIX
-         * ==================================================
-         */
         /* This applies padding to the sides and bottom, 
            but leaves the padding-top from the rule above. */
         padding-left: 30px;
         padding-right: 30px;
         padding-bottom: 30px;
-         /* * ==================================================
-         * END FIX
-         * ==================================================
-         */
     }
 }
 /* --- END OF DESKTOP FIX --- */
