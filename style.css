@@ -1,7 +1,7 @@
 /*
     =================================================================
     DEDSEC PROJECT MULTI-PAGE STYLES
-    VERSION: 3.5 (Store Integration)
+    VERSION: 3.6 (Layout & Responsiveness Fix)
     =================================================================
 */
 
@@ -92,16 +92,27 @@ body.light-theme {
     =================================================================
 */
 
-/* ADDED: Smooth scrolling and native-like touch behavior */
+/* --- ADDED: Global Resets --- */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
 html {
     scroll-behavior: smooth;
     -webkit-tap-highlight-color: transparent;
     overscroll-behavior-y: none;
+    height: 100%; /* Ensure viewport height is calculated correctly */
 }
+/* --- End Global Resets --- */
+
 
 body {
     margin: 0;
     padding: 0;
+    /* --- MODIFIED: Added global padding-top to offset fixed 60px nav --- */
+    padding-top: 60px;
     background-color: var(--nm-abyss-blue);
     font-family: 'Inter', sans-serif;
     color: var(--nm-text);
@@ -109,6 +120,7 @@ body {
     position: relative;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    min-height: 100%; /* Ensure body takes at least full height */
 }
 
 /* --- OPTIMIZED: Keep specific elements monospaced --- */
@@ -178,14 +190,14 @@ body.light-theme::before {
     top: 0;
     left: 0;
     width: 100%;
-    /* MODIFIED: Added solid theme-aware background, border, and shadow */
+    /* --- MODIFIED: Added fixed height for layout stability --- */
+    height: 60px;
     background-color: var(--nm-darkest) !important;
     border-bottom: 1px solid var(--nm-border) !important;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2) !important;
     transition: background-color 0.3s ease, border-color 0.3s ease;
     z-index: 1000;
     padding: 0 15px;
-    box-sizing: border-box;
 }
 
 .nav-container {
@@ -194,10 +206,10 @@ body.light-theme::before {
     align-items: center;
     max-width: 1200px;
     margin: 0 auto;
-    /* MODIFIED: Reduced padding for a smaller header */
     padding: 8px 0; 
     transition: max-width 0.3s ease;
     position: relative; /* For desktop title centering */
+    height: 100%; /* --- MODIFIED: Ensure it fills the main-nav height --- */
 }
 
 /* MODIFIED: ADDED TEXT SAFETY */
@@ -212,16 +224,13 @@ body.light-theme::before {
 
 .nav-title h1 {
     margin: 0;
-    /* MODIFIED: Reduced font size for mobile/desktop */
     font-size: 1.6rem; 
     color: var(--nm-text-accent);
     font-family: 'Orbitron', sans-serif;
-    /* MODIFIED: Drastically simplified text-shadow to a single, minimal glow layer */
     text-shadow: 0 0 8px var(--nm-accent-hover);
     display: flex;
     align-items: center;
     gap: 10px;
-    /* ADDED: Prevent text going out */
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -230,14 +239,12 @@ body.light-theme::before {
 
 /* ADDED: Explicit light-theme fix for nav-title h1 to remove black outlines and keep single glow */
 body.light-theme .nav-title h1 {
-    /* Ensure the single, minimal glow is used here as well, overriding any potential inheritance of outlines */
     text-shadow: 0 0 8px var(--nm-accent-hover);
 }
 
 .nav-title h1::after {
     content: '';
     display: block;
-    /* MODIFIED: Reduced logo size */
     width: 2rem;
     height: 2rem;
     background-image: url('https://raw.githubusercontent.com/dedsec1121fk/dedsec1121fk.github.io/9254ed6bf953c497074005b0da02e819aba18487/Assets/Images/Logos/Custom%20Black%20Purple%20Fox%20Logo.png');
@@ -277,12 +284,14 @@ body.light-theme .nav-title h1::after {
 
 /* MODIFIED: NAV MENU IS NOW ALWAYS THE MOBILE/SIDEBAR MENU */
 .nav-menu {
-    top: 60px; /* Adjusted to new header size */
+    /* --- MODIFIED: Standardized to 60px nav height --- */
+    top: 60px; 
     position: fixed;
     right: 0;
     width: 80%;
     max-width: 300px;
-    height: calc(100vh - 60px); /* Adjusted to new header size */
+    /* --- MODIFIED: Standardized to 60px nav height --- */
+    height: calc(100vh - 60px); 
     background: var(--nm-darkest);
     flex-direction: column;
     padding: 20px;
@@ -292,7 +301,6 @@ body.light-theme .nav-title h1::after {
     visibility: visible;
     transition: transform 0.3s var(--ease-out-cubic);
     overflow-y: auto;
-    /* Added display flex to ensure vertical alignment from original mobile styles */
     display: flex; 
     align-items: center; 
     gap: 20px;
@@ -310,12 +318,9 @@ body.light-theme .nav-title h1::after {
     padding: 8px 15px;
     border-radius: 20px;
     border: 1px solid transparent;
-    /* MODIFIED: Premium transition */
     transition: transform 0.25s var(--ease-out-cubic), background-color 0.25s ease, color 0.25s ease, box-shadow 0.25s var(--ease-out-cubic), border-color 0.25s ease;
     will-change: transform, box-shadow;
-    /* ADDED: Full width for menu item look */
     width: 100%;
-    box-sizing: border-box;
     text-align: center;
 }
 
@@ -324,12 +329,10 @@ body.light-theme .nav-title h1::after {
     background: var(--nm-accent);
     color: var(--nm-text-on-accent); 
     border-color: var(--nm-accent-hover);
-    /* MODIFIED: More lift and glow */
     transform: translateY(-3px);
     box-shadow: var(--shadow-glow-accent);
 }
 
-/* ADDED: Premium "press" effect */
 .nav-link:active {
     transform: translateY(0px) scale(0.97);
     transition-duration: 0.1s;
@@ -337,13 +340,12 @@ body.light-theme .nav-title h1::after {
 
 /* =================================================================
     FIX: NAV ACTIONS (MOBILE)
-    Styled to be horizontal (row) and fit in the top bar.
     =================================================================
 */
 .nav-actions {
     display: flex;
     gap: 10px;
-    margin-left: 0; /* Space from burger */
+    margin-left: 0; 
     margin-top: 0; 
     justify-content: flex-end;
     flex-direction: row; /* Horizontal */
@@ -367,24 +369,20 @@ body.light-theme .nav-title h1::after {
     will-change: transform, box-shadow;
     width: auto; /* Fit content */
     justify-content: center;
-    box-sizing: border-box;
 }
 
 .nav-action-btn:hover {
     background: var(--nm-accent);
     color: var(--nm-text-on-accent); 
-    /* MODIFIED: More lift and glow */
     transform: translateY(-3px);
     box-shadow: var(--shadow-glow-accent);
 }
 
-/* ADDED: Premium "press" effect */
 .nav-action-btn:active {
     transform: translateY(0px) scale(0.97);
     transition-duration: 0.1s;
 }
 
-/* ADDED: Hide text on mobile nav buttons */
 .nav-action-btn span {
     display: none;
 }
@@ -393,13 +391,13 @@ body.light-theme .nav-title h1::after {
 
 /* --- PAGE CONTENT STYLES --- */
 .page-content {
-    margin-top: 80px;
-    padding: 20px;
+    /* --- MODIFIED: Removed margin-top, now handled by body padding --- */
+    /* margin-top: 80px; -> REMOVED */
+    padding: 20px; /* Standard internal padding */
     max-width: 1200px;
     margin-left: auto;
     margin-right: auto;
     transition: max-width 0.3s ease;
-    /* ADDED: Page load animation */
     animation: fadeIn 0.5s 0.1s var(--ease-out-cubic) backwards;
 }
 
@@ -413,12 +411,10 @@ body.light-theme .nav-title h1::after {
     font-family: 'Orbitron', sans-serif;
     font-size: 2.5rem;
     margin-bottom: 10px;
-    /* MODIFIED: Drastically simplified text-shadow to a single, minimal glow layer */
     text-shadow: 0 0 8px var(--nm-accent-hover);
 }
 
 body.light-theme .page-header h1 {
-    /* MODIFIED: Drastically simplified text-shadow to a single, minimal glow layer */
     text-shadow: 0 0 8px var(--nm-accent-hover);
 }
 
@@ -436,7 +432,6 @@ body.light-theme .page-header h1 {
     padding: 30px;
     margin-bottom: 30px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-    /* MODIFIED: Premium transition */
     transition: border-color 0.3s ease, box-shadow 0.3s var(--ease-out-cubic);
 }
 
@@ -475,7 +470,6 @@ body.light-theme .content-section {
     border: 1px solid var(--nm-border);
     border-radius: 15px;
     padding: 20px;
-    /* MODIFIED: Premium transition */
     transition: transform 0.25s var(--ease-out-cubic), border-color 0.25s ease, box-shadow 0.25s var(--ease-out-cubic);
     will-change: transform, box-shadow;
 }
@@ -488,12 +482,6 @@ body.light-theme .tool-card {
     border-color: var(--nm-accent);
     transform: translateY(-3px);
     box-shadow: var(--shadow-glow-accent);
-}
-
-.tool-card h4 {
-    color: var(--nm-text-accent);
-    margin-bottom: 10px;
-    font-family: 'Orbitron', sans-serif;
 }
 
 /* --- TOOL FEATURES BULLET STYLES --- */
@@ -517,13 +505,13 @@ body.light-theme .tool-card {
 /* --- HOMEPAGE SPECIFIC STYLES --- */
 .phone-container {
     width: 100%;
-    height: calc(100vh - 0px); /* Height takes up the full viewport minus the fixed header height */
-    margin-top: 0px; /* Offset the fixed header height */
+    /* --- MODIFIED: Fills remaining viewport *below* 60px nav --- */
+    height: calc(100vh - 60px);
+    margin-top: 0; /* Removed, handled by body padding */
     display: flex;
     justify-content: center;
     align-items: center;
     overflow: hidden;
-    /* MODIFIED: Removed the "phone" border/styling */
     border: none;
     box-shadow: none;
     background: transparent;
@@ -533,24 +521,21 @@ body.light-theme .tool-card {
 .screen {
     width: 100%;
     height: 100%;
-    /* MODIFIED: Removed the "screen" styling */
     border-radius: 0;
     overflow-y: auto;
     overflow-x: hidden;
-    background: transparent; /* This will let the body's background image show through */
+    background: transparent; 
 }
 
 .home-screen {
-    padding-top: 20px; /* Reduced padding since the navigation bar is mostly gone */
+    /* --- MODIFIED: 20px is now correct internal padding --- */
+    padding-top: 20px; 
     padding-bottom: calc(20px + var(--safe-area-inset-bottom));
     width: 100%;
     max-width: 1200px;
     margin: 0 auto;
-    /* Added padding left/right to ensure content is centered within the phone container */
     padding-left: 15px;
     padding-right: 15px;
-    box-sizing: border-box;
-    /* ADDED: Page load animation */
     animation: fadeIn 0.5s 0.1s var(--ease-out-cubic) backwards;
 }
 
@@ -567,7 +552,6 @@ body.light-theme .tool-card {
     border-radius: 15px;
     padding: 15px 10px;
     text-align: center;
-    /* MODIFIED: Premium transition */
     transition: transform 0.25s var(--ease-out-cubic), border-color 0.25s ease, box-shadow 0.25s var(--ease-out-cubic);
     will-change: transform, box-shadow;
 }
@@ -631,7 +615,7 @@ body.light-theme .stat-card {
     line-height: 1.7;
     margin: 0 0 25px 0;
     max-width: 600px;
-    padding: 0 20px; /* Added padding to ensure text doesn't hit the edges */
+    padding: 0 20px; 
     margin-left: auto;
     margin-right: auto;
 }
@@ -683,7 +667,6 @@ body.light-theme .stat-card {
     text-decoration: none;
     color: var(--nm-text);
     text-align: left;
-    /* MODIFIED: Premium transition */
     transition: transform 0.25s var(--ease-out-cubic), border-color 0.25s ease, box-shadow 0.25s var(--ease-out-cubic);
     will-change: transform, box-shadow;
 }
@@ -797,17 +780,12 @@ body.light-theme .feature-card {
     width: 100%;
     height: 100%;
     background: rgba(0, 0, 0, 0.8);
-    /* --- OPTIMIZED: Removed performance-heavy blur --- */
-    /* -webkit-backdrop-filter: blur(10px); */
-    /* backdrop-filter: blur(10px); */
-    /* --- End optimization --- */
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 1000;
     opacity: 0;
     visibility: hidden;
-    /* MODIFIED: Faster fade-in */
     transition: opacity 0.25s ease-out, visibility 0s 0.25s, backdrop-filter 0.25s ease-out;
 }
 
@@ -834,7 +812,6 @@ body.light-theme .modal-overlay {
     overflow: hidden;
     clip-path: none;
     border-radius: 20px;
-    /* MODIFIED: Premium "grow-in" animation */
     opacity: 0;
     transform: translateY(20px) scale(0.95);
     transition: transform 0.3s var(--ease-out-cubic), opacity 0.3s ease;
@@ -951,7 +928,6 @@ body.light-theme .modal-content {
     font-family: 'Orbitron', sans-serif;
     font-weight: bold;
     font-size: 1rem;
-    /* MODIFIED: Premium transition */
     transition: transform 0.25s var(--ease-out-cubic), background-color 0.25s ease, color 0.25s ease, box-shadow 0.25s var(--ease-out-cubic), border-color 0.25s ease;
     will-change: transform, box-shadow;
     min-height: 45px;
@@ -968,7 +944,6 @@ body.light-theme .modal-content {
     transform: translateY(-3px);
 }
 
-/* ADDED: Premium "press" effect */
 .language-button:active {
     transform: translateY(0px) scale(0.97);
     transition-duration: 0.1s;
@@ -981,7 +956,6 @@ body.light-theme .modal-content {
 /* Accept/Decline Buttons */
 .decline-btn, .accept-btn {
     color: var(--nm-text-on-status) !important;
-    /* MODIFIED: Premium transition */
     transition: transform 0.25s var(--ease-out-cubic), opacity 0.25s ease, box-shadow 0.25s var(--ease-out-cubic);
     will-change: transform, box-shadow;
 }
@@ -1010,7 +984,6 @@ body.light-theme .modal-content {
     box-shadow: var(--shadow-glow-danger) !important;
 }
 
-/* ADDED: Premium "press" effect */
 .accept-btn:active, .decline-btn:active {
     transform: translateY(0px) scale(0.97);
     transition-duration: 0.1s;
@@ -1044,9 +1017,8 @@ pre:hover,
 
 pre code,
 .code-container code {
-    color: var(--nm-text); /* MODIFIED: Changed from --nm-success to --nm-text */
-    text-shadow: none; /* MODIFIED: Removed green text-shadow */
-    /* ADDED: Ensure code tag itself can wrap if needed */
+    color: var(--nm-text); 
+    text-shadow: none; 
     white-space: pre-wrap;
     word-wrap: break-word;
 }
@@ -1127,17 +1099,20 @@ pre code,
 /* ================================================================= PAGE-SPECIFIC STYLES ================================================================= */
 
 /* --- Contact Page --- */
+/* --- MODIFIED: Made contact-grid responsive --- */
 .contact-grid {
     display: grid;
-    grid-template-columns: 1fr;
+    /* grid-template-columns: 1fr; -> REMOVED */
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* ADDED */
     gap: 15px;
-    justify-items: center;
+    /* justify-items: center; -> REMOVED */
     padding-top: 20px;
 }
 
 .contact-grid .app-icon {
     width: 100%;
-    max-width: 350px;
+    /* max-width: 350px; -> REMOVED */
+    max-width: none; /* ADDED */
     height: auto;
     padding: 12px 15px;
     gap: 15px;
@@ -1150,11 +1125,9 @@ pre code,
     font-family: 'Roboto Mono', monospace;
     display: flex;
     align-items: center;
-    justify-content: center; /* MODIFIED: Changed from flex-start */
+    justify-content: center; 
     text-decoration: none;
-    box-sizing: border-box;
     position: relative;
-    /* MODIFIED: Premium transition */
     transition: transform 0.25s var(--ease-out-cubic), background-color 0.25s ease, color 0.25s ease, box-shadow 0.25s var(--ease-out-cubic), border-color 0.25s ease;
     will-change: transform, box-shadow;
 }
@@ -1167,7 +1140,6 @@ pre code,
     box-shadow: var(--shadow-glow-accent);
 }
 
-/* ADDED: Premium "press" effect */
 .contact-grid .app-icon:active {
     transform: translateY(0px) scale(0.97);
     transition-duration: 0.1s;
@@ -1186,6 +1158,8 @@ pre code,
 .contact-grid .app-icon span {
     font-size: 1rem;
 }
+/* --- End Contact Page Fix --- */
+
 
 /* --- Portfolio Page --- */
 .portfolio-grid {
@@ -1202,7 +1176,6 @@ pre code,
     padding: 20px;
     text-decoration: none;
     color: var(--nm-text);
-    /* MODIFIED: Premium transition */
     transition: transform 0.25s var(--ease-out-cubic), border-color 0.25s ease, box-shadow 0.25s var(--ease-out-cubic);
     will-change: transform, box-shadow;
 }
@@ -1276,11 +1249,9 @@ body.light-theme .github-stat-dark {
     background-color: var(--nm-container);
     display: inline-block;
     max-width: 100%;
-    box-sizing: border-box;
     line-height: 1.4;
     clip-path: none;
     border-radius: 20px;
-    /* MODIFIED: Premium transition */
     transition: transform 0.25s var(--ease-out-cubic), background-color 0.25s ease, color 0.25s ease, box-shadow 0.25s var(--ease-out-cubic), border-color 0.25s ease;
     will-change: transform, box-shadow;
 }
@@ -1297,7 +1268,6 @@ body.light-theme .store-link a {
     box-shadow: var(--shadow-glow-accent);
 }
 
-/* ADDED: Premium "press" effect */
 .store-link a:active {
     transform: translateY(0px) scale(0.97);
     transition-duration: 0.1s;
@@ -1311,10 +1281,8 @@ body.light-theme .store-link a {
 .collaborations-carousel {
     position: relative;
     width: 100%;
-    /* Use a reasonable max-width for component */
     max-width: 600px;
     margin: 0 auto;
-    /* CRITICAL: Hides the parts of the slides/images that overflow */
     overflow: hidden;
     clip-path: none;
     border-radius: 20px;
@@ -1328,7 +1296,6 @@ body.light-theme .store-link a {
 
 .carousel-slide {
     width: 100%;
-    box-sizing: border-box;
     padding: 10px;
 }
 
@@ -1506,14 +1473,10 @@ body.light-theme .category-header {
 /* ================================================================= MEDIA QUERIES (RESPONSIVENESS) ================================================================= */
 
 @media (max-width: 992px) {
-    /* All navigation-related styles are handled globally now, only adjust layout */
-    .phone-container {
-        height: calc(100vh - 70px);
-        margin-top: 70px;
-    }
-
+    /* --- MODIFIED: Removed all redundant margin/height rules --- */
+    /* All layout is now handled by the global body padding and container heights */
+    
     .page-content {
-        margin-top: 70px;
         padding: 15px;
     }
 
@@ -1521,9 +1484,9 @@ body.light-theme .category-header {
         padding: 20px;
     }
 
-    .content-grid {
-        grid-template-columns: 1fr;
-    }
+    /* .content-grid {
+        grid-template-columns: 1fr; -> This is already handled by auto-fit
+    } */
 
     .nav-title h1 {
         font-size: 1.5rem;
@@ -1550,7 +1513,6 @@ body.light-theme .category-header {
     }
 
     .modal-overlay {
-        /* --- OPTIMIZED: Removed blur on mobile, using solid fallback --- */
         -webkit-backdrop-filter: none;
         backdrop-filter: none;
     }
@@ -1590,7 +1552,6 @@ body.light-theme .category-header {
         padding: 20px;
     }
 
-    /* Media query for the new carousel */
     .collaborations-carousel {
         max-width: 100%;
         border-left: none;
@@ -1604,57 +1565,44 @@ body.light-theme .category-header {
 
 /* =================================================================
     FIX: DESKTOP MEDIA QUERY
-    Implements [ (empty) ] [ Title ] [ Actions | Links ]
     =================================================================
 */
 @media (min-width: 993px) {
-    /* Hide the burger menu on desktop */
     .burger-menu {
         display: none;
     }
 
     /* --- FLEXBOX LAYOUT WITH ABSOLUTE CENTERED TITLE --- */
+    /* This is the fragile, but intended, layout */
     .nav-container {
-        /* Use flexbox to group items on the right */
         display: flex;
         justify-content: flex-end; 
         align-items: center;
-        /* Padding already reduced globally to 8px 0 (Lines 163-164) */
         padding: 8px 0; 
-        /* Position relative is needed for the absolute child */
         position: relative;
     }
     
-    /* 1. Title (Center) */
     .nav-title {
-        /* Absolute centering */
         position: absolute;
         left: 50%;
         transform: translateX(-50%);
-        order: unset; /* Reset mobile order */
-        margin: 0; /* Override any flex margins */
-        
-        /* Re-apply flex properties for desktop centering */
+        order: unset; 
+        margin: 0; 
         flex-grow: 0;
         flex-shrink: 0;
     }
     
     .nav-title h1 {
-        /* Font size reduced globally, but ensuring it's not overridden */
         font-size: 1.6rem; 
     }
 
     .nav-title h1::after {
-        /* Logo size reduced globally */
         width: 2rem;
         height: 2rem;
     }
 
-    /* 2. Menu Links (Right) */
     .nav-menu {
-        order: 2; /* Actions first, then Menu */
-        
-        /* Reset mobile styles */
+        order: 2; 
         position: static;
         transform: none;
         height: auto;
@@ -1665,8 +1613,6 @@ body.light-theme .category-header {
         padding: 0;
         overflow-y: visible;
         margin-top: 0;
-        
-        /* Style the links inside */
         display: flex;
         flex-direction: row;
         align-items: center;
@@ -1674,20 +1620,15 @@ body.light-theme .category-header {
     }
     
     .nav-link {
-        width: auto; /* Let links be their natural width */
+        width: auto; 
         font-size: 0.85rem;
     }
     
-    /* 3. Actions (Right, before menu) */
     .nav-actions {
-        order: 1; /* Actions first, then Menu */
-        
-        /* Reset mobile styles */
+        order: 1; 
         margin-top: 0;
         margin-left: 0;
         width: auto;
-        
-        /* Style the buttons inside */
         display: flex;
         flex-direction: row;
         gap: 10px;
@@ -1699,35 +1640,18 @@ body.light-theme .category-header {
         padding: 8px 15px; /* Restore desktop padding */
     }
     
-    /* Re-show text on desktop */
     .nav-action-btn span {
         display: inline;
     }
 
-    /* Reset the phone container for desktop view */
-    .phone-container {
-        height: auto;
-        margin-top: 0;
-        padding: 0;
-    }
-
-    .screen {
-        height: auto;
-        overflow-y: visible;
-    }
-
-    .home-screen, .page-content {
-        /* MODIFIED: Reduced padding top from 100px to 85px to compensate for smaller header */
-        padding-top: 85px; 
-        margin-top: 0;
-    }
-
+    /* --- MODIFIED: Removed all redundant padding/margin rules --- */
+    /* All layout is now handled by the global body padding */
+    
     .page-content {
-        /* This applies padding to the sides and bottom, 
-           but leaves the padding-top from the rule above. */
         padding-left: 30px;
         padding-right: 30px;
         padding-bottom: 30px;
+        /* padding-top: 20px; is inherited from global .page-content rule */
     }
 }
 /* --- END OF DESKTOP FIX --- */
@@ -1735,7 +1659,6 @@ body.light-theme .category-header {
 
 /* ================================================================= ACCESSIBILITY/FOCUS STYLES ================================================================= */
 
-/* Added standard focus styles for keyboard navigation */
 button:focus-visible,
 .nav-link:focus-visible,
 .nav-action-btn:focus-visible,
@@ -1746,7 +1669,6 @@ button:focus-visible,
     box-shadow: var(--shadow-glow-accent);
 }
 
-/* For inputs, we can just enhance the existing style */
 .form-grop input:focus-visible,
 .form-grop textarea:focus-visible {
     outline: none !important;
