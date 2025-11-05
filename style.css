@@ -1707,7 +1707,19 @@ body.light-theme .category-header {
     }
 
     .page-content {
-        padding: 30px;
+        /* * ==================================================
+         * START FIX
+         * ==================================================
+         */
+        /* This applies padding to the sides and bottom, 
+           but leaves the padding-top from the rule above. */
+        padding-left: 30px;
+        padding-right: 30px;
+        padding-bottom: 30px;
+         /* * ==================================================
+         * END FIX
+         * ==================================================
+         */
     }
 }
 /* --- END OF DESKTOP FIX --- */
