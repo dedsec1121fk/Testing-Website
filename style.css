@@ -1,7 +1,7 @@
 /*
     =================================================================
     DEDSEC PROJECT MULTI-PAGE STYLES
-    VERSION: 3.4 (PC Layout Fix)
+    VERSION: 3.5 (Navigation Stability Fix & Store Styles)
     =================================================================
 */
 
@@ -196,7 +196,7 @@ body.light-theme::before {
     margin: 0 auto;
     padding: 10px 0;
     transition: max-width 0.3s ease;
-    position: relative; /* For desktop title centering */
+    position: relative; 
 }
 
 /* MODIFIED: ADDED TEXT SAFETY */
@@ -218,7 +218,6 @@ body.light-theme::before {
     text-shadow: 0 0 8px var(--nm-accent-hover);
     display: flex;
     align-items: center;
-    /* REMOVED: gap: 10px; to remove space for the logo */
     /* ADDED: Prevent text going out */
     overflow: hidden;
     text-overflow: ellipsis;
@@ -1543,16 +1542,22 @@ body.light-theme .category-header {
 @media (min-width: 1024px) {
     .nav-container {
         display: flex;
-        justify-content: center; /* Center the title/logo block */
+        /* MODIFIED: Use space-between for proper desktop spacing */
+        justify-content: space-between; 
         position: relative;
     }
     
     .nav-title {
+        /* MODIFIED: Center the title without absolute positioning */
         order: 2; /* Move title to the center */
-        position: absolute;
-        left: 50%;
-        transform: translateX(-50%);
-        max-width: 50%; /* Prevents title from getting too wide */
+        flex-grow: 1;
+        text-align: center;
+        max-width: none;
+    }
+    
+    .nav-title h1 {
+        /* Reset flex container inside h1 to center the text properly */
+        justify-content: center;
     }
 
     .burger-menu {
@@ -1576,7 +1581,7 @@ body.light-theme .category-header {
         gap: 10px;
         order: 1; /* Move menu to the left */
         overflow-y: visible;
-        flex-grow: 1; /* Allows menu to take available space */
+        flex-grow: 0; /* REMOVED: flex-grow to prevent taking up all space */
         justify-content: flex-start;
         align-items: center;
     }
@@ -1588,14 +1593,12 @@ body.light-theme .category-header {
 
     .nav-actions {
         order: 3; /* Move actions to the right */
-        /* Reset mobile styles */
-        margin-top: 0;
-        margin-left: 0;
-        width: auto;
         /* Style the buttons inside */
         display: flex;
         flex-direction: row;
         gap: 10px;
+        /* Ensure actions are on the far right */
+        flex-grow: 0; 
     }
 
     .nav-action-btn {
