@@ -201,8 +201,8 @@ body.light-theme::before {
 
 /* MODIFIED: ADDED TEXT SAFETY */
 .nav-title {
-    flex-grow: 0; 
-    flex-shrink: 0;
+    flex-grow: 1; 
+    flex-shrink: 1;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -1629,6 +1629,10 @@ body.light-theme .category-header {
         transform: translateX(-50%);
         order: unset; /* Reset mobile order */
         margin: 0; /* Override any flex margins */
+        
+        /* Re-apply flex properties for desktop centering */
+        flex-grow: 0;
+        flex-shrink: 0;
     }
 
     /* 2. Menu Links (Right) */
@@ -1723,8 +1727,8 @@ button:focus-visible,
 }
 
 /* For inputs, we can just enhance the existing style */
-.form-group input:focus-visible,
-.form-group textarea:focus-visible {
+.form-grop input:focus-visible,
+.form-grop textarea:focus-visible {
     outline: none !important;
     border-color: var(--nm-accent-hover) !important;
     box-shadow: 0 0 5px 0px rgba(var(--glow-rgb), 0.5) !important;
