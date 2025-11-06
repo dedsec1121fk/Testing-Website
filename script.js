@@ -385,9 +385,35 @@ document.addEventListener('DOMContentLoaded', () => {
         if (document.querySelector('.store-page')) {
             console.log('Store page detected, initializing store functionality...');
             
-            // Add any store-specific functionality here
-            // For now, the store uses the same components as other pages
+            // Initialize store categories (foldable sections)
+            initializeStoreCategories();
         }
+    }
+
+    // --- STORE CATEGORIES FUNCTIONALITY ---
+    function initializeStoreCategories() {
+        console.log('Initializing store categories...');
+        
+        // Close all store categories by default
+        document.querySelectorAll('.store-page .category').forEach(category => {
+            category.classList.remove('active');
+        });
+        
+        // Store category toggle functionality
+        document.querySelectorAll('.store-page .category-header').forEach(header => {
+            header.addEventListener('click', function() {
+                console.log('Store category header clicked');
+                const category = this.parentElement;
+                const wasActive = category.classList.contains('active');
+                
+                // Toggle the clicked category
+                if (!wasActive) {
+                    category.classList.add('active');
+                } else {
+                    category.classList.remove('active');
+                }
+            });
+        });
     }
 
     // --- INITIALIZATION ---
