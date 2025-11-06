@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     // --- GLOBAL STATE ---
-    let currentLanguage = 'en';
+    let currentLanguage = 'en'; // Set default to English
 
     // --- NAVIGATION FUNCTIONALITY ---
     function initializeNavigation() {
@@ -186,6 +186,14 @@ document.addEventListener('DOMContentLoaded', () => {
             const text = el.getAttribute(`data-${lang}`) || el.textContent;
             if (el.getAttribute('data-en')) {
                 el.textContent = text;
+            }
+        });
+
+        // NEW: Update payment links based on language
+        document.querySelectorAll('.payment-btn').forEach(link => {
+            const newLink = link.getAttribute(`data-${lang}-link`);
+            if (newLink) {
+                link.href = newLink;
             }
         });
     };
@@ -399,7 +407,7 @@ document.addEventListener('DOMContentLoaded', () => {
             initializeToolCategories();
         }
 
-        // Set initial language
+        // Set initial language - default to English
         const savedLanguage = localStorage.getItem('language') || 'en';
         changeLanguage(savedLanguage);
 
