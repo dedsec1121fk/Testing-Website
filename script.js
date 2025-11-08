@@ -211,7 +211,9 @@ document.addEventListener('DOMContentLoaded', () => {
             // Show disclaimer modal immediately on page load
             setTimeout(() => {
                 if (disclaimerModal) {
+                    // MODIFICATION: Add 'visible' and 'banner-style' classes
                     disclaimerModal.classList.add('visible');
+                    disclaimerModal.classList.add('banner-style');
                 }
             }, 10);
         }
@@ -220,7 +222,9 @@ document.addEventListener('DOMContentLoaded', () => {
         acceptBtn?.addEventListener('click', () => {
             localStorage.setItem('disclaimerAccepted', 'true');
             if (disclaimerModal) {
+                // MODIFICATION: Remove 'visible' and 'banner-style' classes
                 disclaimerModal.classList.remove('visible');
+                disclaimerModal.classList.remove('banner-style');
             }
             console.log('Disclaimer accepted');
         });
@@ -231,13 +235,8 @@ document.addEventListener('DOMContentLoaded', () => {
             window.location.href = 'https://www.google.com';
         });
 
-        // Prevent closing the disclaimer modal by clicking outside
-        disclaimerModal?.addEventListener('click', (e) => {
-            if (e.target === disclaimerModal) {
-                // Don't allow closing by clicking outside - force user to make a choice
-                return;
-            }
-        });
+        // MODIFICATION: Removed the click outside prevention logic
+        // The modal overlay click listener in initializeModals will handle this.
     }
 
     // --- MODAL MANAGEMENT ---

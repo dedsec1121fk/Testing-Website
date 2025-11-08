@@ -864,6 +864,101 @@ body.light-theme .modal-content {
     color: var(--nm-accent);
 }
 
+
+/* =================================================================
+    NEW: DISCLAIMER BANNER STYLES
+    Overrides modal styles when .banner-style is present
+   ================================================================= */
+
+.modal-overlay.banner-style {
+    position: fixed;
+    top: auto;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: auto;
+    background: none;
+    pointer-events: none; /* Allows clicking through the overlay */
+    z-index: 1100;
+    /* Override flex alignment */
+    display: block;
+    align-items: unset;
+    justify-content: unset;
+}
+
+.modal-overlay.banner-style .modal-content {
+    pointer-events: auto; /* The banner content IS clickable */
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    max-height: 45vh; /* Limit height, allow scrolling within */
+    margin: 0;
+    border-radius: 20px 20px 0 0; /* Rounded top corners */
+    border-bottom: none;
+    background: var(--nm-container);
+    box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.3);
+    /* Animation: slide in from bottom */
+    opacity: 1; /* Start with opacity 1, just off-screen */
+    transform: translateY(100%);
+    transition: transform 0.4s var(--ease-out-cubic);
+}
+
+.modal-overlay.banner-style.visible .modal-content {
+    transform: translateY(0);
+}
+
+/* Compact banner content */
+.modal-overlay.banner-style .modal-header {
+    padding: 15px 20px;
+}
+
+.modal-overlay.banner-style .modal-header h2 {
+    font-size: 1.1rem;
+}
+
+.modal-overlay.banner-style .language-selection-btn {
+    padding: 6px 12px;
+    font-size: 0.7rem;
+}
+
+.modal-overlay.banner-style .modal-body {
+    padding: 10px 20px;
+    font-size: 0.8rem;
+    line-height: 1.4;
+}
+
+.modal-overlay.banner-style .note {
+    padding: 0.8rem;
+    margin: 10px 0;
+}
+
+.modal-overlay.banner-style .note p {
+    margin: 0 0 10px 0;
+}
+
+.modal-overlay.banner-style .modal-divider {
+    margin: 1rem 0;
+}
+
+.modal-overlay.banner-style .modal-footer {
+    padding: 15px 20px;
+    flex-direction: row; /* Ensure it's horizontal */
+    justify-content: flex-end;
+}
+
+.modal-overlay.banner-style .disclaimer-footer button {
+    padding: 8px 15px;
+    font-size: 0.9rem;
+    min-height: auto;
+    min-width: 80px;
+}
+
+/* =================================================================
+    END OF DISCLAIMER BANNER STYLES
+   ================================================================= */
+
+
 /* --- Language & Theme Switcher Buttons (for use inside modals) --- */
 .language-selection-btn,
 .theme-selection-btn {
@@ -1698,6 +1793,11 @@ body.light-theme .category-header {
         gap: 15px;
         padding: 15px;
     }
+    
+    /* MODIFICATION: Make banner footer buttons row again */
+    #disclaimer-modal.banner-style .modal-footer {
+        flex-direction: row;
+    }
 
     #disclaimer-modal .decline-btn, #disclaimer-modal .accept-btn {
         font-size: 0.9rem;
@@ -1716,6 +1816,13 @@ body.light-theme .category-header {
     .modal-content {
         width: 95%;
         height: 95%;
+    }
+    
+    /* MODIFICATION: Ensure banner styles override fullscreen modal */
+    .modal-overlay.banner-style .modal-content {
+        width: 100%;
+        height: auto;
+        max-height: 50vh; /* A bit more space on mobile */
     }
 
     .modal-header {
@@ -1924,6 +2031,18 @@ body.light-theme .category-header {
         max-width: 350px;
         padding: 18px 35px;
         font-size: 1.2rem;
+    }
+    
+    /* MODIFICATION: Center the banner content on desktop */
+    .modal-overlay.banner-style .modal-content {
+        width: 95%;
+        max-width: 1200px;
+        margin: 0 auto;
+        border-radius: 20px 20px 0 0;
+    }
+    
+    .modal-overlay.banner-style .modal-header h2 {
+        font-size: 1.3rem;
     }
 }
 /* --- END OF DESKTOP FIX --- */
