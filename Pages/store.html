@@ -8,7 +8,6 @@
     <meta name="description" content="DedSec Project Store: Premium web development services and Python scripts for Termux. Professional websites and automation tools.">
     <meta name="keywords" content="DedSec, DedSec Project, Web Development, Python Scripts, Termux, HTML, CSS, JavaScript">
 
-    <!-- Security Headers -->
     <meta http-equiv="Content-Security-Policy" content="
       default-src 'self';
       script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com;
@@ -47,8 +46,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&family=Roboto+Mono:wght@400;700&family=Inter:wght@400;700&family=Noto+Serif:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="../style.css">
-    <!-- Removed logic that relied on the category-header for collapsing -->
-</head>
+    </head>
 <body class="dark-theme store-page">
     <nav class="main-nav">
     <div class="nav-container">
@@ -100,138 +98,165 @@
             </span></p>
         </div>
 
-        <!-- REFACTORED CONTENT: Removed category wrappers and combined all products -->
-        <div class="content-section">
-            <div class="features-grid all-products">
-                
-                <!-- Product 1: Multi-Page HTML Website -->
-                <div class="feature-card">
-                    <i class="fas fa-code feature-icon"></i>
-                    <h3 class="feature-title" data-en="Multi-Page HTML Website" data-gr="Πολυσέλιδος Ιστότοπος HTML">Multi-Page HTML Website</h3>
-                    <p class="feature-description" data-en="A professional multi-page website with clean, hand-coded HTML, CSS, and JavaScript. Fully responsive design that works on all devices."
-                       data-gr="Ένας επαγγελματικός πολυσέλιδος ιστότοπος με καθαρό, χειροποίητο HTML, CSS και JavaScript. Πλήρως ανταποκρινόμενη σχεδίαση που λειτουργεί σε όλες τις συσκευές.">
-                       A professional multi-page website with clean, hand-coded HTML, CSS, and JavaScript. Fully responsive design that works on all devices.
-                    </p>
-                    <div class="product-price">200€</div>
-                    <a href="https://buy.stripe.com/dRmeVe2xeaqo3KSaZw8Zq00" target="_blank" class="payment-btn" data-en-link="https://buy.stripe.com/dRmeVe2xeaqo3KSaZw8Zq00" data-gr-link="https://buy.stripe.com/14AaEY5Jq7ecgxE5Fc8Zq05" data-en="Purchase Now" data-gr="Αγοράστε Τώρα">Purchase Now</a>
-                    <div class="tool-features">
-                        <h5 data-en="What You Get:" data-gr="Αυτό που Παίρνετε:">What You Get:</h5>
-                        <ul>
-                            <li data-en="Multi-page website (Home, About, Services, Contact)" data-gr="Πολυσέλιδος ιστότοπος (Αρχική, Σχετικά, Υπηρεσίες, Επικοινωνία)">Multi-page website (Home, About, Services, Contact)</li>
-                            <li data-en="Hand-coded with HTML, CSS, and JavaScript" data-gr="Χειροποίητος κώδικας με HTML, CSS και JavaScript">Hand-coded with HTML, CSS, and JavaScript</li>
-                            <li data-en="Responsive design for desktop and mobile" data-gr="Ανταποκρινόμενη σχεδίαση για υπολογιστές και κινητά">Responsive design for desktop and mobile</li>
-                            <li data-en="Simple contact form without backend" data-gr="Απλή φόρμα επικοινωνίας χωρίς backend">Simple contact form without backend</li>
-                            <li data-en="Clean, organized, and commented code" data-gr="Καθαρός, οργανωμένος και σχολιασμένος κώδικας">Clean, organized, and commented code</li>
-                        </ul>
-                    </div>
-                </div>
+        <div class="content-section product-list-section">
 
-                <!-- Product 2: Advanced Multi-Page HTML & JS Site -->
-                <div class="feature-card">
-                    <i class="fas fa-laptop-code feature-icon"></i>
-                    <h3 class="feature-title" data-en="Advanced Multi-Page HTML & JS Site" data-gr="Προχωρημένος Πολυσέλιδος Ιστότοπος HTML & JS">Advanced Multi-Page HTML & JS Site</h3>
-                    <p class="feature-description" data-en="A complex multi-page site with custom layouts, animations, and advanced JavaScript features. Perfect for businesses needing a unique front-end experience."
-                       data-gr="Ένας σύνθετος πολυσέλιδος ιστότοπος με προσαρμοσμένες διατάξεις, κινούμενα γραφικά και προχωρημένες λειτουργίες JavaScript. Ιδανικό για επιχειρήσεις που χρειάζονται μια μοναδική εμπειρία χρήστη.">
-                       A complex multi-page site with custom layouts, animations, and advanced JavaScript features. Perfect for businesses needing a unique front-end experience.
-                    </p>
-                    <div class="product-price">500€</div>
-                    <a href="https://buy.stripe.com/cNi9AU0p69mk0yG7Nk8Zq01" target="_blank" class="payment-btn" data-en-link="https://buy.stripe.com/cNi9AU0p69mk0yG7Nk8Zq01" data-gr-link="https://buy.stripe.com/4gM8wQ5Jq9mkdls4B88Zq06" data-en="Purchase Now" data-gr="Αγοράστε Τώρα">Purchase Now</a>
-                    <div class="tool-features">
-                        <h5 data-en="What You Get:" data-gr="Αυτό που Παίρνετε:">What You Get:</h5>
-                        <ul>
-                            <li data-en="Complex multi-page site with custom layouts" data-gr="Σύνθετος πολυσέλιδος ιστότοπος με προσαρμοσμένες διατάξεις">Complex multi-page site with custom layouts</li>
-                            <li data-en="Advanced JavaScript features" data-gr="Προχωρημένες λειτουργίες JavaScript">Advanced JavaScript features</li>
-                            <li data-en="Integration with third-party APIs" data-gr="Ενσωμάτωση με APIs τρίτων">Integration with third-party APIs</li>
-                            <li data-en="Complex CSS animations and transitions" data-gr="Σύνθετες κινούμενες εικόνες και μεταβάσεις CSS">Complex CSS animations and transitions</li>
-                            <li data-en="All code hand-written in standard files" data-gr="Όλος ο κώδικας είναι χειροποίητος σε τυπικά αρχεία">All code hand-written in standard files</li>
-                        </ul>
+            <div class="category product-item">
+                <div class="category-header">
+                    <h2 data-en="Multi-Page HTML Website" data-gr="Πολυσέλιδος Ιστότοπος HTML">Multi-Page HTML Website</h2>
+                    <i class="fas fa-chevron-down toggle-icon"></i>
+                </div>
+                <div class="tools-list">
+                    <div class="note product-details">
+                        <i class="fas fa-code feature-icon"></i>
+                        <p class="feature-description" data-en="A professional multi-page website with clean, hand-coded HTML, CSS, and JavaScript. Fully responsive design that works on all devices."
+                           data-gr="Ένας επαγγελματικός πολυσέλιδος ιστότοπος με καθαρό, χειροποίητο HTML, CSS και JavaScript. Πλήρως ανταποκρινόμενη σχεδίαση που λειτουργεί σε όλες τις συσκευές.">
+                           A professional multi-page website with clean, hand-coded HTML, CSS, and JavaScript. Fully responsive design that works on all devices.
+                        </p>
+                        <div class="product-price">200€</div>
+                        <a href="https://buy.stripe.com/dRmeVe2xeaqo3KSaZw8Zq00" target="_blank" class="payment-btn" data-en-link="https://buy.stripe.com/dRmeVe2xeaqo3KSaZw8Zq00" data-gr-link="https://buy.stripe.com/14AaEY5Jq7ecgxE5Fc8Zq05" data-en="Purchase Now" data-gr="Αγοράστε Τώρα">Purchase Now</a>
+                        <div class="tool-features">
+                            <h5 data-en="What You Get:" data-gr="Αυτό που Παίρνετε:">What You Get:</h5>
+                            <ul>
+                                <li data-en="Multi-page website (Home, About, Services, Contact)" data-gr="Πολυσέλιδος ιστότοπος (Αρχική, Σχετικά, Υπηρεσίες, Επικοινωνία)">Multi-page website (Home, About, Services, Contact)</li>
+                                <li data-en="Hand-coded with HTML, CSS, and JavaScript" data-gr="Χειροποίητος κώδικας με HTML, CSS και JavaScript">Hand-coded with HTML, CSS, and JavaScript</li>
+                                <li data-en="Responsive design for desktop and mobile" data-gr="Ανταποκρινόμενη σχεδίαση για υπολογιστές και κινητά">Responsive design for desktop and mobile</li>
+                                <li data-en="Simple contact form without backend" data-gr="Απλή φόρμα επικοινωνίας χωρίς backend">Simple contact form without backend</li>
+                                <li data-en="Clean, organized, and commented code" data-gr="Καθαρός, οργανωμένος και σχολιασμένος κώδικας">Clean, organized, and commented code</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
-            
-                <!-- Product 3: Single-Task Python Script for Termux -->
-                <div class="feature-card">
-                    <i class="fab fa-python feature-icon"></i>
-                    <h3 class="feature-title" data-en="Single-Task Python Script for Termux" data-gr="Σενάριο Python για Μια Μόνο Εργασία στο Termux">Single-Task Python Script for Termux</h3>
-                    <p class="feature-description" data-en="A Python script for a single, well-defined task. Perfect for simple automation needs on your Android device using Termux."
-                       data-gr="Ένα σενάριο Python για μια single, καλά καθορισμένη εργασία. Ιδανικό για απλές ανάγκες αυτοματοποίησης στη συσκευή Android σας χρησιμοποιώντας Termux.">
-                       A Python script for a single, well-defined task. Perfect for simple automation needs on your Android device using Termux.
-                    </p>
-                    <div class="product-price">80€</div>
-                    <a href="https://buy.stripe.com/4gMdRa1ta1TSftA8Ro8Zq02" target="_blank" class="payment-btn" data-en-link="https://buy.stripe.com/4gMdRa1ta1TSftA8Ro8Zq02" data-gr-link="https://buy.stripe.com/cNi28s6Nubus6X4d7E8Zq07" data-en="Purchase Now" data-gr="Αγοράστε Τώρα">Purchase Now</a>
-                    <div class="tool-features">
-                        <h5 data-en="What You Get:" data-gr="Αυτό που Παίρνετε:">What You Get:</h5>
-                        <ul>
-                            <li data-en="One Python script (.py file) for a single task" data-gr="Ένα σενάριο Python (.py αρχείο) για μια single εργασία">One Python script (.py file) for a single task</li>
-                            <li data-en="Basic instructions for running in Termux" data-gr="Βασικές οδηγίες για την εκτέλεσή στο Termux">Basic instructions for running in Termux</li>
-                            <li data-en="Simple error handling" data-gr="Απλός χειρισμός σφαλμάτων">Simple error handling</li>
-                        </ul>
-                        <h5 data-en="Example Tasks:" data-gr="Παραδείγματα Εργασιών:">Example Tasks:</h5>
-                        <ul>
-                            <li data-en="Auto-renaming files in a folder" data-gr="Αυτόματη μετονομασία αρχείων σε έναν φάκελο">Auto-renaming files in a folder</li>
-                            <li data-en="A simple web scraper for one page" data-gr="Ένας απλός 'web scraper' για μια ιστοσελίδα">A simple web scraper for one page</li>
-                            <li data-en="A script to send you a daily notification" data-gr="Ένα σενάριο για να σας στέλνει μια ημερήσια ειδοποίηση">A script to send you a daily notification</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <!-- Product 4: Multi-Feature Python Script for Termux -->
-                <div class="feature-card">
-                    <i class="fas fa-cogs feature-icon"></i>
-                    <h3 class="feature-title" data-en="Multi-Feature Python Script for Termux" data-gr="Σενάριο Python με Πολλαπλές Λειτουργίες για Termux">Multi-Feature Python Script for Termux</h3>
-                    <p class="feature-description" data-en="A robust Python script with multiple features or steps. Handles complex logic and error checking, perfect for advanced automation tasks."
-                       data-gr="Ένα ισχυρό σενάριο Python με πολλαπλές λειτουργίες ή βήματα. Χειρίζεται πιο σύνθετη λογική και έλεγχο σφαλμάτων, ιδανικό για προχωρημένες εργασίες αυτοματοποίησης.">
-                       A robust Python script with multiple features or steps. Handles complex logic and error checking, perfect for advanced automation tasks.
-                    </p>
-                    <div class="product-price">160€</div>
-                    <a href="https://buy.stripe.com/7sY6oIc7Oaqo1CKgjQ8Zq03" target="_blank" class="payment-btn" data-en-link="https://buy.stripe.com/7sY6oIc7Oaqo1CKgjQ8Zq03" data-gr-link="https://buy.stripe.com/fZu00kfk0fKIbdk5Fc8Zq08" data-en="Purchase Now" data-gr="Αγοράστε Τώρα">Purchase Now</a>
-                    <div class="tool-features">
-                        <h5 data-en="What You Get:" data-gr="Αυτό που Παίρνετε:">What You Get:</h5>
-                        <ul>
-                            <li data-en="Robust Python script with multiple features" data-gr="Ισχυρό σενάριο Python με πολλαπλές λειτουργίες">Robust Python script with multiple features</li>
-                            <li data-en="Handles complex logic and error checking" data-gr="Χειρίζεται πιο σύνθετη λογική και έλεγχο σφαλμάτων">Handles complex logic and error checking</li>
-                            <li data-en="May include a simple text-based menu" data-gr="Μπορεί να περιλαμβάνει ένα απλό μενού βάσει κειμένου">May include a simple text-based menu</li>
-                            <li data-en="Can interact with multiple Termux features or APIs" data-gr="Μπορεί να αλληλεπιδρά με πολλαπλές λειτουργίες ή APIs του Termux">Can interact with multiple Termux features or APIs</li>
-                        </ul>
-                        <h5 data-en="Example Tasks:" data-gr="Παραδείγματα Εργασιών:">Example Tasks:</h5>
-                        <ul>
-                            <li data-en="A download manager with menu options" data-gr="Ένας διαχειριστής λήψεων με μενού για διαφορετικές επιλογές">A download manager with menu options</li>
-                            <li data-en="A system info tool that checks multiple stats" data-gr="Ένα εργαλείο πληροφοριών συστήματος που ελέγχει και καταγράφει πολλαπλά στατιστικά">A system info tool that checks multiple stats</li>
-                            <li data-en="A script that manages backups for several apps" data-gr="Ένα σενάριο που διαχειρίζεται αντίγραφα ασφαλείας για πολλές εφαρμογές">A script that manages backups for several apps</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <!-- Product 5: Termux Scripts Bundle (15 Scripts Max) -->
-                <div class="feature-card">
-                    <i class="fas fa-boxes feature-icon"></i>
-                    <h3 class="feature-title" data-en="Termux Scripts Bundle (15 Scripts Max)" data-gr="Πακέτο Σεναρίων Termux (Μέχρι 15 Σενάρια)">Termux Scripts Bundle (15 Scripts Max)</h3>
-                    <p class="feature-description" data-en="A comprehensive bundle of up to 15 Python scripts focused on a central theme. Perfect for users needing multiple automation tools for specific tasks."
-                       data-gr="Ένα ολοκληρωμένο πακέτο μέχρι 15 σεναρίων Python που εστιάζουν σε ένα κεντρικό θέμα. Ιδανικό για χρήστες που χρειάζονται πολλαπλά εργαλεία αυτοματοποίησης για συγκεκριμένες εργασίες.">
-                       A comprehensive bundle of up to 15 Python scripts focused on a central theme. Perfect for users needing multiple automation tools for specific tasks.
-                    </p>
-                    <div class="product-price">300€</div>
-                    <a href="https://buy.stripe.com/7sY7sM4FmfKI0yG2t08Zq04" target="_blank" class="payment-btn" data-en-link="https://buy.stripe.com/7sY7sM4FmfKI0yG2t08Zq04" data-gr-link="https://buy.stripe.com/cNi4gA5Jq5643KS6Jg8Zq09" data-en="Purchase Now" data-gr="Αγοράστε Τώρα">Purchase Now</a>
-                    <div class="tool-features">
-                        <h5 data-en="What You Get:" data-gr="Αυτό που Παίρνετε:">What You Get:</h5>
-                        <ul>
-                            <li data-en="Set of up to 15 Python scripts organized in a folder" data-gr="Σύνολο μέχρι 15 σεναρίων Python οργανωμένα σε έναν φάκελο">Set of up to 15 Python scripts organized in a folder</li>
-                            <li data-en="All scripts focused on a central theme" data-gr="Όλα τα σενάρια εστιάζουν σε ένα κεντρικό θέμα">All scripts focused on a central theme</li>
-                            <li data-en="Main menu script to easily launch all tools" data-gr="Κύριο σενάριο μενού για εύκολη εκκίνηση όλων των εργαλείων">Main menu script to easily launch all tools</li>
-                            <li data-en="Comprehensive instructions for the entire bundle" data-gr="Ολοκληρωμένες οδηγίες για ολόκληρο το πακέτο">Comprehensive instructions for ολόκληρο the bundle</li>
-                        </ul>
-                        <h5 data-en="Example Bundles:" data-gr="Παραδείγματα Πακέτων:">Example Bundles:</h5>
-                        <ul>
-                            <li data-en="File Manager's Bundle: Scripts for sorting, renaming, finding duplicates, and backing up files" data-gr="Πακέτο Διαχειριστή Αρχείων: Σενάρια για ταξινόμηση, μετονομασία, εύρεση διπλοεγγράφων και δημιουργία αντιγράφων ασφαλείας αρχείων">File Manager's Bundle: Scripts for sorting, renaming, finding duplicates, and backing up files</li>
-                        </ul>
-                    </div>
-                </div>
-
             </div>
-        </div>
-        <!-- END REFACTORED CONTENT -->
 
+            <div class="category product-item">
+                <div class="category-header">
+                    <h2 data-en="Advanced Multi-Page HTML & JS Site" data-gr="Προχωρημένος Πολυσέλιδος Ιστότοπος HTML & JS">Advanced Multi-Page HTML & JS Site</h2>
+                    <i class="fas fa-chevron-down toggle-icon"></i>
+                </div>
+                <div class="tools-list">
+                    <div class="note product-details">
+                        <i class="fas fa-laptop-code feature-icon"></i>
+                        <p class="feature-description" data-en="A complex multi-page site with custom layouts, animations, and advanced JavaScript features. Perfect for businesses needing a unique front-end experience."
+                           data-gr="Ένας σύνθετος πολυσέλιδος ιστότοπος με προσαρμοσμένες διατάξεις, κινούμενα γραφικά και προχωρημένες λειτουργίες JavaScript. Ιδανικό για επιχειρήσεις που χρειάζονται μια μοναδική εμπειρία χρήστη.">
+                           A complex multi-page site with custom layouts, animations, and advanced JavaScript features. Perfect for businesses needing a unique front-end experience.
+                        </p>
+                        <div class="product-price">500€</div>
+                        <a href="https://buy.stripe.com/cNi9AU0p69mk0yG7Nk8Zq01" target="_blank" class="payment-btn" data-en-link="https://buy.stripe.com/cNi9AU0p69mk0yG7Nk8Zq01" data-gr-link="https://buy.stripe.com/4gM8wQ5Jq9mkdls4B88Zq06" data-en="Purchase Now" data-gr="Αγοράστε Τώρα">Purchase Now</a>
+                        <div class="tool-features">
+                            <h5 data-en="What You Get:" data-gr="Αυτό που Παίρνετε:">What You Get:</h5>
+                            <ul>
+                                <li data-en="Complex multi-page site with custom layouts" data-gr="Σύνθετος πολυσέλιδος ιστότοπος με προσαρμοσμένες διατάξεις">Complex multi-page site with custom layouts</li>
+                                <li data-en="Advanced JavaScript features" data-gr="Προχωρημένες λειτουργίες JavaScript">Advanced JavaScript features</li>
+                                <li data-en="Integration with third-party APIs" data-gr="Ενσωμάτωση με APIs τρίτων">Integration with third-party APIs</li>
+                                <li data-en="Complex CSS animations and transitions" data-gr="Σύνθετες κινούμενες εικόνες και μεταβάσεις CSS">Complex CSS animations and transitions</li>
+                                <li data-en="All code hand-written in standard files" data-gr="Όλος ο κώδικας είναι χειροποίητος σε τυπικά αρχεία">All code hand-written in standard files</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        
+            <div class="category product-item">
+                <div class="category-header">
+                    <h2 data-en="Single-Task Python Script for Termux" data-gr="Σενάριο Python για Μια Μόνο Εργασία στο Termux">Single-Task Python Script for Termux</h2>
+                    <i class="fab fa-python feature-icon category-icon-mobile"></i>
+                    <i class="fas fa-chevron-down toggle-icon"></i>
+                </div>
+                <div class="tools-list">
+                    <div class="note product-details">
+                        <i class="fab fa-python feature-icon"></i>
+                        <p class="feature-description" data-en="A Python script for a single, well-defined task. Perfect for simple automation needs on your Android device using Termux."
+                           data-gr="Ένα σενάριο Python για μια single, καλά καθορισμένη εργασία. Ιδανικό για απλές ανάγκες αυτοματοποίησης στη συσκευή Android σας χρησιμοποιώντας Termux.">
+                           A Python script for a single, well-defined task. Perfect for simple automation needs on your Android device using Termux.
+                        </p>
+                        <div class="product-price">80€</div>
+                        <a href="https://buy.stripe.com/4gMdRa1ta1TSftA8Ro8Zq02" target="_blank" class="payment-btn" data-en-link="https://buy.stripe.com/4gMdRa1ta1TSftA8Ro8Zq02" data-gr-link="https://buy.stripe.com/cNi28s6Nubus6X4d7E8Zq07" data-en="Purchase Now" data-gr="Αγοράστε Τώρα">Purchase Now</a>
+                        <div class="tool-features">
+                            <h5 data-en="What You Get:" data-gr="Αυτό που Παίρνετε:">What You Get:</h5>
+                            <ul>
+                                <li data-en="One Python script (.py file) for a single task" data-gr="Ένα σενάριο Python (.py αρχείο) για μια single εργασία">One Python script (.py file) for a single task</li>
+                                <li data-en="Basic instructions for running in Termux" data-gr="Βασικές οδηγίες για την εκτέλεσή στο Termux">Basic instructions for running in Termux</li>
+                                <li data-en="Simple error handling" data-gr="Απλός χειρισμός σφαλμάτων">Simple error handling</li>
+                            </ul>
+                            <h5 data-en="Example Tasks:" data-gr="Παραδείγματα Εργασιών:">Example Tasks:</h5>
+                            <ul>
+                                <li data-en="Auto-renaming files in a folder" data-gr="Αυτόματη μετονομασία αρχείων σε έναν φάκελο">Auto-renaming files in a folder</li>
+                                <li data-en="A simple web scraper for one page" data-gr="Ένας απλός 'web scraper' για μια ιστοσελίδα">A simple web scraper for one page</li>
+                                <li data-en="A script to send you a daily notification" data-gr="Ένα σενάριο για να σας στέλνει μια ημερήσια ειδοποίηση">A script to send you a daily notification</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="category product-item">
+                <div class="category-header">
+                    <h2 data-en="Multi-Feature Python Script for Termux" data-gr="Σενάριο Python με Πολλαπλές Λειτουργίες για Termux">Multi-Feature Python Script for Termux</h2>
+                    <i class="fas fa-cogs feature-icon category-icon-mobile"></i>
+                    <i class="fas fa-chevron-down toggle-icon"></i>
+                </div>
+                <div class="tools-list">
+                    <div class="note product-details">
+                        <i class="fas fa-cogs feature-icon"></i>
+                        <p class="feature-description" data-en="A robust Python script with multiple features or steps. Handles complex logic and error checking, perfect for advanced automation tasks."
+                           data-gr="Ένα ισχυρό σενάριο Python με πολλαπλές λειτουργίες ή βήματα. Χειρίζεται πιο σύνθετη λογική και έλεγχο σφαλμάτων, ιδανικό για προχωρημένες εργασίες αυτοματοποίησης.">
+                           A robust Python script with multiple features or steps. Handles complex logic and error checking, perfect for advanced automation tasks.
+                        </p>
+                        <div class="product-price">160€</div>
+                        <a href="https://buy.stripe.com/7sY6oIc7Oaqo1CKgjQ8Zq03" target="_blank" class="payment-btn" data-en-link="https://buy.stripe.com/7sY6oIc7Oaqo1CKgjQ8Zq03" data-gr-link="https://buy.stripe.com/fZu00kfk0fKIbdk5Fc8Zq08" data-en="Purchase Now" data-gr="Αγοράστε Τώρα">Purchase Now</a>
+                        <div class="tool-features">
+                            <h5 data-en="What You Get:" data-gr="Αυτό που Παίρνετε:">What You Get:</h5>
+                            <ul>
+                                <li data-en="Robust Python script with multiple features" data-gr="Ισχυρό σενάριο Python με πολλαπλές λειτουργίες">Robust Python script with multiple features</li>
+                                <li data-en="Handles complex logic and error checking" data-gr="Χειρίζεται πιο σύνθετη λογική και έλεγχο σφαλμάτων">Handles complex logic and error checking</li>
+                                <li data-en="May include a simple text-based menu" data-gr="Μπορεί να περιλαμβάνει ένα απλό μενού βάσει κειμένου">May include a simple text-based menu</li>
+                                <li data-en="Can interact with multiple Termux features or APIs" data-gr="Μπορεί να αλληλεπιδρά με πολλαπλές λειτουργίες ή APIs του Termux">Can interact with multiple Termux features or APIs</li>
+                            </ul>
+                            <h5 data-en="Example Tasks:" data-gr="Παραδείγματα Εργασιών:">Example Tasks:</h5>
+                            <ul>
+                                <li data-en="A download manager with menu options" data-gr="Ένας διαχειριστής λήψεων με μενού για διαφορετικές επιλογές">A download manager with menu options</li>
+                                <li data-en="A system info tool that checks multiple stats" data-gr="Ένα εργαλείο πληροφοριών συστήματος που ελέγχει και καταγράφει πολλαπλά στατιστικά">A system info tool that checks multiple stats</li>
+                                <li data-en="A script that manages backups for several apps" data-gr="Ένα σενάριο που διαχειρίζεται αντίγραφα ασφαλείας για πολλές εφαρμογές">A script that manages backups for several apps</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="category product-item">
+                <div class="category-header">
+                    <h2 data-en="Termux Scripts Bundle (15 Scripts Max)" data-gr="Πακέτο Σεναρίων Termux (Μέχρι 15 Σενάρια)">Termux Scripts Bundle (15 Scripts Max)</h2>
+                    <i class="fas fa-boxes feature-icon category-icon-mobile"></i>
+                    <i class="fas fa-chevron-down toggle-icon"></i>
+                </div>
+                <div class="tools-list">
+                    <div class="note product-details">
+                        <i class="fas fa-boxes feature-icon"></i>
+                        <p class="feature-description" data-en="A comprehensive bundle of up to 15 Python scripts focused on a central theme. Perfect for users needing multiple automation tools for specific tasks."
+                           data-gr="Ένα ολοκληρωμένο πακέτο μέχρι 15 σεναρίων Python που εστιάζουν σε ένα κεντρικό θέμα. Ιδανικό για χρήστες που χρειάζονται πολλαπλά εργαλεία αυτοματοποίησης για συγκεκριμένες εργασίες.">
+                           A comprehensive bundle of up to 15 Python scripts focused on a central theme. Perfect for users needing multiple automation tools for specific tasks.
+                        </p>
+                        <div class="product-price">300€</div>
+                        <a href="https://buy.stripe.com/7sY7sM4FmfKI0yG2t08Zq04" target="_blank" class="payment-btn" data-en-link="https://buy.stripe.com/7sY7sM4FmfKI0yG2t08Zq04" data-gr-link="https://buy.stripe.com/cNi4gA5Jq5643KS6Jg8Zq09" data-en="Purchase Now" data-gr="Αγοράστε Τώρα">Purchase Now</a>
+                        <div class="tool-features">
+                            <h5 data-en="What You Get:" data-gr="Αυτό που Παίρνετε:">What You Get:</h5>
+                            <ul>
+                                <li data-en="Set of up to 15 Python scripts organized in a folder" data-gr="Σύνολο μέχρι 15 σεναρίων Python οργανωμένα σε έναν φάκελο">Set of up to 15 Python scripts organized in a folder</li>
+                                <li data-en="All scripts focused on a central theme" data-gr="Όλα τα σενάρια εστιάζουν σε ένα κεντρικό θέμα">All scripts focused on a central theme</li>
+                                <li data-en="Main menu script to easily launch all tools" data-gr="Κύριο σενάριο μενού για εύκολη εκκίνηση όλων των εργαλείων">Main menu script to easily launch all tools</li>
+                                <li data-en="Comprehensive instructions for the entire bundle" data-gr="Ολοκληρωμένες οδηγίες για ολόκληρο το πακέτο">Comprehensive instructions for the entire bundle</li>
+                            </ul>
+                            <h5 data-en="Example Bundles:" data-gr="Παραδείγματα Πακέτων:">Example Bundles:</h5>
+                            <ul>
+                                <li data-en="File Manager's Bundle: Scripts for sorting, renaming, finding duplicates, and backing up files" data-gr="Πακέτο Διαχειριστή Αρχείων: Σενάρια για ταξινόμηση, μετονομασία, εύρεση διπλοεγγράφων και δημιουργία αντιγράφων ασφαλείας αρχείων">File Manager's Bundle: Scripts for sorting, renaming, finding duplicates, and backing up files</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
         <div class="content-section">
-            <!-- Store Policies Section: Now a standalone content-section -->
             <div class="category">
                 <div class="category-header">
                     <h2 data-en="Store Policies" data-gr="Πολιτικές Καταστήματος">Store Policies</h2>
@@ -328,7 +353,6 @@
       </div>
     </div>
 
-    <!-- Language Selection Modal -->
     <div id="language-selection-modal" class="modal-overlay">
       <div class="modal-content modal-content-auto-height">
           <div class="modal-header">
