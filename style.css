@@ -1810,16 +1810,16 @@ body.light-theme .category-header {
         position: relative;
     }
     
-    /* 1. Title (Center) */
+    /* 1. Title (Left) */
     .nav-title {
-        /* Absolute centering */
-        position: absolute;
-        left: 50%;
-        transform: translateX(-50%);
-        order: unset; /* Reset mobile order */
-        margin: 0; /* Override any flex margins */
+        /* * By removing absolute positioning, the title becomes
+         * a normal flex item. 'margin-right: auto' consumes
+         * all available space, pushing all other items
+         * (actions and menu) to the far right.
+        */
+        margin-right: auto; 
     }
-
+    
     /* 2. Menu Links (Right) */
     .nav-menu {
         order: 2; /* Actions first, then Menu */
