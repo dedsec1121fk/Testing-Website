@@ -1361,12 +1361,27 @@ body.light-theme .category-header {
     background: var(--nm-container);
 }
 
-.category-header h3 {
+/*
+    =================================================================
+    START OF CHANGE: Made .category-header h2 (Store) and h3 (Learn) match
+    =================================================================
+*/
+.category-header h3,
+.category-header h2 {
     margin: 0;
     font-family: 'Orbitron', sans-serif;
     color: var(--nm-text-accent);
     font-size: 1.2rem;
+    /* Added overrides to cancel default .content-section h2 styles */
+    border-bottom: none;
+    padding-bottom: 0;
+    margin-bottom: 0;
 }
+/*
+    =================================================================
+    END OF CHANGE
+    =================================================================
+*/
 
 .toggle-icon {
     color: var(--nm-accent);
