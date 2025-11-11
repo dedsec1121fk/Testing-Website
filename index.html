@@ -104,17 +104,41 @@
             <main class="home-screen">
 
                 <div class="hero-section">
+                    
+                    <h3 style="font-family: 'Roboto Mono', monospace; color: var(--nm-text-secondary); font-size: 1.1rem; margin-bottom: 10px; font-weight: 400;"
+                        data-en="Welcome to the"
+                        data-gr="Καλώς ήρθατε στο">
+                        Welcome to the
+                    </h3>
+
                     <h2 style="font-family: 'Orbitron', sans-serif; color: var(--nm-text-accent); font-size: 2.5rem; text-shadow: 0 0 8px var(--nm-accent-hover); margin-bottom: 20px;" 
                         data-en="DedSec Project" 
                         data-gr="DedSec Project">
                         DedSec Project
                     </h2>
+                    
                     <p class="hero-text" 
-                       data-en="The ultimate, no-root, Termux-based cybersecurity toolkit for Android. Access 40+ open-source tools for ethical hacking, OSINT, and security research."
-                       data-gr="Το απόλυτο, no-root, Termux-based toolkit κυβερνοασφάλειας για Android. Αποκτήστε πρόσβαση σε 40+ εργαλεία ανοιχτού κώδικα για ηθικό hacking, OSINT και έρευνα ασφάλειας.">
-                       The ultimate, no-root, Termux-based cybersecurity toolkit for Android. Access 40+ open-source tools for ethical hacking, OSINT, and security research.
+                       data-en="Your ultimate, no-root, Termux-based cybersecurity toolkit for Android. Access 40+ open-source tools for <strong>educational purposes</strong>, ethical hacking, OSINT, and security research."
+                       data-gr="Το απόλυτο, no-root, Termux-based toolkit κυβερνοασφάλειας για Android. Αποκτήστε πρόσβαση σε 40+ εργαλεία ανοιχτού κώδικα για <strong>εκπαιδευτικούς σκοπούς</strong>, ηθικό hacking, OSINT και έρευνα ασφάλειας.">
+                       Your ultimate, no-root, Termux-based cybersecurity toolkit for Android. Access 40+ open-source tools for <strong>educational purposes</strong>, ethical hacking, OSINT, and security research.
                     </p>
-                    <a href="Pages/guide-for-installation.html" class="hero-cta" data-en="Get Started" data-gr="Ξεκινήστε">Get Started</a>
+
+                    <div class="hero-cta-group" style="display: flex; flex-wrap: wrap; gap: 15px; justify-content: center; margin-top: 25px;">
+                        <a href="Pages/guide-for-installation.html" class="hero-cta" data-en="Get Started" data-gr="Ξεκινήστε">Get Started</a>
+                        
+                        <a href="Pages/learn-about-the-tools.html" class="hero-cta" 
+                           style="background: transparent; border: 2px solid var(--nm-accent); color: var(--nm-accent);"
+                           onmouseover="this.style.background='var(--nm-accent-transparent)'; this.style.color='var(--nm-text-accent)';"
+                           onmouseout="this.style.background='transparent'; this.style.color='var(--nm-accent)';"
+                           data-en="Explore Tools" data-gr="Εξερεύνηση Εργαλείων">Explore Tools</a>
+                    </div>
+
+                    <p style="font-size: 0.8rem; color: var(--nm-text-secondary); margin-top: 20px; opacity: 0.8;"
+                       data-en="All tools are provided for ethical and educational use only."
+                       data-gr="Όλα τα εργαλεία παρέχονται μόνο για ηθική και εκπαιδευτική χρήση.">
+                       All tools are provided for ethical and educational use only.
+                    </p>
+
                 </div>
                 <div class="content-section" style="background: transparent; border: none; box-shadow: none; padding: 0 10px; margin-top: 5px;">
                     <div class="stats-section">
@@ -233,7 +257,7 @@
           <hr class="modal-divider">
             <h3 class="text-center">Privacy Policy Summary</h3>
             <div class="privacy-policy-embed">
-                <p>We are committed to protecting your privacy. We do not store or transmit your personal data. We use third-party services like Google AdSense, which may use cookies for advertising. Please review their policies. By using our service, you agree to our full Privacy Policy.</p>
+                <p>We are committed to protecting your privacy. We do not store or transmit your personal data. We. We use third-party services like Google AdSense, which may use cookies for advertising. Please review their policies. By using our service, you agree to our full Privacy Policy.</p>
             </div>
             <div class="note"><p><strong>By clicking "Accept," you confirm that you have read, understood, and agree to be bound by all the terms and conditions outlined in this disclaimer and our full Privacy Policy. If you do not agree with these terms, you must click "Decline" and cease all use of the Software immediately.</strong></p></div>
           </div>
@@ -241,7 +265,7 @@
             <div class="note">
                 <p><strong>ΠΑΡΑΚΑΛΩ ΔΙΑΒΑΣΤΕ ΠΡΟΣΕΚΤΙΚΑ ΠΡΙΝ ΣΥΝΕΧΙΣΕΤΕ.</strong></p>
                 <p><strong>Αποποίηση Ευθύνης Εμπορικού Σήματος:</strong> Το όνομα και το λογότυπο "DedSec" που χρησιμοποιούνται σε αυτό το έργο είναι μόνο για θεματικούς και εμπνευστικούς σκοπούς. Πρόκειται για ένα ανεξάρτητο, fan-made έργο που δημιουργήθηκε για εκπαιδευτικούς σκοπούς και δεν έχει καμία επίσημη σύνδεση με το franchise "Watch Dogs". Δεν συνδέεται, δεν υποστηρίζεται από, ούτε σχετίζεται με την Ubisoft Entertainment S.A. Όλα τα εμπορικά σήματα και τα πνευματικά δικαιώματα για το "Watch Dogs" και το "DedSec" όπως απεικονίζονται στα παιχνίδια ανήκουν στους αντίστοιχους κατόχους τους, την Ubisoft Entertainment S.A.</p>
-                <p>Αυτό το έργο, συμπεριλαμβανομένων όλων των σχετικών εργαλείων, σεναρίων και τεκμηρίωσης («το Λογισμικό»), παρέχεται αυστηρά για εκπαιδευτικούς, ερευνητικούς και ηθικούς σκοπούς δοκιμών ασφαλείας. Προορίζεται για χρήση αποκλειστικά σε ελεγχόμενα, εξουσιοδοτημένα περιβάλλοντα από χρήστες που έχουν λάβει ρητή, προηγούμενη γραπτή άδεια από τους ιδιοκτήτες οποιωνδήποτε συστημάτων σκοπεύουν να δοκιμάσουν.</p>
+                <p>Αυτό το έργο, συμπεριλαμβανομένων όλων των σχετικών εργαλείων, σεναρίων και τεκμηρίωσης («το Λογισμικό»), παρέχεται αυστηρά για εκπαιδευτικούς, ερευνητικούς και ηθικούς σκοπούς δοκιμών ασφαλείας. Προορίζεται για χρήση αποκλειστικά σε ελεγχόμενα, εξουσιοδοτημένα περιβάλλοντα από χρήστεS που έχουν λάβει ρητή, προηγούμενη γραπτή άδεια από τους ιδιοκτήτες οποιωνδήποτε συστημάτων σκοπεύουν να δοκιμάσουν.</p>
                 <p><strong>1. Ανάληψη Κινδύνου και Ευθύνης:</strong> Με την πρόσβαση ή τη χρήση του Λογισμικού, αναγνωρίζετε και συμφωνείτε ότι το κάνετε με δική σας ευθύνη. Είστε αποκλειστικά και εξ ολοκλήρου υπεύθυνοι για τις ενέργειές σας και για τυχόν συνέπειες που μπορεί να προκύψουν από τη χρήση ή κακή χρήση αυτού του Λογισμικού. Αυτό περιλαμβάνει, ενδεικτικά, τη συμμόpliance με όλους τους ισχύοντες τοπικούς, πολιτειακούς, εθνικούς και διεθνείς νόμους και κανονισμούς που σχετίζονται με την κυβερνοασφάλεια, την προστασία δεδομένων και τις ηλεκτρονικές επικοινωνίες.</p>
                 <p><strong>2. Απαγορευμένες Δραστηριότητες:</strong> Απαγορεύεται αυστηρά οποιαδήποτε χρήση του Λογισμικού για μη εξουσιοδοτημένες ή κακόβουλες δραστηριότητες. Αυτό περιλαμβάνει, χωρίς περιορισμό: πρόσβαση σε συστήματα ή δεδομένα χωρίς εξουσιοδοτημένη πρόσβαση, εκτέλεση επιθέσεων άρνησης υπηρεσίας (denial-of-service), κλοπή δεδομένων, απάτη, διάδοση κακόβουλου λογισμικού ή οποιαδήποτε άλλη δραστηριότητα που παραβιάζει την ισχύουσα νομοθεσία. Η συμμετοχή σε τέτοιες δραστηριότητες μπορεί να οδηγήσει σε σοβαρές αστικές και ποινικές κυρώσεις.</p>
                 <p><strong>3. Καμία Εγγύηση:</strong> Το Λογισμικό παρέχεται "ΩΣ ΕΧΕΙ", χωρίς καμία εγγύηση οποιουδήποτε είδους, ρητή ή σιωπηρή. Αυτό περιλαμβάνει, ενδεικτικά, τις σιωπηρές εγγυήσεις εμπορευσιμότητας, καταλληλότητας για συγκεκριμένο σκοπό και μη παραβίασης. Οι προγραμματιστές και οι συντελεστές δεν παρέχουν καμία εγγύηση ότι το Λογισμικό θα είναι απαλλαγμένο από σφάλματα, ασφαλές ή αδιάλειπτο.</p>
