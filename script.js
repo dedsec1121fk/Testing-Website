@@ -319,7 +319,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
-
     // --- TOOL CATEGORIES FUNCTIONALITY ---
     function initializeToolCategories() {
         console.log('Initializing tool categories...');
@@ -415,6 +414,74 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // --- ENHANCED SCROLL ANIMATIONS ---
+    function initializeScrollAnimations() {
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        // Observe all enhanced cards and sections
+        document.querySelectorAll('.enhanced-card, .step-card, .category-preview').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(el);
+        });
+    }
+
+    // --- ENHANCED HOVER EFFECTS ---
+    function initializeEnhancedHoverEffects() {
+        // Add ripple effect to buttons
+        document.querySelectorAll('.hero-btn, .support-btn, .feature-cta').forEach(button => {
+            button.addEventListener('mouseenter', function(e) {
+                const rect = this.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                const ripple = document.createElement('span');
+                ripple.style.position = 'absolute';
+                ripple.style.borderRadius = '50%';
+                ripple.style.background = 'rgba(255, 255, 255, 0.3)';
+                ripple.style.transform = 'scale(0)';
+                ripple.style.animation = 'ripple 0.6s linear';
+                ripple.style.left = x + 'px';
+                ripple.style.top = y + 'px';
+                ripple.style.width = '100px';
+                ripple.style.height = '100px';
+                ripple.style.pointerEvents = 'none';
+                
+                this.style.position = 'relative';
+                this.style.overflow = 'hidden';
+                this.appendChild(ripple);
+                
+                setTimeout(() => {
+                    ripple.remove();
+                }, 600);
+            });
+        });
+    }
+
+    // --- ENHANCED PAGE LOAD ---
+    function enhancePageLoad() {
+        document.body.style.opacity = '0';
+        document.body.style.transition = 'opacity 0.5s ease-in-out';
+        
+        setTimeout(() => {
+            document.body.style.opacity = '1';
+        }, 100);
+    }
+
     // --- INITIALIZATION ---
     function initializePortfolio() {
         initializeNavigation();
@@ -422,7 +489,6 @@ document.addEventListener('DOMContentLoaded', () => {
         initializeLanguageSwitcher();
         initializeModals();
         initializeCarousels();
-        // FIX: Removed call to initializeCopyButtons();
         initializeDisclaimer();
         initializeStorePage();
 
@@ -431,6 +497,11 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log('Tools page detected, initializing tool categories...');
             initializeToolCategories();
         }
+
+        // Enhanced animations
+        initializeScrollAnimations();
+        initializeEnhancedHoverEffects();
+        enhancePageLoad();
 
         // Set initial language - default to English
         const savedLanguage = localStorage.getItem('language') || 'en';
