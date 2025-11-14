@@ -68,6 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 themeSpan.setAttribute('data-en', 'Dark Theme');
                 themeSpan.setAttribute('data-gr', 'Σκοτεινό Θέμα');
             }
+            // Text will only be visible on desktop, but we still update it
             themeSpan.textContent = themeSpan.getAttribute(`data-${currentLanguage}`) || themeSpan.getAttribute('data-en');
         };
 
@@ -157,7 +158,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        // Update navigation action buttons
+        // Update navigation action buttons (text will only show on desktop)
         document.querySelectorAll('.nav-action-btn span').forEach(span => {
             const text = span.getAttribute(`data-${lang}`) || span.textContent;
             if (span.getAttribute('data-en')) {

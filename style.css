@@ -1,7 +1,7 @@
 /*
     =================================================================
     DEDSEC PROJECT MULTI-PAGE STYLES
-    VERSION: 3.5 (Mobile View Fix)
+    VERSION: 3.5 (Mobile View Fix - Icon Only Buttons)
     =================================================================
 */
 
@@ -1786,26 +1786,26 @@ body.light-theme .category-header {
         max-width: 150px; /* Prevent title from taking too much space */
     }
     
-    /* Fix navigation actions - show text and make buttons usable */
+    /* Fix navigation actions - icon only on mobile */
     .nav-actions {
         gap: 5px;
         margin-left: 5px;
     }
     
     .nav-action-btn {
-        padding: 8px 12px;
+        padding: 8px 10px; /* Smaller padding for icon-only */
         font-size: 0.8rem;
         min-width: auto;
     }
     
-    /* Show text in nav action buttons on mobile */
+    /* Hide text in nav action buttons on mobile - icon only */
     .nav-action-btn span {
-        display: inline !important;
-        font-size: 0.7rem;
+        display: none !important;
     }
     
     .nav-action-btn i {
         font-size: 0.9rem;
+        margin: 0; /* Remove any gap when text is hidden */
     }
     
     /* Fix burger menu positioning */
@@ -2057,10 +2057,6 @@ body.light-theme .category-header {
         padding: 6px 8px;
     }
     
-    .nav-action-btn span {
-        font-size: 0.65rem;
-    }
-    
     .hero-section h2 {
         font-size: 1.5rem;
     }
@@ -2107,10 +2103,6 @@ body.light-theme .category-header {
     
     .nav-action-btn {
         padding: 5px 6px;
-    }
-    
-    .nav-action-btn span {
-        font-size: 0.6rem;
     }
 }
 
