@@ -1,7 +1,7 @@
 /*
     =================================================================
     DEDSEC PROJECT MULTI-PAGE STYLES
-    VERSION: 4.0 (Enhanced User Experience)
+    VERSION: 4.1 (Smoother Modal & Cleaned Sponsor)
     =================================================================
 */
 
@@ -46,6 +46,7 @@
     /* === PREMIUM EFFECTS === */
     --ease-out-cubic: cubic-bezier(0.23, 1, 0.32, 1);
     --ease-out-back: cubic-bezier(0.34, 1.56, 0.64, 1);
+    --ease-in-out-quad: cubic-bezier(0.45, 0, 0.55, 1);
     --shadow-glow-accent: 0 0 15px 0px rgba(var(--glow-rgb), 0.5);
     --shadow-glow-success: 0 0 15px 0px rgba(68, 255, 68, 0.5);
     --shadow-glow-danger: 0 0 15px 0px rgba(255, 68, 68, 0.5);
@@ -984,8 +985,8 @@ body.light-theme .tool-card {
     z-index: 1000;
     opacity: 0;
     visibility: hidden;
-    /* MODIFIED: Faster fade-in */
-    transition: opacity 0.25s ease-out, visibility 0s 0.25s, backdrop-filter 0.25s ease-out;
+    /* ENHANCED: Smoother fade-in with better timing function */
+    transition: opacity 0.3s var(--ease-in-out-quad), visibility 0s 0.3s, backdrop-filter 0.3s var(--ease-in-out-quad);
 }
 
 body.light-theme .modal-overlay {
@@ -995,7 +996,7 @@ body.light-theme .modal-overlay {
 .modal-overlay.visible {
     opacity: 1;
     visibility: visible;
-    transition: opacity 0.25s ease-out;
+    transition: opacity 0.3s var(--ease-in-out-quad);
 }
 
 .modal-content {
@@ -1011,10 +1012,10 @@ body.light-theme .modal-overlay {
     overflow: hidden;
     clip-path: none;
     border-radius: 20px;
-    /* MODIFIED: Premium "grow-in" animation */
+    /* ENHANCED: Smoother "grow-in" animation */
     opacity: 0;
     transform: translateY(20px) scale(0.95);
-    transition: transform 0.3s var(--ease-out-cubic), opacity 0.3s ease;
+    transition: transform 0.4s var(--ease-out-back), opacity 0.4s var(--ease-in-out-quad);
     will-change: transform, opacity;
 }
 
@@ -1032,15 +1033,21 @@ body.light-theme .modal-content {
     transform: translateY(0) scale(1);
 }
 
-/* Enhanced Modal Animations */
-.modal-overlay.closing .modal-content {
-    transform: translateY(100%) scale(0.9);
+/* ENHANCED: Smoother Modal Closing Animations */
+.modal-overlay.closing {
     opacity: 0;
-    transition: transform 0.3s var(--ease-out-cubic), opacity 0.3s ease;
+    transition: opacity 0.4s var(--ease-in-out-quad), visibility 0s 0.4s;
+}
+
+.modal-overlay.closing .modal-content {
+    transform: translateY(40px) scale(0.9);
+    opacity: 0;
+    transition: transform 0.4s var(--ease-in-out-quad), opacity 0.4s var(--ease-in-out-quad);
 }
 
 .modal-overlay.banner-style.closing .modal-content {
     transform: translateY(100%);
+    transition: transform 0.5s var(--ease-in-out-quad);
 }
 
 .modal-header {
@@ -1138,7 +1145,7 @@ body.light-theme .modal-content {
     /* Animation: slide in from bottom */
     opacity: 1; /* Start with opacity 1, just off-screen */
     transform: translateY(100%);
-    transition: transform 0.4s var(--ease-out-cubic);
+    transition: transform 0.5s var(--ease-out-cubic);
 }
 
 .modal-overlay.banner-style.visible .modal-content {

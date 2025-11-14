@@ -250,11 +250,12 @@ document.addEventListener('DOMContentLoaded', () => {
             }, 10);
         }
 
-        // Handle accept button with smooth animation
+        // Handle accept button with smoother animation
         acceptBtn?.addEventListener('click', () => {
             // Add closing animation
             disclaimerModal.classList.add('closing');
             
+            // Use a slightly longer timeout for smoother animation
             setTimeout(() => {
                 localStorage.setItem('disclaimerAccepted', 'true');
                 if (disclaimerModal) {
@@ -264,7 +265,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     disclaimerModal.classList.remove('closing');
                 }
                 console.log('Disclaimer accepted');
-            }, 300); // Match this with CSS transition duration
+            }, 400); // Increased from 300ms to 400ms for smoother close
         });
 
         // Handle decline button - go to google.com
