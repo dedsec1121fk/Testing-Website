@@ -8,8 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const navMenu = document.getElementById('nav-menu');
         
         if (burgerMenu && navMenu) {
-            burgerMenu.addEventListener('click', (e) => {
-                e.stopPropagation(); // Prevent event bubbling
+            burgerMenu.addEventListener('click', () => {
                 burgerMenu.classList.toggle('active');
                 navMenu.classList.toggle('active');
             });
@@ -25,25 +24,16 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
 
-        // Close menu when clicking outside - improved for mobile
+        // Close menu when clicking outside
         document.addEventListener('click', (e) => {
             if (burgerMenu && navMenu && navMenu.classList.contains('active')) {
-                const isClickInsideNav = navMenu.contains(e.target);
-                const isClickOnBurger = burgerMenu.contains(e.target);
-                const isClickOnNavActions = document.querySelector('.nav-actions')?.contains(e.target);
-                
-                if (!isClickInsideNav && !isClickOnBurger && !isClickOnNavActions) {
+                // Check if the click is outside the menu AND outside the burger
+                // AND also not on the nav-actions (which are now separate)
+                const navActions = document.querySelector('.nav-actions');
+                if (!navMenu.contains(e.target) && !burgerMenu.contains(e.target) && !navActions.contains(e.target)) {
                     burgerMenu.classList.remove('active');
                     navMenu.classList.remove('active');
                 }
-            }
-        });
-
-        // Close menu on orientation change
-        window.addEventListener('orientationchange', () => {
-            if (burgerMenu && navMenu) {
-                burgerMenu.classList.remove('active');
-                navMenu.classList.remove('active');
             }
         });
     }
@@ -68,7 +58,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 themeSpan.setAttribute('data-en', 'Dark Theme');
                 themeSpan.setAttribute('data-gr', 'Σκοτεινό Θέμα');
             }
-            // Text will only be visible on desktop, but we still update it
             themeSpan.textContent = themeSpan.getAttribute(`data-${currentLanguage}`) || themeSpan.getAttribute('data-en');
         };
 
@@ -158,7 +147,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        // Update navigation action buttons (text will only show on desktop)
+        // Update navigation action buttons
         document.querySelectorAll('.nav-action-btn span').forEach(span => {
             const text = span.getAttribute(`data-${lang}`) || span.textContent;
             if (span.getAttribute('data-en')) {
@@ -207,6 +196,38 @@ document.addEventListener('DOMContentLoaded', () => {
                 link.href = newLink;
             }
         });
+
+        // NEW: Update trust indicators
+        document.querySelectorAll('.trust-item span').forEach(el => {
+            const text = el.getAttribute(`data-${lang}`) || el.textContent;
+            if (el.getAttribute('data-en')) {
+                el.textContent = text;
+            }
+        });
+
+        // NEW: Update hero badge
+        document.querySelectorAll('.hero-badge span').forEach(el => {
+            const text = el.getAttribute(`data-${lang}`) || el.textContent;
+            if (el.getAttribute('data-en')) {
+                el.textContent = text;
+            }
+        });
+
+        // NEW: Update hero CTA buttons
+        document.querySelectorAll('.hero-cta').forEach(el => {
+            const text = el.getAttribute(`data-${lang}`) || el.textContent;
+            if (el.getAttribute('data-en')) {
+                el.textContent = text;
+            }
+        });
+
+        // NEW: Update community cards
+        document.querySelectorAll('.community-card span').forEach(el => {
+            const text = el.getAttribute(`data-${lang}`) || el.textContent;
+            if (el.getAttribute('data-en')) {
+                el.textContent = text;
+            }
+        });
     };
 
     // --- DISCLAIMER FUNCTIONALITY ---
@@ -229,15 +250,21 @@ document.addEventListener('DOMContentLoaded', () => {
             }, 10);
         }
 
-        // Handle accept button
+        // Handle accept button with smooth animation
         acceptBtn?.addEventListener('click', () => {
-            localStorage.setItem('disclaimerAccepted', 'true');
-            if (disclaimerModal) {
-                // MODIFICATION: Remove 'visible' and 'banner-style' classes
-                disclaimerModal.classList.remove('visible');
-                disclaimerModal.classList.remove('banner-style');
-            }
-            console.log('Disclaimer accepted');
+            // Add closing animation
+            disclaimerModal.classList.add('closing');
+            
+            setTimeout(() => {
+                localStorage.setItem('disclaimerAccepted', 'true');
+                if (disclaimerModal) {
+                    // MODIFICATION: Remove 'visible' and 'banner-style' classes
+                    disclaimerModal.classList.remove('visible');
+                    disclaimerModal.classList.remove('banner-style');
+                    disclaimerModal.classList.remove('closing');
+                }
+                console.log('Disclaimer accepted');
+            }, 300); // Match this with CSS transition duration
         });
 
         // Handle decline button - go to google.com
