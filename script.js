@@ -8,7 +8,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const navMenu = document.getElementById('nav-menu');
         
         if (burgerMenu && navMenu) {
-            burgerMenu.addEventListener('click', () => {
+            burgerMenu.addEventListener('click', (e) => {
+                e.stopPropagation(); // Prevent event bubbling
                 burgerMenu.classList.toggle('active');
                 navMenu.classList.toggle('active');
             });
@@ -24,16 +25,25 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
 
-        // Close menu when clicking outside
+        // Close menu when clicking outside - improved for mobile
         document.addEventListener('click', (e) => {
             if (burgerMenu && navMenu && navMenu.classList.contains('active')) {
-                // Check if the click is outside the menu AND outside the burger
-                // AND also not on the nav-actions (which are now separate)
-                const navActions = document.querySelector('.nav-actions');
-                if (!navMenu.contains(e.target) && !burgerMenu.contains(e.target) && !navActions.contains(e.target)) {
+                const isClickInsideNav = navMenu.contains(e.target);
+                const isClickOnBurger = burgerMenu.contains(e.target);
+                const isClickOnNavActions = document.querySelector('.nav-actions')?.contains(e.target);
+                
+                if (!isClickInsideNav && !isClickOnBurger && !isClickOnNavActions) {
                     burgerMenu.classList.remove('active');
                     navMenu.classList.remove('active');
                 }
+            }
+        });
+
+        // Close menu on orientation change
+        window.addEventListener('orientationchange', () => {
+            if (burgerMenu && navMenu) {
+                burgerMenu.classList.remove('active');
+                navMenu.classList.remove('active');
             }
         });
     }
@@ -215,53 +225,24 @@ document.addEventListener('DOMContentLoaded', () => {
                     disclaimerModal.classList.add('visible');
                     disclaimerModal.classList.add('banner-style');
                 }
-            }, 500); // Slightly delayed for better page load experience
+            }, 10);
         }
 
         // Handle accept button
         acceptBtn?.addEventListener('click', () => {
-            // Add loading state
-            acceptBtn.classList.add('loading');
-            acceptBtn.disabled = true;
-            
-            // Smooth close animation
+            localStorage.setItem('disclaimerAccepted', 'true');
             if (disclaimerModal) {
+                // MODIFICATION: Remove 'visible' and 'banner-style' classes
                 disclaimerModal.classList.remove('visible');
-                
-                // Wait for animation to complete before hiding completely
-                setTimeout(() => {
-                    disclaimerModal.classList.remove('banner-style');
-                    localStorage.setItem('disclaimerAccepted', 'true');
-                    console.log('Disclaimer accepted');
-                    
-                    // Reset button state
-                    acceptBtn.classList.remove('loading');
-                    acceptBtn.disabled = false;
-                }, 400); // Match CSS transition duration
-            } else {
-                localStorage.setItem('disclaimerAccepted', 'true');
-                acceptBtn.classList.remove('loading');
-                acceptBtn.disabled = false;
+                disclaimerModal.classList.remove('banner-style');
             }
+            console.log('Disclaimer accepted');
         });
 
         // Handle decline button - go to google.com
         declineBtn?.addEventListener('click', () => {
-            // Add loading state
-            declineBtn.classList.add('loading');
-            declineBtn.disabled = true;
-            
-            // Smooth transition before redirect
-            if (disclaimerModal) {
-                disclaimerModal.classList.remove('visible');
-                
-                setTimeout(() => {
-                    // Updated to redirect to google.com
-                    window.location.href = 'https://www.google.com';
-                }, 400);
-            } else {
-                window.location.href = 'https://www.google.com';
-            }
+            // Updated to redirect to google.com
+            window.location.href = 'https://www.google.com';
         });
 
         // MODIFICATION: Removed the click outside prevention logic
