@@ -9,7 +9,6 @@
     <meta property="og:title" content="Guide For Installation - DedSec Project">
     <meta property="og:description" content="Learn how to install and setup the DedSec Project cybersecurity toolkit.">
 
-<!-- Security Headers -->
 <meta http-equiv="Content-Security-Policy" content="
   default-src 'self';
   script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com;
@@ -37,8 +36,7 @@
     <link rel="stylesheet" href="../style.css">
 </head>
 <body class="dark-theme">
-    <!-- Navigation Header -->
-<nav class="main-nav">
+    <nav class="main-nav">
     <div class="nav-container">
         <div class="nav-title"><h1>DedSec Project</h1></div>
         <button class="burger-menu" id="burger-menu" aria-label="Toggle navigation"><span></span><span></span><span></span></button>
@@ -86,7 +84,6 @@
                 </p>
             </div>
 
-            <!-- NEW SECTION: F-Droid Installation -->
             <h3 data-en="Install F-Droid" data-gr="Εγκατάσταση F-Droid">Install F-Droid</h3>
             <p data-en="F-Droid is an alternative app store for Android that provides free and open-source software. It's the recommended way to install Termux and other security tools."
                data-gr="Το F-Droid είναι ένα εναλλακτικό κατάστημα εφαρμογών για Android που παρέχει ελεύθερο και ανοιχτού κώδικα λογισμικό. Είναι ο συνιστώμενος τρόπος για να εγκαταστήσετε το Termux και άλλα εργαλεία ασφαλείας.">
@@ -107,11 +104,27 @@
                     <li data-en="Open your device's Settings > Security (or Apps & Notifications)" data-gr="Ανοίξτε τις Ρυθμίσεις της συσκευής σας > Ασφάλεια (ή Εφαρμογές & Ειδοποιήσεις)">Open your device's Settings > Security (or Apps & Notifications)</li>
                     <li data-en="Enable 'Install unknown apps' or 'Unknown sources' for your browser or file manager" data gr="Ενεργοποιήστε την 'Εγκατάσταση από άγνωστες πηγές' για το πρόγραμμα πλοήγησης ή τον διαχειριστή αρχείων">Enable 'Install unknown apps' or 'Unknown sources' for your browser or file manager</li>
                     <li data-en="Open the downloaded APK file and tap 'Install'" data-gr="Ανοίξτε το κατεβασμένο αρχείο APK και πατήστε 'Εγκατάσταση'">Open the downloaded APK file and tap 'Install'</li>
-                    <li data-en="Once installed, open F-Droid and search for 'Termux' to install it" data-gr="Μόλις εγκατασταθεί, ανοίξτε το F-Droid και αναζητήστε 'Termux' για να το εγκαταστήσετε">Once installed, open F-Droid and search for 'Termux' to install it</li>
-                </ol>
+                    
+                    <li data-en="Once installed, open F-Droid and search for and install the following essential apps:"
+                        data-gr="Μόλις εγκατασταθεί, ανοίξτε το F-Droid και αναζητήστε και εγκαταστήστε τις ακόλουθες απαραίτητες εφαρμογές:">
+                        Once installed, open F-Droid and search for and install the following essential apps:
+                        <ul style="margin-top: 10px;">
+                            <li data-en="<strong>Termux: Terminal emulator with packages</strong> (The main terminal)"
+                                data-gr="<strong>Termux: Terminal emulator with packages</strong> (Το κύριο τερματικό)">
+                                <strong>Termux: Terminal emulator with packages</strong> (The main terminal)
+                            </li>
+                            <li data-en="<strong>Termux:API</strong> (For device API access)"
+                                data-gr="<strong>Termux:API</strong> (Για πρόσβαση στα API της συσκευής)">
+                                <strong>Termux:API</strong> (For device API access)
+                            </li>
+                            <li data-en="<strong>Termux:Styling</strong> (For terminal customization)"
+                                data-gr="<strong>Termux:StylING</strong> (Για προσαρμογή τερματικού)">
+                                <strong>Termux:Styling</strong> (For terminal customization)
+                            </li>
+                        </ul>
+                    </li>
+                    </ol>
             </div>
-            <!-- END NEW SECTION -->
-
             <h3 data-en="2. Update Packages & Install Git" data-gr="2. Ενημέρωση Πακέτων & Εγκατάσταση Git">2. Update Packages & Install Git</h3>
             <div class="note note-warning">
                 <p data-en="Important: Open the Termux application on your device before copying and pasting the command below."
@@ -142,6 +155,21 @@
                 </p>
             </div>
 
+            <h3 data-en="Termux Usage Tips" data-gr="Συμβουλές Χρήσης Termux">Termux Usage Tips</h3>
+            <div class="note">
+                <h4 data-en="Keep Screen On" data-gr="Διατήρηση Οθόνης Ενεργής">Keep Screen On</h4>
+                <p data-en="To prevent long installations from being interrupted, keep your screen on. Inside Termux, <strong>press and hold</strong> on the screen, tap <strong>'More...'</strong>, and then select <strong>'Keep screen on'</strong>."
+                   data-gr="Για να αποτρέψετε τη διακοπή μεγάλων εγκαταστάσεων, διατηρήστε την οθόνη σας ενεργή. Μέσα στο Termux, <strong>πατήστε παρατεταμένα</strong> στην οθόνη, πατήστε <strong>'More...'</strong> (Περισσότερα), και έπειτα επιλέξτε <strong>'Keep screen on'</strong> (Διατήρηση οθόνης ενεργής).">
+                   To prevent long installations from being interrupted, keep your screen on. Inside Termux, <strong>press and hold</strong> on the screen, tap <strong>'More...'</strong>, and then select <strong>'Keep screen on'</strong>.
+                </p>
+            </div>
+            <div class="note">
+                <h4 data-en="Change Style (Colors & Fonts)" data-gr="Αλλαγή Στυλ (Χρώματα & Γραμματοσειρές)">Change Style (Colors & Fonts)</h4>
+                <p data-en="You can customize the terminal's appearance if you have <strong>Termux:Styling</strong> installed. <strong>Press and hold</strong> on the screen, tap <strong>'More...'</strong>, and then select <strong>'Style'</strong> to choose a new color scheme or font."
+                   data-gr="Μπορείτε να προσαρμόσετε την εμφάνιση του τερματικού εάν έχετε εγκατεστημένο το <strong>Termux:Styling</strong>. <strong>Πατήστε παρατεταμένα</strong> στην οθόνη, πατήστε <strong>'More...'</strong> (Περισσότερα), και έπειτα επιλέξτε <strong>'Style'</strong> (Στυλ) για να διαλέξετε ένα νέο συνδυασμό χρωμάτων ή γραμματοσειρά.">
+                   You can customize the terminal's appearance if you have <strong>Termux:Styling</strong> installed. <strong>Press and hold</strong> on the screen, tap <strong>'More...'</strong>, and then select <strong>'Style'</strong> to choose a new color scheme or font.
+                </p>
+            </div>
             <div class="modal-disclaimer">
                 <p><strong data-en="Legal Disclaimer:" data-gr="Νομική Αποποίηση Ευθύνης:">Legal Disclaimer:</strong> 
                    <span data-en="All tools and information are for educational and ethical research purposes only. Use them only on systems you own or have explicit permission to test."
@@ -153,7 +181,6 @@
         </div>
     </div>
 
-    <!-- Disclaimer Modal -->
     <div id="disclaimer-modal" class="modal-overlay">
       <div class="modal-content">
           <div class="modal-header"><h2 data-en="Disclaimer & Terms of Use" data-gr="Αποποίηση Ευθύνης & Όροι Χρήσης">Disclaimer & Terms of Use</h2></div>
@@ -184,7 +211,6 @@
       </div>
     </div>
 
-    <!-- Language Selection Modal -->
     <div id="language-selection-modal" class="modal-overlay">
       <div class="modal-content modal-content-auto-height">
           <div class="modal-header">
