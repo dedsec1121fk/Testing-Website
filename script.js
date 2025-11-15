@@ -58,8 +58,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 themeSpan.setAttribute('data-en', 'Dark Theme');
                 themeSpan.setAttribute('data-gr', 'Σκοτεινό Θέμα');
             }
-            // This one instance of textContent is OK, as it's reading from
-            // an attribute we *just* set, not one that contains HTML.
             themeSpan.textContent = themeSpan.getAttribute(`data-${currentLanguage}`) || themeSpan.getAttribute('data-en');
         };
 
@@ -121,20 +119,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 node.nodeType === Node.TEXT_NODE && node.textContent.trim().length > 0
             );
             
-            // --- START OF FIX ---
-            // This block was the main problem.
-            // It was trying to replace only text nodes, which fails.
-            // And it was using .textContent, which strips HTML.
-            // The new logic correctly uses .innerHTML.
             if (hasDirectText) {
-                // This element has text nodes. We assume it's one of the
-                // elements that needs its HTML set.
-                el.innerHTML = text;
+                Array.from(el.childNodes).forEach(node => {
+                    if (node.nodeType === Node.TEXT_NODE && node.textContent.trim().length > 0) {
+                        node.textContent = text;
+                    }
+                });
             } else if (el.children.length === 0) {
-                // This element only contains text.
-                el.innerHTML = text; // Changed from textContent
+                el.textContent = text;
             }
-            // --- END OF FIX ---
         });
 
         // Update lang sections
@@ -146,23 +139,19 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        // --- START OF FIX ---
-        // The loops below were also using .textContent.
-        // They are all changed to .innerHTML to support HTML in attributes.
-
         // Update navigation links
         document.querySelectorAll('.nav-link').forEach(link => {
-            const text = link.getAttribute(`data-${lang}`) || link.innerHTML; // Fallback to innerHTML
+            const text = link.getAttribute(`data-${lang}`) || link.textContent;
             if (link.getAttribute('data-en')) {
-                link.innerHTML = text; // Changed from textContent
+                link.textContent = text;
             }
         });
 
         // Update navigation action buttons
         document.querySelectorAll('.nav-action-btn span').forEach(span => {
-            const text = span.getAttribute(`data-${lang}`) || span.innerHTML; // Fallback to innerHTML
+            const text = span.getAttribute(`data-${lang}`) || span.textContent;
             if (span.getAttribute('data-en')) {
-                span.innerHTML = text; // Changed from textContent
+                span.textContent = text;
             }
         });
 
@@ -171,32 +160,32 @@ document.addEventListener('DOMContentLoaded', () => {
         if (disclaimerLangBtn) {
             const span = disclaimerLangBtn.querySelector('span');
             if (span) {
-                const text = span.getAttribute(`data-${lang}`) || span.innerHTML; // Fallback to innerHTML
-                span.innerHTML = text; // Changed from textContent
+                const text = span.getAttribute(`data-${lang}`) || span.textContent;
+                span.textContent = text;
             }
         }
 
         // Update feature cards
         document.querySelectorAll('.feature-title, .feature-description, .feature-cta').forEach(el => {
-            const text = el.getAttribute(`data-${lang}`) || el.innerHTML; // Fallback to innerHTML
+            const text = el.getAttribute(`data-${lang}`) || el.textContent;
             if (el.getAttribute('data-en')) {
-                el.innerHTML = text; // Changed from textContent
+                el.textContent = text;
             }
         });
 
         // Update stats labels
         document.querySelectorAll('.stat-label').forEach(el => {
-            const text = el.getAttribute(`data-${lang}`) || el.innerHTML; // Fallback to innerHTML
+            const text = el.getAttribute(`data-${lang}`) || el.textContent;
             if (el.getAttribute('data-en')) {
-                el.innerHTML = text; // Changed from textContent
+                el.textContent = text;
             }
         });
 
         // Update product prices and buttons
         document.querySelectorAll('.product-price, .payment-btn').forEach(el => {
-            const text = el.getAttribute(`data-${lang}`) || el.innerHTML; // Fallback to innerHTML
+            const text = el.getAttribute(`data-${lang}`) || el.textContent;
             if (el.getAttribute('data-en')) {
-                el.innerHTML = text; // Changed from textContent
+                el.textContent = text;
             }
         });
 
@@ -210,36 +199,35 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // NEW: Update trust indicators
         document.querySelectorAll('.trust-item span').forEach(el => {
-            const text = el.getAttribute(`data-${lang}`) || el.innerHTML; // Fallback to innerHTML
+            const text = el.getAttribute(`data-${lang}`) || el.textContent;
             if (el.getAttribute('data-en')) {
-                el.innerHTML = text; // Changed from textContent
+                el.textContent = text;
             }
         });
 
         // NEW: Update hero badge
         document.querySelectorAll('.hero-badge span').forEach(el => {
-            const text = el.getAttribute(`data-${lang}`) || el.innerHTML; // Fallback to innerHTML
+            const text = el.getAttribute(`data-${lang}`) || el.textContent;
             if (el.getAttribute('data-en')) {
-                el.innerHTML = text; // Changed from textContent
+                el.textContent = text;
             }
         });
 
         // NEW: Update hero CTA buttons
         document.querySelectorAll('.hero-cta').forEach(el => {
-            const text = el.getAttribute(`data-${lang}`) || el.innerHTML; // Fallback to innerHTML
+            const text = el.getAttribute(`data-${lang}`) || el.textContent;
             if (el.getAttribute('data-en')) {
-                el.innerHTML = text; // Changed from textContent
+                el.textContent = text;
             }
         });
 
         // NEW: Update community cards
         document.querySelectorAll('.community-card span').forEach(el => {
-            const text = el.getAttribute(`data-${lang}`) || el.innerHTML; // Fallback to innerHTML
+            const text = el.getAttribute(`data-${lang}`) || el.textContent;
             if (el.getAttribute('data-en')) {
-                el.innerHTML = text; // Changed from textContent
+                el.textContent = text;
             }
         });
-        // --- END OF FIX ---
     };
 
     // --- DISCLAIMER FUNCTIONALITY ---
