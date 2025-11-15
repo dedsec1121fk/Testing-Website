@@ -9,6 +9,7 @@
     <meta property="og:title" content="Guide For Installation - DedSec Project">
     <meta property="og:description" content="Learn how to install and setup the DedSec Project cybersecurity toolkit.">
 
+<!-- Security Headers -->
 <meta http-equiv="Content-Security-Policy" content="
   default-src 'self';
   script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com;
@@ -36,7 +37,8 @@
     <link rel="stylesheet" href="../style.css">
 </head>
 <body class="dark-theme">
-    <nav class="main-nav">
+    <!-- Navigation Header -->
+<nav class="main-nav">
     <div class="nav-container">
         <div class="nav-title"><h1>DedSec Project</h1></div>
         <button class="burger-menu" id="burger-menu" aria-label="Toggle navigation"><span></span><span></span><span></span></button>
@@ -84,6 +86,7 @@
                 </p>
             </div>
 
+            <!-- NEW SECTION: F-Droid Installation -->
             <h3 data-en="Install F-Droid" data-gr="Εγκατάσταση F-Droid">Install F-Droid</h3>
             <p data-en="F-Droid is an alternative app store for Android that provides free and open-source software. It's the recommended way to install Termux and other security tools."
                data-gr="Το F-Droid είναι ένα εναλλακτικό κατάστημα εφαρμογών για Android που παρέχει ελεύθερο και ανοιχτού κώδικα λογισμικό. Είναι ο συνιστώμενος τρόπος για να εγκαταστήσετε το Termux και άλλα εργαλεία ασφαλείας.">
@@ -104,10 +107,50 @@
                     <li data-en="Open your device's Settings > Security (or Apps & Notifications)" data-gr="Ανοίξτε τις Ρυθμίσεις της συσκευής σας > Ασφάλεια (ή Εφαρμογές & Ειδοποιήσεις)">Open your device's Settings > Security (or Apps & Notifications)</li>
                     <li data-en="Enable 'Install unknown apps' or 'Unknown sources' for your browser or file manager" data-gr="Ενεργοποιήστε την 'Εγκατάσταση από άγνωστες πηγές' για το πρόγραμμα πλοήγησης ή τον διαχειριστή αρχείων">Enable 'Install unknown apps' or 'Unknown sources' for your browser or file manager</li>
                     <li data-en="Open the downloaded APK file and tap 'Install'" data-gr="Ανοίξτε το κατεβασμένο αρχείο APK και πατήστε 'Εγκατάσταση'">Open the downloaded APK file and tap 'Install'</li>
-                    <li data-en="Once installed, open F-Droid. Search for and install '<strong>Termux</strong>' (Terminal emulator with packages)." data-gr="Μόλις εγκατασταθεί, ανοίξτε το F-Droid. Αναζητήστε και εγκαταστήστε το '<strong>Termux</strong>' (Εξομοιωτής τερματικού με πακέτα).">Once installed, open F-Droid. Search for and install '<strong>Termux</strong>' (Terminal emulator with packages).</li>
-                    <li data-en="We also strongly recommend installing '<strong>Termux:API</strong>' (for Android hardware access) and '<strong>Termux:Styling</strong>' (for terminal customization)." data-gr="Συνιστούμε επίσης να εγκαταστήσετε το '<strong>Termux:API</strong>' (για πρόσβαση στο υλικό του Android) και το '<strong>Termux:Styling</strong>' (για προσαρμογή του τερματικού).">We also strongly recommend installing '<strong>Termux:API</strong>' (for Android hardware access) and '<strong>Termux:Styling</strong>' (for terminal customization).</li>
+                    <li data-en="Once installed, open F-Droid and search for 'Termux' to install it" data-gr="Μόλις εγκατασταθεί, ανοίξτε το F-Droid και αναζητήστε 'Termux' για να το εγκαταστήσετε">Once installed, open F-Droid and search for 'Termux' to install it</li>
                 </ol>
             </div>
+            <!-- END NEW SECTION -->
+
+            <!-- NEW SECTION: Termux Add-Ons -->
+            <h3 data-en="Install Termux Add-Ons" data-gr="Εγκατάσταση Πρόσθετων Termux">Install Termux Add-Ons</h3>
+            <p data-en="For full functionality, we recommend installing these Termux add-ons from F-Droid:"
+               data-gr="Για πλήρη λειτουργικότητα, συνιστούμε την εγκατάσταση των παρακάτω πρόσθετων Termux από το F-Droid:">
+               For full functionality, we recommend installing these Termux add-ons from F-Droid:
+            </p>
+            
+            <div class="contact-grid" style="margin: 20px 0;">
+                <a href="https://f-droid.org/packages/com.termux/" target="_blank" rel="noopener noreferrer" class="app-icon">
+                    <i class="fas fa-terminal"></i>
+                    <span data-en="Termux (Terminal Emulator)" data-gr="Termux (Προσομοιωτής Τερματικού)">Termux (Terminal Emulator)</span>
+                </a>
+                <a href="https://f-droid.org/packages/com.termux.api/" target="_blank" rel="noopener noreferrer" class="app-icon">
+                    <i class="fas fa-code"></i>
+                    <span data-en="Termux:API" data-gr="Termux:API">Termux:API</span>
+                </a>
+                <a href="https://f-droid.org/packages/com.termux.styling/" target="_blank" rel="noopener noreferrer" class="app-icon">
+                    <i class="fas fa-paint-brush"></i>
+                    <span data-en="Termux:Styling" data-gr="Termux:Styling">Termux:Styling</span>
+                </a>
+            </div>
+            <!-- END NEW SECTION -->
+
+            <!-- NEW SECTION: Termux Tips -->
+            <h3 data-en="Termux Tips" data-gr="Συμβουλές για το Termux">Termux Tips</h3>
+            
+            <h4 data-en="Keep Screen On" data-gr="Διατήρηση Οθόνης Ανοιχτής">Keep Screen On</h4>
+            <p data-en="To prevent the screen from turning off during long operations: long-press the Termux terminal, then tap 'More' and select 'Keep screen on'."
+               data-gr="Για να αποτρέψετε την απενεργοποίηση της οθόνης κατά τη διάρκεια μεγάλων εργασιών: κρατήστε πατημένη την οθόνη του Termux, μετά πατήστε 'Περισσότερα' και επιλέξτε 'Διατήρηση οθόνης ανοιχτής'.">
+               To prevent the screen from turning off during long operations: long-press the Termux terminal, then tap 'More' and select 'Keep screen on'.
+            </p>
+
+            <h4 data-en="Change Terminal Style" data-gr="Αλλαγή Στυλ Τερματικού">Change Terminal Style</h4>
+            <p data-en="You can customize the terminal appearance: long-press the Termux terminal, tap 'More' and select 'Style' to change colors and themes."
+               data-gr="Μπορείτε να προσαρμόσετε την εμφάνιση του τερματικού: κρατήστε πατημένη την οθόνη του Termux, πατήστε 'Περισσότερα' και επιλέξτε 'Στυλ' για να αλλάξετε χρώματα και θέματα.">
+               You can customize the terminal appearance: long-press the Termux terminal, tap 'More' and select 'Style' to change colors and themes.
+            </p>
+            <!-- END NEW SECTION -->
+
             <h3 data-en="2. Update Packages & Install Git" data-gr="2. Ενημέρωση Πακέτων & Εγκατάσταση Git">2. Update Packages & Install Git</h3>
             <div class="note note-warning">
                 <p data-en="Important: Open the Termux application on your device before copying and pasting the command below."
@@ -138,25 +181,6 @@
                 </p>
             </div>
 
-            <h2 data-en="Usage Tips" data-gr="Συμβουλές Χρήσης">Usage Tips</h2>
-            <div class="note">
-                <h4 data-en="Termux Settings" data-gr="Ρυθμίσεις Termux">Termux Settings</h4>
-                <p data-en="While in Termux, press and hold on the screen, then tap 'More...'. From this menu, you can:"
-                   data-gr="Όσο βρίσκεστε στο Termux, πατήστε παρατεταμένα στην οθόνη και έπειτα πατήστε 'More...'. Από αυτό το μενού, μπορείτε:">
-                   While in Termux, press and hold on the screen, then tap 'More...'. From this menu, you can:
-                </p>
-                <ul>
-                    <li data-en="Select '<strong>Style</strong>' to change the color scheme and font. This requires the '<strong>Termux:Styling</strong>' add-on you installed from F-Droid."
-                        data-gr="Να επιλέξετε '<strong>Style</strong>' για να αλλάξετε το χρωματικό συνδυασμό και τη γραμματοσειρά. Αυτό απαιτεί το πρόσθετο '<strong>Termux:Styling</strong>' που εγκαταστήσατε από το F-Droid.">
-                        Select '<strong>Style</strong>' to change the color scheme and font. This requires the '<strong>Termux:Styling</strong>' add-on you installed from F-Droid.
-                    </li>
-                    <li data-en="Select '<strong>Keep screen on</strong>' to prevent your device from sleeping while running long scripts or processes."
-                        data-gr="Να επιλέξετε '<strong>Keep screen on</strong>' (Διατήρηση οθόνης ενεργής) για να αποτρέψετε τη συσκευή σας από το να μπει σε αναστολή κατά την εκτέλεση μεγάλων scripts ή διεργασιών.">
-                        Select '<strong>Keep screen on</strong>' to prevent your device from sleeping while running long scripts or processes.
-                    </li>
-                </ul>
-            </div>
-
             <div class="modal-disclaimer">
                 <p><strong data-en="Legal Disclaimer:" data-gr="Νομική Αποποίηση Ευθύνης:">Legal Disclaimer:</strong> 
                    <span data-en="All tools and information are for educational and ethical research purposes only. Use them only on systems you own or have explicit permission to test."
@@ -168,6 +192,7 @@
         </div>
     </div>
 
+    <!-- Disclaimer Modal -->
     <div id="disclaimer-modal" class="modal-overlay">
       <div class="modal-content">
           <div class="modal-header"><h2 data-en="Disclaimer & Terms of Use" data-gr="Αποποίηση Ευθύνης & Όροι Χρήσης">Disclaimer & Terms of Use</h2></div>
@@ -198,6 +223,7 @@
       </div>
     </div>
 
+    <!-- Language Selection Modal -->
     <div id="language-selection-modal" class="modal-overlay">
       <div class="modal-content modal-content-auto-height">
           <div class="modal-header">
