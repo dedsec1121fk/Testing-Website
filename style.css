@@ -949,9 +949,18 @@ body.light-theme .tool-card {
     margin: 0 auto;
 }
 
-.contact-grid .sponsor-btn i {
-    color: var(--nm-text-on-accent);
+/* =================================================================
+    START OF CHANGE: Added rule to fix sponsor button icon color
+    =================================================================
+*/
+.sponsor-btn i {
+    color: var(--nm-text-on-accent) !important;
 }
+/*
+    =================================================================
+    END OF CHANGE
+    =================================================================
+*/
 
 .sponsor-btn:hover {
     transform: translateY(-3px) scale(1.05);
