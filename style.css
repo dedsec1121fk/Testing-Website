@@ -50,7 +50,7 @@
     --radius-sm: 10px;
     --radius-md: 15px;
     --radius-lg: 20px;
-    --radius-pill: 5px; /* MODIFIED: Changed from 25px to 5px for a rectangular shape */
+    --radius-pill: 25px;
 
     /* === Z-INDEX STACKING (IMPROVEMENT) === */
     --z-backdrop: -2;
@@ -195,7 +195,21 @@ body::before {
     transition: background-image 0.3s ease;
     /* REMOVED: transform: translateZ(0); */
 }
-/* REMOVED: body::after block to remove the noise effect */
+
+body::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 800 800' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3E/ffilter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    background-size: cover;
+    opacity: 0.3;
+    z-index: var(--z-noise); /* CHANGED */
+    pointer-events: none;
+    /* REMOVED: transform: translateZ(0); */
+}
 
 body.light-theme::before {
     background-image: url('https://raw.githubusercontent.com/dedsec1121fk/dedsec1121fk.github.io/6f776cd9772a079a6d26370dddab911bf7cde8cd/Assets/Images/Logos/Custom%20White%20Purple%20Fox%20Logo.jpg');
@@ -984,6 +998,7 @@ body.light-theme .page-header h1 {
 }
 
 /* ================================================================= MODAL STYLES (COMMON) ================================================================= */
+
 .modal-overlay {
     position: fixed;
     top: 0;
@@ -1031,7 +1046,15 @@ body.light-theme .modal-overlay {
     /* ENHANCED: Smoother "grow-in" animation */
     opacity: 0;
     transform: translateY(20px) scale(0.95);
-    transition: opacity 0.3s var(--ease-in-out-quad), transform 0.3s var(--ease-in-out-quad);
+    transition: transform 0.4s var(--ease-out-back), opacity 0.4s var(--ease-in-out-quad);
+    will-change: transform, opacity;
+}
+
+/* REMOVED: Redundant light-theme rule */
+
+.modal-content-auto-height {
+    height: auto;
+    max-height: 90vh; /* Ensure it doesn't take up too much vertical space */
 }
 
 .modal-overlay.visible .modal-content {
@@ -1039,25 +1062,54 @@ body.light-theme .modal-overlay {
     transform: translateY(0) scale(1);
 }
 
+/* ENHANCED: Smoother Modal Closing Animations */
+.modal-overlay.closing {
+    opacity: 0;
+    transition: opacity 0.4s var(--ease-in-out-quad), visibility 0s 0.4s;
+}
+
+.modal-overlay.closing .modal-content {
+    transform: translateY(40px) scale(0.9);
+    opacity: 0;
+    transition: transform 0.4s var(--ease-in-out-quad), opacity 0.4s var(--ease-in-out-quad);
+}
+
+.modal-overlay.banner-style.closing .modal-content {
+    transform: translateY(100%);
+    transition: transform 0.5s var(--ease-in-out-quad);
+}
+
 .modal-header {
+    padding: 20px 30px;
+    border-bottom: 1px solid var(--nm-border);
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px 30px;
-    border-bottom: 1px solid var(--nm-border);
     flex-shrink: 0;
 }
 
 .modal-header h2 {
+    margin: 0;
     font-family: var(--font-secondary); /* CHANGED */
     color: var(--nm-text-accent);
-    margin: 0;
+    font-size: 1.5rem;
 }
 
 .modal-body {
-    padding: 20px 30px;
+    padding: 30px;
     overflow-y: auto;
     flex-grow: 1;
+    line-height: 1.7;
+    font-size: 1rem;
+    color: var(--nm-text);
+}
+
+.modal-body-centered {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
 }
 
 .modal-footer {
@@ -1085,7 +1137,12 @@ body.light-theme .modal-overlay {
     color: var(--nm-accent);
 }
 
-/* ================================================================= NEW: DISCLAIMER BANNER STYLES Overrides modal styles when .banner-style is present ================================================================= */
+
+/* =================================================================
+    NEW: DISCLAIMER BANNER STYLES
+    Overrides modal styles when .banner-style is present
+   ================================================================= */
+
 .modal-overlay.banner-style {
     position: fixed;
     top: auto;
@@ -1147,23 +1204,63 @@ body.light-theme .modal-overlay {
 .modal-overlay.banner-style .note {
     padding: 0.8rem;
     margin: 10px 0;
-    border-radius: var(--radius-md); /* CHANGED */
 }
 
-/* ================================================================= MODAL BUTTONS (COMMON) ================================================================= */
-.modal-footer button {
-    font-family: var(--font-secondary); /* CHANGED */
-    font-weight: bold;
-    font-size: 1rem;
-    padding: 10px 20px;
+.modal-overlay.banner-style .note p {
+    margin: 0 0 10px 0;
+}
+
+.modal-overlay.banner-style .modal-divider {
+    margin: 1rem 0;
+}
+
+.modal-overlay.banner-style .modal-footer {
+    padding: 15px 20px;
+    flex-direction: row; /* Ensure it's horizontal */
+    justify-content: flex-end;
+}
+
+.modal-overlay.banner-style .disclaimer-footer button {
+    padding: 8px 15px;
+    font-size: 0.9rem;
+    min-height: auto;
+    min-width: 80px;
+}
+
+/* =================================================================
+    END OF DISCLAIMER BANNER STYLES
+   ================================================================= */
+
+
+/* --- Language & Theme Switcher Buttons (for use inside modals) --- */
+.language-selection-btn,
+.theme-selection-btn {
+    background: var(--nm-darkest);
+    border: 1px solid var(--nm-border);
+    color: var(--nm-text);
+    padding: 8px 15px;
     border-radius: var(--radius-lg); /* CHANGED */
     cursor: pointer;
-    transition: all 0.25s var(--ease-out-cubic);
-    min-height: 45px;
+    font-family: var(--font-mono); /* CHANGED */
+    font-size: 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: transform 0.25s var(--ease-out-cubic), background-color 0.25s ease, color 0.25s ease, box-shadow 0.25s var(--ease-out-cubic);
+    will-change: transform, box-shadow;
+}
+
+.language-selection-btn:hover,
+.theme-selection-btn:hover {
+    background: var(--nm-accent);
+    color: var(--nm-text-on-accent);
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-glow-accent);
 }
 
 /* --- Disclaimer/Language Buttons --- */
-.disclaimer-footer button, .language-button {
+.disclaimer-footer button,
+.language-button {
     background: var(--nm-darkest);
     border: 1px solid var(--nm-border);
     color: var(--nm-text);
@@ -1181,7 +1278,8 @@ body.light-theme .modal-overlay {
     text-align: center; /* ADDED */
 }
 
-.language-button:hover, .language-button.selected {
+.language-button:hover, 
+.language-button.selected {
     color: var(--nm-text-on-accent);
     background-color: var(--nm-accent);
     border-color: var(--nm-accent-hover);
@@ -1207,25 +1305,25 @@ body.light-theme .modal-overlay {
     will-change: transform, box-shadow;
 }
 
-.accept-btn {
-    background-color: var(--nm-success) !important;
+.accept-btn { 
+    background-color: var(--nm-success) !important; 
     border-color: var(--nm-success);
 }
 
-.decline-btn {
-    background-color: var(--nm-danger) !important;
+.decline-btn { 
+    background-color: var(--nm-danger) !important; 
     border-color: var(--nm-danger);
 }
 
-.accept-btn:hover {
-    opacity: 0.9;
+.accept-btn:hover { 
+    opacity: 0.9; 
     border-color: var(--nm-success) !important;
     transform: translateY(-3px);
     box-shadow: var(--shadow-glow-success) !important;
 }
 
-.decline-btn:hover {
-    opacity: 0.9;
+.decline-btn:hover { 
+    opacity: 0.9; 
     border-color: var(--nm-danger) !important;
     transform: translateY(-3px);
     box-shadow: var(--shadow-glow-danger) !important;
@@ -1237,16 +1335,61 @@ body.light-theme .modal-overlay {
     transition-duration: 0.1s;
 }
 
-/* ================================================================= MISC UTILITY STYLES ================================================================= */
 
-/* --- Copy Button --- */
+/* ================================================================= COMPONENT STYLES (CODE, NOTES, ETC) ================================================================= */
+
+/* --- Code Block Styling --- */
+pre,
+.code-container {
+    background: var(--nm-darkest);
+    border: 1px solid var(--nm-accent);
+    padding: 15px;
+    border-radius: var(--radius-md); /* CHANGED */
+    overflow-x: auto;
+    font-family: var(--font-mono); /* CHANGED */
+    font-size: 0.9rem;
+    line-height: 1.4;
+    position: relative;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    margin-bottom: 20px;
+    transition: border-color 0.3s ease;
+}
+
+pre:hover,
+.code-container:hover {
+    border-color: var(--nm-accent-hover);
+}
+
+pre code,
+.code-container code {
+    color: var(--nm-text); /* MODIFIED: Changed from --nm-success to --nm-text */
+    text-shadow: none; /* MODIFIED: Removed green text-shadow */
+    /* ADDED: Ensure code tag itself can wrap if needed */
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+/* ADDED: Specific style to center the coupon code */
+#coupon-code {
+    display: block;
+    text-align: center;
+    font-size: 1.1rem;
+}
+
 .copy-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
     background: var(--nm-container);
     border: 1px solid var(--nm-border);
-    color: var(--nm-text);
-    padding: 8px 12px;
-    border-radius: var(--radius-md); /* CHANGED */
+    color: var(--nm-text-muted);
+    padding: 5px 10px;
+    border-radius: var(--radius-sm); /* CHANGED */
     cursor: pointer;
+    font-size: 0.7rem;
+    transition: all 0.2s ease;
+    z-index: 5;
     font-family: var(--font-mono); /* CHANGED */
 }
 
@@ -1299,6 +1442,7 @@ body.light-theme .modal-overlay {
     margin: 20px 0;
 }
 
+
 /* ================================================================= PAGE-SPECIFIC STYLES ================================================================= */
 
 /* --- Contact Page --- */
@@ -1321,130 +1465,62 @@ body.light-theme .modal-overlay {
     background: var(--nm-darkest);
     border: 1px solid var(--nm-accent);
     color: var(--nm-text);
-    font-weight: bold;
-    font-size: 1.1rem;
+    cursor: pointer;
+    font-family: var(--font-mono); /* CHANGED */
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: center; /* MODIFIED: Changed from flex-start */
     text-decoration: none;
-    transition: all 0.3s var(--ease-out-cubic);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    box-sizing: border-box;
+    position: relative;
+    /* MODIFIED: Premium transition */
+    transition: transform 0.25s var(--ease-out-cubic), background-color 0.25s ease, color 0.25s ease, box-shadow 0.25s var(--ease-out-cubic), border-color 0.25s ease;
+    will-change: transform, box-shadow;
 }
 
 .contact-grid .app-icon:hover {
+    background: var(--nm-accent);
     border-color: var(--nm-accent-hover);
+    color: var(--nm-text-on-accent);
     transform: translateY(-3px);
     box-shadow: var(--shadow-glow-accent);
+}
+
+/* ADDED: Premium "press" effect */
+.contact-grid .app-icon:active {
+    transform: translateY(0px) scale(0.97);
+    transition-duration: 0.1s;
 }
 
 .contact-grid .app-icon i {
-    font-size: 1.5rem;
     color: var(--nm-accent);
-    transition: color 0.3s ease;
+    font-size: 1.5rem;
+    transition: color 0.2s ease;
 }
 
 .contact-grid .app-icon:hover i {
-    color: var(--nm-accent-hover);
+    color: var(--nm-text-on-accent);
 }
 
-/* --- Tool Info Page --- */
-.tool-info-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 20px;
-    margin-top: 20px;
-}
-
-.tool-info-card {
-    background: var(--nm-dark);
-    border: 1px solid var(--nm-border);
-    border-radius: var(--radius-lg); /* CHANGED */
-    padding: 20px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-    transition: all 0.3s var(--ease-out-cubic);
-}
-
-.tool-info-card:hover {
-    border-color: var(--nm-accent);
-    transform: translateY(-3px);
-    box-shadow: var(--shadow-glow-accent);
-}
-
-.tool-icon {
-    font-size: 2.5rem;
-    color: var(--nm-accent);
-    margin-bottom: 10px;
-    text-align: center;
-    width: 100%;
-}
-
-.tool-title {
-    font-family: var(--font-secondary); /* CHANGED */
-    font-size: 1.3rem;
-    color: var(--nm-text-accent);
-    margin-bottom: 10px;
-}
-
-.tool-description p {
-    color: var(--nm-text-muted);
-    line-height: 1.6;
-}
-
-.tool-cta-link {
-    display: inline-block;
-    color: var(--nm-accent);
-    text-decoration: none;
-    font-weight: bold;
-    margin-top: 15px;
-    transition: color 0.3s ease;
-}
-
-.tool-cta-link:hover {
-    color: var(--nm-accent-hover);
-}
-
-/* --- Collaborations Page --- */
-.collaboration-card {
-    background: var(--nm-darkest);
-    border: 1px solid var(--nm-border);
-    border-radius: var(--radius-lg); /* CHANGED */
-    padding: 20px;
-    text-align: center;
-    transition: all 0.3s var(--ease-out-cubic);
-}
-
-.collaboration-card:hover {
-    border-color: var(--nm-accent);
-    transform: translateY(-3px);
-    box-shadow: var(--shadow-glow-accent);
-}
-
-.collaboration-logo {
-    max-width: 100%;
-    height: auto;
-    max-height: 100px;
-    margin-bottom: 15px;
-}
-
-.collaboration-card h4 {
-    color: var(--nm-text-accent);
-    font-family: var(--font-secondary); /* CHANGED */
-    margin-bottom: 10px;
+.contact-grid .app-icon span {
+    font-size: 1rem;
 }
 
 /* --- Portfolio Page --- */
 .portfolio-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 20px;
-    margin-top: 20px;
+    margin: 30px 0;
 }
 
 .portfolio-card {
     background: var(--nm-darkest);
     border: 1px solid var(--nm-border);
-    border-radius: var(--radius-lg); /* CHANGED */
+    border-radius: var(--radius-md); /* CHANGED */
     padding: 20px;
+    text-decoration: none;
+    color: var(--nm-text);
     /* MODIFIED: Premium transition */
     transition: transform 0.25s var(--ease-out-cubic), border-color 0.25s ease, box-shadow 0.25s var(--ease-out-cubic);
     will-change: transform, box-shadow;
@@ -1494,7 +1570,6 @@ body.light-theme .modal-overlay {
 .github-stat-light {
     display: none; /* Hide light theme images by default (in dark mode) */
 }
-
 .github-stat-dark {
     display: block; /* ADDED: Explicitly show dark theme images by default */
 }
@@ -1530,50 +1605,61 @@ body.light-theme .github-stat-dark {
     will-change: transform, box-shadow;
 }
 
+/* REMOVED: Redundant light-theme rule */
+
 .store-link a:hover {
-    border-color: var(--nm-accent-hover);
+    background-color: var(--nm-accent-hover);
+    border-color: var(--nm-accent);
+    color: var(--nm-darkest);
     transform: translateY(-3px);
     box-shadow: var(--shadow-glow-accent);
 }
 
-.collaborations-carousel {
-    max-width: 600px;
-    margin: 30px auto;
-    position: relative;
-    overflow: hidden;
-    border: 1px solid var(--nm-border);
-    border-radius: var(--radius-lg); /* CHANGED */
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-    padding: 20px;
+/* ADDED: Premium "press" effect */
+.store-link a:active {
+    transform: translateY(0px) scale(0.97);
+    transition-duration: 0.1s;
 }
 
-.carousel-track {
-    display: flex;
-    transition: transform 0.5s ease-in-out;
+.content-section-modal {
+    margin-top: 10px;
+}
+
+/* --- Collaborations Page Carousel (Adapted from old CSS) --- */
+.collaborations-carousel {
+    position: relative;
+    width: 100%;
+    /* Use a reasonable max-width for component */
+    max-width: 600px;
+    margin: 0 auto;
+    /* CRITICAL: Hides the parts of the slides/images that overflow */
+    overflow: hidden;
+    clip-path: none;
+    border-radius: var(--radius-lg); /* CHANGED */
+    border: 1px solid var(--nm-border);
+    padding: 10px 0;
+}
+
+.carousel-slide-container {
+    position: relative;
 }
 
 .carousel-slide {
-    min-width: 100%;
+    width: 100%;
     box-sizing: border-box;
-    padding: 0 10px;
-    text-align: center;
-    position: relative;
+    padding: 10px;
 }
 
-.carousel-slide img {
+.slide-image {
     width: 100%;
     height: auto;
-    display: block;
-    border-radius: var(--radius-sm); /* CHANGED */
-    border: 1px solid var(--nm-border);
-    opacity: 0;
-    transition: opacity 0.5s ease;
+    display: none; /* Hide all images by default */
+    border-radius: var(--radius-md); /* CHANGED */
 }
 
-.carousel-slide.active img {
-    opacity: 1; /* Only show the active image */
+.slide-image.active {
+    display: block; /* Show only the active image */
 }
-
 /* END CAROUSEL FIX */
 
 /* Carousel Navigation Buttons */
@@ -1640,8 +1726,13 @@ body.light-theme .github-stat-dark {
     background: var(--nm-container);
 }
 
-/* ================================================================= START OF CHANGE: Made .category-header h2 (Store) and h3 (Learn) match ================================================================= */
-.category-header h3, .category-header h2 {
+/*
+    =================================================================
+    START OF CHANGE: Made .category-header h2 (Store) and h3 (Learn) match
+    =================================================================
+*/
+.category-header h3,
+.category-header h2 {
     margin: 0;
     font-family: var(--font-secondary); /* CHANGED */
     color: var(--nm-text-accent);
@@ -1651,100 +1742,78 @@ body.light-theme .github-stat-dark {
     padding-bottom: 0;
     margin-bottom: 0;
 }
-/* ================================================================= END OF CHANGE ================================================================= */
+/*
+    =================================================================
+    END OF CHANGE
+    =================================================================
+*/
 
-.category-header i {
+.toggle-icon {
+    color: var(--nm-accent);
     transition: transform 0.3s ease;
 }
 
-.category-header.open i {
+.category.active .toggle-icon {
     transform: rotate(180deg);
 }
 
-.tool-list {
-    margin: 0 0 20px 0;
-    padding: 0;
-    list-style: none;
-    transition: all 0.3s ease;
+.tools-list {
+    max-height: 0;
     overflow: hidden;
+    transition: max-height 0.3s ease;
 }
 
-.tool-list li {
-    background: var(--nm-darkest);
-    border: 1px solid var(--nm-border);
-    border-top: none;
+.category.active .tools-list {
+    max-height: 5000px; /* Large enough to accommodate all content */
+}
+
+.tool-item {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
     padding: 15px 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.tool-item:last-child {
+    border-bottom: none;
+}
+
+.tool-item:hover {
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.tool-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    transition: background 0.3s ease;
 }
 
-.tool-list li:first-child {
-    border-top: 1px solid var(--nm-border);
-    border-radius: var(--radius-lg) var(--radius-lg) 0 0; /* CHANGED */
-}
-
-.tool-list li:last-child {
-    border-radius: 0 0 var(--radius-lg) var(--radius-lg); /* CHANGED */
-}
-
-.tool-list li a {
+.tool-title {
+    margin: 0;
     color: var(--nm-text);
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 1rem;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.tool-list li a i {
-    color: var(--nm-accent);
-}
-
-.tool-list li:hover {
-    background: var(--nm-container);
-}
-
-.learn-more-btn {
-    color: var(--nm-accent);
-    font-weight: bold;
-    text-decoration: none;
     font-family: var(--font-mono); /* CHANGED */
-    font-size: 0.9rem;
-    padding: 5px 10px;
-    border: 1px solid var(--nm-accent);
-    border-radius: var(--radius-md); /* CHANGED */
-    transition: all 0.3s ease;
+    font-size: 1rem;
 }
 
-.learn-more-btn:hover {
-    background: var(--nm-accent);
-    color: var(--nm-text-on-accent);
+.tool-expand-icon {
+    color: var(--nm-accent);
+    transition: transform 0.3s ease;
 }
 
-.tool-description-content {
-    background: var(--nm-dark);
-    border: 1px solid var(--nm-border);
-    border-top: none;
-    padding: 20px;
-    border-radius: 0 0 var(--radius-lg) var(--radius-lg); /* CHANGED */
-    margin-bottom: 20px;
-    transition: all 0.3s ease;
+.tool-item.active .tool-expand-icon {
+    transform: rotate(180deg);
 }
 
-.tool-description-content.hidden {
+.tool-description {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
     padding-top: 0;
-    padding-bottom: 0;
-    margin-bottom: 0;
 }
 
-.tool-description-content h4 {
-    color: var(--nm-text-accent);
-    font-family: var(--font-secondary); /* CHANGED */
-    margin-top: 0;
-    margin-bottom: 10px;
+.tool-item.active .tool-description {
+    max-height: 2000px; /* Large enough to accommodate description */
+    padding-top: 15px;
 }
 
 .tool-description p {
@@ -1828,6 +1897,71 @@ body.light-theme .github-stat-dark {
     padding-bottom: 5px;
 }
 
+.store-page .tool-features ul {
+    padding-inline-start: 20px; /* CHANGED (padding-left) */
+    margin: 0 0 15px 0;
+}
+
+/* REMOVED: Redundant .store-page .tool-features li */
+/* REMOVED: Redundant .store-page .tool-features li::before */
+
+
+/* Store Grid Layout */
+.store-page .features-grid {
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 30px;
+}
+
+/* Store Warning and Note Styles */
+.store-page .warning {
+    border-inline-start: 4px solid var(--nm-warning); /* CHANGED (border-left) */
+    background: var(--warning-bg);
+    padding: 1.5rem;
+    border-radius: var(--radius-lg); /* CHANGED */
+    margin: 20px 0;
+}
+
+.store-page .note {
+    border-inline-start: 4px solid var(--nm-accent); /* CHANGED (border-left) */
+    background: rgba(var(--glow-rgb), 0.1);
+    padding: 1.5rem;
+    border-radius: var(--radius-lg); /* CHANGED */
+    margin: 20px 0;
+}
+
+/* Store Contact Grid */
+.store-page .contact-grid {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.store-page .contact-grid .app-icon {
+    max-width: 100%;
+    padding: 15px;
+    font-size: 1.1rem;
+}
+
+/* Store Page Header Enhancements */
+.store-page .page-header {
+    margin-bottom: 40px;
+}
+
+.store-page .page-header h1 {
+    font-size: 2.8rem;
+    margin-bottom: 15px;
+}
+
+.store-page .page-header p {
+    font-size: 1.2rem;
+    max-width: 700px;
+}
+
+/* Store Content Section Enhancements */
+.store-page .content-section {
+    padding: 40px;
+}
+
 /* Store Feature Icon Enhancements */
 .store-page .feature-icon {
     font-size: 3rem;
@@ -1885,31 +2019,87 @@ body.light-theme .github-stat-dark {
 }
 
 /* ================================================================= MEDIA QUERIES (RESPONSIVENESS) ================================================================= */
+
 @media (max-width: 992px) {
     /* All navigation-related styles are handled globally now, only adjust layout */
-    
     .phone-container {
         height: calc(100vh - 70px);
         margin-top: 70px;
     }
-    
+
     .page-content {
         margin-top: 70px;
         padding: 15px;
     }
-    
+
     .content-section {
         padding: 20px;
     }
-    
-    .tool-card {
-        padding: 15px;
+
+    .content-grid {
+        grid-template-columns: 1fr;
     }
 
-    .hero-section {
-        padding: 30px 0 40px 0;
+    .nav-title h1 {
+        font-size: 1.5rem;
+        gap: 8px;
+    }
+
+    #disclaimer-modal .modal-footer {
+        flex-direction: column;
+        gap: 15px;
+        padding: 15px;
     }
     
+    /* MODIFICATION: Make banner footer buttons row again */
+    #disclaimer-modal.banner-style .modal-footer {
+        flex-direction: row;
+    }
+
+    #disclaimer-modal .decline-btn, #disclaimer-modal .accept-btn {
+        font-size: 0.9rem;
+        padding: 10px 15px;
+        min-height: 35px;
+        min-width: 80px;
+        margin: 0;
+    }
+
+    .modal-overlay {
+        /* --- OPTIMIZED: Removed blur on mobile, using solid fallback --- */
+        -webkit-backdrop-filter: none;
+        backdrop-filter: none;
+    }
+
+    .modal-content {
+        width: 95%;
+        height: 95%;
+    }
+    
+    /* MODIFICATION: Ensure banner styles override fullscreen modal */
+    .modal-overlay.banner-style .modal-content {
+        width: 100%;
+        height: auto;
+        max-height: 50vh; /* A bit more space on mobile */
+    }
+
+    .modal-header {
+        padding: 15px 20px;
+    }
+
+    .modal-body {
+        padding: 20px;
+        font-size: 0.9rem;
+    }
+
+    .modal-header h2 {
+        font-size: 1.3rem;
+    }
+    
+    /* Enhanced Mobile Responsiveness */
+    .hero-section {
+        padding: 25px 0 35px 0;
+    }
+
     .hero-section h2 {
         font-size: 2rem;
     }
@@ -1917,42 +2107,32 @@ body.light-theme .github-stat-dark {
     .hero-text {
         font-size: 1.1rem;
     }
-    
+
     .trust-indicators {
-        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+        grid-template-columns: repeat(2, 1fr);
         gap: 10px;
-    }
-    
-    .trust-item {
-        padding: 10px 5px;
-    }
-    
-    .trust-item span {
-        font-size: 0.75rem;
     }
 
     .hero-actions {
-        gap: 10px;
+        flex-direction: column;
+        align-items: center;
     }
-    
+
     .hero-cta {
-        font-size: 1rem;
-        padding: 12px 20px;
-        min-width: 150px;
+        width: 100%;
+        max-width: 280px;
+    }
+
+    .stats-section {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
     }
 
     .features-grid {
+        grid-template-columns: 1fr;
         gap: 20px;
     }
 
-    .feature-card {
-        padding: 25px 20px;
-    }
-    
-    .stat-number {
-        font-size: 1.8rem;
-    }
-    
     .community-grid {
         grid-template-columns: 1fr;
     }
@@ -1964,7 +2144,6 @@ body.light-theme .github-stat-dark {
         border-right: none;
         border-radius: 0;
     }
-
     .carousel-nav-btn {
         padding: 8px;
     }
@@ -1973,11 +2152,11 @@ body.light-theme .github-stat-dark {
     .store-page .page-header h1 {
         font-size: 2.2rem;
     }
-    
+
     .store-page .page-header p {
         font-size: 1.1rem;
     }
-    
+
     .store-page .content-section {
         padding: 25px;
     }
@@ -2000,7 +2179,7 @@ body.light-theme .github-stat-dark {
         padding: 10px 20px;
         font-size: 0.9rem;
     }
-    
+
     .store-page .contact-grid {
         grid-template-columns: 1fr;
         gap: 15px;
@@ -2013,7 +2192,11 @@ body.light-theme .github-stat-dark {
     }
 }
 
-/* ================================================================= FIX: DESKTOP MEDIA QUERY Implements [ (empty) ] [ Title ] [ Actions | Links ] ================================================================= */
+/* =================================================================
+    FIX: DESKTOP MEDIA QUERY
+    Implements [ (empty) ] [ Title ] [ Actions | Links ]
+    =================================================================
+*/
 @media (min-width: 993px) {
     /* Hide the burger menu on desktop */
     .burger-menu {
@@ -2024,61 +2207,75 @@ body.light-theme .github-stat-dark {
     .nav-container {
         /* Use flexbox to group items on the right */
         display: flex;
-        justify-content: flex-end;
+        justify-content: flex-end; 
         align-items: center;
-        padding: 15px 0; /* Increase padding for desktop */
+        padding: 10px 0;
+        /* Position relative is needed for the absolute child */
+        position: relative;
     }
-
+    
+    /* 1. Title (Left) */
     .nav-title {
-        /* Set title to absolute center */
-        position: absolute;
-        left: 50%;
-        transform: translateX(-50%);
-        order: unset; /* Remove mobile order */
-        /* Ensure it doesn't overlap the links/actions */
-        max-width: calc(100% - 400px); /* 400px reserve space for links/actions */
+        /* * By removing absolute positioning, the title becomes
+         * a normal flex item. 'margin-right: auto' consumes
+         * all available space, pushing all other items
+         * (actions and menu) to the far right.
+        */
+        margin-inline-end: auto; /* CHANGED (margin-right) */
     }
-
-    /* The main nav menu is now horizontal and on the right */
+    
+    /* 2. Menu Links (Right) */
     .nav-menu {
+        order: 2; /* Actions first, then Menu */
+        
+        /* Reset mobile styles */
         position: static;
-        top: auto;
-        right: auto;
+        transform: none;
+        height: auto;
         width: auto;
         max-width: none;
-        height: auto;
         background: none;
         box-shadow: none;
-        transform: translateX(0);
-        opacity: 1;
-        visibility: visible;
-        flex-direction: row; /* Horizontal links */
         padding: 0;
-        margin-inline-start: 20px; /* CHANGED (margin-left) */
         overflow-y: visible;
-        display: flex; /* Ensure it is displayed as a flex container */
+        margin-top: 0;
+        
+        /* Style the links inside */
+        display: flex;
+        flex-direction: row;
         align-items: center;
+        gap: 5px; 
+    }
+    
+    .nav-link {
+        width: auto; /* Let links be their natural width */
+        font-size: 0.85rem;
+    }
+    
+    /* 3. Actions (Right, before menu) */
+    .nav-actions {
+        order: 1; /* Actions first, then Menu */
+        
+        /* Reset mobile styles */
+        margin-top: 0;
+        margin-inline-start: 0; /* CHANGED (margin-left) */
+        width: auto;
+        
+        /* Style the buttons inside */
+        display: flex;
+        flex-direction: row;
         gap: 10px;
-        order: 3; /* Position after title (logically) */
-        flex-shrink: 1;
-        flex-wrap: wrap; /* Allow wrapping if many links */
-        justify-content: flex-end;
     }
 
-    .nav-link {
-        width: auto;
-        padding: 6px 15px; /* Tighter padding on desktop */
-    }
-    
-    /* Nav Actions (desktop) are now grouped with nav menu links */
-    .nav-actions {
-        margin-inline-start: 10px; /* CHANGED (margin-left) */
-        order: 4; /* Position after nav links */
-        gap: 5px; /* Tighter gap on desktop */
-    }
-    
     .nav-action-btn {
-        padding: 6px 15px; /* Tighter padding for desktop buttons */
+        width: auto;
+        font-size: 0.8rem;
+        padding: 8px 15px; /* Restore desktop padding */
+    }
+    
+    /* Re-show text on desktop */
+    .nav-action-btn span {
+        display: inline;
     }
 
     /* Reset the phone container for desktop view */
@@ -2110,28 +2307,37 @@ body.light-theme .github-stat-dark {
     .hero-section h2 {
         font-size: 3rem;
     }
-
+    
     .hero-text {
         font-size: 1.3rem;
     }
 
     /* Store Page Desktop Styles */
-    .store-page .content-section {
-        padding: 40px;
-    }
-
     .store-page .features-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 30px;
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: 35px;
     }
 
     .store-page .feature-card {
         min-height: 550px;
     }
+
+    .contact-page-btn {
+        max-width: 350px;
+        padding: 18px 35px;
+        font-size: 1.2rem;
+    }
     
-    .store-page .contact-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 20px;
+    /* MODIFICATION: Center the banner content on desktop */
+    .modal-overlay.banner-style .modal-content {
+        width: 95%;
+        max-width: 1200px;
+        margin: 0 auto;
+        border-radius: 20px 20px 0 0;
+    }
+    
+    .modal-overlay.banner-style .modal-header h2 {
+        font-size: 1.3rem;
     }
 }
 /* --- END OF DESKTOP FIX --- */
@@ -2177,39 +2383,16 @@ button:focus-visible,
 .nav-link:focus-visible,
 .nav-action-btn:focus-visible,
 .contact-grid .app-icon:focus-visible,
-.feature-card:focus-visible,
-.hero-cta:focus-visible,
-.store-link a:focus-visible,
-.learn-more-btn:focus-visible,
-.payment-btn:focus-visible,
-.contact-page-btn:focus-visible,
-.carousel-nav-btn:focus-visible,
-.language-button:focus-visible {
-    outline: 2px solid var(--nm-warning);
-    outline-offset: 3px;
-    border-radius: var(--radius-sm); /* CHANGED */
-    box-shadow: 0 0 0 4px rgba(255, 255, 68, 0.5);
-    transition: outline-color 0.1s ease, box-shadow 0.1s ease;
-}
-
-/* Special focus-visible for already styled/elevated elements */
-.hero-cta.primary:focus-visible,
-.hero-cta.secondary:focus-visible,
-.payment-btn:focus-visible,
-.contact-page-btn:focus-visible {
-    outline: 3px solid var(--nm-warning);
+.feature-card:focus-visible {
+    outline: 2px solid var(--nm-accent) !important;
     outline-offset: 2px;
-    box-shadow: 0 0 10px 3px rgba(255, 255, 68, 0.7);
+    box-shadow: var(--shadow-glow-accent);
 }
 
-/* Fix for modal content in banner style */
-@media (max-width: 992px) {
-    .modal-overlay.banner-style .modal-content {
-        border-radius: 20px 20px 0 0;
-    }
-    
-    .modal-overlay.banner-style .modal-header h2 {
-        font-size: 1.3rem;
-    }
+/* For inputs, we can just enhance the existing style */
+.form-group input:focus-visible,
+.form-group textarea:focus-visible {
+    outline: none !important;
+    border-color: var(--nm-accent-hover) !important;
+    box-shadow: 0 0 5px 0px rgba(var(--glow-rgb), 0.5) !important;
 }
-/* --- END OF DESKTOP FIX --- */
