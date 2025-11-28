@@ -1,7 +1,7 @@
 /*
     =================================================================
     DEDSEC PROJECT MULTI-PAGE STYLES
-    VERSION: 4.4 (Compact Buttons, Colored Collabs)
+    VERSION: 4.5 (Purple Lavender Edition)
     =================================================================
 */
 
@@ -14,11 +14,13 @@
     --nm-darkest: #000000;           /* Pure black */
     --nm-dark: #000000;              /* Pure black */
     --nm-container: #000000;         /* Pure black */
-    --nm-border: #ffffff;            /* Pure white borders */
     
-    /* ALL ACCENTS PURE WHITE */
-    --nm-accent: #ffffff;            
-    --nm-accent-hover: #ffffff;      
+    /* UPDATED: Purple Lavender for Borders */
+    --nm-border: #cd93ff;            
+    
+    /* UPDATED: Purple Lavender for Icons/Accents */
+    --nm-accent: #cd93ff;            
+    --nm-accent-hover: #cd93ff;      
     
     --nm-text: #ffffff;              /* Pure white text */
     --nm-text-muted: #ffffff;        /* Pure white text */
@@ -31,11 +33,11 @@
     --nm-warning: #ffffff;           
     
     /* === TEXT ON INVERTED BACKGROUNDS === */
-    --nm-text-on-accent: #000000;    /* Black text on white accent */
+    --nm-text-on-accent: #000000;    /* Black text on purple accent */
     --nm-text-on-status: #000000;    /* Black text on status buttons */
     
     /* === NO GLOW / NO SHADOW === */
-    --glow-rgb: 255, 255, 255;       
+    --glow-rgb: 205, 147, 255;       /* Updated to match Lavender */
     --glow-color: transparent;
     --nm-search-green: var(--nm-accent);
     --glow-color-search: transparent;
@@ -85,11 +87,13 @@ body.light-theme {
     --nm-darkest: #ffffff;           /* Pure white */
     --nm-dark: #ffffff;              /* Pure white */
     --nm-container: #ffffff;         /* Pure white */
-    --nm-border: #000000;            /* Pure black borders */
     
-    /* ALL ACCENTS PURE BLACK */
-    --nm-accent: #000000;            
-    --nm-accent-hover: #000000;      
+    /* UPDATED: Deep Purple/Lavender for Borders (Contrast against white) */
+    --nm-border: #7b1fa2;            
+    
+    /* UPDATED: Deep Purple/Lavender for Icons/Accents */
+    --nm-accent: #7b1fa2;            
+    --nm-accent-hover: #7b1fa2;      
     
     --nm-text: #000000;              /* Pure black text */
     --nm-text-muted: #000000;        /* Pure black text */
@@ -102,11 +106,11 @@ body.light-theme {
     --nm-warning: #000000;           
     
     /* === LIGHT THEME TEXT ON COLORS === */
-    --nm-text-on-accent: #ffffff;    /* White text on Black accent */
+    --nm-text-on-accent: #ffffff;    /* White text on Purple accent */
     --nm-text-on-status: #ffffff;    
     
     /* === LIGHT THEME GLOW EFFECTS === */
-    --glow-rgb: 0, 0, 0;             
+    --glow-rgb: 123, 31, 162;        /* Updated to match Dark Lavender */
     --glow-color: transparent;
     --nm-search-green: var(--nm-accent);
     
@@ -142,6 +146,11 @@ body {
     position: relative;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+}
+
+/* FORCE ICON COLOR OVERRIDE */
+i, .material-icons, .fa, .fab, .fas, .far {
+    color: var(--nm-accent);
 }
 
 @keyframes fadeIn {
