@@ -1,7 +1,7 @@
 /*
     =================================================================
     DEDSEC PROJECT MULTI-PAGE STYLES
-    VERSION: 4.1 (Smoother Modal & Cleaned Sponsor)
+    VERSION: 4.2 (Strict Monochrome)
     =================================================================
 */
 
@@ -9,37 +9,42 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Orbitron:wght@400;700&family=Roboto+Mono:wght@400;600&display=swap');
 
 :root {
-    /* === DARK THEME COLOR SYSTEM === */
+    /* === DARK THEME COLOR SYSTEM (STRICT B&W) === */
     --nm-abyss-blue: #000000;        /* Pure black */
     --nm-darkest: #0a0a0a;           /* Near black */
     --nm-dark: #1a1a1a;              /* Dark gray */
     --nm-container: #2a2a2a;         /* Container background */
     --nm-border: #404040;            /* Borders and dividers */
-    --nm-accent: #9966ff;            /* Lavender purple */
-    --nm-accent-hover: #8844ff;      /* Brighter purple for hover */
+    
+    /* ALL ACCENTS CONVERTED TO WHITE */
+    --nm-accent: #ffffff;            /* Pure White */
+    --nm-accent-hover: #e0e0e0;      /* Slightly darker white for hover */
+    
     --nm-text: #ffffff;              /* Pure white text */
     --nm-text-muted: #cccccc;        /* Light gray text */
-    --nm-text-accent: #ffffff;       /* White accent text in dark theme */
-    --nm-danger: #ff4444;            /* Bright red */
-    --nm-danger-hover: #ff2222;      /* Brighter red */
-    --nm-success: #44ff44;           /* Bright green */
-    --nm-warning: #ffff44;           /* Bright yellow */
+    --nm-text-accent: #ffffff;       /* White accent text */
+    
+    /* STATUS COLORS CONVERTED TO WHITE */
+    --nm-danger: #ffffff;            
+    --nm-danger-hover: #cccccc;      
+    --nm-success: #ffffff;           
+    --nm-warning: #ffffff;           
     
     /* === TEXT ON COLORED BACKGROUNDS === */
-    --nm-text-on-accent: #000000;    /* Black text on accent */
-    --nm-text-on-status: #000000;    /* Black text on status colors */
+    --nm-text-on-accent: #000000;    /* Black text on white accent */
+    --nm-text-on-status: #000000;    /* Black text on status buttons */
     
-    /* === GLOW EFFECTS === */
-    --glow-rgb: 153, 102, 255;       /* RGB values for lavender purple glow */
+    /* === GLOW EFFECTS (WHITE) === */
+    --glow-rgb: 255, 255, 255;       /* RGB values for White glow */
     --glow-color: rgba(var(--glow-rgb), 0.0);
     --nm-search-green: var(--nm-accent);
     --glow-color-search: rgba(var(--glow-rgb), 0.0);
-    --glow-color-danger: rgba(255, 68, 68, 0.0);
-    --glow-color-warning: rgba(255, 255, 68, 0.8);
+    --glow-color-danger: rgba(255, 255, 255, 0.0);
+    --glow-color-warning: rgba(255, 255, 255, 0.8);
 
-    /* === STATUS BACKGROUNDS === */
-    --warning-bg: rgba(255, 255, 68, 0.1);
-    --danger-bg: rgba(255, 68, 68, 0.1);
+    /* === STATUS BACKGROUNDS (WHITE WITH OPACITY) === */
+    --warning-bg: rgba(255, 255, 255, 0.1);
+    --danger-bg: rgba(255, 255, 255, 0.1);
     
     /* === TYPOGRAPHY (IMPROVEMENT) === */
     --font-primary: 'Inter', sans-serif;
@@ -57,7 +62,7 @@
     --z-noise: -1;
     --z-base: 1;
     --z-header: 1000;
-    --z-modal-overlay: 1010; /* Fixed: Higher than header */
+    --z-modal-overlay: 1010; 
     --z-banner: 1100;
     
     /* === LAYOUT VARIABLES === */
@@ -70,44 +75,49 @@
     --ease-out-back: cubic-bezier(0.34, 1.56, 0.64, 1);
     --ease-in-out-quad: cubic-bezier(0.45, 0, 0.55, 1);
     --shadow-glow-accent: 0 0 15px 0px rgba(var(--glow-rgb), 0.5);
-    --shadow-glow-success: 0 0 15px 0px rgba(68, 255, 68, 0.5);
-    --shadow-glow-danger: 0 0 15px 0px rgba(255, 68, 68, 0.5);
+    --shadow-glow-success: 0 0 15px 0px rgba(255, 255, 255, 0.5);
+    --shadow-glow-danger: 0 0 15px 0px rgba(255, 255, 255, 0.5);
 }
 
-/* === LIGHT THEME COLOR SYSTEM === */
+/* === LIGHT THEME COLOR SYSTEM (STRICT B&W) === */
 body.light-theme {
     --nm-abyss-blue: #ffffff;        /* Pure white */
     --nm-darkest: #f0f0f0;           /* Very light gray */
     --nm-dark: #e0e0e0;              /* Light gray */
     --nm-container: #d0d0d0;         /* Container background */
     --nm-border: #a0a0a0;            /* Borders and dividers */
-    --nm-accent: #9966ff;            /* Lavender purple */
-    --nm-accent-hover: #8844ff;      /* Brighter purple */
+    
+    /* ALL ACCENTS CONVERTED TO BLACK */
+    --nm-accent: #000000;            /* Pure Black */
+    --nm-accent-hover: #333333;      /* Dark gray for hover */
+    
     --nm-text: #000000;              /* Pure black text */
     --nm-text-muted: #333333;        /* Dark gray text */
-    --nm-text-accent: #000000;       /* Black accent text in light theme */
-    --nm-danger: #ff0000;            /* Strong red */
-    --nm-danger-hover: #dd0000;      /* Darker red */
-    --nm-success: #00cc00;           /* Green */
-    --nm-warning: #cc9900;           /* Amber */
+    --nm-text-accent: #000000;       /* Black accent text */
+    
+    /* STATUS COLORS CONVERTED TO BLACK */
+    --nm-danger: #000000;            
+    --nm-danger-hover: #333333;      
+    --nm-success: #000000;           
+    --nm-warning: #000000;           
     
     /* === LIGHT THEME TEXT ON COLORS === */
-    --nm-text-on-accent: #ffffff;
-    --nm-text-on-status: #000000;
+    --nm-text-on-accent: #ffffff;    /* White text on Black accent */
+    --nm-text-on-status: #ffffff;    /* White text on Black status */
     
-    /* === LIGHT THEME GLOW EFFECTS === */
-    --glow-rgb: 153, 102, 255;       /* RGB values for lavender purple */
+    /* === LIGHT THEME GLOW EFFECTS (BLACK) === */
+    --glow-rgb: 0, 0, 0;             /* RGB values for Black shadow/glow */
     --glow-color: rgba(var(--glow-rgb), 0.3);
     --nm-search-green: var(--nm-accent);
     
     /* === LIGHT THEME STATUS BACKGROUNDS === */
-    --warning-bg: rgba(204, 153, 0, 0.1);
-    --danger-bg: rgba(255, 0, 0, 0.1);
+    --warning-bg: rgba(0, 0, 0, 0.1);
+    --danger-bg: rgba(0, 0, 0, 0.1);
     
     /* === LIGHT THEME SHADOWS === */
     --shadow-glow-accent: 0 0 15px 0px rgba(var(--glow-rgb), 0.4);
-    --shadow-glow-success: 0 0 15px 0px rgba(0, 204, 0, 0.4);
-    --shadow-glow-danger: 0 0 15px 0px rgba(255, 0, 0, 0.4);
+    --shadow-glow-success: 0 0 15px 0px rgba(0, 0, 0, 0.4);
+    --shadow-glow-danger: 0 0 15px 0px rgba(0, 0, 0, 0.4);
 }
 
 /*
@@ -193,7 +203,8 @@ body::before {
     z-index: var(--z-backdrop); /* CHANGED */
     pointer-events: none;
     transition: background-image 0.3s ease;
-    /* REMOVED: transform: translateZ(0); */
+    /* FORCE MONOCHROME ON IMAGE */
+    filter: grayscale(100%);
 }
 
 body::after {
@@ -208,12 +219,13 @@ body::after {
     opacity: 0.3;
     z-index: var(--z-noise); /* CHANGED */
     pointer-events: none;
-    /* REMOVED: transform: translateZ(0); */
 }
 
 body.light-theme::before {
     background-image: url('https://raw.githubusercontent.com/dedsec1121fk/dedsec1121fk.github.io/6f776cd9772a079a6d26370dddab911bf7cde8cd/Assets/Images/Logos/Custom%20White%20Purple%20Fox%20Logo.jpg');
     opacity: 0.1; /* Reduced opacity for better readability */
+    /* FORCE MONOCHROME ON IMAGE */
+    filter: grayscale(100%);
 }
 
 /* --- NAVIGATION STYLES --- */
@@ -1428,7 +1440,7 @@ pre code,
 
 .tip {
     border-inline-start: 4px solid var(--nm-success); /* CHANGED (border-left) */
-    background: rgba(68, 255, 68, 0.1);
+    background: rgba(var(--glow-rgb), 0.1);
     padding: 1rem;
     border-radius: var(--radius-lg); /* CHANGED */
     margin: 20px 0;
