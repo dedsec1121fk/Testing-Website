@@ -1,7 +1,7 @@
 /*
     =================================================================
     DEDSEC PROJECT MULTI-PAGE STYLES
-    VERSION: 4.6 (Contrast Fixes & Overflow Protection)
+    VERSION: 4.7 (GitHub Stats Color Fix)
     =================================================================
 */
 
@@ -1474,7 +1474,7 @@ pre code,
     border: 1px solid var(--nm-border);
     border-radius: var(--radius-sm);
     transition: box-shadow 0.3s ease;
-    filter: grayscale(100%);
+    filter: none; /* CHANGED: Set to none to show original colors */
 }
 
 .github-stats img:hover {
