@@ -1,7 +1,7 @@
 /*
     =================================================================
     DEDSEC PROJECT MULTI-PAGE STYLES
-    VERSION: 4.5 (Purple Lavender Edition)
+    VERSION: 4.6 (Contrast Fixes & Overflow Protection)
     =================================================================
 */
 
@@ -15,10 +15,10 @@
     --nm-dark: #000000;              /* Pure black */
     --nm-container: #000000;         /* Pure black */
     
-    /* UPDATED: Purple Lavender for Borders */
+    /* Purple Lavender for Borders */
     --nm-border: #cd93ff;            
     
-    /* UPDATED: Purple Lavender for Icons/Accents */
+    /* Purple Lavender for Icons/Accents */
     --nm-accent: #cd93ff;            
     --nm-accent-hover: #cd93ff;      
     
@@ -37,7 +37,7 @@
     --nm-text-on-status: #000000;    /* Black text on status buttons */
     
     /* === NO GLOW / NO SHADOW === */
-    --glow-rgb: 205, 147, 255;       /* Updated to match Lavender */
+    --glow-rgb: 205, 147, 255;       
     --glow-color: transparent;
     --nm-search-green: var(--nm-accent);
     --glow-color-search: transparent;
@@ -88,10 +88,10 @@ body.light-theme {
     --nm-dark: #ffffff;              /* Pure white */
     --nm-container: #ffffff;         /* Pure white */
     
-    /* UPDATED: Deep Purple/Lavender for Borders (Contrast against white) */
+    /* Deep Purple/Lavender for Borders (Contrast against white) */
     --nm-border: #7b1fa2;            
     
-    /* UPDATED: Deep Purple/Lavender for Icons/Accents */
+    /* Deep Purple/Lavender for Icons/Accents */
     --nm-accent: #7b1fa2;            
     --nm-accent-hover: #7b1fa2;      
     
@@ -110,7 +110,7 @@ body.light-theme {
     --nm-text-on-status: #ffffff;    
     
     /* === LIGHT THEME GLOW EFFECTS === */
-    --glow-rgb: 123, 31, 162;        /* Updated to match Dark Lavender */
+    --glow-rgb: 123, 31, 162;        
     --glow-color: transparent;
     --nm-search-green: var(--nm-accent);
     
@@ -148,7 +148,7 @@ body {
     -moz-osx-font-smoothing: grayscale;
 }
 
-/* FORCE ICON COLOR OVERRIDE */
+/* FORCE ICON COLOR OVERRIDE (Purple by default) */
 i, .material-icons, .fa, .fab, .fas, .far {
     color: var(--nm-accent);
 }
@@ -397,6 +397,11 @@ body.light-theme .nav-title h1 {
     box-shadow: none;
 }
 
+/* Ensure icon inside nav button turns black on hover */
+.nav-action-btn:hover i {
+    color: var(--nm-text-on-accent) !important;
+}
+
 .nav-action-btn:active {
     transform: translateY(0px) scale(0.97);
     transition-duration: 0.1s;
@@ -583,8 +588,10 @@ body.light-theme .page-header h1 {
     animation: slideInUp 0.6s 0.2s var(--ease-out-back) backwards;
 }
 
+/* FIX: Trusted/Hero badge icon MUST be black on purple background */
 .hero-badge i {
     animation: pulse 2s infinite;
+    color: var(--nm-text-on-accent) !important;
 }
 
 .hero-section h2 {
@@ -635,9 +642,10 @@ body.light-theme .page-header h1 {
     box-shadow: none;
 }
 
+/* FIX: Trust Icon MUST be black on purple background (Hover) */
 .trust-item:hover i,
 .trust-item:hover span {
-    color: var(--nm-text-on-accent);
+    color: var(--nm-text-on-accent) !important;
 }
 
 .trust-item i {
@@ -682,6 +690,11 @@ body.light-theme .page-header h1 {
     box-shadow: none;
 }
 
+/* Fix CTA Primary Icon color */
+.hero-cta.primary i {
+    color: var(--nm-text-on-accent) !important;
+}
+
 .hero-cta.secondary {
     background: transparent;
     color: var(--nm-accent);
@@ -700,6 +713,11 @@ body.light-theme .page-header h1 {
     color: var(--nm-text-on-accent);
     transform: translateY(-3px) scale(1.05);
     box-shadow: none;
+}
+
+/* Fix CTA Secondary Hover Icon color */
+.hero-cta.secondary:hover i {
+    color: var(--nm-text-on-accent) !important;
 }
 
 .stats-section {
@@ -1252,18 +1270,19 @@ body.light-theme .modal-overlay {
 
 /* ================================================================= COMPONENT STYLES (CODE, NOTES, ETC) ================================================================= */
 
-/* --- UPDATED: Compact Code/Coupon Box --- */
+/* --- UPDATED: Compact Code/Coupon Box with Overflow Fix --- */
 pre,
 .code-container {
     background: var(--nm-darkest);
     border: 1px solid var(--nm-border);
-    /* MODIFIED: Reduced padding and added width/margin constraints */
     padding: 10px 15px;
     width: fit-content;
     min-width: 200px;
-    max-width: 100%;
+    /* FIX: Added max-width and box-sizing to prevent overflow on mobile */
+    max-width: 100%; 
+    box-sizing: border-box;
     margin: 10px auto 20px auto;
-    /* MODIFIED: Flexbox to center content and reduce vertical space */
+    
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -1275,8 +1294,13 @@ pre,
     font-size: 0.9rem;
     line-height: 1.4;
     position: relative;
+    
+    /* FIX: Force wrapping for long non-spaced strings (keys, tokens) */
     white-space: pre-wrap;
     word-wrap: break-word;
+    word-break: break-all;
+    overflow-wrap: anywhere;
+    
     transition: border-color 0.3s ease;
 }
 
@@ -1289,8 +1313,11 @@ pre code,
 .code-container code {
     color: var(--nm-text); 
     text-shadow: none; 
+    /* FIX: Ensure code element also respects breaks */
     white-space: pre-wrap;
     word-wrap: break-word;
+    word-break: break-all;
+    overflow-wrap: anywhere;
 }
 
 /* MODIFIED: Tighter layout for the coupon text */
@@ -1391,7 +1418,7 @@ pre code,
 }
 
 .contact-grid .app-icon:hover i {
-    color: var(--nm-text-on-accent);
+    color: var(--nm-text-on-accent) !important;
 }
 
 .contact-grid .app-icon span {
