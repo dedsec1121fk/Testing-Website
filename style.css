@@ -1,7 +1,7 @@
 /*
     =================================================================
     DEDSEC PROJECT MULTI-PAGE STYLES
-    VERSION: 4.3 (Strict B&W, No Glow, Colored BG Images)
+    VERSION: 4.4 (Compact Buttons, Colored Collabs)
     =================================================================
 */
 
@@ -18,10 +18,10 @@
     
     /* ALL ACCENTS PURE WHITE */
     --nm-accent: #ffffff;            
-    --nm-accent-hover: #ffffff;      /* Keep white (hover handled via inversion) */
+    --nm-accent-hover: #ffffff;      
     
     --nm-text: #ffffff;              /* Pure white text */
-    --nm-text-muted: #ffffff;        /* Pure white text (no grey) */
+    --nm-text-muted: #ffffff;        /* Pure white text */
     --nm-text-accent: #ffffff;       
     
     /* STATUS COLORS PURE WHITE */
@@ -42,7 +42,7 @@
     --glow-color-danger: transparent;
     --glow-color-warning: transparent;
 
-    /* === STATUS BACKGROUNDS (TRANSPARENT OR SOLID) === */
+    /* === STATUS BACKGROUNDS === */
     --warning-bg: transparent;
     --danger-bg: transparent;
     
@@ -183,7 +183,7 @@ body {
 ::-webkit-scrollbar-thumb { background: var(--nm-border); border: 2px solid var(--nm-abyss-blue); }
 ::-webkit-scrollbar-thumb:hover { background: var(--nm-accent); }
 
-/* --- BACKGROUND IMAGE STYLES (RESTORED COLORS) --- */
+/* --- BACKGROUND IMAGE STYLES --- */
 body::before {
     content: '';
     position: fixed;
@@ -199,7 +199,6 @@ body::before {
     z-index: var(--z-backdrop);
     pointer-events: none;
     transition: background-image 0.3s ease;
-    /* REMOVED: Grayscale filter */
 }
 
 body::after {
@@ -219,7 +218,6 @@ body::after {
 body.light-theme::before {
     background-image: url('https://raw.githubusercontent.com/dedsec1121fk/dedsec1121fk.github.io/6f776cd9772a079a6d26370dddab911bf7cde8cd/Assets/Images/Logos/Custom%20White%20Purple%20Fox%20Logo.jpg');
     opacity: 0.1;
-    /* REMOVED: Grayscale filter */
 }
 
 /* --- NAVIGATION STYLES --- */
@@ -230,7 +228,6 @@ body.light-theme::before {
     width: 100%;
     background-color: var(--nm-darkest) !important;
     border-bottom: 1px solid var(--nm-border) !important;
-    /* REMOVED: Shadow */
     box-shadow: none !important;
     transition: background-color 0.3s ease, border-color 0.3s ease;
     z-index: var(--z-header);
@@ -263,7 +260,6 @@ body.light-theme::before {
     font-size: 2rem; 
     color: var(--nm-text-accent);
     font-family: var(--font-secondary);
-    /* REMOVED: Text Shadow */
     text-shadow: none;
     display: flex;
     align-items: center;
@@ -309,7 +305,6 @@ body.light-theme .nav-title h1 {
     max-width: 300px;
     height: calc(100vh - 70px);
     background: var(--nm-darkest);
-    /* ADDED: Border for sidebar since background is same as body */
     border-left: 1px solid var(--nm-border);
     flex-direction: column;
     padding: 20px;
@@ -344,7 +339,6 @@ body.light-theme .nav-title h1 {
 
 .nav-link:hover,
 .nav-link.active {
-    /* INVERTED COLORS ON HOVER */
     background: var(--nm-accent);
     color: var(--nm-text-on-accent); 
     border-color: var(--nm-accent);
@@ -357,7 +351,6 @@ body.light-theme .nav-title h1 {
     transition-duration: 0.1s;
 }
 
-/* FIX: NAV ACTIONS (MOBILE) */
 .nav-actions {
     display: flex;
     gap: 10px;
@@ -388,7 +381,6 @@ body.light-theme .nav-title h1 {
 }
 
 .nav-action-btn:hover {
-    /* INVERTED COLORS ON HOVER */
     background: var(--nm-accent);
     color: var(--nm-text-on-accent); 
     border-color: var(--nm-accent);
@@ -451,7 +443,6 @@ body.light-theme .page-header h1 {
 }
 
 .content-section:hover {
-    /* Thicker border on hover for emphasis */
     border: 1px solid var(--nm-accent);
     box-shadow: none;
 }
@@ -551,7 +542,7 @@ body.light-theme .page-header h1 {
     animation: fadeIn 0.5s 0.1s var(--ease-out-cubic) backwards;
 }
 
-/* --- NEW: Enhanced Hero Section Styles --- */
+/* --- Enhanced Hero Section Styles --- */
 .hero-section {
     text-align: center;
     padding: 40px 0 50px 0;
@@ -565,7 +556,6 @@ body.light-theme .page-header h1 {
     animation: fadeIn 0.8s var(--ease-out-cubic) backwards;
 }
 
-/* REMOVED: Gradient top bar */
 .hero-section::before {
     display: none;
 }
@@ -607,7 +597,6 @@ body.light-theme .page-header h1 {
     animation: slideInUp 0.6s 0.4s var(--ease-out-back) backwards;
 }
 
-/* NEW: Trust Indicators */
 .trust-indicators {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
@@ -631,7 +620,6 @@ body.light-theme .page-header h1 {
 
 .trust-item:hover {
     transform: translateY(-3px);
-    /* Invert colors */
     background: var(--nm-accent);
     color: var(--nm-text-on-accent);
     border-color: var(--nm-accent);
@@ -655,7 +643,6 @@ body.light-theme .page-header h1 {
     color: var(--nm-text);
 }
 
-/* NEW: Hero Actions */
 .hero-actions {
     display: flex;
     gap: 20px;
@@ -693,7 +680,7 @@ body.light-theme .page-header h1 {
 }
 
 .hero-cta.primary:hover {
-    background: var(--nm-accent); /* Keep same */
+    background: var(--nm-accent);
     opacity: 0.8;
     transform: translateY(-3px) scale(1.05);
     box-shadow: none;
@@ -706,7 +693,6 @@ body.light-theme .page-header h1 {
     box-shadow: none;
 }
 
-/* Enhanced Stats Section */
 .stats-section {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
@@ -726,7 +712,6 @@ body.light-theme .page-header h1 {
     overflow: hidden;
 }
 
-/* REMOVED: Gradient hover effect */
 .stat-card::before {
     display: none;
 }
@@ -781,7 +766,6 @@ body.light-theme .page-header h1 {
     overflow: hidden;
 }
 
-/* REMOVED: Gradient border effect */
 .feature-card::before {
     display: none;
 }
@@ -795,7 +779,6 @@ body.light-theme .page-header h1 {
 .feature-icon-wrapper {
     width: 70px;
     height: 70px;
-    /* Changed transparent/glow to border */
     background: transparent;
     border: 1px solid var(--nm-border);
     border-radius: var(--radius-lg);
@@ -856,7 +839,6 @@ body.light-theme .page-header h1 {
     transform: translateX(5px);
 }
 
-/* NEW: Community Section */
 .community-section {
     text-align: center;
     animation: fadeIn 0.8s 0.9s var(--ease-out-cubic) backwards;
@@ -906,14 +888,12 @@ body.light-theme .page-header h1 {
     text-align: center;
 }
 
-/* Enhanced Support Section */
 .support-section {
     text-align: center;
     animation: fadeIn 0.8s 1s var(--ease-out-cubic) backwards;
 }
 
 .sponsor-btn {
-    /* CHANGED: Solid B&W instead of gradient */
     background: var(--nm-accent) !important;
     border: 2px solid var(--nm-accent) !important;
     color: var(--nm-text-on-accent) !important;
@@ -952,7 +932,7 @@ body.light-theme .page-header h1 {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.9); /* Opaque black for overlay */
+    background: rgba(0, 0, 0, 0.9);
     -webkit-backdrop-filter: none;
     backdrop-filter: none;
     display: flex;
@@ -980,7 +960,7 @@ body.light-theme .modal-overlay {
     max-width: 800px;
     height: 85%;
     max-height: 800px;
-    border: 2px solid var(--nm-border); /* Stronger border */
+    border: 2px solid var(--nm-border);
     box-shadow: none; 
     display: flex;
     flex-direction: column;
@@ -1228,7 +1208,6 @@ body.light-theme .modal-overlay {
 .decline-btn, .accept-btn {
     color: var(--nm-text-on-status) !important;
     transition: all 0.25s var(--ease-out-cubic);
-    /* Ensure borders are visible */
     border: 1px solid var(--nm-border);
 }
 
@@ -1264,11 +1243,23 @@ body.light-theme .modal-overlay {
 
 /* ================================================================= COMPONENT STYLES (CODE, NOTES, ETC) ================================================================= */
 
+/* --- UPDATED: Compact Code/Coupon Box --- */
 pre,
 .code-container {
     background: var(--nm-darkest);
     border: 1px solid var(--nm-border);
-    padding: 15px;
+    /* MODIFIED: Reduced padding and added width/margin constraints */
+    padding: 10px 15px;
+    width: fit-content;
+    min-width: 200px;
+    max-width: 100%;
+    margin: 10px auto 20px auto;
+    /* MODIFIED: Flexbox to center content and reduce vertical space */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    
     border-radius: var(--radius-md);
     overflow-x: auto;
     font-family: var(--font-mono);
@@ -1277,7 +1268,6 @@ pre,
     position: relative;
     white-space: pre-wrap;
     word-wrap: break-word;
-    margin-bottom: 20px;
     transition: border-color 0.3s ease;
 }
 
@@ -1294,16 +1284,19 @@ pre code,
     word-wrap: break-word;
 }
 
+/* MODIFIED: Tighter layout for the coupon text */
 #coupon-code {
     display: block;
     text-align: center;
     font-size: 1.1rem;
+    margin: 0;
+    line-height: 1.2;
 }
 
 .copy-btn {
     position: absolute;
-    top: 10px;
-    right: 10px;
+    top: 5px; /* Moved slightly up */
+    right: 5px; /* Moved slightly right */
     background: var(--nm-container);
     border: 1px solid var(--nm-border);
     color: var(--nm-text-muted);
@@ -1326,23 +1319,19 @@ pre code,
     transform: scale(0.95);
 }
 
-/* --- Notes, Warnings, and Danger Blocks (High Contrast) --- */
+/* --- Notes, Warnings, and Danger Blocks --- */
 .note, .warning, .note-warning, .danger, .tip, .modal-disclaimer {
     border-inline-start: 4px solid var(--nm-border);
-    /* Changed to transparent because grey bg is banned */
     background: transparent;
-    border: 1px solid var(--nm-border); /* Full border to define shape */
-    border-left-width: 5px; /* Thicker left border */
+    border: 1px solid var(--nm-border);
+    border-left-width: 5px;
     padding: 1rem;
     border-radius: var(--radius-lg);
     margin: 20px 0;
 }
 
-/* Differentiate slightly by border type/thickness if needed, but keeping simple B&W */
-
 /* ================================================================= PAGE-SPECIFIC STYLES ================================================================= */
 
-/* --- Contact Page --- */
 .contact-grid {
     display: grid;
     grid-template-columns: 1fr;
@@ -1387,7 +1376,7 @@ pre code,
 }
 
 .contact-grid .app-icon i {
-    color: var(--nm-text); /* Icon matches text */
+    color: var(--nm-text);
     font-size: 1.5rem;
     transition: color 0.2s ease;
 }
@@ -1400,7 +1389,6 @@ pre code,
     font-size: 1rem;
 }
 
-/* --- Portfolio Page --- */
 .portfolio-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -1450,7 +1438,6 @@ pre code,
     border: 1px solid var(--nm-border);
     border-radius: var(--radius-sm);
     transition: box-shadow 0.3s ease;
-    /* Optional: Grayscale the github stats chart too */
     filter: grayscale(100%);
 }
 
@@ -1465,7 +1452,6 @@ pre code,
 body.light-theme .github-stat-light { display: block; }
 body.light-theme .github-stat-dark { display: none; }
 
-/* --- Collaborations Page --- */
 .store-link {
     margin: 1rem 0 1.5rem 0;
 }
@@ -1526,13 +1512,13 @@ body.light-theme .github-stat-dark { display: none; }
     padding: 10px;
 }
 
+/* MODIFIED: Removed grayscale filter for slides (Collaborations) */
 .slide-image {
     width: 100%;
     height: auto;
     display: none;
     border-radius: var(--radius-md);
-    /* Grayscale slides */
-    filter: grayscale(100%);
+    /* Removed filter: grayscale(100%); */
 }
 
 .slide-image.active {
@@ -1573,6 +1559,7 @@ body.light-theme .github-stat-dark { display: none; }
     text-align: center;
 }
 
+/* MODIFIED: Removed grayscale filter for ad images (Collaborations) */
 .ad-image {
     width: 100%;
     max-width: 400px;
@@ -1580,10 +1567,9 @@ body.light-theme .github-stat-dark { display: none; }
     display: block;
     border-radius: var(--radius-lg);
     border: 1px solid var(--nm-border);
-    filter: grayscale(100%);
+    /* Removed filter: grayscale(100%); */
 }
 
-/* --- Learn About Tools Page --- */
 .category-header {
     background: var(--nm-dark);
     border: 1px solid var(--nm-border);
@@ -1693,9 +1679,6 @@ body.light-theme .github-stat-dark { display: none; }
     line-height: 1.5;
 }
 
-/* Invert description text on hover if tool-item is hovered? 
-   Complexity: tool-description is inside tool-item. 
-   Yes, color inherits. */
 .tool-item:hover .tool-description p {
     color: var(--nm-text-on-accent);
 }
@@ -1718,8 +1701,6 @@ body.light-theme .github-stat-dark { display: none; }
 .tool-item:hover .tool-features li::before {
     color: var(--nm-text-on-accent);
 }
-
-/* ================================================================= STORE PAGE STYLES ================================================================= */
 
 .product-price {
     font-family: var(--font-secondary);
