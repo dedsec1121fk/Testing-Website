@@ -1,7 +1,7 @@
 /*
     =================================================================
     DEDSEC PROJECT MULTI-PAGE STYLES
-    VERSION: 4.7 (GitHub Stats Color Fix)
+    VERSION: 4.8 (Layout Adjustments & FAQ)
     =================================================================
 */
 
@@ -596,7 +596,8 @@ body.light-theme .page-header h1 {
 
 .hero-section h2 {
     font-family: var(--font-secondary);
-    font-size: 2.5rem;
+    /* Reduced by 10% (was 2.5rem) */
+    font-size: 2.25rem;
     color: var(--nm-text-accent);
     text-shadow: none;
     margin: 0 0 25px 0;
@@ -777,11 +778,14 @@ body.light-theme .page-header h1 {
     animation: fadeIn 0.8s 0.8s var(--ease-out-cubic) backwards;
 }
 
+/* MODIFICATION: Made feature cards 30% smaller 
+    Original padding: 30px 25px
+*/
 .feature-card {
     background: var(--nm-darkest);
     border: 1px solid var(--nm-border);
     border-radius: var(--radius-pill);
-    padding: 30px 25px;
+    padding: 20px 18px; /* Reduced by ~30% */
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -803,16 +807,19 @@ body.light-theme .page-header h1 {
     box-shadow: none;
 }
 
+/* MODIFICATION: Reduced wrapper size 
+    Original: 70px x 70px
+*/
 .feature-icon-wrapper {
-    width: 70px;
-    height: 70px;
+    width: 50px; /* Reduced */
+    height: 50px; /* Reduced */
     background: transparent;
     border: 1px solid var(--nm-border);
     border-radius: var(--radius-lg);
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 20px;
+    margin-bottom: 15px; /* Reduced margin */
     transition: all 0.3s var(--ease-out-cubic);
 }
 
@@ -822,8 +829,11 @@ body.light-theme .page-header h1 {
     transform: scale(1.1) rotate(5deg);
 }
 
+/* MODIFICATION: Reduced icon size 
+    Original: 2.2rem
+*/
 .feature-icon {
-    font-size: 2.2rem;
+    font-size: 1.6rem; /* Reduced */
     color: var(--nm-accent);
     transition: all 0.3s var(--ease-out-cubic);
 }
@@ -833,18 +843,21 @@ body.light-theme .page-header h1 {
     transform: scale(1.1);
 }
 
+/* MODIFICATION: Reduced title size 
+    Original: 1.4rem
+*/
 .feature-title {
     font-family: var(--font-secondary);
-    font-size: 1.4rem;
+    font-size: 1.1rem; /* Reduced */
     color: var(--nm-text-accent);
-    margin: 0 0 15px 0;
+    margin: 0 0 10px 0; /* Reduced margin */
     transition: color 0.3s ease;
 }
 
 .feature-description {
-    font-size: 1rem;
+    font-size: 0.95rem; /* Slightly reduced */
     color: var(--nm-text-muted);
-    margin-bottom: 20px;
+    margin-bottom: 15px; /* Reduced margin */
     line-height: 1.6;
     flex-grow: 1;
 }
@@ -853,11 +866,11 @@ body.light-theme .page-header h1 {
     font-family: var(--font-mono);
     color: var(--nm-accent);
     font-weight: bold;
-    font-size: 0.9rem;
+    font-size: 0.85rem; /* Slightly reduced */
     display: flex;
     align-items: center;
     gap: 8px;
-    margin-top: 10px;
+    margin-top: 8px;
     transition: all 0.3s ease;
 }
 
@@ -2146,8 +2159,9 @@ body.light-theme .github-stat-dark { display: none; }
         padding: 60px 0 70px 0;
     }
     
+    /* MODIFIED: Reduced Hero H2 size by 10% (was 3rem) */
     .hero-section h2 {
-        font-size: 3rem;
+        font-size: 2.7rem; 
     }
     
     .hero-text {
@@ -2204,8 +2218,9 @@ body.light-theme .github-stat-dark { display: none; }
         padding: 80px 0 90px 0;
     }
     
+    /* MODIFIED: Reduced Hero H2 size by 10% (was 3.5rem) */
     .hero-section h2 {
-        font-size: 3.5rem;
+        font-size: 3.15rem;
     }
     
     .hero-text {
