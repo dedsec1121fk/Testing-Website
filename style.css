@@ -1,7 +1,7 @@
 /*
     =================================================================
     DEDSEC PROJECT MULTI-PAGE STYLES
-    VERSION: 4.7 (GitHub Stats Color Fix)
+    VERSION: 4.7 (GitHub Stats Color Fix + 10% Smaller Buttons)
     =================================================================
 */
 
@@ -580,9 +580,9 @@ body.light-theme .page-header h1 {
     gap: 8px;
     background: var(--nm-accent);
     color: var(--nm-text-on-accent);
-    padding: 8px 16px;
+    padding: 7.2px 14.4px; /* Reduced from 8px 16px */
     border-radius: var(--radius-lg);
-    font-size: 0.9rem;
+    font-size: 0.81rem; /* Reduced from 0.9rem */
     font-weight: bold;
     margin-bottom: 20px;
     animation: slideInUp 0.6s 0.2s var(--ease-out-back) backwards;
@@ -627,7 +627,7 @@ body.light-theme .page-header h1 {
     flex-direction: column;
     align-items: center;
     gap: 8px;
-    padding: 15px 10px;
+    padding: 13.5px 9px; /* Reduced from 15px 10px */
     background: var(--nm-darkest);
     border-radius: var(--radius-md);
     border: 1px solid var(--nm-border);
@@ -649,12 +649,12 @@ body.light-theme .page-header h1 {
 }
 
 .trust-item i {
-    font-size: 1.5rem;
+    font-size: 1.35rem; /* Reduced from 1.5rem */
     color: var(--nm-accent);
 }
 
 .trust-item span {
-    font-size: 0.85rem;
+    font-size: 0.765rem; /* Reduced from 0.85rem */
     font-weight: 600;
     text-align: center;
     color: var(--nm-text);
@@ -672,15 +672,15 @@ body.light-theme .page-header h1 {
     display: inline-flex;
     align-items: center;
     gap: 10px;
-    padding: 15px 30px;
+    padding: 13.5px 27px; /* Reduced from 15px 30px */
     border-radius: var(--radius-pill);
     text-decoration: none;
     font-family: var(--font-secondary);
     font-weight: bold;
-    font-size: 1.1rem;
+    font-size: 0.99rem; /* Reduced from 1.1rem */
     border: 2px solid transparent;
     transition: all 0.3s var(--ease-out-cubic);
-    min-width: 180px;
+    min-width: 162px; /* Reduced from 180px */
     justify-content: center;
 }
 
@@ -781,7 +781,7 @@ body.light-theme .page-header h1 {
     background: var(--nm-darkest);
     border: 1px solid var(--nm-border);
     border-radius: var(--radius-pill);
-    padding: 30px 25px;
+    padding: 27px 22.5px; /* Reduced from 30px 25px */
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -804,8 +804,8 @@ body.light-theme .page-header h1 {
 }
 
 .feature-icon-wrapper {
-    width: 70px;
-    height: 70px;
+    width: 63px; /* Reduced from 70px */
+    height: 63px; /* Reduced from 70px */
     background: transparent;
     border: 1px solid var(--nm-border);
     border-radius: var(--radius-lg);
@@ -823,7 +823,7 @@ body.light-theme .page-header h1 {
 }
 
 .feature-icon {
-    font-size: 2.2rem;
+    font-size: 1.98rem; /* Reduced from 2.2rem */
     color: var(--nm-accent);
     transition: all 0.3s var(--ease-out-cubic);
 }
@@ -835,14 +835,14 @@ body.light-theme .page-header h1 {
 
 .feature-title {
     font-family: var(--font-secondary);
-    font-size: 1.4rem;
+    font-size: 1.26rem; /* Reduced from 1.4rem */
     color: var(--nm-text-accent);
     margin: 0 0 15px 0;
     transition: color 0.3s ease;
 }
 
 .feature-description {
-    font-size: 1rem;
+    font-size: 0.9rem; /* Reduced from 1rem */
     color: var(--nm-text-muted);
     margin-bottom: 20px;
     line-height: 1.6;
@@ -853,7 +853,7 @@ body.light-theme .page-header h1 {
     font-family: var(--font-mono);
     color: var(--nm-accent);
     font-weight: bold;
-    font-size: 0.9rem;
+    font-size: 0.81rem; /* Reduced from 0.9rem */
     display: flex;
     align-items: center;
     gap: 8px;
@@ -883,7 +883,7 @@ body.light-theme .page-header h1 {
     flex-direction: column;
     align-items: center;
     gap: 15px;
-    padding: 25px 20px;
+    padding: 22.5px 18px; /* Reduced from 25px 20px */
     background: var(--nm-darkest);
     border: 1px solid var(--nm-border);
     border-radius: var(--radius-lg);
@@ -899,7 +899,7 @@ body.light-theme .page-header h1 {
 }
 
 .community-card i {
-    font-size: 2.5rem;
+    font-size: 2.25rem; /* Reduced from 2.5rem */
     color: var(--nm-accent);
     transition: transform 0.3s ease;
 }
@@ -911,7 +911,7 @@ body.light-theme .page-header h1 {
 .community-card span {
     font-family: var(--font-secondary);
     font-weight: 600;
-    font-size: 1.1rem;
+    font-size: 0.99rem; /* Reduced from 1.1rem */
     text-align: center;
 }
 
@@ -925,7 +925,7 @@ body.light-theme .page-header h1 {
     border: 2px solid var(--nm-accent) !important;
     color: var(--nm-text-on-accent) !important;
     font-weight: bold;
-    max-width: 300px;
+    max-width: 270px; /* Reduced from 300px */
     margin: 0 auto;
 }
 
